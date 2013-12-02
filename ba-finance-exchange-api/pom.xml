@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>ba-finance-exchange</artifactId>
+        <groupId>com.dianping</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <groupId>com.dianping</groupId>
+    <artifactId>ba-finance-exchange-api</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>ba-finance-settle-api</name>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.dianping</groupId>
+            <artifactId>avatar-interface</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+</project>

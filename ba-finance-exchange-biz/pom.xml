@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>ba-finance-exchange</artifactId>
+        <groupId>com.dianping</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <groupId>com.dianping</groupId>
+    <artifactId>ba-finance-exchange-biz</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>ba-finance-exchange-biz</name>
+    <url>http://maven.apache.org</url>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.dianping</groupId>
+            <artifactId>ba-finance-exchange-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dianping.platform</groupId>
+            <artifactId>platform-sdk</artifactId>
+            <version>0.0.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dianping</groupId>
+            <artifactId>dp-common-service</artifactId>
+            <version>0.2.4</version>
+        </dependency>
+
+        <!-- for Producer -->
+        <dependency>
+            <groupId>com.dianping.swallow</groupId>
+            <artifactId>swallow-producerclient</artifactId>
+            <version>0.6.7</version>   <!-- 具体版本请咨询负责人,或看release note  -->
+        </dependency>
+        <!-- lion -->
+        <dependency>
+            <groupId>com.dianping.lion</groupId>
+            <artifactId>lion-client</artifactId>
+            <version>0.2.2</version>
+        </dependency>
+        <!-- 监控 -->
+        <dependency>
+            <groupId>com.dianping.cat</groupId>
+            <artifactId>cat-core</artifactId>
+            <version>0.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping.hawk</groupId>
+            <artifactId>hawk-client</artifactId>
+            <version>0.7.1</version>
+        </dependency>
+        <!-- 远程调用Pigeon -->
+        <dependency>
+            <groupId>com.dianping.dpsf</groupId>
+            <artifactId>dpsf-net</artifactId>
+            <version>1.6.3</version>
+        </dependency>
+
+        <!-- for Test -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>2.5.6</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.8.5</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Marin -->
+        <dependency>
+            <groupId>com.dianping.data.warehouse</groupId>
+            <artifactId>dp-log</artifactId>
+            <version>1.0.5.1</version>
+        </dependency>
+        <!-- Marin -->
+    </dependencies>
+</project>
