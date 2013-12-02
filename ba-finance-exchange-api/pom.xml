@@ -11,7 +11,7 @@
     <groupId>com.dianping</groupId>
     <artifactId>ba-finance-exchange-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ba-finance-settle-api</name>
+    <name>ba-finance-exchange-api</name>
     <packaging>jar</packaging>
 
     <dependencies>
