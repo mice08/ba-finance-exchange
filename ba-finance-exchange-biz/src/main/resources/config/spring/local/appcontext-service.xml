@@ -8,7 +8,7 @@
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
 
-    <bean id="shopFundAccountService" class="com.dianping.ba.finance.fundaccount.biz.impl.ShopFundAccountServiceObject">
+    <bean id="shopFundAccountService" class="com.dianping.ba.finance.exchange.biz.impl.ShopFundAccountServiceObject">
         <property name="shopFundAccountInfoDao" ref="shopFundAccountInfoDao"/>
     </bean>
 

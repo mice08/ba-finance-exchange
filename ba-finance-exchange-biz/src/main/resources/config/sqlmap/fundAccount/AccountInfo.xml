@@ -2,7 +2,7 @@
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 <sqlMap namespace="ShopFundAccountInfo">
 
-    <typeAlias alias="ShopFundAccountInfoData" type="com.dianping.ba.finance.fundaccount.api.datas.ShopFundAccountInfoData"/>
+    <typeAlias alias="ShopFundAccountInfoData" type="com.dianping.ba.finance.exchange.api.datas.ShopFundAccountInfoData"/>
     <resultMap id="ShopFundAccountInfo" class="ShopFundAccountInfoData">
         <result property="receiveDate" column="ReceiveDate"/>
         <result property="amount" column="Amount"/>
@@ -14,7 +14,7 @@
         <result property="isPositive" column="IsPositive"/>
     </resultMap>
     
-    <typeAlias alias="ShopFundAccountBean" type="com.dianping.ba.finance.fundaccount.api.datas.ShopFundAccountData"/>
+    <typeAlias alias="ShopFundAccountBean" type="com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData"/>
     <resultMap id="ShopFundAccountBean" class="ShopFundAccountBean">
         <result property="fundAccountId" column="FundAccountID"/>
         <result property="shopId" column="ShopID"/>

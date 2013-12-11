@@ -7,7 +7,7 @@
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
     <bean id="shopFundAccountInfoDao" parent="parentDao">
-        <property name="proxyInterfaces" value="com.dianping.ba.finance.fundaccount.biz.dao.ShopFundAccountInfoDao" />
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountInfoDao" />
         <property name="target">
             <bean parent="fsMain.daoRealizeTarget">
                 <constructor-arg value="ShopFundAccountInfo" />
