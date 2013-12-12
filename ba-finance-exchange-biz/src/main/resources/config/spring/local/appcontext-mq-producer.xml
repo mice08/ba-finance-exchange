@@ -23,7 +23,7 @@
     <!--<bean id="destination" class="com.dianping.swallow.common.message.Destination"-->
           <!--factory-method="topic">-->
           <!--<constructor-arg>-->
-            <!--<value>${ba-finance-settle-biz.ba.fs.booking.invoice.noticeResult}</value>-->
+            <!--<value>${ba-finance-settle-api.ba.fs.booking.invoice.noticeResult}</value>-->
           <!--</constructor-arg>-->
     <!--</bean>-->
     <!--&lt;!&ndash;生产者的配置类 ProducerConfig &ndash;&gt;-->
