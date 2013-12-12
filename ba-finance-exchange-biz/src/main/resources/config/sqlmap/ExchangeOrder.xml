@@ -1,82 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
-<sqlMap namespace="AccountPayable">
+<sqlMap namespace="ExchangeOrder">
 
-    <typeAlias alias="PCAccountPayableData"
-               type="com.dianping.ba.finance.prepaidcard.api.datas.PCAccountPayableData"/>
-    <resultMap id="pcAccountPayableData" class="PCAccountPayableData">
-        <result property="apID" column="APID"/>
-        <result property="apPlanDate" column="APPlanDate"/>
-        <result property="apAmount" column="APAmount"/>
-        <result property="customerGlobalID" column="CustomerGlobalID"/>
-        <result property="contractGlobalID" column="ContractGlobalID"/>
-        <result property="companyGlobalID" column="CompanyGlobalID"/>
-        <result property="dealGroupID" column="DealGroupID"/>
-        <result property="dealID" column="DealID"/>
-        <result property="shopID" column="ShopID"/>
-        <result property="voucherID" column="VoucherID"/>
-        <result property="accAPID" column="AccAPID"/>
-        <result property="fsPPID" column="FSPPID"/>
+    <typeAlias alias="ExchangeOrder"
+               type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrder"/>
+    <resultMap id="exchangeOrder" class="ExchangeOrder">
+        <result property="exchangeOrderId" column="ExchangeOrderID"/>
+        <result property="orderAmount" column="OrderAmount"/>
+        <result property="orderType" column="OrderType"/>
+        <result property="bankAccountNo" column="BankAccountNo"/>
+        <result property="bankAccountName" column="BankAccountName"/>
+        <result property="bankName" column="BankName"/>
         <result property="status" column="Status"/>
-        <result property="addType" column="AddType"/>
-        <result property="addLoginID" column="AddLoginID"/>
         <result property="addDate" column="AddDate"/>
-        <result property="lastUpdateLoginID" column="LastUpdateLoginID"/>
+        <result property="orderDate" column="OrderDate"/>
         <result property="lastUpdateDate" column="LastUpdateDate"/>
         <result property="memo" column="Memo"/>
     </resultMap>
 
-    <insert id="insertAccountPayable" parameterClass="map">
+    <insert id="insertExchangeOrder" parameterClass="map">
         <![CDATA[
-        	 insert into PC_AccountPayable
-		            (APPlanDate,
-		             APAmount,
-		             CustomerGlobalID,
-		             ContractGlobalID,
-		             CompanyGlobalID,
-		             DealGroupID,
-		             DealID,
-		             ShopID,
-		             VoucherID,
-		             Status,
-		             AddType,
-		             AddLoginID,
+        	 insert into FS_ExchangeOrder
+		            (OrderAmount,
+		             OrderType,
+		             BankAccountNo,
+		             BankAccountName,
+		             BankName,
+		             Status,,
 		             AddDate,
-		             LastUpdateLoginID,
 		             LastUpdateDate,
 		             Memo
 		             )
-			values (#PCAccountPayableData.apPlanDate#,
-			        #PCAccountPayableData.apAmount#,
-			        #PCAccountPayableData.customerGlobalID#,
-			        #PCAccountPayableData.contractGlobalID#,
-			        #PCAccountPayableData.companyGlobalID#,
-			        #PCAccountPayableData.dealGroupID#,
-			        #PCAccountPayableData.dealID#,
-			        #PCAccountPayableData.shopID#,
-			        #PCAccountPayableData.voucherID#,
-			        #PCAccountPayableData.status#,
-			        #PCAccountPayableData.addType#,
-			        #PCAccountPayableData.addLoginID#,
-			        now(),
-			        #PCAccountPayableData.lastUpdateLoginID#,
-			        now(),
-			        #PCAccountPayableData.memo#
+			values (#FSExchangeOrder.orderAmount#,
+			        #FSExchangeOrder.orderType#,
+			        #FSExchangeOrder.bankAccountNo#,
+			        #FSExchangeOrder.bankAccountName#,
+			        #FSExchangeOrder.bankName#,
+			        #FSExchangeOrder.status#,
+			        NOW(),
+			        NOW(),
+			        #FSExchangeOrder.memo#
 			        );
  		]]>
-        <selectKey resultClass="java.lang.Integer" keyProperty="APID">
+        <selectKey resultClass="java.lang.Integer" keyProperty="ExchangeOrderID">
             <![CDATA[
 			SELECT @@IDENTITY AS id
 		]]>
         </selectKey>
     </insert>
 
-    <update id="updateRelatedAccAPID" parameterClass="map">
-        <![CDATA[
-        UPDATE PC_AccountPayable
-        SET AccAPID = #accAPID#
-        WHERE APID = #apID#
- 		]]>
+    <update id="updateExchangeOrderStatus" parameterClass="map">
+        UPDATE FS_ExchangeOrder
+        SET Status = #status#,
+        <isNotEmpty prepend="and" property="orderDate">
+            OrderDate = #orderDate#,
+        </isNotEmpty>
+        LastUpdateDate = #lastUpdateDate#
+        WHERE ExchangeOrderID = #exchangeOrderId#
     </update>
-
 </sqlMap>
