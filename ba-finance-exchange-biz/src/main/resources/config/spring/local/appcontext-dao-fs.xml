@@ -6,12 +6,5 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-    <bean id="shopFundAccountInfoDao" parent="parentDao">
-        <property name="proxyInterfaces" value="ShopFundAccountInfoDao" />
-        <property name="target">
-            <bean parent="fsMain.daoRealizeTarget">
-                <constructor-arg value="ShopFundAccountInfo" />
-            </bean>
-        </property>
-    </bean>
+
 </beans>
