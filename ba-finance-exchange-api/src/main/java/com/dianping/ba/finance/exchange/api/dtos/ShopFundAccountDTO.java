@@ -1,5 +1,7 @@
 package com.dianping.ba.finance.exchange.api.dtos;
 
+import com.dianping.ba.finance.exchange.api.enums.SourceTypeEnum;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -40,6 +42,6 @@ public class ShopFundAccountDTO implements Serializable {
     /**
      * 源头类型：1.应付2.应收3.交易指令
      */
-    private SourceType sourceType;
+    private SourceTypeEnum sourceType;
 
 }
