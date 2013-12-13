@@ -49,13 +49,21 @@
         </selectKey>
     </insert>
 
-    <update id="updateExchangeOrderStatus" parameterClass="map">
+    <update id="updateExchangeOrderData" parameterClass="map">
         UPDATE FS_ExchangeOrder
         SET Status = #status#,
         <isNotEmpty prepend="and" property="orderDate">
             OrderDate = #orderDate#,
         </isNotEmpty>
-        LastUpdateDate = #lastUpdateDate#
+        LastUpdateDate = now()
         WHERE ExchangeOrderID = #exchangeOrderId#
     </update>
+
+    <select id="findExchangeOrderByOrderId" parameterClass="map" resultMap="exchangeOrder">
+        <![CDATA[
+        select ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,Status,AddDate,LastUpdateDate,Memo
+        from FS_ExchangeOrder
+        where ExchangeOrderID = #exchangeOrderId#
+        ]]>
+    </select>
 </sqlMap>

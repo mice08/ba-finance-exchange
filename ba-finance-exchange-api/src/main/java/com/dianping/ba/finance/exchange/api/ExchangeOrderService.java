@@ -1,5 +1,7 @@
 package com.dianping.ba.finance.exchange.api;
 
+import com.dianping.ba.finance.exchange.api.beans.GenericResult;
+
 /**
  * Created with IntelliJ IDEA.
  * User: 遐
@@ -8,4 +10,6 @@ package com.dianping.ba.finance.exchange.api;
  * To change this template use File | Settings | File Templates.
  */
 public interface ExchangeOrderService {
+
+    GenericResult<Integer> updateExchangeOrderToSuccess(int[] orderIds);
 }
