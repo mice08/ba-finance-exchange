@@ -1,4 +1,4 @@
-package com.dianping.ba.finance.exchange.enums;
+package com.dianping.ba.finance.exchange.api.enums;
 
 /**
  * Created with IntelliJ IDEA.

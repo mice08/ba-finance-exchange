@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.api;
 
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
+import java.util.List;
 
 
 /**
@@ -19,6 +20,11 @@ public interface ExchangeOrderService {
      */
       public int createExchangeOrder(ExchangeOrderBean exchangeOrderBean);
 
-     GenericResult<Integer> updateExchangeOrderToSuccess(int[] orderIds);
-
+    /**
+     * 更新交易指令成功
+     *
+     * @param orderIds 交易指令集
+     * @return 更新结果集
+     */
+    GenericResult<Integer> updateExchangeOrderToSuccess(List<Integer> orderIds);
 }
