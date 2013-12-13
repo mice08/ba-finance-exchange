@@ -1,6 +1,7 @@
 package com.dianping.ba.finance.exchange.api;
 
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
+import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,4 +18,12 @@ public interface ShopFundAccountService {
      * @return 成功与否
      */
     boolean updateShopFundAccountCausedByExchangeOrderSuccess(ExchangeOrderDTO exchangeOrder);
+
+    /**
+     * 根据交易指令获取资金账户PaymentPlan流水
+     *
+     * @param orderIds 交易指令
+     * @return 成功与否
+     */
+    ShopFundAccountFlowDTO getPaymentPlanShopFundAccountFlow(ExchangeOrderDTO exchangeOrder);
 }

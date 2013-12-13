@@ -5,11 +5,13 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ShopFundAccountService;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
+import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
 import com.dianping.ba.finance.exchange.api.enums.FlowTypeEnum;
 import com.dianping.ba.finance.exchange.api.enums.SourceTypeEnum;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDAO;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
+import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,15 +45,28 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         return false;
     }
 
+    @Override
+    public ShopFundAccountFlowDTO getPaymentPlanShopFundAccountFlow(ExchangeOrderDTO exchangeOrder) {
+        try {
+            ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDAO.loadShopFundAccountFlow(exchangeOrder.getExchangeOrderId(),
+                    FlowTypeEnum.Input.getFlowType(), SourceTypeEnum.PaymentPlan.getSourceType());
+            ShopFundAccountFlowDTO shopFundAccountFlowDTO =  ConvertUtils.copy(paymentPlanShopFundAccountFlow, ShopFundAccountFlowDTO.class);
+            return  shopFundAccountFlowDTO;
+        } catch (Exception e) {
+            BizUtils.log(monitorLogger, System.currentTimeMillis(), "getPaymentPlanShopFundAccountFlow", "error",
+                    "orderId = " + exchangeOrder.getExchangeOrderId(),
+                    e);
+        }
+        return null;
+    }
+
     private ShopFundAccountFlowData buildShopFundAccountFlowData(ExchangeOrderDTO exchangeOrder){
-        ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDAO.loadShopFundAccountFlow(exchangeOrder.getExchangeOrderId(),
-                FlowTypeEnum.Input.getFlowType(), SourceTypeEnum.PaymentPlan.getSourceType());
         ShopFundAccountFlowData shopFundAccountFlow= new ShopFundAccountFlowData();
         shopFundAccountFlow.setExchangeOrderId(exchangeOrder.getExchangeOrderId());
         shopFundAccountFlow.setFlowAmount(exchangeOrder.getOrderAmount());
         shopFundAccountFlow.setFlowType(FlowTypeEnum.Output.getFlowType());
         shopFundAccountFlow.setSourceType(SourceTypeEnum.ExchangeOrder.getSourceType());
-        shopFundAccountFlow.setFundAccountId(paymentPlanShopFundAccountFlow.getFundAccountId());
+        shopFundAccountFlow.setFundAccountId(exchangeOrder.getRelevantFundAccountId());
         return shopFundAccountFlow;
     }
 }
