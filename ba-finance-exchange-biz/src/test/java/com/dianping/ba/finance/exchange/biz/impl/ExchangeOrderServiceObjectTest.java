@@ -37,7 +37,7 @@ public class ExchangeOrderServiceObjectTest {
     @Before
     public void runBeforeTest() {
         exchangeOrderServiceObjectStub = new ExchangeOrderServiceObject();
-        exchangeOrderServiceObjectStub.setExchangeOrderDao(exchangeOrderDaoMock);
+        exchangeOrderServiceObjectStub.setExchangeOrderDAO(exchangeOrderDAOMock);
         exchangeOrderServiceObjectStub.setShopFundAccountFlowDAO(shopFundAccountFlowDAOMock);
 
         exchangeOrderDAOMock = mock(ExchangeOrderDAO.class);
