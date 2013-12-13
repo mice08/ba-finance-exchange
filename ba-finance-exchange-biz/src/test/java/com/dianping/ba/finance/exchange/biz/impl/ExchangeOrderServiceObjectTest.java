@@ -4,7 +4,7 @@ import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDAO;
-import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDAA;
+import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDAO;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeType;
 import org.junit.Assert;
@@ -30,20 +30,20 @@ import static org.mockito.Mockito.when;
  */
 public class ExchangeOrderServiceObjectTest {
 
-    private ExchangeOrderDAO exchangeOrderDaoMock;
-    private ShopFundAccountFlowDAA shopFundAccountFlowDAAMock;
+    private ExchangeOrderDAO exchangeOrderDAOMock;
+    private ShopFundAccountFlowDAO shopFundAccountFlowDAOMock;
     private ExchangeOrderStatusChangeNotify exchangeOrderStatusChangeNotifyStub;
     private ExchangeOrderServiceObject exchangeOrderServiceObjectStub;
 
     @Before
     public void runBeforeTest() {
-        exchangeOrderDaoMock = mock(ExchangeOrderDAO.class);
-        shopFundAccountFlowDAAMock = mock(ShopFundAccountFlowDAA.class);
+        exchangeOrderDAOMock = mock(ExchangeOrderDAO.class);
+        shopFundAccountFlowDAOMock = mock(ShopFundAccountFlowDAO.class);
         exchangeOrderStatusChangeNotifyStub = mock(ExchangeOrderStatusChangeNotify.class);
 
         exchangeOrderServiceObjectStub = new ExchangeOrderServiceObject();
-        exchangeOrderServiceObjectStub.setExchangeOrderDao(exchangeOrderDaoMock);
-        exchangeOrderServiceObjectStub.setShopFundAccountFlowDAA(shopFundAccountFlowDAAMock);
+        exchangeOrderServiceObjectStub.setExchangeOrderDAO(exchangeOrderDAOMock);
+        exchangeOrderServiceObjectStub.setShopFundAccountFlowDAO(shopFundAccountFlowDAOMock);
         exchangeOrderServiceObjectStub.setExchangeOrderStatusChangeNotify(exchangeOrderStatusChangeNotifyStub);
 
     }
@@ -63,9 +63,9 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(2);
         orderIds.add(3);
 
-        when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(),any(Date.class),anyInt())).thenReturn(true);
-        when(shopFundAccountFlowDAAMock.loadShopFundAccountFlow(anyInt(),anyInt(),anyInt())).thenReturn(shopFundAccountFlowData);
+        when(exchangeOrderDAOMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
+        when(exchangeOrderDAOMock.updateExchangeOrderData(anyInt(),any(Date.class),anyInt())).thenReturn(true);
+        when(shopFundAccountFlowDAOMock.loadShopFundAccountFlow(anyInt(),anyInt(),anyInt())).thenReturn(shopFundAccountFlowData);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 

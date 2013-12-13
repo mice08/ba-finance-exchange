@@ -15,7 +15,7 @@ import java.util.Date;
  * Time: 上午11:39
  * To change this template use File | Settings | File Templates.
  */
-public interface ExchangeOrderDAA extends GenericDao{
+public interface ExchangeOrderDAO extends GenericDao{
 
     /**
      * 更新交易指令状态和时间
