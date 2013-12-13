@@ -37,7 +37,7 @@ public class ShopFundAccountServiceObjectTest {
     public void testUpdateShopFundAccountCausedByExchangeOrderSuccess(){
 
         ExchangeOrderDTO exchangeOrder = new ExchangeOrderDTO();
-        exchangeOrder.setStatus(ExchangeOrderStatusEnum.Success.getExchangeType());
+        exchangeOrder.setStatus(ExchangeOrderStatusEnum.Success.getExchangeOrderStatus());
         exchangeOrder.setExchangeOrderId(1);
         exchangeOrder.setOrderAmount(BigDecimal.TEN);
 

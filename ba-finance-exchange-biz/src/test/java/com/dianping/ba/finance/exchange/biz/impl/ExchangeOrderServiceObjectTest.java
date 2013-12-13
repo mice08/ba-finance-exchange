@@ -46,7 +46,7 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testUpdateExchangeOrderSuccess(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.Init.getExchangeType());
+        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.Init.getExchangeOrderStatus());
 
         List<Integer> orderIds = new ArrayList<Integer>();
         orderIds.add(1);
@@ -54,7 +54,7 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(3);
 
         when(exchangeOrderDAOMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDAOMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt())).thenReturn(true);
+        when(exchangeOrderDAOMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt())).thenReturn(1);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
@@ -69,7 +69,7 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testUpdateExchangeOrderFailWhenOrderIdInvalid(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.Init.getExchangeType());
+        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.Init.getExchangeOrderStatus());
 
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(1);
@@ -80,7 +80,7 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(3);
 
         when(exchangeOrderDAOMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDAOMock.updateExchangeOrderData(anyInt(),any(Date.class),anyInt())).thenReturn(true);
+        when(exchangeOrderDAOMock.updateExchangeOrderData(anyInt(),any(Date.class),anyInt())).thenReturn(1);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
@@ -92,7 +92,7 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testUpdateExchangeOrderSuccessWhenExchangeTypeIsSuccess(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.Success.getExchangeType());
+        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.Success.getExchangeOrderStatus());
 
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(1);

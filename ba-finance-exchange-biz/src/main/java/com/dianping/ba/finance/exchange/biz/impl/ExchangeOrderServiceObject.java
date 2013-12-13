@@ -46,9 +46,9 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
                 processExchangeOrderId = orderId;
                 if (isOrderValid(orderId)) {
                     ExchangeOrderData exchangeOrderData = exchangeOrderDAO.loadExchangeOrderByOrderId(orderId);
-                    if(exchangeOrderData != null && exchangeOrderData.getStatus() != ExchangeOrderStatusEnum.Success.getExchangeType()) {
+                    if(exchangeOrderData != null && exchangeOrderData.getStatus() != ExchangeOrderStatusEnum.Success.getExchangeOrderStatus()) {
                         Date orderDate = retrieveCurrentTime();
-                        int affectedRows = exchangeOrderDAO.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatusEnum.Success.getExchangeType());
+                        int affectedRows = exchangeOrderDAO.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatusEnum.Success.getExchangeOrderStatus());
                         exchangeOrderData.setStatus(ExchangeOrderStatusEnum.Success.ordinal());
                         exchangeOrderData.setOrderDate(orderDate);
                         if(affectedRows > 0){
