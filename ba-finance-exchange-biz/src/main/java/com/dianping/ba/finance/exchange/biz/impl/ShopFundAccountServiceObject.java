@@ -4,9 +4,9 @@ import com.dianping.ba.finance.exchange.api.ShopFundAccountService;
 
 /**
  * Created with IntelliJ IDEA.
- * User: bingqiu.yuan
+ * User: 遐
  * Date: 13-12-13
- * Time: 上午11:37
+ * Time: 上午9:28
  * To change this template use File | Settings | File Templates.
  */
 public class ShopFundAccountServiceObject implements ShopFundAccountService {
