@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ExchangeOrder">
+
+    <typeAlias alias="ExchangeOrderData" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData"/>
+    <resultMap id="exchangeOrderData" class="ExchangeOrderData">
+        <result property="exchangeOrderID" column="ExchangeOrderID"/>
+        <result property="orderAmount" column="OrderAmount"/>
+        <result property="orderDate" column="OrderDate"/>
+        <result property="bankAccountNo" column="BankAccountNo"/>
+        <result property="bankAccountName" column="BankAccountName"/>
+        <result property="bankName" column="BankName"/>
+        <result property="status" column="Status"/>
+    </resultMap>
+
+
+</sqlMap>
