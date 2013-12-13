@@ -5,6 +5,7 @@ import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeType;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDAO;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,7 +38,7 @@ public class ShopFundAccountServiceObjectTest {
     public void testUpdateShopFundAccountCausedByExchangeOrderSuccess(){
 
         ExchangeOrderDTO exchangeOrder = new ExchangeOrderDTO();
-        exchangeOrder.setStatus(ExchangeType.Init.getExchangeType());
+        exchangeOrder.setStatus(ExchangeType.Success.getExchangeType());
         exchangeOrder.setExchangeOrderId(1);
         exchangeOrder.setOrderAmount(BigDecimal.TEN);
 
@@ -46,6 +47,6 @@ public class ShopFundAccountServiceObjectTest {
 
         when(shopFundAccountFlowDAOMock.loadShopFundAccountFlow(anyInt(),anyInt(),anyInt())).thenReturn(shopFundAccountFlowData);
 
-        shopFundAccountServiceObjectStub.updateShopFundAccountCausedByExchangeOrderSuccess(exchangeOrder);
+        Assert.assertTrue(shopFundAccountServiceObjectStub.updateShopFundAccountCausedByExchangeOrderSuccess(exchangeOrder));
     }
 }
