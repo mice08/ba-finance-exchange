@@ -28,7 +28,6 @@ import static org.mockito.Mockito.when;
  * To change this template use File | Settings | File Templates.
  */
 public class ExchangeOrderServiceObjectTest {
-
     private ExchangeOrderDAO exchangeOrderDAOMock;
     private ExchangeOrderStatusChangeNotify exchangeOrderStatusChangeNotifyMock;
     private ExchangeOrderServiceObject exchangeOrderServiceObjectStub;
@@ -41,7 +40,7 @@ public class ExchangeOrderServiceObjectTest {
         exchangeOrderServiceObjectStub = new ExchangeOrderServiceObject();
         exchangeOrderServiceObjectStub.setExchangeOrderDAO(exchangeOrderDAOMock);
         exchangeOrderServiceObjectStub.setExchangeOrderStatusChangeNotify(exchangeOrderStatusChangeNotifyMock);
-
+        exchangeOrderServiceObjectStub.setShopFundAccountFlowDAO(shopFundAccountFlowDAOMock);
     }
 
     @Test

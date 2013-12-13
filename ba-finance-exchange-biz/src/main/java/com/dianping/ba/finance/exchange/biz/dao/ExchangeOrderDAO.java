@@ -25,8 +25,8 @@ public interface ExchangeOrderDAO extends GenericDao{
      * @param status 更新状态
      * @return
      */
-   @DAOAction(action = DAOActionType.UPDATE)
-   boolean updateExchangeOrderData(@DAOParam("exchangeOrderId")int orderId,@DAOParam("orderDate")Date orderDate,@DAOParam("status")int status);
+    @DAOAction(action = DAOActionType.UPDATE)
+    boolean updateExchangeOrderData(@DAOParam("exchangeOrderId")int orderId,@DAOParam("orderDate")Date orderDate,@DAOParam("status")int status);
 
     /**
      * 获取对应交易指令主键的记录
@@ -34,7 +34,9 @@ public interface ExchangeOrderDAO extends GenericDao{
      * @param orderId 交易指令主键
      * @return
      */
-   @DAOAction(action = DAOActionType.LOAD)
-   ExchangeOrderData loadExchangeOrderByOrderId(@DAOParam("exchangeOrderId")int orderId);
+    @DAOAction(action = DAOActionType.LOAD)
+    ExchangeOrderData loadExchangeOrderByOrderId(@DAOParam("exchangeOrderId")int orderId);
 
+    @DAOAction(action = DAOActionType.INSERT)
+    int insertExchangeOrder(@DAOParam("exchangeOrderData") ExchangeOrderData exchangeOrderData);
 }
