@@ -11,7 +11,7 @@ import com.dianping.ba.finance.exchange.api.enums.SourceTypeEnum;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDAO;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDao;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
-import com.dianping.ba.finance.exchange.enums.ExchangeType;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeType;
 
 import java.util.*;
 
