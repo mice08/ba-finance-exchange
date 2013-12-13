@@ -40,7 +40,7 @@ public class ExchangeOrderServiceObjectTest {
         exchangeOrderServiceObjectStub = new ExchangeOrderServiceObject();
         exchangeOrderServiceObjectStub.setExchangeOrderDAO(exchangeOrderDAOMock);
         exchangeOrderServiceObjectStub.setExchangeOrderStatusChangeNotify(exchangeOrderStatusChangeNotifyMock);
-        exchangeOrderServiceObjectStub.setShopFundAccountFlowDAO(shopFundAccountFlowDAOMock);
+
     }
 
     @Test

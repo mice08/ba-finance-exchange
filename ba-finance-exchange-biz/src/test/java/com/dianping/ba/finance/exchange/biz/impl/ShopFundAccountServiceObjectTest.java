@@ -1,6 +1,9 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
-
+import com.dianping.ba.finance.exchange.api.beans.GenericResult;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
+import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
@@ -12,7 +15,9 @@ import org.junit.Before;
 import org.junit.Test;
 import java.math.BigDecimal;
 import java.text.ParseException;
-
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
@@ -20,7 +25,6 @@ import static org.mockito.Mockito.when;
 
 /**
  * Created with IntelliJ IDEA.
-<<<<<<< HEAD
  * User: jinyu.yin
  * Date: 13-12-13
  * Time: 下午4:18
@@ -41,6 +45,16 @@ public class ShopFundAccountServiceObjectTest {
     }
 
     @Test
+    public void createShopFundAccountFlowIsNull(){
+        int actual=shopFundAccountServiceObjectStub.createShopFundAccountFlow(null);
+        Assert.assertEquals(-1,actual);
+    }
+
+    @Test
+    public void createShopFundAccountFlow(){
+        int actual=shopFundAccountServiceObjectStub.createShopFundAccountFlow(null);
+        Assert.assertEquals(-1,actual);
+    }
     public void testUpdateShopFundAccountCausedByExchangeOrderSuccess(){
 
         ExchangeOrderDTO exchangeOrder = new ExchangeOrderDTO();
@@ -56,6 +70,4 @@ public class ShopFundAccountServiceObjectTest {
         Assert.assertTrue(shopFundAccountServiceObjectStub.updateShopFundAccountCausedByExchangeOrderSuccess(exchangeOrder));
     }
 
-
-    }
 }

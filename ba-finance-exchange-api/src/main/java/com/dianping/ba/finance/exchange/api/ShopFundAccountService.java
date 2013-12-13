@@ -17,7 +17,7 @@ public interface ShopFundAccountService {
     /**
      * 因为交易指令成功而更新资金账户并插入资金账户流水
      *
-     * @param orderIds 交易指令
+     * @param exchangeOrder 交易指令
      * @return 成功与否
      */
     boolean updateShopFundAccountCausedByExchangeOrderSuccess(ExchangeOrderDTO exchangeOrder);
@@ -48,5 +48,5 @@ public interface ShopFundAccountService {
      * @param shopFundAccountFlowDTO
      * @return
      */
-    public int createShopFundAccountFlow(ShopFundAccountFlowDTO shopFundAccountFlowDTO) throws Exception;
+    public int createShopFundAccountFlow(ShopFundAccountFlowDTO shopFundAccountFlowDTO);
 }
