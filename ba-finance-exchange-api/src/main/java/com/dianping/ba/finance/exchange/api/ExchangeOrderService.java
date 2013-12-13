@@ -1,8 +1,10 @@
 package com.dianping.ba.finance.exchange.api;
 
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 
 import java.util.List;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,6 +14,12 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface ExchangeOrderService {
+    /**
+     * 创建交易订单
+     * @param exchangeOrderData
+     * @return
+     */
+      public int insertExchangeOrder(ExchangeOrderData exchangeOrderData);
 
     /**
      * 更新交易指令成功

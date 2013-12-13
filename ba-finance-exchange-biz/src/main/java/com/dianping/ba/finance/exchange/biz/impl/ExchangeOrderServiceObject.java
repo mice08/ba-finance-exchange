@@ -31,7 +31,13 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger(ExchangeOrderServiceObject.class);
 
     @Override
+    public int insertExchangeOrder(ExchangeOrderData exchangeOrderData) {
+     return  exchangeOrderDAO.insertExchangeOrder(exchangeOrderData);
+    }
+
+    @Override
     public GenericResult<Integer> updateExchangeOrderToSuccess(List<Integer> orderIds) {
+
         GenericResult genericResult = new GenericResult<Integer>();
         List successExchangeOrders = new ArrayList<Integer>();
         List failedExchangeOrders = new ArrayList<Integer>();

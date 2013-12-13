@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
+import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountDAO;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDAO;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,20 +23,33 @@ import static org.mockito.Mockito.when;
  * To change this template use File | Settings | File Templates.
  */
 public class ShopFundAccountServiceObjectTest {
-
     private ShopFundAccountFlowDAO shopFundAccountFlowDAOMock;
+    private ShopFundAccountDAO shopFundAccountDAOMock;
     private ShopFundAccountServiceObject shopFundAccountServiceObjectStub;
 
     @Before
     public void runBeforeTest() {
         shopFundAccountFlowDAOMock = mock(ShopFundAccountFlowDAO.class);
+        shopFundAccountDAOMock = mock(ShopFundAccountDAO.class);
         shopFundAccountServiceObjectStub = new ShopFundAccountServiceObject();
         shopFundAccountServiceObjectStub.setShopFundAccountFlowDAO(shopFundAccountFlowDAOMock);
+        shopFundAccountServiceObjectStub.setShopFundAccountDAO(shopFundAccountDAOMock);
+    }
+
+    @Test
+    public void createShopFundAccountFlowIsNull(){
+        int actual=shopFundAccountServiceObjectStub.createShopFundAccountFlow(null);
+        Assert.assertEquals(-1,actual);
+    }
+
+    @Test
+    public void createShopFundAccountFlow(){
+        int actual=shopFundAccountServiceObjectStub.createShopFundAccountFlow(null);
+        Assert.assertEquals(-1,actual);
     }
 
     @Test
     public void testUpdateShopFundAccountCausedByExchangeOrderSuccess(){
-
         ExchangeOrderDTO exchangeOrder = new ExchangeOrderDTO();
         exchangeOrder.setStatus(ExchangeOrderStatusEnum.Success.getExchangeOrderStatus());
         exchangeOrder.setExchangeOrderId(1);
@@ -48,4 +62,5 @@ public class ShopFundAccountServiceObjectTest {
 
         Assert.assertTrue(shopFundAccountServiceObjectStub.updateShopFundAccountCausedByExchangeOrderSuccess(exchangeOrder));
     }
+
 }
