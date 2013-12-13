@@ -42,9 +42,11 @@ public enum SourceTypeEnum {
 	public String toString() {
 		switch (sourceType) {
 			case 1:
-				return "正向";
+				return "付款计划";
 			case 2:
-                return "负向";
+                return "收款计划";
+            case 3:
+                return "交易指令";
 			default:
 				return "默认";
 		}
