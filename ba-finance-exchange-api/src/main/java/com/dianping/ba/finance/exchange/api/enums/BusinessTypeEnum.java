@@ -1,13 +1,19 @@
 package com.dianping.ba.finance.exchange.api.enums;
 
+
 /**
  * 业务类型
  */
 public enum BusinessTypeEnum {
+
+    /**
+     * 错误
+     */
+    DEFAULT(0),
     /**
      * 团购
      */
-    GROUPPURCHASE(1),
+    GROUP_PURCHASE(1),
     /**
      * 预约预订
      */
@@ -19,7 +25,7 @@ public enum BusinessTypeEnum {
     /**
      * 储值卡
      */
-    PREPAIDCARD(4);
+    PREPAID_CARD(4);
 
     private int businessType;
 
@@ -43,6 +49,21 @@ public enum BusinessTypeEnum {
         }
     }
 
+    public static BusinessTypeEnum valueOf(int value){
+        switch (value){
+            case 1:
+                return GROUP_PURCHASE;
+            case 2:
+                return BOOKING;
+            case 3:
+                return WEDDING;
+            case 4:
+                return PREPAID_CARD;
+            default:
+                return DEFAULT;
+        }
+    }
+
     public  String toString(int businessType) {
         this.setBusinessType(businessType);
         return this.toString();
@@ -56,4 +77,3 @@ public enum BusinessTypeEnum {
         this.businessType = businessType;
     }
 }
-

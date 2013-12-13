@@ -4,12 +4,11 @@ import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.ShopFundAccountService;
-import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderBean;
 import com.dianping.ba.finance.exchange.api.beans.ShopFundAccountBean;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
-import com.dianping.ba.finance.exchange.api.enums.FlowTypeEnum;
 import com.dianping.ba.finance.exchange.biz.convert.ShopFundAccountConvert;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountDAO;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDAO;
@@ -79,12 +78,11 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             int fundAccountFlowId = insertShopFundAccountFlowData(shopFundAccountFlowData);
 
             //调用支付指令接口 插入指令
-            ExchangeOrderBean exchangeOrderBean = ShopFundAccountConvert.bulidExchangeOrderBean(shopFundAccountFlowDTO);
-            exchangeOrderId=exchangeOrderService.createExchangeOrder(exchangeOrderBean);
+            ExchangeOrderData exchangeOrderData = ShopFundAccountConvert.bulidExchangeOrderData(shopFundAccountFlowDTO);
+            exchangeOrderId=exchangeOrderService.insertExchangeOrder(exchangeOrderData);
 
             //回写资金流水中的exchangeOrderId
-            shopFundAccountFlowDAO.updateShopFundAccountFlowExchangeOrderID(exchangeOrderId,fundAccountFlowId);
-
+            shopFundAccountFlowDAO.updateExchangeOrderId(exchangeOrderId, fundAccountFlowId);
         }catch (Exception e){
             BizUtils.log(monitorLogger, System.currentTimeMillis(), "createShopFundAccountFlow", "error",
                     "BusinessType = " + shopFundAccountFlowDTO.getBusinessType()

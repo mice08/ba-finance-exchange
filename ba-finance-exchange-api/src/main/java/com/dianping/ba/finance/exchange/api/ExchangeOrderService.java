@@ -1,7 +1,8 @@
 package com.dianping.ba.finance.exchange.api;
 
-import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+
 import java.util.List;
 
 
@@ -15,10 +16,10 @@ import java.util.List;
 public interface ExchangeOrderService {
     /**
      * 创建交易订单
-     * @param exchangeOrderBean
+     * @param exchangeOrderData
      * @return
      */
-      public int createExchangeOrder(ExchangeOrderBean exchangeOrderBean);
+      public int insertExchangeOrder(ExchangeOrderData exchangeOrderData);
 
     /**
      * 更新交易指令成功

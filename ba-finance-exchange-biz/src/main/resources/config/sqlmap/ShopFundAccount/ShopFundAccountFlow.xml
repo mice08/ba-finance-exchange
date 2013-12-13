@@ -46,11 +46,11 @@
         </selectKey>
     </insert>
 
-    <update id="updateExchangeOrderID" parameterClass="map">
+    <update id="updateExchangeOrderId" parameterClass="map">
         <![CDATA[
         UPDATE FS_ShopFundAccountFlow
-        SET ExchangeOrderID = #exchangeOrderId#
-        WHERE FAFlowID = #faFlowID#
+        SET ExchangeOrderID = #exchangeOrderId#,LastUpdateDate=NOW()
+        WHERE FAFlowID = #fundAccountFlowId#
  		]]>
     </update>
 

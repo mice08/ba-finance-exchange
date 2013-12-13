@@ -22,5 +22,5 @@ public interface ShopFundAccountFlowDAO extends GenericDao {
     ShopFundAccountFlowData loadShopFundAccountFlow(@DAOParam("exchangeOrderId")int exchangeOrderId, @DAOParam("flowType")int flowType, @DAOParam("sourceType")int sourceType);
 
     @DAOAction(action = DAOActionType.UPDATE)
-    int updateShopFundAccountFlowExchangeOrderID(@DAOParam("exchangeOrderId")int exchangeOrderId, @DAOParam("fundAccountFlowId")int fundAccountFlowId);
+    int updateExchangeOrderId(@DAOParam("exchangeOrderId")int exchangeOrderId, @DAOParam("fundAccountFlowId")int fundAccountFlowId);
 }

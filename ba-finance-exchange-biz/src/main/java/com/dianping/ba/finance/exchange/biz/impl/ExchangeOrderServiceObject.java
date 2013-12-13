@@ -3,7 +3,6 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
-import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
@@ -33,9 +32,8 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger(ExchangeOrderServiceObject.class);
 
     @Override
-    public int createExchangeOrder(ExchangeOrderBean exchangeOrderBean) {
-        int exchangeOrderId=-1;
-        return exchangeOrderId;
+    public int insertExchangeOrder(ExchangeOrderData exchangeOrderData) {
+     return  exchangeOrderDAO.insertExchangeOrder(exchangeOrderData);
     }
 
     @Override

@@ -37,4 +37,6 @@ public interface ExchangeOrderDAO extends GenericDao{
     @DAOAction(action = DAOActionType.LOAD)
     ExchangeOrderData loadExchangeOrderByOrderId(@DAOParam("exchangeOrderId")int orderId);
 
+    @DAOAction(action = DAOActionType.INSERT)
+    int insertExchangeOrder(@DAOParam("exchangeOrderData") ExchangeOrderData exchangeOrderData);
 }
