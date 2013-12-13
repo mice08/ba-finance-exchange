@@ -1,7 +1,5 @@
 package com.dianping.ba.finance.exchange.api;
 
-import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
-
 /**
  * Created with IntelliJ IDEA.
  * User: 遐
@@ -10,6 +8,5 @@ import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
  * To change this template use File | Settings | File Templates.
  */
 public interface ShopFundAccountService {
-
 
 }

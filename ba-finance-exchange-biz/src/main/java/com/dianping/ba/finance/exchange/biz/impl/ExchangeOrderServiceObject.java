@@ -1,54 +1,73 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
+import com.dianping.avatar.log.AvatarLogger;
+import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.enums.FlowTypeEnum;
 import com.dianping.ba.finance.exchange.api.enums.SourceTypeEnum;
-import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
+import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDAO;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDao;
+import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 import com.dianping.ba.finance.exchange.enums.ExchangeType;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
  * User: 遐
  * Date: 13-12-13
  * Time: 上午10:28
- * To change this template use File | Settings | File Templates.
- */
+*/
+
 public class ExchangeOrderServiceObject implements ExchangeOrderService {
-    private ExchangeOrderDao exchangeOrderDao;
+
+    private ExchangeOrderDAO exchangeOrderDao;
+    private ShopFundAccountFlowDao shopFundAccountFlowDao;
+
+    private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger(ExchangeOrderServiceObject.class);
 
     @Override
     public GenericResult<Integer> updateExchangeOrderToSuccess(int[] orderIds) {
         GenericResult genericResult = new GenericResult<Integer>();
         List successExchangeOrders = new ArrayList<Integer>();
         List failedExchangeOrders = new ArrayList<Integer>();
-        List unprocessedExchangeOrders = new ArrayList<Integer>();
+        List unprocessedExchangeOrders = new ArrayList(Arrays.asList(orderIds));
         int processExchangeOrderId = 0;
         try {
             for(int orderId: orderIds){
                 processExchangeOrderId = orderId;
                 if (isOrderValid(orderId)) {
-                    boolean success = exchangeOrderDao.updateExchangeOrderData(orderId, retrieveCurrentTime(), ExchangeType.Success.ordinal());
-                    if (success) {
-                        ExchangeOrderData exchangeOrderData = exchangeOrderDao.findExchangeOrderByOrderId(orderId);
-                        successExchangeOrders.add(orderId);
+                    ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
+                    if(exchangeOrderData.getStatus() != ExchangeType.Success.ordinal()) {
+                        Date orderDate = retrieveCurrentTime();
+                        exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeType.Success.ordinal());
+                        exchangeOrderData.setStatus(ExchangeType.Success.ordinal());
+                        exchangeOrderData.setOrderDate(orderDate);
+                        buildShopFundAccountFlowData(exchangeOrderData);
                     }
+                    successExchangeOrders.add(orderId);
                 } else {
                     failedExchangeOrders.add(orderId);
+                    BizUtils.log(monitorLogger, System.currentTimeMillis(), "updateExchangeOrderToSuccess", "ignore",
+                            "orderId = " + orderId,
+                            null);
                 }
             }
         } catch (Exception e) {
             failedExchangeOrders.add(processExchangeOrderId);
-           //log
+            BizUtils.log(monitorLogger, System.currentTimeMillis(), "updateExchangeOrderToSuccess", "error",
+                    "orderId = " + processExchangeOrderId,
+                    e);
         }
+        unprocessedExchangeOrders.removeAll(successExchangeOrders);
+        unprocessedExchangeOrders.removeAll(failedExchangeOrders);
+        genericResult.setSuccessList(successExchangeOrders);
+        genericResult.setFailList(failedExchangeOrders);
+        genericResult.setUnprocessedList(unprocessedExchangeOrders);
+
         return genericResult;
     }
 
@@ -64,19 +83,6 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         return false;
     }
 
-    public void setExchangeOrderDao(ExchangeOrderDao exchangeOrderDao) {
-        this.exchangeOrderDao = exchangeOrderDao;
-    }
-    public ShopFundAccountFlowDao getShopFundAccountFlowDao() {
-        return shopFundAccountFlowDao;
-    }
-
-    public void setShopFundAccountFlowDao(ShopFundAccountFlowDao shopFundAccountFlowDao) {
-        this.shopFundAccountFlowDao = shopFundAccountFlowDao;
-    }
-
-    private ShopFundAccountFlowDao shopFundAccountFlowDao;
-
     private ShopFundAccountFlowData buildShopFundAccountFlowData(ExchangeOrderData exchangeOrder){
         ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDao.loadShopFundAccountFlow(exchangeOrder.getExchangeOrderId(),
                 FlowTypeEnum.Input.getFlowType(), SourceTypeEnum.PaymentPlan.getSourceType());
@@ -87,5 +93,13 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         shopFundAccountFlow.setSourceType(SourceTypeEnum.ExchangeOrder.getSourceType());
         shopFundAccountFlow.setFundAccountId(paymentPlanShopFundAccountFlow.getFundAccountId());
         return shopFundAccountFlow;
+    }
+
+    public void setExchangeOrderDao(ExchangeOrderDAO exchangeOrderDao) {
+        this.exchangeOrderDao = exchangeOrderDao;
+    }
+
+    public void setShopFundAccountFlowDao(ShopFundAccountFlowDao shopFundAccountFlowDao) {
+        this.shopFundAccountFlowDao = shopFundAccountFlowDao;
     }
 }

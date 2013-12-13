@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.api.datas;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -10,7 +11,7 @@ import java.util.Date;
  * Time: 下午6:01
  * To change this template use File | Settings | File Templates.
  */
-public class ExchangeOrderData {
+public class ExchangeOrderData implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 主键
