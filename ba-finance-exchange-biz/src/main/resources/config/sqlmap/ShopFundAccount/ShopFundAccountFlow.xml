@@ -50,6 +50,6 @@
         SET ExchangeOrderID = #shopFundAccountData.exchangeOrderId#
         WHERE FAFlowID = #faFlowID#
  		]]>
-    </update
+    </update>
 
 </sqlMap>
