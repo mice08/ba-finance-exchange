@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.api.datas;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -10,7 +11,7 @@ import java.util.Date;
  * Time: 下午6:00
  * To change this template use File | Settings | File Templates.
  */
-public class ShopFundAccountFlowData {
+public class ShopFundAccountFlowData implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 资金账户流水ID

@@ -10,4 +10,5 @@ import com.dianping.ba.finance.exchange.api.ShopFundAccountService;
  * To change this template use File | Settings | File Templates.
  */
 public class ShopFundAccountServiceObject implements ShopFundAccountService {
+
 }

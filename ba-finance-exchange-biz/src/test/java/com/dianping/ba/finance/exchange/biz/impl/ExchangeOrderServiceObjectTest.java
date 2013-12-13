@@ -1,6 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
-import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
+import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDAO;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDao;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,13 +16,13 @@ import static org.mockito.Mockito.mock;
  */
 public class ExchangeOrderServiceObjectTest {
 
-    private ExchangeOrderDao exchangeOrderDaoMock;
+    private ExchangeOrderDAO exchangeOrderDaoMock;
     private ShopFundAccountFlowDao shopFundAccountFlowDaoMock;
     private ExchangeOrderServiceObject exchangeOrderServiceObjectStub;
 
     @Before
     public void runBeforeTest() {
-        exchangeOrderDaoMock = mock(ExchangeOrderDao.class);
+        exchangeOrderDaoMock = mock(ExchangeOrderDAO.class);
         shopFundAccountFlowDaoMock = mock(ShopFundAccountFlowDao.class);
 
         exchangeOrderServiceObjectStub = new ExchangeOrderServiceObject();

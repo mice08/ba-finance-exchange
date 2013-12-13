@@ -8,7 +8,7 @@ import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.enums.FlowTypeEnum;
 import com.dianping.ba.finance.exchange.api.enums.SourceTypeEnum;
-import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
+import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDAO;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDao;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 import com.dianping.ba.finance.exchange.enums.ExchangeType;
@@ -20,11 +20,11 @@ import java.util.*;
  * User: 遐
  * Date: 13-12-13
  * Time: 上午10:28
- * To change this template use File | Settings | File Templates.
- */
+*/
+
 public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
-    private ExchangeOrderDao exchangeOrderDao;
+    private ExchangeOrderDAO exchangeOrderDao;
     private ShopFundAccountFlowDao shopFundAccountFlowDao;
 
     private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger(ExchangeOrderServiceObject.class);
@@ -95,7 +95,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         return shopFundAccountFlow;
     }
 
-    public void setExchangeOrderDao(ExchangeOrderDao exchangeOrderDao) {
+    public void setExchangeOrderDao(ExchangeOrderDAO exchangeOrderDao) {
         this.exchangeOrderDao = exchangeOrderDao;
     }
 
