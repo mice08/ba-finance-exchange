@@ -3,10 +3,9 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
-import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDAO;
-import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDAO;
-import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeType;
+import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDAO;
+import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,28 +29,70 @@ import static org.mockito.Mockito.when;
  */
 public class ExchangeOrderServiceObjectTest {
     private ExchangeOrderDAO exchangeOrderDAOMock;
-    private ShopFundAccountFlowDAO shopFundAccountFlowDAOMock;
-    private ExchangeOrderStatusChangeNotify exchangeOrderStatusChangeNotifyStub;
+    private ExchangeOrderStatusChangeNotify exchangeOrderStatusChangeNotifyMock;
     private ExchangeOrderServiceObject exchangeOrderServiceObjectStub;
 
     @Before
     public void runBeforeTest() {
         exchangeOrderDAOMock = mock(ExchangeOrderDAO.class);
-        shopFundAccountFlowDAOMock = mock(ShopFundAccountFlowDAO.class);
-        exchangeOrderStatusChangeNotifyStub = mock(ExchangeOrderStatusChangeNotify.class);
+        exchangeOrderStatusChangeNotifyMock = mock(ExchangeOrderStatusChangeNotify.class);
 
         exchangeOrderServiceObjectStub = new ExchangeOrderServiceObject();
         exchangeOrderServiceObjectStub.setExchangeOrderDAO(exchangeOrderDAOMock);
+        exchangeOrderServiceObjectStub.setExchangeOrderStatusChangeNotify(exchangeOrderStatusChangeNotifyMock);
         exchangeOrderServiceObjectStub.setShopFundAccountFlowDAO(shopFundAccountFlowDAOMock);
-        exchangeOrderServiceObjectStub.setExchangeOrderStatusChangeNotify(exchangeOrderStatusChangeNotifyStub);
     }
 
     @Test
     public void testUpdateExchangeOrderSuccess(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
         exchangeOrderData.setStatus(ExchangeType.Init.getExchangeType());
-        exchangeOrderData.setExchangeOrderId(1);
-        exchangeOrderData.setOrderAmount(BigDecimal.TEN);
+
+        List<Integer> orderIds = new ArrayList<Integer>();
+        orderIds.add(1);
+        orderIds.add(2);
+        orderIds.add(3);
+
+        when(exchangeOrderDAOMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
+        when(exchangeOrderDAOMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt())).thenReturn(true);
+
+        GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
+
+        Assert.assertEquals(3,result.getSuccessList().size());
+        Assert.assertEquals(0,result.getFailList().size());
+        Assert.assertEquals(0,result.getUnprocessedList().size());
+        List<Integer> actualIds = result.getSuccessList();
+        Assert.assertArrayEquals(orderIds.toArray(new Integer[3]),actualIds.toArray(new Integer[3]));
+
+    }
+
+    @Test
+    public void testUpdateExchangeOrderFailWhenOrderIdInvalid(){
+        ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
+        exchangeOrderData.setStatus(ExchangeType.Init.getExchangeType());
+
+        ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
+        shopFundAccountFlowData.setFundAccountId(1);
+
+        List<Integer> orderIds = new ArrayList<Integer>();
+        orderIds.add(-1);
+        orderIds.add(2);
+        orderIds.add(3);
+
+        when(exchangeOrderDAOMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
+        when(exchangeOrderDAOMock.updateExchangeOrderData(anyInt(),any(Date.class),anyInt())).thenReturn(true);
+
+        GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
+
+        Assert.assertEquals(1,result.getFailList().size());
+        Assert.assertEquals(-1,result.getFailList().get(0).intValue());
+
+    }
+
+    @Test
+    public void testUpdateExchangeOrderSuccessWhenExchangeTypeIsSuccess(){
+        ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
+        exchangeOrderData.setStatus(ExchangeType.Success.getExchangeType());
 
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(1);
@@ -62,8 +103,6 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(3);
 
         when(exchangeOrderDAOMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDAOMock.updateExchangeOrderData(anyInt(),any(Date.class),anyInt())).thenReturn(true);
-        when(shopFundAccountFlowDAOMock.loadShopFundAccountFlow(anyInt(),anyInt(),anyInt())).thenReturn(shopFundAccountFlowData);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 

@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.api;
 
+import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.api.beans.ShopFundAccountBean;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
@@ -13,6 +14,14 @@ import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
  * To change this template use File | Settings | File Templates.
  */
 public interface ShopFundAccountService {
+    /**
+     * 因为交易指令成功而更新资金账户并插入资金账户流水
+     *
+     * @param orderIds 交易指令
+     * @return 成功与否
+     */
+    boolean updateShopFundAccountCausedByExchangeOrderSuccess(ExchangeOrderDTO exchangeOrder);
+
     /**
      * 根据条件查询资金账户
      * @param shopFundAccountBean
