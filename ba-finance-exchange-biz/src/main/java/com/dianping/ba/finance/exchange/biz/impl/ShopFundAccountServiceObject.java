@@ -5,6 +5,7 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ShopFundAccountService;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeType;
 import com.dianping.ba.finance.exchange.api.enums.FlowTypeEnum;
 import com.dianping.ba.finance.exchange.api.enums.SourceTypeEnum;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDAO;
@@ -29,6 +30,8 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
     @Override
     public boolean updateShopFundAccountCausedByExchangeOrderSuccess(ExchangeOrderDTO exchangeOrder) {
         try {
+            if(exchangeOrder == null || exchangeOrder.getStatus() != ExchangeType.Success.ordinal())
+                return false;
             ShopFundAccountFlowData shopFundAccountFlowData = buildShopFundAccountFlowData(exchangeOrder);
             shopFundAccountFlowDAO.insertShopFundAccountFlow(shopFundAccountFlowData);
             return true;
