@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ShopFundAccount">
+
+    <typeAlias alias="ShopFundAccountData"
+               type="com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData"/>
+    <resultMap id="shopFundAccountData" class="ShopFundAccountData">
+        <result property="fundAccountId" column="FAID"/>
+        <result property="customerGlobalId" column="CustomerGlobalID"/>
+        <result property="companyGlobalId" column="CompanyGlobalID"/>
+        <result property="shopId" column="ShopID"/>
+        <result property="businessType" column="BusinessType"/>
+        <result property="credit" column="Credit"/>
+        <result property="debit" column="Debit"/>
+        <result property="balanceTotal" column="BalanceTotal"/>
+        <result property="balanceFrozen" column="BalanceFrozen"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="lastUpdateDate" column="LastUpdateDate"/>
+        <result property="memo" column="Memo"/>
+    </resultMap>
+
+    <insert id="insertShopFundAccount" parameterClass="map">
+        <![CDATA[
+        	 insert into FS_ShopFundAccount
+		            (CustomerGlobalID,
+		             CompanyGlobalID,
+		             ShopID,
+		             BusinessType,
+		             Credit,
+		             Debit,
+		             BalanceTotal,
+		             BalanceFrozen,
+		             AddDate,
+		             LastUpdateDate
+		             )
+			values (#shopFundAccountData.customerGlobalId#,
+			        #shopFundAccountData.companyGlobalId#,
+			        #shopFundAccountData.shopId#,
+			        #shopFundAccountData.businessType#,
+			        #shopFundAccountData.credit#,
+			        #shopFundAccountData.debit#,
+			        #shopFundAccountData.balanceTotal#,
+			        #shopFundAccountData.balanceFrozen#,
+			        #shopFundAccountData.addDate#,
+			        #shopFundAccountData.lastUpdateDate#
+		            )
+		     on duplicate key update set FAID = last_insert_id(FAID), BalanceTotal = BalanceTotal + #shopFundAccountData.balanceTotal#;
+ 		]]>
+        <selectKey resultClass="java.lang.Integer" keyProperty="fundAccountId">
+            <![CDATA[
+			SELECT last_insert_id() AS id
+		]]>
+        </selectKey>
+    </insert>
+
+</sqlMap>
