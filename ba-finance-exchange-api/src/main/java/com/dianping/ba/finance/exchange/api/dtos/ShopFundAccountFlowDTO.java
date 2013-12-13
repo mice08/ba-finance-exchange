@@ -1,5 +1,9 @@
 package com.dianping.ba.finance.exchange.api.dtos;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
 import com.dianping.ba.finance.exchange.api.enums.BusinessTypeEnum;
 import com.dianping.ba.finance.exchange.api.enums.FlowTypeEnum;
 import com.dianping.ba.finance.exchange.api.enums.SourceTypeEnum;
@@ -7,16 +11,22 @@ import com.dianping.ba.finance.exchange.api.enums.SourceTypeEnum;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-/**
+ /**
  * Created with IntelliJ IDEA.
- * User: bingqiu.yuan
- * Date: 13-12-13
- * Time: 下午2:36
- * To change this template use File | Settings | File Templates.
+ * User: jinyu.yin
+ * Date: 13-12-12
+ * Time: 下午6:00
  */
 public class ShopFundAccountFlowDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-
+     /**
+     * 资金账户流水ID
+     */
+    private int fundAccountFlowId;
+    /**
+     * 资金账户号
+     */
+    private int fundAccountId;
     /**
      * CustomerGlobalId
      */
@@ -40,6 +50,23 @@ public class ShopFundAccountFlowDTO implements Serializable {
     /**
      * 1:正向 2:负向
      */
+    /**
+     * 交易指令ID
+     */
+    private int exchangeOrderId;
+    /**
+     * 添加时间
+     */
+    private Date addDate;
+    /**
+     * 更新时间
+     */
+    private Date lastUpdateDate;
+    /**
+     * 备注
+     */
+    private String memo;
+
     private FlowTypeEnum flowType;
     /**
      * 源头类型：1.应付2.应收3.交易指令
@@ -61,83 +88,132 @@ public class ShopFundAccountFlowDTO implements Serializable {
      */
     private String bankName;
 
-    public String getCustomerGlobalId() {
-        return customerGlobalId;
-    }
 
-    public void setCustomerGlobalId(String customerGlobalId) {
-        this.customerGlobalId = customerGlobalId;
-    }
+     public int getFundAccountFlowId() {
+         return fundAccountFlowId;
+     }
 
-    public String getCompanyGlobalId() {
-        return companyGlobalId;
-    }
+     public void setFundAccountFlowId(int fundAccountFlowId) {
+         this.fundAccountFlowId = fundAccountFlowId;
+     }
 
-    public void setCompanyGlobalId(String companyGlobalId) {
-        this.companyGlobalId = companyGlobalId;
-    }
+     public int getFundAccountId() {
+         return fundAccountId;
+     }
 
-    public int getShopId() {
-        return shopId;
-    }
+     public void setFundAccountId(int fundAccountId) {
+         this.fundAccountId = fundAccountId;
+     }
 
-    public void setShopId(int shopId) {
-        this.shopId = shopId;
-    }
+     public String getCustomerGlobalId() {
+         return customerGlobalId;
+     }
 
-    public BusinessTypeEnum getBusinessType() {
-        return businessType;
-    }
+     public void setCustomerGlobalId(String customerGlobalId) {
+         this.customerGlobalId = customerGlobalId;
+     }
 
-    public void setBusinessType(BusinessTypeEnum businessType) {
-        this.businessType = businessType;
-    }
+     public String getCompanyGlobalId() {
+         return companyGlobalId;
+     }
 
-    public BigDecimal getFlowAmount() {
-        return flowAmount;
-    }
+     public void setCompanyGlobalId(String companyGlobalId) {
+         this.companyGlobalId = companyGlobalId;
+     }
 
-    public void setFlowAmount(BigDecimal flowAmount) {
-        this.flowAmount = flowAmount;
-    }
+     public int getShopId() {
+         return shopId;
+     }
 
-    public FlowTypeEnum getFlowType() {
-        return flowType;
-    }
+     public void setShopId(int shopId) {
+         this.shopId = shopId;
+     }
 
-    public void setFlowType(FlowTypeEnum flowType) {
-        this.flowType = flowType;
-    }
+     public BusinessTypeEnum getBusinessType() {
+         return businessType;
+     }
 
-    public SourceTypeEnum getSourceType() {
-        return sourceType;
-    }
+     public void setBusinessType(BusinessTypeEnum businessType) {
+         this.businessType = businessType;
+     }
 
-    public void setSourceType(SourceTypeEnum sourceType) {
-        this.sourceType = sourceType;
-    }
+     public BigDecimal getFlowAmount() {
+         return flowAmount;
+     }
 
-    public String getBankAccountNo() {
-        return bankAccountNo;
-    }
+     public void setFlowAmount(BigDecimal flowAmount) {
+         this.flowAmount = flowAmount;
+     }
 
-    public void setBankAccountNo(String bankAccountNo) {
-        this.bankAccountNo = bankAccountNo;
-    }
+     public int getExchangeOrderId() {
+         return exchangeOrderId;
+     }
 
-    public String getBankAccountName() {
-        return bankAccountName;
-    }
+     public void setExchangeOrderId(int exchangeOrderId) {
+         this.exchangeOrderId = exchangeOrderId;
+     }
 
-    public void setBankAccountName(String bankAccountName) {
-        this.bankAccountName = bankAccountName;
-    }
+     public Date getAddDate() {
+         return addDate;
+     }
 
-    public String getBankName() {
-        return bankName;
-    }
+     public void setAddDate(Date addDate) {
+         this.addDate = addDate;
+     }
 
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
+     public Date getLastUpdateDate() {
+         return lastUpdateDate;
+     }
+
+     public void setLastUpdateDate(Date lastUpdateDate) {
+         this.lastUpdateDate = lastUpdateDate;
+     }
+
+     public String getMemo() {
+         return memo;
+     }
+
+     public void setMemo(String memo) {
+         this.memo = memo;
+     }
+
+     public FlowTypeEnum getFlowType() {
+         return flowType;
+     }
+
+     public void setFlowType(FlowTypeEnum flowType) {
+         this.flowType = flowType;
+     }
+
+     public SourceTypeEnum getSourceType() {
+         return sourceType;
+     }
+
+     public void setSourceType(SourceTypeEnum sourceType) {
+         this.sourceType = sourceType;
+     }
+
+     public String getBankAccountNo() {
+         return bankAccountNo;
+     }
+
+     public void setBankAccountNo(String bankAccountNo) {
+         this.bankAccountNo = bankAccountNo;
+     }
+
+     public String getBankAccountName() {
+         return bankAccountName;
+     }
+
+     public void setBankAccountName(String bankAccountName) {
+         this.bankAccountName = bankAccountName;
+     }
+
+     public String getBankName() {
+         return bankName;
+     }
+
+     public void setBankName(String bankName) {
+         this.bankName = bankName;
+     }
 }

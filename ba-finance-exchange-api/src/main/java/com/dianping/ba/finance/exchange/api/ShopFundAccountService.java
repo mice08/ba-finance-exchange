@@ -23,6 +23,14 @@ public interface ShopFundAccountService {
     boolean updateShopFundAccountCausedByExchangeOrderSuccess(ExchangeOrderDTO exchangeOrder);
 
     /**
+     * 根据交易指令获取资金账户PaymentPlan流水
+     *
+     * @param exchangeOrder 交易指令
+     * @return 成功与否
+     */
+    ShopFundAccountFlowDTO getPaymentPlanShopFundAccountFlow(ExchangeOrderDTO exchangeOrder);
+
+    /**
      * 根据条件查询资金账户
      * @param shopFundAccountBean
      * @return

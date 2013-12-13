@@ -1,24 +1,16 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
-import com.dianping.ba.finance.exchange.api.beans.GenericResult;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
-import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
-import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
-import com.dianping.ba.finance.exchange.api.enums.ExchangeType;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountDAO;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDAO;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import static org.mockito.Matchers.any;
+
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -59,7 +51,7 @@ public class ShopFundAccountServiceObjectTest {
     @Test
     public void testUpdateShopFundAccountCausedByExchangeOrderSuccess(){
         ExchangeOrderDTO exchangeOrder = new ExchangeOrderDTO();
-        exchangeOrder.setStatus(ExchangeType.Success.getExchangeType());
+        exchangeOrder.setStatus(ExchangeOrderStatusEnum.Success.getExchangeOrderStatus());
         exchangeOrder.setExchangeOrderId(1);
         exchangeOrder.setOrderAmount(BigDecimal.TEN);
 

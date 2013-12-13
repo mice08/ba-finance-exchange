@@ -42,6 +42,14 @@ public class ExchangeOrderDTO implements Serializable {
      */
     private int status;
     /**
+     * 对应的资金账户ID
+     */
+    private int relevantFundAccountId;
+    /**
+     * 对应的源资金账户流水ID
+     */
+    private int relevantFundAccountFlowId;
+    /**
      * 添加时间
      */
     private Date addDate;
@@ -112,6 +120,22 @@ public class ExchangeOrderDTO implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getRelevantFundAccountId() {
+        return relevantFundAccountId;
+    }
+
+    public void setRelevantFundAccountId(int relevantFundAccountId) {
+        this.relevantFundAccountId = relevantFundAccountId;
+    }
+
+    public int getRelevantFundAccountFlowId() {
+        return relevantFundAccountFlowId;
+    }
+
+    public void setRelevantFundAccountFlowId(int relevantFundAccountFlowId) {
+        this.relevantFundAccountFlowId = relevantFundAccountFlowId;
     }
 
     public Date getAddDate() {
