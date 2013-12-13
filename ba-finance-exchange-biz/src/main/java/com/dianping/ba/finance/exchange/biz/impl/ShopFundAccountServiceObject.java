@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.ShopFundAccountService;
+import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderBean;
 import com.dianping.ba.finance.exchange.api.beans.ShopFundAccountBean;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
@@ -58,7 +59,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
 
         //调用支付指令接口 插入指令
 
-        int orderId=exchangeOrderService.createExchangeOrder();
+        int orderId=exchangeOrderService.createExchangeOrder(new ExchangeOrderBean());
 
         //回写资金流水中的exchangeOrderId
 
