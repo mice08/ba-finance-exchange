@@ -5,7 +5,8 @@ import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDAO;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDao;
-import com.dianping.ba.finance.exchange.enums.ExchangeType;
+import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,16 +33,19 @@ public class ExchangeOrderServiceObjectTest {
 
     private ExchangeOrderDAO exchangeOrderDaoMock;
     private ShopFundAccountFlowDao shopFundAccountFlowDaoMock;
+    private ExchangeOrderStatusChangeNotify exchangeOrderStatusChangeNotifyStub;
     private ExchangeOrderServiceObject exchangeOrderServiceObjectStub;
 
     @Before
     public void runBeforeTest() {
         exchangeOrderDaoMock = mock(ExchangeOrderDAO.class);
         shopFundAccountFlowDaoMock = mock(ShopFundAccountFlowDao.class);
+        exchangeOrderStatusChangeNotifyStub = mock(ExchangeOrderStatusChangeNotify.class);
 
         exchangeOrderServiceObjectStub = new ExchangeOrderServiceObject();
         exchangeOrderServiceObjectStub.setExchangeOrderDao(exchangeOrderDaoMock);
         exchangeOrderServiceObjectStub.setShopFundAccountFlowDao(shopFundAccountFlowDaoMock);
+        exchangeOrderServiceObjectStub.setExchangeOrderStatusChangeNotify(exchangeOrderStatusChangeNotifyStub);
 
     }
 

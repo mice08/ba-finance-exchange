@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.biz.producer;
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 import com.dianping.combiz.util.JsonUtils;
 import com.dianping.swallow.producer.Producer;
 import org.json.JSONException;
@@ -24,12 +25,14 @@ public class ExchangeOrderStatusChangeNotify {
     Producer producerClient;
 
     public void exchangeOrderStatusChangeNotify(ExchangeOrderData exchangeOrderData) {
+        String message = null;
         try {
-            String message = createJson(exchangeOrderData);
+            message = createJson(exchangeOrderData);
             producerClient.sendMessage(message);
             monitorLogger.info("ExchangeOrderStatusChangeNotify invoked!!!");
         } catch (Exception ex) {
-            //BizUtil.log(monitorLogger, System.currentTimeMillis(), "exchangeOrderStatusChangeNotify", "error", message, ex);
+            BizUtils.log(monitorLogger, System.currentTimeMillis(), "exchangeOrderStatusChangeNotify", "error", "ExchangeOrderId=" + exchangeOrderData.getExchangeOrderId() + "&OrderStatus=" +
+                    exchangeOrderData.getStatus() + "&message=" + message, ex);
         }
     }
 
