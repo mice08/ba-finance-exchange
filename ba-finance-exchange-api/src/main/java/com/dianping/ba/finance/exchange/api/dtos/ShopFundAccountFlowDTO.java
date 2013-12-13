@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  * Time: 下午2:36
  * To change this template use File | Settings | File Templates.
  */
-public class ShopFundAccountDTO implements Serializable {
+public class ShopFundAccountFlowDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
