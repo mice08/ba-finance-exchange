@@ -55,8 +55,9 @@ public class ShopFundAccountServiceObjectTest {
         int actual=shopFundAccountServiceObjectStub.createShopFundAccountFlow(null);
         Assert.assertEquals(-1,actual);
     }
-    public void testUpdateShopFundAccountCausedByExchangeOrderSuccess(){
 
+    @Test
+    public void testUpdateShopFundAccountCausedByExchangeOrderSuccess(){
         ExchangeOrderDTO exchangeOrder = new ExchangeOrderDTO();
         exchangeOrder.setStatus(ExchangeType.Success.getExchangeType());
         exchangeOrder.setExchangeOrderId(1);
