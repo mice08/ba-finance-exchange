@@ -1,5 +1,10 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
+import com.dianping.ba.finance.exchange.api.beans.GenericResult;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
+import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeType;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountDAO;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDAO;
 import org.junit.Assert;
@@ -8,6 +13,9 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -35,5 +43,15 @@ public class ShopFundAccountServiceObjectTest {
         shopFundAccountServiceObjectStub.setShopFundAccountDAO(shopFundAccountDAOMock);
     }
 
+    @Test
+    public void createShopFundAccountFlowIsNull(){
+        int actual=shopFundAccountServiceObjectStub.createShopFundAccountFlow(null);
+        Assert.assertEquals(-1,actual);
+    }
 
+    @Test
+    public void createShopFundAccountFlow(){
+        int actual=shopFundAccountServiceObjectStub.createShopFundAccountFlow(null);
+        Assert.assertEquals(-1,actual);
+    }
 }

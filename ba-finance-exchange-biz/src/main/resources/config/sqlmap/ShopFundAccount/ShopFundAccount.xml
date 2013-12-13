@@ -53,4 +53,11 @@
         </selectKey>
     </insert>
 
+    <select id="loadShopFundAccountData" resultMap="shopFundAccountData" parameterClass="map">
+        SELECT
+        FROM FS_ShopFundAccount
+        WHERE ro.BusinessType = #businessType#
+        AND ra.BizID = #bizId#
+    </select>
+
 </sqlMap>
