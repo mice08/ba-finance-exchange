@@ -25,14 +25,6 @@ public class ExchangeOrderBean implements Serializable {
      * 1:付款 2:收款
      */
     private int orderType;
-    /**
-     * 交易状态；1初始；2支付中; 3成功；4失败
-     */
-    private int status;
-    /**
-     * 交易成功时间
-     */
-    private Date orderDate;
 
     /**
      * 备注
@@ -61,22 +53,6 @@ public class ExchangeOrderBean implements Serializable {
 
     public void setOrderType(int orderType) {
         this.orderType = orderType;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public Date getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
     }
 
     public String getMemo() {

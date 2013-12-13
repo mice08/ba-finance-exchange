@@ -1,7 +1,9 @@
 package com.dianping.ba.finance.exchange.biz.convert;
 
+import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderBean;
 import com.dianping.ba.finance.exchange.api.beans.ShopFundAccountBean;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData;
+import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
 import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
 
@@ -34,5 +36,27 @@ public class ShopFundAccountConvert {
         ShopFundAccountData shopFundAccountData = new ShopFundAccountData();
         shopFundAccountData=ConvertUtils.copy(shopFundAccountFlowDTO, ShopFundAccountData.class);
         return shopFundAccountData;
+    }
+
+    /**
+     * 转换成插入资金流水的Data
+     * @param shopFundAccountFlowDTO
+     * @return
+     */
+    public static ShopFundAccountFlowData bulidShopFundAccountFlowDataFromShopFundAccountFlowDTO(ShopFundAccountFlowDTO shopFundAccountFlowDTO) throws Exception {
+        ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
+        shopFundAccountFlowData=ConvertUtils.copy(shopFundAccountFlowDTO, ShopFundAccountFlowData.class);
+        return shopFundAccountFlowData;
+    }
+
+    /**
+     * 构建交易指令bean
+     * @return
+     */
+    public static ExchangeOrderBean bulidExchangeOrderBean(ShopFundAccountFlowDTO shopFundAccountFlowDTO) {
+        ExchangeOrderBean exchangeOrderBean=new ExchangeOrderBean();
+        exchangeOrderBean.setOrderAmount(shopFundAccountFlowDTO.getFlowAmount());
+        exchangeOrderBean.setOrderType(shopFundAccountFlowDTO.getFlowType().ordinal());
+        return exchangeOrderBean;
     }
 }

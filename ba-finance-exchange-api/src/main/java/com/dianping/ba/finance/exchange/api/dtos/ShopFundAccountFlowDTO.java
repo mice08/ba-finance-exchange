@@ -1,5 +1,7 @@
 package com.dianping.ba.finance.exchange.api.dtos;
 
+import com.dianping.ba.finance.exchange.api.enums.BusinessTypeEnum;
+import com.dianping.ba.finance.exchange.api.enums.FlowTypeEnum;
 import com.dianping.ba.finance.exchange.api.enums.SourceTypeEnum;
 
 import java.io.Serializable;
@@ -30,7 +32,7 @@ public class ShopFundAccountFlowDTO implements Serializable {
     /**
      * 账户类型：0默认；1团购；2预约预订; 3结婚; 4储值卡
      */
-    private int businessType;
+    private BusinessTypeEnum businessType;
     /**
      * 金额（都是正数）
      */
@@ -38,11 +40,26 @@ public class ShopFundAccountFlowDTO implements Serializable {
     /**
      * 1:正向 2:负向
      */
-    private int flowType;
+    private FlowTypeEnum flowType;
     /**
      * 源头类型：1.应付2.应收3.交易指令
      */
     private SourceTypeEnum sourceType;
+
+    /**
+     * 银行账号
+     */
+    private String bankAccountNo;
+
+    /**
+     * 客户开户名
+     */
+    private String bankAccountName;
+
+    /**
+     * 开户行名称
+     */
+    private String bankName;
 
     public String getCustomerGlobalId() {
         return customerGlobalId;
@@ -68,11 +85,11 @@ public class ShopFundAccountFlowDTO implements Serializable {
         this.shopId = shopId;
     }
 
-    public int getBusinessType() {
+    public BusinessTypeEnum getBusinessType() {
         return businessType;
     }
 
-    public void setBusinessType(int businessType) {
+    public void setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
     }
 
@@ -84,11 +101,11 @@ public class ShopFundAccountFlowDTO implements Serializable {
         this.flowAmount = flowAmount;
     }
 
-    public int getFlowType() {
+    public FlowTypeEnum getFlowType() {
         return flowType;
     }
 
-    public void setFlowType(int flowType) {
+    public void setFlowType(FlowTypeEnum flowType) {
         this.flowType = flowType;
     }
 
@@ -98,5 +115,29 @@ public class ShopFundAccountFlowDTO implements Serializable {
 
     public void setSourceType(SourceTypeEnum sourceType) {
         this.sourceType = sourceType;
+    }
+
+    public String getBankAccountNo() {
+        return bankAccountNo;
+    }
+
+    public void setBankAccountNo(String bankAccountNo) {
+        this.bankAccountNo = bankAccountNo;
+    }
+
+    public String getBankAccountName() {
+        return bankAccountName;
+    }
+
+    public void setBankAccountName(String bankAccountName) {
+        this.bankAccountName = bankAccountName;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 }

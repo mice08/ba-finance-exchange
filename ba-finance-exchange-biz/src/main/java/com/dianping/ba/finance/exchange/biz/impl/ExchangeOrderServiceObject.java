@@ -34,7 +34,8 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
     @Override
     public int createExchangeOrder(ExchangeOrderBean exchangeOrderBean) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        int exchangeOrderId=-1;
+        return exchangeOrderId;
     }
 
     @Override
