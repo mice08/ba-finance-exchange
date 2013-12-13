@@ -8,8 +8,8 @@ import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.enums.FlowTypeEnum;
 import com.dianping.ba.finance.exchange.api.enums.SourceTypeEnum;
-import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDAO;
-import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDao;
+import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDAA;
+import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDAA;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeType;
@@ -25,8 +25,8 @@ import java.util.*;
 
 public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
-    private ExchangeOrderDAO exchangeOrderDao;
-    private ShopFundAccountFlowDao shopFundAccountFlowDao;
+    private ExchangeOrderDAA exchangeOrderDao;
+    private ShopFundAccountFlowDAA shopFundAccountFlowDAA;
     private ExchangeOrderStatusChangeNotify exchangeOrderStatusChangeNotify;
 
     private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger(ExchangeOrderServiceObject.class);
@@ -47,13 +47,13 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
                 processExchangeOrderId = orderId;
                 if (isOrderValid(orderId)) {
                     ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
-                    if(exchangeOrderData.getStatus() != ExchangeType.Success.getExchangeType()) {
+                    if(exchangeOrderData != null && exchangeOrderData.getStatus() != ExchangeType.Success.getExchangeType()) {
                         Date orderDate = retrieveCurrentTime();
                         exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeType.Success.getExchangeType());
                         exchangeOrderData.setStatus(ExchangeType.Success.ordinal());
                         exchangeOrderData.setOrderDate(orderDate);
                         ShopFundAccountFlowData shopFundAccountFlowData = buildShopFundAccountFlowData(exchangeOrderData);
-                        shopFundAccountFlowDao.insertShopFundAccountFlow(shopFundAccountFlowData);
+                        shopFundAccountFlowDAA.insertShopFundAccountFlow(shopFundAccountFlowData);
                         exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderData);
                     }
                     successExchangeOrders.add(orderId);
@@ -88,7 +88,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     private ShopFundAccountFlowData buildShopFundAccountFlowData(ExchangeOrderData exchangeOrder){
-        ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDao.loadShopFundAccountFlow(exchangeOrder.getExchangeOrderId(),
+        ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDAA.loadShopFundAccountFlow(exchangeOrder.getExchangeOrderId(),
                 FlowTypeEnum.Input.getFlowType(), SourceTypeEnum.PaymentPlan.getSourceType());
         ShopFundAccountFlowData shopFundAccountFlow= new ShopFundAccountFlowData();
         shopFundAccountFlow.setExchangeOrderId(exchangeOrder.getExchangeOrderId());
@@ -99,12 +99,12 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         return shopFundAccountFlow;
     }
 
-    public void setExchangeOrderDao(ExchangeOrderDAO exchangeOrderDao) {
+    public void setExchangeOrderDao(ExchangeOrderDAA exchangeOrderDao) {
         this.exchangeOrderDao = exchangeOrderDao;
     }
 
-    public void setShopFundAccountFlowDao(ShopFundAccountFlowDao shopFundAccountFlowDao) {
-        this.shopFundAccountFlowDao = shopFundAccountFlowDao;
+    public void setShopFundAccountFlowDAA(ShopFundAccountFlowDAA shopFundAccountFlowDAA) {
+        this.shopFundAccountFlowDAA = shopFundAccountFlowDAA;
     }
 
     public void setExchangeOrderStatusChangeNotify(ExchangeOrderStatusChangeNotify exchangeOrderStatusChangeNotify) {
