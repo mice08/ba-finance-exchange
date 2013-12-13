@@ -3,7 +3,11 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
+import com.dianping.ba.finance.exchange.api.enums.FlowTypeEnum;
+import com.dianping.ba.finance.exchange.api.enums.SourceTypeEnum;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
+import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDao;
 import com.dianping.ba.finance.exchange.enums.ExchangeType;
 
 import java.util.ArrayList;
@@ -19,7 +23,6 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class ExchangeOrderServiceObject implements ExchangeOrderService {
-
     private ExchangeOrderDao exchangeOrderDao;
 
     @Override
@@ -63,5 +66,26 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
     public void setExchangeOrderDao(ExchangeOrderDao exchangeOrderDao) {
         this.exchangeOrderDao = exchangeOrderDao;
+    }
+    public ShopFundAccountFlowDao getShopFundAccountFlowDao() {
+        return shopFundAccountFlowDao;
+    }
+
+    public void setShopFundAccountFlowDao(ShopFundAccountFlowDao shopFundAccountFlowDao) {
+        this.shopFundAccountFlowDao = shopFundAccountFlowDao;
+    }
+
+    private ShopFundAccountFlowDao shopFundAccountFlowDao;
+
+    private ShopFundAccountFlowData buildShopFundAccountFlowData(ExchangeOrderData exchangeOrder){
+        ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDao.loadShopFundAccountFlow(exchangeOrder.getExchangeOrderId(),
+                FlowTypeEnum.Input.getFlowType(), SourceTypeEnum.PaymentPlan.getSourceType());
+        ShopFundAccountFlowData shopFundAccountFlow= new ShopFundAccountFlowData();
+        shopFundAccountFlow.setExchangeOrderId(exchangeOrder.getExchangeOrderId());
+        shopFundAccountFlow.setFlowAmount(exchangeOrder.getOrderAmount());
+        shopFundAccountFlow.setFlowType(FlowTypeEnum.Output.getFlowType());
+        shopFundAccountFlow.setSourceType(SourceTypeEnum.ExchangeOrder.getSourceType());
+        shopFundAccountFlow.setFundAccountId(paymentPlanShopFundAccountFlow.getFundAccountId());
+        return shopFundAccountFlow;
     }
 }
