@@ -5,7 +5,7 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
-import com.dianping.ba.finance.exchange.api.enums.ExchangeType;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDAO;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
@@ -46,13 +46,14 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
                 processExchangeOrderId = orderId;
                 if (isOrderValid(orderId)) {
                     ExchangeOrderData exchangeOrderData = exchangeOrderDAO.loadExchangeOrderByOrderId(orderId);
-                    if(exchangeOrderData != null && exchangeOrderData.getStatus() != ExchangeType.Success.getExchangeType()) {
+                    if(exchangeOrderData != null && exchangeOrderData.getStatus() != ExchangeOrderStatusEnum.Success.getExchangeType()) {
                         Date orderDate = retrieveCurrentTime();
-                        exchangeOrderDAO.updateExchangeOrderData(orderId, orderDate, ExchangeType.Success.getExchangeType());
-                        exchangeOrderData.setStatus(ExchangeType.Success.ordinal());
+                        int affectedRows = exchangeOrderDAO.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatusEnum.Success.getExchangeType());
+                        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.Success.ordinal());
                         exchangeOrderData.setOrderDate(orderDate);
-                        //shopFundAccountService.updateShopFundAccountCausedByExchangeOrderSuccess(exchangeOrderData);
-                        exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderData);
+                        if(affectedRows > 0){
+                            exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderData);
+                        }
                     }
                     successExchangeOrders.add(orderId);
                 } else {

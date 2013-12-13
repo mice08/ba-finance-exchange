@@ -56,7 +56,7 @@
             OrderDate = #orderDate#,
         </isNotEmpty>
         LastUpdateDate = now()
-        WHERE ExchangeOrderID = #exchangeOrderId#
+        WHERE ExchangeOrderID = #exchangeOrderId# AND Status != #status#
     </update>
 
     <select id="findExchangeOrderByOrderId" parameterClass="map" resultMap="exchangeOrder">

@@ -3,14 +3,13 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
-import com.dianping.ba.finance.exchange.api.enums.ExchangeType;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDAO;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,7 +46,7 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testUpdateExchangeOrderSuccess(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeType.Init.getExchangeType());
+        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.Init.getExchangeType());
 
         List<Integer> orderIds = new ArrayList<Integer>();
         orderIds.add(1);
@@ -70,7 +69,7 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testUpdateExchangeOrderFailWhenOrderIdInvalid(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeType.Init.getExchangeType());
+        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.Init.getExchangeType());
 
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(1);
@@ -85,15 +84,15 @@ public class ExchangeOrderServiceObjectTest {
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
-        Assert.assertEquals(1,result.getFailList().size());
-        Assert.assertEquals(-1,result.getFailList().get(0).intValue());
+        Assert.assertEquals(1, result.getFailList().size());
+        Assert.assertEquals(-1, result.getFailList().get(0).intValue());
 
     }
 
     @Test
     public void testUpdateExchangeOrderSuccessWhenExchangeTypeIsSuccess(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeType.Success.getExchangeType());
+        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.Success.getExchangeType());
 
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(1);
