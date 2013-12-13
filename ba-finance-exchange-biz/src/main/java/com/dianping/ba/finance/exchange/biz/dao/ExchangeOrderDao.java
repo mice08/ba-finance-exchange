@@ -22,5 +22,5 @@ public interface ExchangeOrderDao extends GenericDao {
     boolean updateExchangeOrderData(@DAOParam("exchangeOrderId")int orderId,@DAOParam("orderDate")Date orderDate,@DAOParam("status")int status);
 
     @DAOAction(action = DAOActionType.LOAD)
-    ExchangeOrderData findExchangeOrderByOrderId(@DAOParam("exchangeOrderId")int orderId);
+    ExchangeOrderData loadExchangeOrderByOrderId(@DAOParam("exchangeOrderId")int orderId);
 }
