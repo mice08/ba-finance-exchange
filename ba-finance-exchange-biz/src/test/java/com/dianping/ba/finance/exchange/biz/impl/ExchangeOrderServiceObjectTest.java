@@ -48,8 +48,6 @@ public class ExchangeOrderServiceObjectTest {
     public void testUpdateExchangeOrderSuccess(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
         exchangeOrderData.setStatus(ExchangeType.Init.getExchangeType());
-//        exchangeOrderData.setExchangeOrderId(1);
-//        exchangeOrderData.setOrderAmount(BigDecimal.TEN);
 
         List<Integer> orderIds = new ArrayList<Integer>();
         orderIds.add(1);
@@ -73,8 +71,6 @@ public class ExchangeOrderServiceObjectTest {
     public void testUpdateExchangeOrderFailWhenOrderIdInvalid(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
         exchangeOrderData.setStatus(ExchangeType.Init.getExchangeType());
-        exchangeOrderData.setExchangeOrderId(1);
-        exchangeOrderData.setOrderAmount(BigDecimal.TEN);
 
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(1);
@@ -84,9 +80,8 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(2);
         orderIds.add(3);
 
-        when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(),any(Date.class),anyInt())).thenReturn(true);
-        when(shopFundAccountFlowDaoMock.loadShopFundAccountFlow(anyInt(),anyInt(),anyInt())).thenReturn(shopFundAccountFlowData);
+        when(exchangeOrderDAOMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
+        when(exchangeOrderDAOMock.updateExchangeOrderData(anyInt(),any(Date.class),anyInt())).thenReturn(true);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
@@ -99,8 +94,6 @@ public class ExchangeOrderServiceObjectTest {
     public void testUpdateExchangeOrderSuccessWhenExchangeTypeIsSuccess(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
         exchangeOrderData.setStatus(ExchangeType.Success.getExchangeType());
-        exchangeOrderData.setExchangeOrderId(1);
-        exchangeOrderData.setOrderAmount(BigDecimal.TEN);
 
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(1);
@@ -110,7 +103,7 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(2);
         orderIds.add(3);
 
-        when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
+        when(exchangeOrderDAOMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
