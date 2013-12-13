@@ -9,7 +9,7 @@ import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.enums.FlowTypeEnum;
 import com.dianping.ba.finance.exchange.api.enums.SourceTypeEnum;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDAO;
-import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDao;
+import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDAO;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 import com.dianping.ba.finance.exchange.enums.ExchangeType;
 
@@ -25,7 +25,7 @@ import java.util.*;
 public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
     private ExchangeOrderDAO exchangeOrderDao;
-    private ShopFundAccountFlowDao shopFundAccountFlowDao;
+    private ShopFundAccountFlowDAO shopFundAccountFlowDAO;
 
     private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger(ExchangeOrderServiceObject.class);
 
@@ -84,7 +84,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     private ShopFundAccountFlowData buildShopFundAccountFlowData(ExchangeOrderData exchangeOrder){
-        ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDao.loadShopFundAccountFlow(exchangeOrder.getExchangeOrderId(),
+        ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDAO.loadShopFundAccountFlow(exchangeOrder.getExchangeOrderId(),
                 FlowTypeEnum.Input.getFlowType(), SourceTypeEnum.PaymentPlan.getSourceType());
         ShopFundAccountFlowData shopFundAccountFlow= new ShopFundAccountFlowData();
         shopFundAccountFlow.setExchangeOrderId(exchangeOrder.getExchangeOrderId());
@@ -99,7 +99,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         this.exchangeOrderDao = exchangeOrderDao;
     }
 
-    public void setShopFundAccountFlowDao(ShopFundAccountFlowDao shopFundAccountFlowDao) {
-        this.shopFundAccountFlowDao = shopFundAccountFlowDao;
+    public void setShopFundAccountFlowDAO(ShopFundAccountFlowDAO shopFundAccountFlowDAO) {
+        this.shopFundAccountFlowDAO = shopFundAccountFlowDAO;
     }
 }
