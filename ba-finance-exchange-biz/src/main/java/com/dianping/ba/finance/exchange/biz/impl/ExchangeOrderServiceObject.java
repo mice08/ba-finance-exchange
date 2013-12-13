@@ -30,20 +30,24 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger(ExchangeOrderServiceObject.class);
 
     @Override
-    public GenericResult<Integer> updateExchangeOrderToSuccess(int[] orderIds) {
+    public GenericResult<Integer> updateExchangeOrderToSuccess(List<Integer> orderIds) {
         GenericResult genericResult = new GenericResult<Integer>();
         List successExchangeOrders = new ArrayList<Integer>();
         List failedExchangeOrders = new ArrayList<Integer>();
-        List unprocessedExchangeOrders = new ArrayList(Arrays.asList(orderIds));
+        List unprocessedOrders = new ArrayList<Integer>();
+        unprocessedOrders.addAll(orderIds);
+        genericResult.setSuccessList(successExchangeOrders);
+        genericResult.setFailList(failedExchangeOrders);
+        genericResult.setUnprocessedList(unprocessedOrders);
         int processExchangeOrderId = 0;
         try {
             for(int orderId: orderIds){
                 processExchangeOrderId = orderId;
                 if (isOrderValid(orderId)) {
                     ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
-                    if(exchangeOrderData.getStatus() != ExchangeType.Success.ordinal()) {
+                    if(exchangeOrderData.getStatus() != ExchangeType.Success.getExchangeType()) {
                         Date orderDate = retrieveCurrentTime();
-                        exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeType.Success.ordinal());
+                        exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeType.Success.getExchangeType());
                         exchangeOrderData.setStatus(ExchangeType.Success.ordinal());
                         exchangeOrderData.setOrderDate(orderDate);
                         buildShopFundAccountFlowData(exchangeOrderData);
@@ -62,12 +66,8 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
                     "orderId = " + processExchangeOrderId,
                     e);
         }
-        unprocessedExchangeOrders.removeAll(successExchangeOrders);
-        unprocessedExchangeOrders.removeAll(failedExchangeOrders);
-        genericResult.setSuccessList(successExchangeOrders);
-        genericResult.setFailList(failedExchangeOrders);
-        genericResult.setUnprocessedList(unprocessedExchangeOrders);
-
+        unprocessedOrders.removeAll(successExchangeOrders);
+        unprocessedOrders.removeAll(failedExchangeOrders);
         return genericResult;
     }
 
