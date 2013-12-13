@@ -8,4 +8,5 @@ package com.dianping.ba.finance.exchange.api;
  * To change this template use File | Settings | File Templates.
  */
 public interface ExchangeOrderService {
+
 }

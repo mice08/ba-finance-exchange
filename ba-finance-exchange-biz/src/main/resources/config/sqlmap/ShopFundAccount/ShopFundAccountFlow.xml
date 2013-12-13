@@ -25,7 +25,8 @@
 		             SourceType,
 		             ExchangeOrderID,
 		             AddDate,
-		             LastUpdateDate
+		             LastUpdateDate,
+		             Memo
 		             )
 			values (#shopFundAccountData.fundAccountId#,
 			        #shopFundAccountData.flowAmount#,
@@ -34,7 +35,8 @@
 			        #shopFundAccountData.exchangeOrderId#,
 			        #shopFundAccountData.addDate#,
 			        #shopFundAccountData.lastUpdateDate#,
-			        #shopFundAccountData.balanceFrozen#
+			        #shopFundAccountData.balanceFrozen#,
+			        #shopFundAccountData.memo#
 		            );
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="fundAccountFlowId">
@@ -47,7 +49,7 @@
     <update id="updateExchangeOrderID" parameterClass="map">
         <![CDATA[
         UPDATE FS_ShopFundAccountFlow
-        SET ExchangeOrderID = #shopFundAccountData.exchangeOrderId#
+        SET ExchangeOrderID = #exchangeOrderId#
         WHERE FAFlowID = #faFlowID#
  		]]>
     </update>

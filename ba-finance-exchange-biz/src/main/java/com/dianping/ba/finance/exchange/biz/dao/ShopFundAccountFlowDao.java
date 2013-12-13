@@ -1,6 +1,10 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
 import com.dianping.avatar.dao.GenericDao;
+import com.dianping.avatar.dao.annotation.DAOAction;
+import com.dianping.avatar.dao.annotation.DAOActionType;
+import com.dianping.avatar.dao.annotation.DAOParam;
+import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,4 +14,11 @@ import com.dianping.avatar.dao.GenericDao;
  * To change this template use File | Settings | File Templates.
  */
 public interface ShopFundAccountFlowDao extends GenericDao {
+
+    @DAOAction(action = DAOActionType.INSERT)
+    int insertShopFundAccountFlow(@DAOParam("shopFundAccountFlowData")ShopFundAccountFlowData shopFundAccountFlowData);
+
+
+    @DAOAction(action = DAOActionType.LOAD)
+    ShopFundAccountFlowData loadShopFundAccountFlow(@DAOParam("exchangeOrderId")int exchangeOrderId, @DAOParam("flowType")int flowType, @DAOParam("sourceType")int sourceType);
 }
