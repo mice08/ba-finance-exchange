@@ -54,10 +54,12 @@
     </insert>
 
     <select id="loadShopFundAccountData" resultMap="shopFundAccountData" parameterClass="map">
-        SELECT
+        SELECT FAID, CustomerGlobalID, CompanyGlobalID, ShopID, BusinessType, Credit, Debit, BalanceTotal, BalanceFrozen
         FROM FS_ShopFundAccount
-        WHERE ro.BusinessType = #businessType#
-        AND ra.BizID = #bizId#
+        WHERE BusinessType = #shopFundAccountData.businessType#
+        AND CustomerGlobalID = #shopFundAccountData.customerGlobalID#
+        AND CompanyGlobalID = #shopFundAccountData.companyGlobalID#
+        AND ShopID = #shopFundAccountData.shopID#
     </select>
 
 </sqlMap>
