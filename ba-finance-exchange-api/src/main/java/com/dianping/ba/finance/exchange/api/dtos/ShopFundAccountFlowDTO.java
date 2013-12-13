@@ -44,4 +44,59 @@ public class ShopFundAccountFlowDTO implements Serializable {
      */
     private SourceTypeEnum sourceType;
 
+    public String getCustomerGlobalId() {
+        return customerGlobalId;
+    }
+
+    public void setCustomerGlobalId(String customerGlobalId) {
+        this.customerGlobalId = customerGlobalId;
+    }
+
+    public String getCompanyGlobalId() {
+        return companyGlobalId;
+    }
+
+    public void setCompanyGlobalId(String companyGlobalId) {
+        this.companyGlobalId = companyGlobalId;
+    }
+
+    public int getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(int shopId) {
+        this.shopId = shopId;
+    }
+
+    public int getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(int businessType) {
+        this.businessType = businessType;
+    }
+
+    public BigDecimal getFlowAmount() {
+        return flowAmount;
+    }
+
+    public void setFlowAmount(BigDecimal flowAmount) {
+        this.flowAmount = flowAmount;
+    }
+
+    public int getFlowType() {
+        return flowType;
+    }
+
+    public void setFlowType(int flowType) {
+        this.flowType = flowType;
+    }
+
+    public SourceTypeEnum getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(SourceTypeEnum sourceType) {
+        this.sourceType = sourceType;
+    }
 }
