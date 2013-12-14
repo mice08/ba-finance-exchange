@@ -9,5 +9,13 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
+    <bean id="baFinanceExchangeService" class="com.dianping.dpsf.spring.ServiceRegistry" init-method="init" lazy-init="false">
+        <property name="services">
+            <map>
+                <entry key="http://service.dianping.com/baFinanceService/exchangeOrderService_1.0.0" value-ref="exchangeOrderService"/>
+                <entry key="http://service.dianping.com/baFinanceService/shopFundAccountService_1.0.0" value-ref="shopFundAccountService"/>
+            </map>
+        </property>
+    </bean>
 
 </beans>
