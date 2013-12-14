@@ -34,21 +34,21 @@
 		             LastUpdateDate
 		             )
 			values (#shopFundAccountData.customerGlobalId#,
-			        #shopFundAccountData.companyGlobalId#,
-			        #shopFundAccountData.shopId#,
-			        #shopFundAccountData.businessType#,
-			        #shopFundAccountData.credit#,
-			        #shopFundAccountData.debit#,
-			        #shopFundAccountData.balanceTotal#,
-			        #shopFundAccountData.balanceFrozen#,
-			        #shopFundAccountData.addDate#,
-			        #shopFundAccountData.lastUpdateDate#
+			         #shopFundAccountData.companyGlobalId#,
+			         #shopFundAccountData.shopId#,
+			         #shopFundAccountData.businessType#,
+			         #shopFundAccountData.credit#,
+			         #shopFundAccountData.debit#,
+			         #shopFundAccountData.balanceTotal#,
+			         #shopFundAccountData.balanceFrozen#,
+			         NOW(),
+			         NOW()
 		            )
 		     on duplicate key update set FAID = last_insert_id(FAID), BalanceTotal = BalanceTotal + #shopFundAccountData.balanceTotal#;
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="fundAccountId">
             <![CDATA[
-			SELECT last_insert_id() AS id
+			SELECT @@IDENTITY AS id
 		]]>
         </selectKey>
     </insert>
