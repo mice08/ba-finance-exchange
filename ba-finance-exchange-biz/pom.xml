@@ -15,6 +15,10 @@
     <url>http://maven.apache.org</url>
     <packaging>jar</packaging>
 
+    <properties>
+        <env>alpha</env>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.dianping</groupId>
@@ -25,7 +29,13 @@
         <dependency>
             <groupId>com.dianping.platform</groupId>
             <artifactId>platform-sdk</artifactId>
-            <version>0.0.5</version>
+            <version>0.0.7</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>asm</artifactId>
+                    <groupId>org.ow2.asm</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -34,42 +44,17 @@
             <version>0.2.4</version>
         </dependency>
 
-        <!-- for Producer -->
-        <dependency>
-            <groupId>com.dianping.swallow</groupId>
-            <artifactId>swallow-producerclient</artifactId>
-            <version>0.6.7</version>   <!-- 具体版本请咨询负责人,或看release note  -->
-        </dependency>
-        <!-- lion -->
-        <dependency>
-            <groupId>com.dianping.lion</groupId>
-            <artifactId>lion-client</artifactId>
-            <version>0.2.2</version>
-        </dependency>
-        <!-- 监控 -->
-        <dependency>
-            <groupId>com.dianping.cat</groupId>
-            <artifactId>cat-core</artifactId>
-            <version>0.4.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.dianping.hawk</groupId>
-            <artifactId>hawk-client</artifactId>
-            <version>0.7.1</version>
-        </dependency>
-        <!-- 远程调用Pigeon -->
-        <dependency>
-            <groupId>com.dianping.dpsf</groupId>
-            <artifactId>dpsf-net</artifactId>
-            <version>1.6.3</version>
-        </dependency>
-
         <!-- for Test -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>2.5.6</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping.lion</groupId>
+            <artifactId>lion-${env}</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
