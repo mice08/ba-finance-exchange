@@ -9,7 +9,7 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-    <bean id="baFinanceExchangeServer" class="com.dianping.dpsf.spring.ServiceRegistry" init-method="init" lazy-init="false">
+    <bean id="baFinanceExchangeService" class="com.dianping.dpsf.spring.ServiceRegistry" init-method="init" lazy-init="false">
         <property name="port" value="${ba-finance-exchange-service.baFSExchangeService.port}"/>
         <property name="services">
             <map>
