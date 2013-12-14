@@ -52,7 +52,7 @@ public class ShopFundAccountServiceObjectTest {
     @Test
     public void testUpdateShopFundAccountCausedByExchangeOrderSuccess(){
         ExchangeOrderDTO exchangeOrder = new ExchangeOrderDTO();
-        exchangeOrder.setStatus(ExchangeOrderStatusEnum.Success.getExchangeOrderStatus());
+        exchangeOrder.setStatus(ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus());
         exchangeOrder.setExchangeOrderId(1);
         exchangeOrder.setOrderAmount(BigDecimal.TEN);
 
@@ -62,7 +62,7 @@ public class ShopFundAccountServiceObjectTest {
     @Test
     public void testUpdateShopFundAccountCausedByExchangeOrderSuccessOfNotSuccess(){
         ExchangeOrderDTO exchangeOrder = new ExchangeOrderDTO();
-        exchangeOrder.setStatus(ExchangeOrderStatusEnum.Fail.getExchangeOrderStatus());
+        exchangeOrder.setStatus(ExchangeOrderStatusEnum.FAIL.getExchangeOrderStatus());
         exchangeOrder.setExchangeOrderId(1);
         exchangeOrder.setOrderAmount(BigDecimal.TEN);
 
