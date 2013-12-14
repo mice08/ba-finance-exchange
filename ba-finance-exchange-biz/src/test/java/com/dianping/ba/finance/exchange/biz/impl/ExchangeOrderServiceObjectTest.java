@@ -4,7 +4,7 @@ import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
-import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDAO;
+import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import org.junit.Assert;
 import org.junit.Before;
@@ -27,17 +27,17 @@ import static org.mockito.Mockito.when;
  * To change this template use File | Settings | File Templates.
  */
 public class ExchangeOrderServiceObjectTest {
-    private ExchangeOrderDAO exchangeOrderDAOMock;
+    private ExchangeOrderDao exchangeOrderDaoMock;
     private ExchangeOrderStatusChangeNotify exchangeOrderStatusChangeNotifyMock;
     private ExchangeOrderServiceObject exchangeOrderServiceObjectStub;
 
     @Before
     public void runBeforeTest() {
-        exchangeOrderDAOMock = mock(ExchangeOrderDAO.class);
+        exchangeOrderDaoMock = mock(ExchangeOrderDao.class);
         exchangeOrderStatusChangeNotifyMock = mock(ExchangeOrderStatusChangeNotify.class);
 
         exchangeOrderServiceObjectStub = new ExchangeOrderServiceObject();
-        exchangeOrderServiceObjectStub.setExchangeOrderDAO(exchangeOrderDAOMock);
+        exchangeOrderServiceObjectStub.setExchangeOrderDao(exchangeOrderDaoMock);
         exchangeOrderServiceObjectStub.setExchangeOrderStatusChangeNotify(exchangeOrderStatusChangeNotifyMock);
 
     }
@@ -52,8 +52,8 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(2);
         orderIds.add(3);
 
-        when(exchangeOrderDAOMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDAOMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt())).thenReturn(1);
+        when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
+        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt())).thenReturn(1);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
@@ -78,8 +78,8 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(2);
         orderIds.add(3);
 
-        when(exchangeOrderDAOMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDAOMock.updateExchangeOrderData(anyInt(),any(Date.class),anyInt())).thenReturn(1);
+        when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
+        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(),any(Date.class),anyInt())).thenReturn(1);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
@@ -101,7 +101,7 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(2);
         orderIds.add(3);
 
-        when(exchangeOrderDAOMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
+        when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
@@ -116,7 +116,7 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testInsertExchangeOrder(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        when(exchangeOrderDAOMock.insertExchangeOrder(exchangeOrderData)).thenReturn(1);
+        when(exchangeOrderDaoMock.insertExchangeOrder(exchangeOrderData)).thenReturn(1);
         int actual=exchangeOrderServiceObjectStub.insertExchangeOrder(exchangeOrderData);
         Assert.assertEquals(1,actual);
     }

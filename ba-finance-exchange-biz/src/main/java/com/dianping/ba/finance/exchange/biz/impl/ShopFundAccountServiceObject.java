@@ -14,8 +14,8 @@ import com.dianping.ba.finance.exchange.api.beans.ShopFundAccountBean;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData;
 import com.dianping.ba.finance.exchange.biz.convert.ShopFundAccountConvert;
-import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountDAO;
-import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDAO;
+import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountDao;
+import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDao;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
 
@@ -31,20 +31,9 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
     private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger(ShopFundAccountServiceObject.class);
 
     private ExchangeOrderService exchangeOrderService;
-    private ShopFundAccountFlowDAO shopFundAccountFlowDAO;
-    private ShopFundAccountDAO shopFundAccountDAO;
+    private ShopFundAccountFlowDao shopFundAccountFlowDao;
+    private ShopFundAccountDao shopFundAccountDao;
 
-    public void setExchangeOrderService(ExchangeOrderService exchangeOrderService) {
-        this.exchangeOrderService = exchangeOrderService;
-    }
-
-    public void setShopFundAccountFlowDAO(ShopFundAccountFlowDAO shopFundAccountFlowDAO) {
-        this.shopFundAccountFlowDAO = shopFundAccountFlowDAO;
-    }
-
-    public void setShopFundAccountDAO(ShopFundAccountDAO shopFundAccountDAO) {
-        this.shopFundAccountDAO = shopFundAccountDAO;
-    }
 
     @Override
     public boolean updateShopFundAccountCausedByExchangeOrderSuccess(ExchangeOrderDTO exchangeOrder) {
@@ -52,7 +41,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             if(exchangeOrder == null || exchangeOrder.getStatus() != ExchangeOrderStatusEnum.SUCCESS.ordinal())
                 return false;
             ShopFundAccountFlowData shopFundAccountFlowData = buildShopFundAccountFlowData(exchangeOrder);
-            shopFundAccountFlowDAO.insertShopFundAccountFlow(shopFundAccountFlowData);
+            shopFundAccountFlowDao.insertShopFundAccountFlow(shopFundAccountFlowData);
             return true;
         } catch (Exception e) {
             BizUtils.log(monitorLogger, System.currentTimeMillis(), "updateShopFundAccountCausedByExchangeOrderSuccess", "error",
@@ -67,7 +56,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         try {
             if(exchangeOrder == null)
                 return null;
-            ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDAO.loadShopFundAccountFlow(exchangeOrder.getExchangeOrderId(),
+            ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDao.loadShopFundAccountFlow(exchangeOrder.getExchangeOrderId(),
                     FlowTypeEnum.Input.getFlowType(), SourceTypeEnum.PaymentPlan.getSourceType());
             ShopFundAccountFlowDTO shopFundAccountFlowDTO =  ConvertUtils.copy(paymentPlanShopFundAccountFlow, ShopFundAccountFlowDTO.class);
             return  shopFundAccountFlowDTO;
@@ -91,17 +80,17 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
 
     @Override
     public ShopFundAccountData loadShopFundAccountData(ShopFundAccountBean shopFundAccountBean) {
-        return shopFundAccountDAO.loadShopFundAccountData(shopFundAccountBean);
+        return shopFundAccountDao.loadShopFundAccountData(shopFundAccountBean);
     }
 
     @Override
     public int insertShopFundAccount(ShopFundAccountData shopFundAccountData) {
-        return shopFundAccountDAO.insertShopFundAccount(shopFundAccountData);
+        return shopFundAccountDao.insertShopFundAccount(shopFundAccountData);
     }
 
     @Override
     public int insertShopFundAccountFlow(ShopFundAccountFlowData shopFundAccountFlowData) {
-        return shopFundAccountFlowDAO.insertShopFundAccountFlow(shopFundAccountFlowData);
+        return shopFundAccountFlowDao.insertShopFundAccountFlow(shopFundAccountFlowData);
     }
 
     @Override
@@ -119,7 +108,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             exchangeOrderId=exchangeOrderService.insertExchangeOrder(exchangeOrderData);
 
             //回写资金流水中的exchangeOrderId
-            shopFundAccountFlowDAO.updateExchangeOrderId(exchangeOrderId, fundAccountFlowId);
+            shopFundAccountFlowDao.updateExchangeOrderId(exchangeOrderId, fundAccountFlowId);
         }catch (Exception e){
             BizUtils.log(monitorLogger, System.currentTimeMillis(), "createShopFundAccountFlow", "error",
                     "BusinessType = " + shopFundAccountFlowDTO.getBusinessType()
@@ -157,4 +146,19 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         ShopFundAccountFlowData shopFundAccountFlowData=ShopFundAccountConvert.buildShopFundAccountFlowDataFromShopFundAccountFlowDTO(shopFundAccountFlowDTO,shopFundAccountId);
         return insertShopFundAccountFlow(shopFundAccountFlowData);
     }
+
+
+    public void setShopFundAccountDao(ShopFundAccountDao shopFundAccountDao) {
+        this.shopFundAccountDao = shopFundAccountDao;
+    }
+
+    public void setExchangeOrderService(ExchangeOrderService exchangeOrderService) {
+        this.exchangeOrderService = exchangeOrderService;
+    }
+
+    public void setShopFundAccountFlowDao(ShopFundAccountFlowDao shopFundAccountFlowDao) {
+        this.shopFundAccountFlowDao = shopFundAccountFlowDao;
+    }
+
+
 }
