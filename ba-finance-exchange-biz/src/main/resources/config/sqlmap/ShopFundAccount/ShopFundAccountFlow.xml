@@ -16,7 +16,7 @@
         <result property="memo" column="Memo"/>
     </resultMap>
 
-    <insert id="insertShopFundAccount" parameterClass="map">
+    <insert id="insertShopFundAccountFlow" parameterClass="map">
         <![CDATA[
         	 insert into FS_ShopFundAccountFlow
 		            (FAID,
@@ -28,20 +28,19 @@
 		             LastUpdateDate,
 		             Memo
 		             )
-			values (#shopFundAccountData.fundAccountId#,
-			        #shopFundAccountData.flowAmount#,
-			        #shopFundAccountData.flowType#,
-			        #shopFundAccountData.sourceType#,
-			        #shopFundAccountData.exchangeOrderId#,
-			        #shopFundAccountData.addDate#,
-			        #shopFundAccountData.lastUpdateDate#,
-			        #shopFundAccountData.balanceFrozen#,
-			        #shopFundAccountData.memo#
+			values (#shopFundAccountFlowData.fundAccountId#,
+			         #shopFundAccountFlowData.flowAmount#,
+			         #shopFundAccountFlowData.flowType#,
+			         #shopFundAccountFlowData.sourceType#,
+			         #shopFundAccountFlowData.exchangeOrderId#,
+			         NOW(),
+			         NOW(),
+			         #shopFundAccountFlowData.memo#
 		            );
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="fundAccountFlowId">
             <![CDATA[
-			SELECT last_insert_id() AS id
+			SELECT @@IDENTITY AS id
 		]]>
         </selectKey>
     </insert>

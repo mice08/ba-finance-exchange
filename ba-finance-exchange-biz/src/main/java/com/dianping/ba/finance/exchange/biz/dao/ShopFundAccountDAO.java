@@ -23,4 +23,12 @@ public interface ShopFundAccountDAO extends GenericDao{
      */
     @DAOAction(action = DAOActionType.LOAD)
     ShopFundAccountData loadShopFundAccountData(@DAOParam("shopFundAccountBean") ShopFundAccountBean shopFundAccountBean);
+
+    /**
+     *插入资金账户流水
+     * @param shopFundAccountData
+     * @return
+     */
+    @DAOAction(action = DAOActionType.INSERT)
+    int insertShopFundAccount(@DAOParam("shopFundAccountData")ShopFundAccountData shopFundAccountData);
 }

@@ -42,7 +42,7 @@ public interface ShopFundAccountService {
      * @param shopFundAccountData
      * @return
      */
-     public int insertShopFundAccountData(ShopFundAccountData shopFundAccountData);
+     public int insertShopFundAccount(ShopFundAccountData shopFundAccountData);
 
     /**
      * 插入资金账户流水

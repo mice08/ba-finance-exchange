@@ -13,7 +13,6 @@ import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ShopFundAccountBean;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData;
-import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
 import com.dianping.ba.finance.exchange.biz.convert.ShopFundAccountConvert;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountDAO;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDAO;
@@ -38,7 +37,6 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
     public void setExchangeOrderService(ExchangeOrderService exchangeOrderService) {
         this.exchangeOrderService = exchangeOrderService;
     }
-
 
     public void setShopFundAccountFlowDAO(ShopFundAccountFlowDAO shopFundAccountFlowDAO) {
         this.shopFundAccountFlowDAO = shopFundAccountFlowDAO;
@@ -89,15 +87,14 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         return shopFundAccountFlow;
     }
 
-
     @Override
     public ShopFundAccountData loadShopFundAccountData(ShopFundAccountBean shopFundAccountBean) {
         return shopFundAccountDAO.loadShopFundAccountData(shopFundAccountBean);
     }
 
     @Override
-    public int insertShopFundAccountData(ShopFundAccountData shopFundAccountData) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    public int insertShopFundAccount(ShopFundAccountData shopFundAccountData) {
+        return shopFundAccountDAO.insertShopFundAccount(shopFundAccountData);
     }
 
     @Override
@@ -120,7 +117,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             {
                  //插入资金账户  +余额
                  shopFundAccountData=ShopFundAccountConvert.bulidShopFundAccountDataFromShopFundAccountFlowDTO(shopFundAccountFlowDTO);
-                 insertShopFundAccountData(shopFundAccountData);
+                 insertShopFundAccount(shopFundAccountData);
             }
             //插入资金流水
             ShopFundAccountFlowData shopFundAccountFlowData=ShopFundAccountConvert.bulidShopFundAccountFlowDataFromShopFundAccountFlowDTO(shopFundAccountFlowDTO);
