@@ -11,12 +11,18 @@
         <property name="target">
             <bean parent="fsMain.daoRealizeTarget">
                 <constructor-arg value="ExchangeOrder" />
+
+    <bean id="shopFundAccountDAO" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountDAO" />
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="ShopFundAccount" />
             </bean>
         </property>
     </bean>
 
     <bean id="shopFundAccountFlowDAO" parent="parentDao">
-        <property name="proxyInterfaces" value="com.dianping.ba.finance.settle.biz.dao.ShopFundAccountFlowDAO" />
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDAO" />
         <property name="target">
             <bean parent="fsMain.daoRealizeTarget">
                 <constructor-arg value="ShopFundAccountFlow" />
@@ -24,12 +30,4 @@
         </property>
     </bean>
 
-    <bean id="shopFundAccountDAO" parent="parentDao">
-        <property name="proxyInterfaces" value="com.dianping.ba.finance.settle.biz.dao.ShopFundAccountDAO" />
-        <property name="target">
-            <bean parent="fsMain.daoRealizeTarget">
-                <constructor-arg value="ShopFundAccount" />
-            </bean>
-        </property>
-    </bean>
 </beans>

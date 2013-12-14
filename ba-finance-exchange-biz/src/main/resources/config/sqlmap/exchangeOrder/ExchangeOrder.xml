@@ -26,20 +26,18 @@
 		             BankAccountNo,
 		             BankAccountName,
 		             BankName,
-		             Status,,
 		             AddDate,
 		             LastUpdateDate,
 		             Memo
 		             )
-			values (#FSExchangeOrder.orderAmount#,
-			        #FSExchangeOrder.orderType#,
-			        #FSExchangeOrder.bankAccountNo#,
-			        #FSExchangeOrder.bankAccountName#,
-			        #FSExchangeOrder.bankName#,
-			        #FSExchangeOrder.status#,
-			        NOW(),
-			        NOW(),
-			        #FSExchangeOrder.memo#
+			values (#exchangeOrderData.orderAmount#,
+			         #exchangeOrderData.orderType#,
+			         #exchangeOrderData.bankAccountNo#,
+			         #exchangeOrderData.bankAccountName#,
+			         #exchangeOrderData.bankName#,
+			         NOW(),
+			         NOW(),
+			         #exchangeOrderData.memo#
 			        );
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="ExchangeOrderID">

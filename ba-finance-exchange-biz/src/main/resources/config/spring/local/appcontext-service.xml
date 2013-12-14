@@ -21,4 +21,5 @@
         <property name="shopFundAccountDAO" ref="shopFundAccountDAO"/>
         <property name="exchangeOrderService" ref="exchangeOrderService"/>
     </bean>
+
 </beans>
