@@ -19,7 +19,7 @@ public interface ExchangeOrderService {
      * @param exchangeOrderData
      * @return
      */
-      public int insertExchangeOrder(ExchangeOrderData exchangeOrderData);
+      int insertExchangeOrder(ExchangeOrderData exchangeOrderData);
 
     /**
      * 更新交易指令成功
