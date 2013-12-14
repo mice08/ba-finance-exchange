@@ -15,6 +15,14 @@
     <url>http://maven.apache.org</url>
     <packaging>jar</packaging>
 
+     <properties>
+        <env>dev</env>
+        <springversion>3.2.5.RELEASE</springversion>
+        <java.src.version>1.6</java.src.version>
+        <java.target.version>1.6</java.target.version>
+        <project.encoding>UTF-8</project.encoding>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.dianping</groupId>
@@ -23,79 +31,142 @@
         </dependency>
 
         <dependency>
-            <groupId>com.dianping.platform</groupId>
-            <artifactId>platform-sdk</artifactId>
-            <version>0.0.5</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.dianping</groupId>
-            <artifactId>dp-common-service</artifactId>
-            <version>0.2.4</version>
+            <artifactId>avatar-dao</artifactId>
+            <version>2.2.5</version>
+            <!--<version>2.2.9-tuangou</version>-->
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-aop</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-jdbc</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-orm</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>avatar-core</artifactId>
+                    <groupId>com.dianping</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>avatar-logger</artifactId>
+                    <groupId>com.dianping</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>avatar-tracker</artifactId>
+                    <groupId>com.dianping</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
-        <!-- for Producer -->
         <dependency>
-            <groupId>com.dianping.swallow</groupId>
-            <artifactId>swallow-producerclient</artifactId>
-            <version>0.6.7</version>   <!-- 具体版本请咨询负责人,或看release note  -->
-        </dependency>
-        <!-- lion -->
-        <dependency>
-            <groupId>com.dianping.lion</groupId>
-            <artifactId>lion-client</artifactId>
-            <version>0.2.2</version>
-        </dependency>
-        <!-- 监控 -->
-        <dependency>
-            <groupId>com.dianping.cat</groupId>
-            <artifactId>cat-core</artifactId>
-            <version>0.4.1</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${springversion}</version>
         </dependency>
         <dependency>
-            <groupId>com.dianping.hawk</groupId>
-            <artifactId>hawk-client</artifactId>
-            <version>0.7.1</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+            <version>${springversion}</version>
         </dependency>
-        <!-- 远程调用Pigeon -->
-        <dependency>
-            <groupId>com.dianping.dpsf</groupId>
-            <artifactId>dpsf-net</artifactId>
-            <version>1.6.3</version>
-        </dependency>
-
-        <!-- for Test -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>2.5.6</version>
-            <scope>test</scope>
+            <version>${springversion}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+            <version>${springversion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>${springversion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc-portlet</artifactId>
+            <version>${springversion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-instrument</artifactId>
+            <version>${springversion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-struts</artifactId>
+            <version>${springversion}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-instrument-tomcat</artifactId>
+            <version>${springversion}</version>
+        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.springframework</groupId>-->
+        <!--<artifactId>spring-asm</artifactId>-->
+        <!--<version>3.1.4.RELEASE</version>-->
+        <!--</dependency>-->
+
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
-            <scope>test</scope>
+            <scope>provided</scope>
+            <version>2.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dianping.lion</groupId>
+            <artifactId>lion-${env}</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+            <version>5.1.6</version>
+        </dependency>
+
+        <dependency>
+            <artifactId>commons-dbcp</artifactId>
+            <groupId>commons-dbcp</groupId>
+            <scope>runtime</scope>
+            <version>1.4</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.4</version>
-            <scope>test</scope>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.7.1</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>1.8.5</version>
-            <type>jar</type>
-            <scope>test</scope>
         </dependency>
-
-        <!-- Marin -->
-        <dependency>
-            <groupId>com.dianping.data.warehouse</groupId>
-            <artifactId>dp-log</artifactId>
-            <version>1.0.5.1</version>
-        </dependency>
-        <!-- Marin -->
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.src.version}</source>
+                    <target>${java.target.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>${project.encoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -4,10 +4,8 @@ import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
-import com.dianping.combiz.util.JsonUtils;
+import com.dianping.ba.finance.exchange.biz.utils.JsonUtils;
 import com.dianping.swallow.producer.Producer;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -36,7 +34,7 @@ public class ExchangeOrderStatusChangeNotify {
         }
     }
 
-    public String createJson(ExchangeOrderData exchangeOrderData) throws JSONException, IOException {
+    public String createJson(ExchangeOrderData exchangeOrderData) throws IOException {
         return JsonUtils.toStr(exchangeOrderData);
 //        java.text.DateFormat format1 = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //        String changeDate = format1.format(exchangeOrderData.getOrderDate());
