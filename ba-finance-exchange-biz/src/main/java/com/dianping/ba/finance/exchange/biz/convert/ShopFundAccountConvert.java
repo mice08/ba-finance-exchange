@@ -7,6 +7,8 @@ import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
 import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
 
+import java.math.BigDecimal;
+
 /**
  * Created with IntelliJ IDEA.
  * User: bingqiu.yuan
@@ -21,9 +23,12 @@ public class ShopFundAccountConvert {
      * @return
      * @throws Exception
      */
-     public static ShopFundAccountBean bulidShopFundAccountBeanfromShopFundAccountFlowDTO(ShopFundAccountFlowDTO shopFundAccountFlowDTO) throws Exception {
+     public static ShopFundAccountBean buildShopFundAccountBeanfromShopFundAccountFlowDTO(ShopFundAccountFlowDTO shopFundAccountFlowDTO) {
          ShopFundAccountBean shopFundAccountBean = new ShopFundAccountBean();
-         shopFundAccountBean=ConvertUtils.copy(shopFundAccountFlowDTO, ShopFundAccountBean.class);
+         shopFundAccountBean.setBusinessType(shopFundAccountFlowDTO.getBusinessType().ordinal());
+         shopFundAccountBean.setCustomerGlobalId(shopFundAccountFlowDTO.getCustomerGlobalId());
+         shopFundAccountBean.setCompanyGlobalId(shopFundAccountFlowDTO.getCompanyGlobalId());
+         shopFundAccountBean.setShopId(shopFundAccountFlowDTO.getShopId());
          return shopFundAccountBean;
      }
 
@@ -32,20 +37,34 @@ public class ShopFundAccountConvert {
      * @param shopFundAccountFlowDTO
      * @return
      */
-    public static ShopFundAccountData bulidShopFundAccountDataFromShopFundAccountFlowDTO(ShopFundAccountFlowDTO shopFundAccountFlowDTO) throws Exception {
+    public static ShopFundAccountData buildShopFundAccountDataFromShopFundAccountFlowDTO(ShopFundAccountFlowDTO shopFundAccountFlowDTO)  {
         ShopFundAccountData shopFundAccountData = new ShopFundAccountData();
-        shopFundAccountData=ConvertUtils.copy(shopFundAccountFlowDTO, ShopFundAccountData.class);
+        shopFundAccountData.setShopId(shopFundAccountFlowDTO.getShopId());
+        shopFundAccountData.setBusinessType(shopFundAccountFlowDTO.getBusinessType().ordinal());
+        shopFundAccountData.setCompanyGlobalId(shopFundAccountFlowDTO.getCompanyGlobalId());
+        shopFundAccountData.setCustomerGlobalId(shopFundAccountFlowDTO.getCustomerGlobalId());
+        // 账户先不加金额
+        shopFundAccountData.setBalanceFrozen(new BigDecimal(0));
+        shopFundAccountData.setBalanceTotal(new BigDecimal(0));
+        shopFundAccountData.setCredit(new BigDecimal(0));
+        shopFundAccountData.setDebit(new BigDecimal(0));
         return shopFundAccountData;
     }
 
     /**
      * 转换成插入资金流水的Data
      * @param shopFundAccountFlowDTO
+     * @param shopFundAccountId
      * @return
      */
-    public static ShopFundAccountFlowData bulidShopFundAccountFlowDataFromShopFundAccountFlowDTO(ShopFundAccountFlowDTO shopFundAccountFlowDTO) throws Exception {
+    public static ShopFundAccountFlowData buildShopFundAccountFlowDataFromShopFundAccountFlowDTO(ShopFundAccountFlowDTO shopFundAccountFlowDTO,int shopFundAccountId) {
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
-        shopFundAccountFlowData=ConvertUtils.copy(shopFundAccountFlowDTO, ShopFundAccountFlowData.class);
+        shopFundAccountFlowData.setFundAccountId(shopFundAccountId);
+        shopFundAccountFlowData.setFlowAmount(shopFundAccountFlowDTO.getFlowAmount());
+        shopFundAccountFlowData.setFlowType(shopFundAccountFlowDTO.getFlowType().ordinal());
+        shopFundAccountFlowData.setSourceType(shopFundAccountFlowDTO.getSourceType().ordinal());
+        //exchangeOrderId 先为0 后面回写
+        shopFundAccountFlowData.setExchangeOrderId(0);
         return shopFundAccountFlowData;
     }
 
@@ -53,7 +72,7 @@ public class ShopFundAccountConvert {
      * 构建交易指令bean
      * @return
      */
-    public static ExchangeOrderData bulidExchangeOrderData(ShopFundAccountFlowDTO shopFundAccountFlowDTO) {
+    public static ExchangeOrderData buildExchangeOrderData(ShopFundAccountFlowDTO shopFundAccountFlowDTO) {
         ExchangeOrderData exchangeOrderData=new ExchangeOrderData();
         exchangeOrderData.setOrderAmount(shopFundAccountFlowDTO.getFlowAmount());
         exchangeOrderData.setOrderType(shopFundAccountFlowDTO.getFlowType().ordinal());

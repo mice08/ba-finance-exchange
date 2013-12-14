@@ -100,7 +100,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
     }
 
     @Override
-    public int insertShopFundAccountFlowData(ShopFundAccountFlowData shopFundAccountFlowData) {
+    public int insertShopFundAccountFlow(ShopFundAccountFlowData shopFundAccountFlowData) {
         return shopFundAccountFlowDAO.insertShopFundAccountFlow(shopFundAccountFlowData);
     }
 
@@ -112,21 +112,10 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
                 //异常
                 return -1;
             }
-            //判断资金账户时候存在
-            ShopFundAccountBean shopFundAccountBean = ShopFundAccountConvert.bulidShopFundAccountBeanfromShopFundAccountFlowDTO(shopFundAccountFlowDTO);
-            ShopFundAccountData shopFundAccountData = loadShopFundAccountData(shopFundAccountBean);
-            if (shopFundAccountData==null||shopFundAccountData.getFundAccountId()==0)
-            {
-                 //插入资金账户  +余额
-                 shopFundAccountData=ShopFundAccountConvert.bulidShopFundAccountDataFromShopFundAccountFlowDTO(shopFundAccountFlowDTO);
-                 insertShopFundAccount(shopFundAccountData);
-            }
-            //插入资金流水
-            ShopFundAccountFlowData shopFundAccountFlowData=ShopFundAccountConvert.bulidShopFundAccountFlowDataFromShopFundAccountFlowDTO(shopFundAccountFlowDTO);
-            int fundAccountFlowId = insertShopFundAccountFlowData(shopFundAccountFlowData);
+            int fundAccountFlowId = createShopFundAccountAndFlow(shopFundAccountFlowDTO);
 
             //调用支付指令接口 插入指令
-            ExchangeOrderData exchangeOrderData = ShopFundAccountConvert.bulidExchangeOrderData(shopFundAccountFlowDTO);
+            ExchangeOrderData exchangeOrderData = ShopFundAccountConvert.buildExchangeOrderData(shopFundAccountFlowDTO);
             exchangeOrderId=exchangeOrderService.insertExchangeOrder(exchangeOrderData);
 
             //回写资金流水中的exchangeOrderId
@@ -143,5 +132,29 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
                     ,e);
         }
         return exchangeOrderId;
+    }
+
+    /**
+     * 创建资金账户+流水
+     * @param shopFundAccountFlowDTO
+     * @return
+     */
+    private int createShopFundAccountAndFlow(ShopFundAccountFlowDTO shopFundAccountFlowDTO) {
+        //判断资金账户时候存在
+        ShopFundAccountBean shopFundAccountBean = ShopFundAccountConvert.buildShopFundAccountBeanfromShopFundAccountFlowDTO(shopFundAccountFlowDTO);
+        ShopFundAccountData shopFundAccountData = loadShopFundAccountData(shopFundAccountBean);
+        int shopFundAccountId;
+        if (shopFundAccountData==null||shopFundAccountData.getFundAccountId()==0)
+        {
+             //插入资金账户  +余额
+             shopFundAccountData=ShopFundAccountConvert.buildShopFundAccountDataFromShopFundAccountFlowDTO(shopFundAccountFlowDTO);
+             shopFundAccountId=insertShopFundAccount(shopFundAccountData);
+        }
+        else{
+            shopFundAccountId=shopFundAccountData.getFundAccountId();
+        }
+        //插入资金流水
+        ShopFundAccountFlowData shopFundAccountFlowData=ShopFundAccountConvert.buildShopFundAccountFlowDataFromShopFundAccountFlowDTO(shopFundAccountFlowDTO,shopFundAccountId);
+        return insertShopFundAccountFlow(shopFundAccountFlowData);
     }
 }

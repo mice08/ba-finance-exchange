@@ -1,7 +1,7 @@
 package com.dianping.ba.finance.exchange.api;
 
-import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.api.beans.ShopFundAccountBean;
+import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
@@ -49,7 +49,7 @@ public interface ShopFundAccountService {
      * @param shopFundAccountFlowData
      * @return
      */
-     public int insertShopFundAccountFlowData(ShopFundAccountFlowData shopFundAccountFlowData);
+     public int insertShopFundAccountFlow(ShopFundAccountFlowData shopFundAccountFlowData);
 
     /**
      *  外部调用资金账户流水接口
