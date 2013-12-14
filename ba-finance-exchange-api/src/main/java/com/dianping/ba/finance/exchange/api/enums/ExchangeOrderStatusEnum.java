@@ -11,23 +11,23 @@ public enum ExchangeOrderStatusEnum {
 	/**
 	 * 0-默认错误
 	 */
-	Default(0),
+	DEFAULT(0),
 	/**
      * 1-初始
      */
-    Init(1),
+    INIT(1),
     /**
-     * 2-成功
+     * 2-支付中
      */
-    Success(2),
+    PENDING(2),
     /**
-     * 3-支付中
+     * 3-成功
      */
-	Pending(3),
+    SUCCESS(3),
     /**
      * 4-失败
      */
-    Fail(4);
+    FAIL(4);
 
     public int getExchangeOrderStatus() {
         return exchangeOrderStatus;
@@ -49,9 +49,9 @@ public enum ExchangeOrderStatusEnum {
             case 1:
                 return "初始";
             case 2:
-                return "成功";
-            case 3:
                 return "支付中";
+            case 3:
+                return "成功";
             case 4:
                 return "失败";
             default:
@@ -62,15 +62,15 @@ public enum ExchangeOrderStatusEnum {
 	public static ExchangeOrderStatusEnum valueOf(int value){
 		switch (value){
 			case 1:
-				return Init;
+				return INIT;
 			case 2:
-				return Success;
+				return PENDING;
             case 3:
-                return Pending;
+                return SUCCESS;
             case 4:
-                return Fail;
+                return FAIL;
 			default:
-				return Default;
+				return DEFAULT;
 		}
 	}
 }

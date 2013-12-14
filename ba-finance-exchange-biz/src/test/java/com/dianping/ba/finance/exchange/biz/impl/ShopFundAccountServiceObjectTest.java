@@ -10,7 +10,6 @@ import com.dianping.ba.finance.exchange.api.enums.BusinessTypeEnum;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
 import com.dianping.ba.finance.exchange.api.enums.FlowTypeEnum;
 import com.dianping.ba.finance.exchange.api.enums.SourceTypeEnum;
-import com.dianping.ba.finance.exchange.biz.convert.ShopFundAccountConvert;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountDAO;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDAO;
 import org.junit.Assert;
@@ -101,16 +100,52 @@ public class ShopFundAccountServiceObjectTest {
     @Test
     public void testUpdateShopFundAccountCausedByExchangeOrderSuccess(){
         ExchangeOrderDTO exchangeOrder = new ExchangeOrderDTO();
-        exchangeOrder.setStatus(ExchangeOrderStatusEnum.Success.getExchangeOrderStatus());
+        exchangeOrder.setStatus(ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus());
         exchangeOrder.setExchangeOrderId(1);
         exchangeOrder.setOrderAmount(BigDecimal.TEN);
+
+        Assert.assertTrue(shopFundAccountServiceObjectStub.updateShopFundAccountCausedByExchangeOrderSuccess(exchangeOrder));
+    }
+
+    @Test
+    public void testUpdateShopFundAccountCausedByExchangeOrderSuccessOfNotSuccess(){
+        ExchangeOrderDTO exchangeOrder = new ExchangeOrderDTO();
+        exchangeOrder.setStatus(ExchangeOrderStatusEnum.FAIL.getExchangeOrderStatus());
+        exchangeOrder.setExchangeOrderId(1);
+        exchangeOrder.setOrderAmount(BigDecimal.TEN);
+
+        Assert.assertFalse(shopFundAccountServiceObjectStub.updateShopFundAccountCausedByExchangeOrderSuccess(exchangeOrder));
+    }
+
+    @Test
+    public void testUpdateShopFundAccountCausedByExchangeOrderSuccessOfNull(){
+        ExchangeOrderDTO exchangeOrder = null;
+
+        Assert.assertFalse(shopFundAccountServiceObjectStub.updateShopFundAccountCausedByExchangeOrderSuccess(exchangeOrder));
+    }
+
+    @Test
+    public void testGetPaymentPlanShopFundAccountFlow()
+    {
+        ExchangeOrderDTO exchangeOrder = new ExchangeOrderDTO();
 
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(1);
 
         when(shopFundAccountFlowDAOMock.loadShopFundAccountFlow(anyInt(),anyInt(),anyInt())).thenReturn(shopFundAccountFlowData);
 
-        Assert.assertTrue(shopFundAccountServiceObjectStub.updateShopFundAccountCausedByExchangeOrderSuccess(exchangeOrder));
+        ShopFundAccountFlowDTO actual = shopFundAccountServiceObjectStub.getPaymentPlanShopFundAccountFlow(exchangeOrder);
+
+        Assert.assertEquals(shopFundAccountFlowData.getFundAccountId(), actual.getFundAccountId());
     }
 
+    @Test
+    public void testGetPaymentPlanShopFundAccountFlowOfNull()
+    {
+        ExchangeOrderDTO exchangeOrder = null;
+
+        ShopFundAccountFlowDTO actual = shopFundAccountServiceObjectStub.getPaymentPlanShopFundAccountFlow(exchangeOrder);
+
+        Assert.assertNull(actual);
+    }
 }

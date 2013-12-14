@@ -49,7 +49,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
     @Override
     public boolean updateShopFundAccountCausedByExchangeOrderSuccess(ExchangeOrderDTO exchangeOrder) {
         try {
-            if(exchangeOrder == null || exchangeOrder.getStatus() != ExchangeOrderStatusEnum.Success.ordinal())
+            if(exchangeOrder == null || exchangeOrder.getStatus() != ExchangeOrderStatusEnum.SUCCESS.ordinal())
                 return false;
             ShopFundAccountFlowData shopFundAccountFlowData = buildShopFundAccountFlowData(exchangeOrder);
             shopFundAccountFlowDAO.insertShopFundAccountFlow(shopFundAccountFlowData);
@@ -65,6 +65,8 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
     @Override
     public ShopFundAccountFlowDTO getPaymentPlanShopFundAccountFlow(ExchangeOrderDTO exchangeOrder) {
         try {
+            if(exchangeOrder == null)
+                return null;
             ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDAO.loadShopFundAccountFlow(exchangeOrder.getExchangeOrderId(),
                     FlowTypeEnum.Input.getFlowType(), SourceTypeEnum.PaymentPlan.getSourceType());
             ShopFundAccountFlowDTO shopFundAccountFlowDTO =  ConvertUtils.copy(paymentPlanShopFundAccountFlow, ShopFundAccountFlowDTO.class);
