@@ -62,7 +62,6 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
                     }
                     successExchangeOrders.add(orderId);
                 } else {
-                    failedExchangeOrders.add(orderId);
                     throw new RuntimeException("Exchange order ID is not valid!");
                 }
             }
