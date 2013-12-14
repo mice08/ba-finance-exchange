@@ -49,7 +49,7 @@ public interface ShopFundAccountService {
      * @param shopFundAccountFlowData
      * @return
      */
-     public int insertShopFundAccountFlowData(ShopFundAccountFlowData shopFundAccountFlowData);
+     public int insertShopFundAccountFlow(ShopFundAccountFlowData shopFundAccountFlowData);
 
     /**
      *  外部调用资金账户流水接口

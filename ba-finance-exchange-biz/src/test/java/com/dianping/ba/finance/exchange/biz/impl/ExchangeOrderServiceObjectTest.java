@@ -113,4 +113,11 @@ public class ExchangeOrderServiceObjectTest {
 
     }
 
+    @Test
+    public void testInsertExchangeOrder(){
+        ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
+        when(exchangeOrderDAOMock.insertExchangeOrder(exchangeOrderData)).thenReturn(1);
+        int actual=exchangeOrderServiceObjectStub.insertExchangeOrder(exchangeOrderData);
+        Assert.assertEquals(1,actual);
+    }
 }
