@@ -14,7 +14,7 @@ import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData;
  * Time: 上午11:39
  * To change this template use File | Settings | File Templates.
  */
-public interface ShopFundAccountDAO extends GenericDao{
+public interface ShopFundAccountDao extends GenericDao{
 
     /**
      * 根据查询条件查找资金账户对象

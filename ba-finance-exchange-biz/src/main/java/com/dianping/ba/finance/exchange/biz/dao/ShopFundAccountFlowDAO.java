@@ -13,7 +13,7 @@ import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
  * Time: 上午10:32
  * To change this template use File | Settings | File Templates.
  */
-public interface ShopFundAccountFlowDAO extends GenericDao {
+public interface ShopFundAccountFlowDao extends GenericDao {
 
     @DAOAction(action = DAOActionType.INSERT)
     int insertShopFundAccountFlow(@DAOParam("shopFundAccountFlowData")ShopFundAccountFlowData shopFundAccountFlowData);

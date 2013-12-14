@@ -6,7 +6,7 @@ import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
-import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDAO;
+import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 
@@ -24,15 +24,14 @@ import java.util.List;
 
 public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
-    private ExchangeOrderDAO exchangeOrderDAO;
+    private ExchangeOrderDao exchangeOrderDao;
     private ExchangeOrderStatusChangeNotify exchangeOrderStatusChangeNotify;
-    //private ShopFundAccountService shopFundAccountService;
 
     private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger(ExchangeOrderServiceObject.class);
 
     @Override
     public int insertExchangeOrder(ExchangeOrderData exchangeOrderData) {
-     return  exchangeOrderDAO.insertExchangeOrder(exchangeOrderData);
+     return  exchangeOrderDao.insertExchangeOrder(exchangeOrderData);
     }
 
     @Override
@@ -51,10 +50,10 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
             for(int orderId: orderIds){
                 processExchangeOrderId = orderId;
                 if (isOrderValid(orderId)) {
-                    ExchangeOrderData exchangeOrderData = exchangeOrderDAO.loadExchangeOrderByOrderId(orderId);
-                    if(exchangeOrderData != null && exchangeOrderData.getStatus() != ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus()) {
+                    ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
+                    if(isExchangeOrderValid(exchangeOrderData)) {
                         Date orderDate = retrieveCurrentTime();
-                        int affectedRows = exchangeOrderDAO.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus());
+                        int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus());
                         exchangeOrderData.setStatus(ExchangeOrderStatusEnum.SUCCESS.ordinal());
                         exchangeOrderData.setOrderDate(orderDate);
                         if(affectedRows > 0){
@@ -64,9 +63,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
                     successExchangeOrders.add(orderId);
                 } else {
                     failedExchangeOrders.add(orderId);
-                    BizUtils.log(monitorLogger, System.currentTimeMillis(), "updateExchangeOrderToSuccess", "ignore",
-                            "orderId = " + orderId,
-                            null);
+                    throw new RuntimeException("Exchange order ID is not valid!");
                 }
             }
         } catch (Exception e) {
@@ -78,6 +75,13 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         unprocessedOrders.removeAll(successExchangeOrders);
         unprocessedOrders.removeAll(failedExchangeOrders);
         return genericResult;
+    }
+
+    private boolean isExchangeOrderValid(ExchangeOrderData exchangeOrderData){
+        if(exchangeOrderData != null && exchangeOrderData.getStatus() != ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus()) {
+            return true;
+        }
+        return false;
     }
 
     private Date retrieveCurrentTime() {
@@ -92,8 +96,8 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         return false;
     }
 
-    public void setExchangeOrderDAO(ExchangeOrderDAO exchangeOrderDAO) {
-        this.exchangeOrderDAO = exchangeOrderDAO;
+    public void setExchangeOrderDao(ExchangeOrderDao exchangeOrderDao) {
+        this.exchangeOrderDao = exchangeOrderDao;
     }
 
     public void setExchangeOrderStatusChangeNotify(ExchangeOrderStatusChangeNotify exchangeOrderStatusChangeNotify) {

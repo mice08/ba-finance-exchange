@@ -12,13 +12,13 @@
     </bean>
 
     <bean id="exchangeOrderService" class="com.dianping.ba.finance.exchange.biz.impl.ExchangeOrderServiceObject">
-        <property name="exchangeOrderDAO" ref="exchangeOrderDAO"/>
+        <property name="exchangeOrderDao" ref="exchangeOrderDao"/>
         <property name="exchangeOrderStatusChangeNotify" ref="exchangeOrderStatusChangeNotify"/>
     </bean>
 
     <bean id="shopFundAccountService" class="com.dianping.ba.finance.exchange.biz.impl.ShopFundAccountServiceObject">
-        <property name="shopFundAccountFlowDAO" ref="shopFundAccountFlowDAO"/>
-        <property name="shopFundAccountDAO" ref="shopFundAccountDAO"/>
+        <property name="shopFundAccountFlowDao" ref="shopFundAccountFlowDao"/>
+        <property name="shopFundAccountDao" ref="shopFundAccountDao"/>
         <property name="exchangeOrderService" ref="exchangeOrderService"/>
     </bean>
 
