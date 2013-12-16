@@ -24,6 +24,9 @@
         <plugins>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <warName>${artifactId}-${env}-${version}</warName>
+                </configuration>
             </plugin>
             <!--<plugin>-->
                 <!--<groupId>org.apache.maven.plugins</groupId>-->

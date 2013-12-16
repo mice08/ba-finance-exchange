@@ -652,12 +652,6 @@
                     </executions>
                 </plugin>
                 <plugin>
-                    <artifactId>maven-war-plugin</artifactId>
-                    <configuration>
-                        <warName>${artifactId}-${env}-${version}</warName>
-                    </configuration>
-                </plugin>
-                <plugin>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <configuration>
                         <skip>true</skip>
