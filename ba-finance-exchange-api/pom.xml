@@ -8,17 +8,7 @@
         <groupId>com.dianping</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>com.dianping</groupId>
     <artifactId>ba-finance-exchange-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>ba-finance-exchange-api</name>
     <packaging>jar</packaging>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.dianping</groupId>
-            <artifactId>avatar-interface</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-    </dependencies>
 </project>
