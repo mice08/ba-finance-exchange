@@ -39,7 +39,7 @@
 			         #exchangeOrderData.memo#
 			        );
  		]]>
-        <selectKey resultClass="java.lang.Integer" keyProperty="ExchangeOrderID">
+        <selectKey resultClass="java.lang.Integer" keyProperty="exchangeOrderID">
             <![CDATA[
 			SELECT @@IDENTITY AS id
 		]]>
@@ -49,16 +49,16 @@
     <update id="updateExchangeOrderData" parameterClass="map">
         UPDATE FS_ExchangeOrder
         SET Status = #status#,
-        <isNotEmpty prepend="and" property="orderDate">
+        <isNotEmpty property="orderDate">
             OrderDate = #orderDate#,
         </isNotEmpty>
         LastUpdateDate = now()
         WHERE ExchangeOrderID = #exchangeOrderId# AND Status != #status#
     </update>
 
-    <select id="findExchangeOrderByOrderId" parameterClass="map" resultMap="exchangeOrder">
+    <select id="loadExchangeOrderByOrderId" parameterClass="map" resultMap="exchangeOrder">
         <![CDATA[
-        select ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,Status,AddDate,LastUpdateDate,Memo
+        select ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,Status,OrderDate,AddDate,LastUpdateDate,Memo
         from FS_ExchangeOrder
         where ExchangeOrderID = #exchangeOrderId#
         ]]>

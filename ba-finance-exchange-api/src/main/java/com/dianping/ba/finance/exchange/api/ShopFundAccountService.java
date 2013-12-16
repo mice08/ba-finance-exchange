@@ -35,26 +35,26 @@ public interface ShopFundAccountService {
      * @param shopFundAccountBean
      * @return
      */
-     public ShopFundAccountData loadShopFundAccountData(ShopFundAccountBean shopFundAccountBean);
+     ShopFundAccountData loadShopFundAccountData(ShopFundAccountBean shopFundAccountBean);
 
     /**
      * 插入资金账户
      * @param shopFundAccountData
      * @return
      */
-     public int insertShopFundAccount(ShopFundAccountData shopFundAccountData);
+     int insertShopFundAccount(ShopFundAccountData shopFundAccountData);
 
     /**
      * 插入资金账户流水
      * @param shopFundAccountFlowData
      * @return
      */
-     public int insertShopFundAccountFlow(ShopFundAccountFlowData shopFundAccountFlowData);
+     int insertShopFundAccountFlow(ShopFundAccountFlowData shopFundAccountFlowData);
 
     /**
      *  外部调用资金账户流水接口
      * @param shopFundAccountFlowDTO
      * @return
      */
-    public int createShopFundAccountFlow(ShopFundAccountFlowDTO shopFundAccountFlowDTO);
+    int createShopFundAccountFlow(ShopFundAccountFlowDTO shopFundAccountFlowDTO);
 }
