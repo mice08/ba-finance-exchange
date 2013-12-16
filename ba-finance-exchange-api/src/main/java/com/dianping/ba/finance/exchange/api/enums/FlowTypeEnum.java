@@ -5,20 +5,22 @@ package com.dianping.ba.finance.exchange.api.enums;
  * @author junjie.mao
  *
  */
+
+//TODO: refactor to uppercase
 public enum FlowTypeEnum {
 
 	/**
 	 * 默认
 	 */
-	Default(0),
+	DEFAULT(0),
 	/**
-	 * 充值
+	 * 进账
 	 */
-	Input(1),
+	IN(1),
     /**
-     * 退款
+     * 出账
      */
-    Output(2);
+    OUT(2);
 
 
 	private int flowType;
@@ -31,9 +33,9 @@ public enum FlowTypeEnum {
 	public String toString() {
 		switch (flowType) {
 			case 1:
-				return "正向";
+				return "进账";
 			case 2:
-                return "负向";
+                return "出账";
 			default:
 				return "默认";
 		}
