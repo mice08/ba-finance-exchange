@@ -39,7 +39,7 @@
 			         #exchangeOrderData.memo#
 			        );
  		]]>
-        <selectKey resultClass="java.lang.Integer" keyProperty="exchangeOrderID">
+        <selectKey resultClass="java.lang.Integer" keyProperty="exchangeOrderId">
             <![CDATA[
 			SELECT @@IDENTITY AS id
 		]]>
