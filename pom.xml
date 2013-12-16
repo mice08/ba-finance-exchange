@@ -12,9 +12,14 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>ba-finance-exchange</name>
+    <modules>
+        <module>ba-finance-exchange-api</module>
+        <module>ba-finance-exchange-biz</module>
+        <module>ba-finance-exchange-service</module>
+    </modules>
     <description>com.dianping.ba.finance.exchange</description>
     <organization>
-        <name>com.dianping.ba.finance.exchange</name>
+        <name>com.dianping.ba.finance</name>
     </organization>
     <inceptionYear>2013</inceptionYear>
     <url></url>
@@ -33,11 +38,6 @@
             <name>jinyu.yin</name>
         </mailingList>
     </mailingLists>
-    <modules>
-        <module>ba-finance-exchange-api</module>
-        <module>ba-finance-exchange-biz</module>
-        <module>ba-finance-exchange-service</module>
-    </modules>
 
     <properties>
         <env>dev</env>
@@ -649,6 +649,18 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <configuration>
+                        <warName>${artifactId}-${env}-${version}</warName>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -656,24 +668,6 @@
     <!--
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
-                    <encoding>${project.encoding}</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
-                <configuration>
-                    <source>${java.src.version}</source>
-                    <target>${java.target.version}</target>
-                    <encoding>${project.encoding}</encoding>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
@@ -698,13 +692,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <configuration>
-                    <updateReleaseInfo>true</updateReleaseInfo>
-                </configuration>
             </plugin>
         </plugins>
     </build>
