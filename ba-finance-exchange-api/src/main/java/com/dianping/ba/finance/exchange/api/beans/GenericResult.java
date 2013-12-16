@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.api.beans;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,8 @@ import java.util.List;
  * Time: 上午11:33
  * To change this template use File | Settings | File Templates.
  */
-public class  GenericResult<T>{
+public class  GenericResult<T> implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private List<T> successList;
     private List<T> failList;
