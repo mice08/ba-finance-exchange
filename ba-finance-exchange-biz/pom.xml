@@ -8,165 +8,190 @@
         <groupId>com.dianping</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>com.dianping</groupId>
     <artifactId>ba-finance-exchange-biz</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>ba-finance-exchange-biz</name>
-    <url>http://maven.apache.org</url>
     <packaging>jar</packaging>
-
-     <properties>
-        <env>dev</env>
-        <springversion>3.2.5.RELEASE</springversion>
-        <java.src.version>1.6</java.src.version>
-        <java.target.version>1.6</java.target.version>
-        <project.encoding>UTF-8</project.encoding>
-    </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.dianping</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>ba-finance-exchange-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.dianping</groupId>
-            <artifactId>avatar-dao</artifactId>
-            <version>2.2.5</version>
-            <!--<version>2.2.9-tuangou</version>-->
-            <exclusions>
-                <exclusion>
-                    <artifactId>spring-aop</artifactId>
-                    <groupId>org.springframework</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>spring-jdbc</artifactId>
-                    <groupId>org.springframework</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>spring-orm</artifactId>
-                    <groupId>org.springframework</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>avatar-core</artifactId>
-                    <groupId>com.dianping</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>avatar-logger</artifactId>
-                    <groupId>com.dianping</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>avatar-tracker</artifactId>
-                    <groupId>com.dianping</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-            <version>${springversion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jms</artifactId>
-            <version>${springversion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${springversion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-oxm</artifactId>
-            <version>${springversion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aspects</artifactId>
-            <version>${springversion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc-portlet</artifactId>
-            <version>${springversion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-instrument</artifactId>
-            <version>${springversion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-struts</artifactId>
-            <version>${springversion}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-instrument-tomcat</artifactId>
-            <version>${springversion}</version>
-        </dependency>
-        <!--<dependency>-->
-        <!--<groupId>org.springframework</groupId>-->
-        <!--<artifactId>spring-asm</artifactId>-->
-        <!--<version>3.1.4.RELEASE</version>-->
-        <!--</dependency>-->
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <scope>provided</scope>
-            <version>2.4</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.dianping.lion</groupId>
             <artifactId>lion-${env}</artifactId>
-            <version>1.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-            <version>5.1.6</version>
         </dependency>
 
+        <!--各种commons公用组件单独出来-->
+        <dependency>
+            <artifactId>commons-codec</artifactId>
+            <groupId>commons-codec</groupId>
+        </dependency>
         <dependency>
             <artifactId>commons-dbcp</artifactId>
             <groupId>commons-dbcp</groupId>
-            <scope>runtime</scope>
-            <version>1.4</version>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.7.1</version>
+            <artifactId>commons-io</artifactId>
+            <groupId>commons-io</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>commons-lang</artifactId>
+            <groupId>commons-lang</groupId>
+        </dependency>
+
+        <!--各种log4j,dom4j,slf4j等公用组件单独出来-->
+        <dependency>
+            <artifactId>dom4j</artifactId>
+            <groupId>dom4j</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>log4j</artifactId>
+            <groupId>log4j</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>slf4j-api</artifactId>
+            <groupId>org.slf4j</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>slf4j-log4j12</artifactId>
+            <groupId>org.slf4j</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <groupId>org.slf4j</groupId>
+        </dependency>
+
+        <!--netty,junit 单独出来-->
+        <dependency>
+            <artifactId>junit</artifactId>
+            <groupId>junit</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>netty</artifactId>
+            <groupId>org.jboss.netty</groupId>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
-            <version>1.8.5</version>
+        </dependency>
+
+        <!--其他组件，如 hessian,protobuf-java 也单独出来-->
+        <dependency>
+            <artifactId>hessian</artifactId>
+            <groupId>com.caucho</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>protobuf-java</artifactId>
+            <groupId>com.google.protobuf</groupId>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+        </dependency>
+
+        <!--从平台架构组件中把spring相关组件,内部项目依赖,commons组件, dom4j,log4j,slf4j,junit,netty,hessian,protobuf-java等exclude掉-->
+        <dependency>
+            <groupId>com.dianping.swallow</groupId>
+            <artifactId>swallow-producerclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping.swallow</groupId>
+            <artifactId>swallow-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping.swallow</groupId>
+            <artifactId>swallow-consumerclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping.swallow</groupId>
+            <artifactId>swallow-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dianping.dpsf</groupId>
+            <artifactId>dpsf-net</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping.lion</groupId>
+            <artifactId>lion-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping.cat</groupId>
+            <artifactId>cat-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping.zebra</groupId>
+            <artifactId>zebra-ds-monitor-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping.hawk</groupId>
+            <artifactId>hawk-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dianping</groupId>
+            <artifactId>avatar-tracker</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping</groupId>
+            <artifactId>avatar-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping</groupId>
+            <artifactId>avatar-dao</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping</groupId>
+            <artifactId>avatar-logger</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping</groupId>
+            <artifactId>avatar-cache</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc-portlet</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-instrument</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-struts</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-instrument-tomcat</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.src.version}</source>
-                    <target>${java.target.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
-                    <encoding>${project.encoding}</encoding>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

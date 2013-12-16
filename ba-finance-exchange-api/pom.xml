@@ -3,38 +3,12 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
-    <!--<parent>-->
-        <!--<artifactId>ba-finance-exchange</artifactId>-->
-        <!--<groupId>com.dianping</groupId>-->
-        <!--<version>0.0.1-SNAPSHOT</version>-->
-    <!--</parent>-->
-    <groupId>com.dianping</groupId>
+    <parent>
+        <artifactId>ba-finance-exchange</artifactId>
+        <groupId>com.dianping</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
     <artifactId>ba-finance-exchange-api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>ba-finance-exchange-api</name>
     <packaging>jar</packaging>
-
-    <properties>
-        <java.src.version>1.6</java.src.version>
-        <java.target.version>1.6</java.target.version>
-        <project.encoding>UTF-8</project.encoding>
-    </properties>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.src.version}</source>
-                    <target>${java.target.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
-                    <encoding>${project.encoding}</encoding>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>
