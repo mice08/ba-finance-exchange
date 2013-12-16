@@ -106,6 +106,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
     @Override
     public int createShopFundAccountFlow(ShopFundAccountFlowDTO shopFundAccountFlowDTO){
         int exchangeOrderId=-1;
+        long beginTime=System.currentTimeMillis();
         try {
             if (shopFundAccountFlowDTO==null){
                 //异常
@@ -120,7 +121,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             //回写资金流水中的exchangeOrderId
             shopFundAccountFlowDao.updateExchangeOrderId(exchangeOrderId, fundAccountFlowId);
         }catch (Exception e){
-            BizUtils.log(monitorLogger, System.currentTimeMillis(), "createShopFundAccountFlow", "error",
+            BizUtils.log(monitorLogger, beginTime, "createShopFundAccountFlow", "error",
                     "BusinessType = " + shopFundAccountFlowDTO.getBusinessType()
                             + "CustomerGlobalId = "+ shopFundAccountFlowDTO.getCustomerGlobalId()
                             + "CompanyGlobalId = "+ shopFundAccountFlowDTO.getCompanyGlobalId()
