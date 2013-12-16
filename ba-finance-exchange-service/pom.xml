@@ -8,9 +8,7 @@
         <groupId>com.dianping</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>com.dianping</groupId>
     <artifactId>ba-finance-exchange-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>ba-finance-exchange-service</name>
     <url>http://maven.apache.org</url>
