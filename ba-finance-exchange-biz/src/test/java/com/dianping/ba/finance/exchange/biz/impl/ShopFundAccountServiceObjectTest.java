@@ -112,7 +112,7 @@ public class ShopFundAccountServiceObjectTest {
         input.setBankName("工行");
         input.setBusinessType(BusinessTypeEnum.PREPAID_CARD);
         input.setFlowAmount(new BigDecimal(2));
-        input.setFlowType(FlowTypeEnum.Input);
+        input.setFlowType(FlowTypeEnum.IN);
         input.setSourceType(SourceTypeEnum.PaymentPlan);
         return input;
     }

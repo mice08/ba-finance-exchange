@@ -60,7 +60,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             if(orderId <= 0)
                 return null;
             ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDao.loadShopFundAccountFlow(orderId,
-                    FlowTypeEnum.Input.getFlowType(), SourceTypeEnum.PaymentPlan.getSourceType());
+                    FlowTypeEnum.IN.getFlowType(), SourceTypeEnum.PaymentPlan.getSourceType());
             ShopFundAccountFlowDTO shopFundAccountFlowDTO =  ConvertUtils.copy(paymentPlanShopFundAccountFlow, ShopFundAccountFlowDTO.class);
             return  shopFundAccountFlowDTO;
         } catch (Exception e) {
@@ -82,7 +82,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         ShopFundAccountFlowData shopFundAccountFlow= new ShopFundAccountFlowData();
         shopFundAccountFlow.setExchangeOrderId(exchangeOrder.getExchangeOrderId());
         shopFundAccountFlow.setFlowAmount(exchangeOrder.getOrderAmount());
-        shopFundAccountFlow.setFlowType(FlowTypeEnum.Output.getFlowType());
+        shopFundAccountFlow.setFlowType(FlowTypeEnum.OUT.getFlowType());
         shopFundAccountFlow.setSourceType(SourceTypeEnum.ExchangeOrder.getSourceType());
         shopFundAccountFlow.setFundAccountId(exchangeOrder.getRelevantFundAccountId());
         return shopFundAccountFlow;
