@@ -652,7 +652,7 @@
                 <plugin>
                     <artifactId>maven-war-plugin</artifactId>
                     <configuration>
-                        <warName>${artifactId}-${env}-${version}</warName>
+                        <warName>${project.artifactId}-${env}-${project.version}</warName>
                     </configuration>
                 </plugin>
                 <plugin>
