@@ -12,6 +12,10 @@
     <name>ba-finance-exchange-biz</name>
     <packaging>jar</packaging>
 
+    <properties>
+        <env>alpha</env>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -165,6 +169,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-jms</artifactId>
         </dependency>
+        <!-- for Test -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
