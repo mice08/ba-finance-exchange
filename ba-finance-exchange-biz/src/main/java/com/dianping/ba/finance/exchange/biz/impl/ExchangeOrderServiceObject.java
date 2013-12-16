@@ -5,7 +5,7 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
-import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderForMessageDTO;
+import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
@@ -76,11 +76,11 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
             Date orderDate = getCurrentTime();
             int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus());
             if(affectedRows > 0){
-                ExchangeOrderForMessageDTO exchangeOrderForMessageDTO = new ExchangeOrderForMessageDTO();
-                exchangeOrderForMessageDTO.setExchangeOrderId(orderId);
-                exchangeOrderForMessageDTO.setStatus(ExchangeOrderStatusEnum.SUCCESS.ordinal());
-                exchangeOrderForMessageDTO.setOrderType(exchangeOrderData.getOrderType());
-                exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderForMessageDTO);
+                ExchangeOrderDTO exchangeOrderDTO = new ExchangeOrderDTO();
+                exchangeOrderDTO.setExchangeOrderId(orderId);
+                exchangeOrderDTO.setStatus(ExchangeOrderStatusEnum.SUCCESS.ordinal());
+                exchangeOrderDTO.setOrderType(exchangeOrderData.getOrderType());
+                exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
             } else{
                 return false;
             }
