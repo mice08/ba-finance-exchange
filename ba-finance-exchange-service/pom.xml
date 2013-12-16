@@ -6,7 +6,7 @@
     <parent>
         <artifactId>ba-finance-exchange</artifactId>
         <groupId>com.dianping</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.2-SNAPSHOT</version>
     </parent>
     <artifactId>ba-finance-exchange-service</artifactId>
     <name>ba-finance-exchange-service</name>
