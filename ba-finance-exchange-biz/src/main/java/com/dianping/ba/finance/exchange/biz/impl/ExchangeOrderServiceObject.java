@@ -31,12 +31,14 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
     @Override
     public int insertExchangeOrder(ExchangeOrderData exchangeOrderData) {
+     //TODO: 增加唯一性校验
      return  exchangeOrderDao.insertExchangeOrder(exchangeOrderData);
     }
 
     @Override
     public GenericResult<Integer> updateExchangeOrderToSuccess(List<Integer> orderIds) {
 
+        //TODO: 所有逻辑放到try里面
         GenericResult genericResult = new GenericResult<Integer>();
         List successExchangeOrders = new ArrayList<Integer>();
         List failedExchangeOrders = new ArrayList<Integer>();
@@ -49,6 +51,8 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         try {
             for(int orderId: orderIds){
                 processExchangeOrderId = orderId;
+                //TODO：抽出一个新方法
+
                 if (isOrderValid(orderId)) {
                     ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
                     if(isExchangeOrderValid(exchangeOrderData)) {
@@ -60,8 +64,10 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
                             exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderData);
                         }
                     }
+                    //TODO: add to failedlist
                     successExchangeOrders.add(orderId);
                 } else {
+                    //TODO: add to failedlist
                     throw new RuntimeException("Exchange order ID is not valid!");
                 }
             }
@@ -71,6 +77,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
                     "orderId = " + processExchangeOrderId,
                     e);
         }
+        //TODO: log for failedlist
         unprocessedOrders.removeAll(successExchangeOrders);
         unprocessedOrders.removeAll(failedExchangeOrders);
         return genericResult;
