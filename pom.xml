@@ -609,6 +609,7 @@
                 <configuration>
                     <source>${java.src.version}</source>
                     <target>${java.target.version}</target>
+                    <encoding>${project.encoding}</encoding>
                 </configuration>
             </plugin>
             <plugin>
