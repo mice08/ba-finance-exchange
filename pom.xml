@@ -12,9 +12,14 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>ba-finance-exchange</name>
+    <modules>
+        <module>ba-finance-exchange-api</module>
+        <module>ba-finance-exchange-biz</module>
+        <module>ba-finance-exchange-service</module>
+    </modules>
     <description>com.dianping.ba.finance.exchange</description>
     <organization>
-        <name>com.dianping.ba.finance.exchange</name>
+        <name>com.dianping.ba.finance</name>
     </organization>
     <inceptionYear>2013</inceptionYear>
     <url></url>
@@ -33,11 +38,6 @@
             <name>jinyu.yin</name>
         </mailingList>
     </mailingLists>
-    <modules>
-        <module>ba-finance-exchange-api</module>
-        <module>ba-finance-exchange-biz</module>
-        <module>ba-finance-exchange-service</module>
-    </modules>
 
     <properties>
         <env>dev</env>
