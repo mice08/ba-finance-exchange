@@ -24,6 +24,7 @@ public class ExchangeOrderStatusChangeNotify {
             .getLogger("com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify");
     Producer producerClient;
 
+    //TODO: input -> ExchangeOrderDTO
     public void exchangeOrderStatusChangeNotify(ExchangeOrderData exchangeOrderData) {
         String message = null;
         try {

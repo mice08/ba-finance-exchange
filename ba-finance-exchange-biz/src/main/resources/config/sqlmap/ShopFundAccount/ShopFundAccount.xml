@@ -14,9 +14,6 @@
         <result property="debit" column="Debit"/>
         <result property="balanceTotal" column="BalanceTotal"/>
         <result property="balanceFrozen" column="BalanceFrozen"/>
-        <!--<result property="addDate" column="AddDate"/>-->
-        <!--<result property="lastUpdateDate" column="LastUpdateDate"/>-->
-        <!--<result property="memo" column="Memo"/>-->
     </resultMap>
 
     <insert id="insertShopFundAccount" parameterClass="map">
