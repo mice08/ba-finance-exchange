@@ -20,15 +20,15 @@ public interface ShopFundAccountService {
      * @param exchangeOrder 交易指令
      * @return 成功与否
      */
-    boolean updateShopFundAccountCausedByExchangeOrderSuccess(ExchangeOrderDTO exchangeOrder);
+    boolean updateShopFundAccountCausedBySuccessfulExchangeOrder(ExchangeOrderDTO exchangeOrder);
 
     /**
      * 根据交易指令获取资金账户PaymentPlan流水
      *
-     * @param exchangeOrder 交易指令
+     * @param orderId 交易指令ID
      * @return 成功与否
      */
-    ShopFundAccountFlowDTO getPaymentPlanShopFundAccountFlow(ExchangeOrderDTO exchangeOrder);
+    ShopFundAccountFlowDTO getPaymentPlanShopFundAccountFlow(int orderId);
 
     /**
      * 根据条件查询资金账户

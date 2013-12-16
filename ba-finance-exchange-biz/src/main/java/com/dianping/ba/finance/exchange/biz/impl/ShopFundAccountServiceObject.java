@@ -19,6 +19,8 @@ import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDao;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
 
+import java.util.Calendar;
+
 /**
  * Created with IntelliJ IDEA.
  * User: 遐
@@ -34,41 +36,49 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
     private ShopFundAccountFlowDao shopFundAccountFlowDao;
     private ShopFundAccountDao shopFundAccountDao;
 
-
     @Override
-    public boolean updateShopFundAccountCausedByExchangeOrderSuccess(ExchangeOrderDTO exchangeOrder) {
+    public boolean updateShopFundAccountCausedBySuccessfulExchangeOrder(ExchangeOrderDTO exchangeOrderDTO) {
+        long startTime = Calendar.getInstance().getTimeInMillis();
         try {
-            if(exchangeOrder == null || exchangeOrder.getStatus() != ExchangeOrderStatusEnum.SUCCESS.ordinal())
+            if(!isExchangeOrderDTOValid(exchangeOrderDTO))
                 return false;
-            ShopFundAccountFlowData shopFundAccountFlowData = buildShopFundAccountFlowData(exchangeOrder);
+            ShopFundAccountFlowData shopFundAccountFlowData = buildShopFundAccountFlowDataForOut(exchangeOrderDTO);
             shopFundAccountFlowDao.insertShopFundAccountFlow(shopFundAccountFlowData);
             return true;
         } catch (Exception e) {
-            BizUtils.log(monitorLogger, System.currentTimeMillis(), "updateShopFundAccountCausedByExchangeOrderSuccess", "error",
-                    "orderId = " + exchangeOrder.getExchangeOrderId(),
+            BizUtils.log(monitorLogger, startTime, "updateShopFundAccountCausedBySuccessfulExchangeOrder", "error",
+                    "orderId = " + exchangeOrderDTO.getExchangeOrderId(),
                     e);
         }
         return false;
     }
 
     @Override
-    public ShopFundAccountFlowDTO getPaymentPlanShopFundAccountFlow(ExchangeOrderDTO exchangeOrder) {
+    public ShopFundAccountFlowDTO getPaymentPlanShopFundAccountFlow(int orderId) {
+        long startTime = Calendar.getInstance().getTimeInMillis();
         try {
-            if(exchangeOrder == null)
+            if(orderId <= 0)
                 return null;
-            ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDao.loadShopFundAccountFlow(exchangeOrder.getExchangeOrderId(),
+            ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDao.loadShopFundAccountFlow(orderId,
                     FlowTypeEnum.Input.getFlowType(), SourceTypeEnum.PaymentPlan.getSourceType());
             ShopFundAccountFlowDTO shopFundAccountFlowDTO =  ConvertUtils.copy(paymentPlanShopFundAccountFlow, ShopFundAccountFlowDTO.class);
             return  shopFundAccountFlowDTO;
         } catch (Exception e) {
-            BizUtils.log(monitorLogger, System.currentTimeMillis(), "getPaymentPlanShopFundAccountFlow", "error",
-                    "orderId = " + exchangeOrder.getExchangeOrderId(),
+            BizUtils.log(monitorLogger, startTime, "getPaymentPlanShopFundAccountFlow", "error",
+                    "orderId = " + orderId,
                     e);
         }
         return null;
     }
 
-    private ShopFundAccountFlowData buildShopFundAccountFlowData(ExchangeOrderDTO exchangeOrder){
+    private boolean isExchangeOrderDTOValid(ExchangeOrderDTO exchangeOrderDTO){
+        if(exchangeOrderDTO == null || exchangeOrderDTO.getStatus() != ExchangeOrderStatusEnum.SUCCESS.ordinal()) {
+            return false;
+        }
+        return true;
+    }
+
+    private ShopFundAccountFlowData buildShopFundAccountFlowDataForOut(ExchangeOrderDTO exchangeOrder){
         ShopFundAccountFlowData shopFundAccountFlow= new ShopFundAccountFlowData();
         shopFundAccountFlow.setExchangeOrderId(exchangeOrder.getExchangeOrderId());
         shopFundAccountFlow.setFlowAmount(exchangeOrder.getOrderAmount());
