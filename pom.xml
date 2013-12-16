@@ -3,9 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <!--<parent>-->
-        <!--<artifactId>dianping-parent</artifactId>-->
+        <!--<artifactId>ba-finance-parent</artifactId>-->
         <!--<groupId>com.dianping</groupId>-->
-        <!--<version>2.0.0</version>-->
+        <!--<version>1.0.0</version>-->
+        <!--<relativePath>../ba-finance-parent/pom.xml</relativePath>-->
     <!--</parent>-->
     <groupId>com.dianping</groupId>
     <artifactId>ba-finance-exchange</artifactId>
@@ -85,7 +86,7 @@
 
     <dependencyManagement>
         <dependencies>
-            <!--各种commons公用组件单独出来-->
+            <!--����commons���������������-->
             <dependency>
                 <artifactId>commons-codec</artifactId>
                 <groupId>commons-codec</groupId>
@@ -108,7 +109,7 @@
                 <version>2.6</version>
             </dependency>
 
-            <!--各种log4j,dom4j,slf4j等公用组件单独出来-->
+            <!--����log4j,dom4j,slf4j�ȹ��������������-->
             <dependency>
                 <artifactId>dom4j</artifactId>
                 <groupId>dom4j</groupId>
@@ -151,7 +152,7 @@
                 <version>1.7.5</version>
             </dependency>
 
-            <!--netty,junit 单独出来-->
+            <!--netty,junit ��������-->
             <dependency>
                 <artifactId>junit</artifactId>
                 <groupId>junit</groupId>
@@ -170,7 +171,7 @@
                 <version>3.2.7.Final</version>
             </dependency>
 
-            <!--其他组件，如 hessian,protobuf-java 也单独出来-->
+            <!--����������� hessian,protobuf-java Ҳ��������-->
             <dependency>
                 <artifactId>hessian</artifactId>
                 <groupId>com.caucho</groupId>
@@ -187,7 +188,7 @@
                 <version>2.3.0</version>
             </dependency>
 
-            <!--从平台架构组件中把spring相关组件,内部项目依赖,commons组件, dom4j,log4j,slf4j,junit,netty,hessian,protobuf-java等exclude掉-->
+            <!--��ƽ̨�ܹ�����а�spring������,�ڲ���Ŀ����,commons���, dom4j,log4j,slf4j,junit,netty,hessian,protobuf-java��exclude��-->
             <dependency>
                 <groupId>com.dianping.swallow</groupId>
                 <artifactId>swallow-producerclient</artifactId>
