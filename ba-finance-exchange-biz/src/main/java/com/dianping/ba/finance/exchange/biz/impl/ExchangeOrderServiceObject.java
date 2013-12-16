@@ -5,6 +5,7 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderForMessageDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
@@ -37,69 +38,68 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
     @Override
     public GenericResult<Integer> updateExchangeOrderToSuccess(List<Integer> orderIds) {
+        Long startTime = Calendar.getInstance().getTimeInMillis();
 
-        //TODO: 所有逻辑放到try里面
         GenericResult genericResult = new GenericResult<Integer>();
         List successExchangeOrders = new ArrayList<Integer>();
-        List failedExchangeOrders = new ArrayList<Integer>();
-        List unprocessedOrders = new ArrayList<Integer>();
-        unprocessedOrders.addAll(orderIds);
-        genericResult.setSuccessList(successExchangeOrders);
-        genericResult.setFailList(failedExchangeOrders);
-        genericResult.setUnprocessedList(unprocessedOrders);
+        List failedExchangeOrders  = new ArrayList<Integer>();
         int processExchangeOrderId = 0;
         try {
+            genericResult.setSuccessList(successExchangeOrders);
+            genericResult.setFailList(failedExchangeOrders);
             for(int orderId: orderIds){
                 processExchangeOrderId = orderId;
-                //TODO：抽出一个新方法
-
-                if (isOrderValid(orderId)) {
-                    ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
-                    if(isExchangeOrderValid(exchangeOrderData)) {
-                        Date orderDate = retrieveCurrentTime();
-                        int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus());
-                        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.SUCCESS.ordinal());
-                        exchangeOrderData.setOrderDate(orderDate);
-                        if(affectedRows > 0){
-                            exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderData);
-                        }
-                    }
-                    //TODO: add to failedlist
+                boolean success = updateExchangeOrderToSuccess(orderId);
+                if(success){
                     successExchangeOrders.add(orderId);
                 } else {
-                    //TODO: add to failedlist
-                    throw new RuntimeException("Exchange order ID is not valid!");
+                    failedExchangeOrders.add(orderId);
                 }
             }
         } catch (Exception e) {
             failedExchangeOrders.add(processExchangeOrderId);
-            BizUtils.log(monitorLogger, System.currentTimeMillis(), "updateExchangeOrderToSuccess", "error",
-                    "orderId = " + processExchangeOrderId,
-                    e);
         }
-        //TODO: log for failedlist
-        unprocessedOrders.removeAll(successExchangeOrders);
-        unprocessedOrders.removeAll(failedExchangeOrders);
+        if(failedExchangeOrders.size() > 0) {
+            BizUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", "error",
+                    "Failed exchange order ids: " + failedExchangeOrders.toString(),
+                    null);
+        }
         return genericResult;
     }
 
-    private boolean isExchangeOrderValid(ExchangeOrderData exchangeOrderData){
-        if(exchangeOrderData != null && exchangeOrderData.getStatus() != ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus()) {
-            return true;
+    private boolean updateExchangeOrderToSuccess(int orderId){
+        if (orderId <= 0) {
+             return false;
         }
-        return false;
+        ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
+        if(isExchangeOrderValid(exchangeOrderData)) {
+            Date orderDate = getCurrentTime();
+            int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus());
+            if(affectedRows > 0){
+                ExchangeOrderForMessageDTO exchangeOrderForMessageDTO = new ExchangeOrderForMessageDTO();
+                exchangeOrderForMessageDTO.setExchangeOrderId(orderId);
+                exchangeOrderForMessageDTO.setStatus(ExchangeOrderStatusEnum.SUCCESS.ordinal());
+                exchangeOrderForMessageDTO.setOrderType(exchangeOrderData.getOrderType());
+                exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderForMessageDTO);
+            } else{
+                return false;
+            }
+        } else {
+            return false;
+        }
+        return true;
     }
 
-    private Date retrieveCurrentTime() {
+    private boolean isExchangeOrderValid(ExchangeOrderData exchangeOrderData){
+        if(exchangeOrderData == null || exchangeOrderData.getStatus() == ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus()) {
+            return false;
+        }
+        return true;
+    }
+
+    private Date getCurrentTime() {
         Calendar calendar = Calendar.getInstance();
         return calendar.getTime();
-    }
-
-    private boolean isOrderValid(int orderId) {
-        if (orderId > 0) {
-            return true;
-        }
-        return false;
     }
 
     public void setExchangeOrderDao(ExchangeOrderDao exchangeOrderDao) {

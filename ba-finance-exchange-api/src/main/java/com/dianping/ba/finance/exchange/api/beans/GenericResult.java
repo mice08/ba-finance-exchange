@@ -13,7 +13,6 @@ public class  GenericResult<T>{
 
     private List<T> successList;
     private List<T> failList;
-    private List<T> unprocessedList;
 
     public List<T> getSuccessList() {
         return successList;
@@ -29,14 +28,6 @@ public class  GenericResult<T>{
 
     public void setFailList(List<T> failList) {
         this.failList = failList;
-    }
-
-    public List<T> getUnprocessedList() {
-        return unprocessedList;
-    }
-
-    public void setUnprocessedList(List<T> unprocessedList) {
-        this.unprocessedList = unprocessedList;
     }
 
 

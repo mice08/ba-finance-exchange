@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -98,54 +99,78 @@ public class ShopFundAccountServiceObjectTest {
     }
 
     @Test
-    public void testUpdateShopFundAccountCausedByExchangeOrderSuccess(){
+    public void testUpdateShopFundAccountSuccess(){
         ExchangeOrderDTO exchangeOrder = new ExchangeOrderDTO();
         exchangeOrder.setStatus(ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus());
         exchangeOrder.setExchangeOrderId(1);
         exchangeOrder.setOrderAmount(BigDecimal.TEN);
 
-        Assert.assertTrue(shopFundAccountServiceObjectStub.updateShopFundAccountCausedByExchangeOrderSuccess(exchangeOrder));
+        when(shopFundAccountFlowDaoMock.insertShopFundAccountFlow(any(ShopFundAccountFlowData.class))).thenReturn(1);
+
+        boolean actual = shopFundAccountServiceObjectStub.updateShopFundAccountCausedBySuccessfulExchangeOrder(exchangeOrder);
+        Assert.assertTrue(actual);
     }
 
     @Test
-    public void testUpdateShopFundAccountCausedByExchangeOrderSuccessOfNotSuccess(){
+    public void testUpdateShopFundAccountsWhenStatusIsFAIL(){
         ExchangeOrderDTO exchangeOrder = new ExchangeOrderDTO();
         exchangeOrder.setStatus(ExchangeOrderStatusEnum.FAIL.getExchangeOrderStatus());
         exchangeOrder.setExchangeOrderId(1);
         exchangeOrder.setOrderAmount(BigDecimal.TEN);
 
-        Assert.assertFalse(shopFundAccountServiceObjectStub.updateShopFundAccountCausedByExchangeOrderSuccess(exchangeOrder));
+        Assert.assertFalse(shopFundAccountServiceObjectStub.updateShopFundAccountCausedBySuccessfulExchangeOrder(exchangeOrder));
     }
 
     @Test
-    public void testUpdateShopFundAccountCausedByExchangeOrderSuccessOfNull(){
+    public void testUpdateShopFundAccountWhenExchangeOrderIsNull(){
         ExchangeOrderDTO exchangeOrder = null;
 
-        Assert.assertFalse(shopFundAccountServiceObjectStub.updateShopFundAccountCausedByExchangeOrderSuccess(exchangeOrder));
+        Assert.assertFalse(shopFundAccountServiceObjectStub.updateShopFundAccountCausedBySuccessfulExchangeOrder(exchangeOrder));
     }
 
     @Test
-    public void testGetPaymentPlanShopFundAccountFlow()
-    {
-        ExchangeOrderDTO exchangeOrder = new ExchangeOrderDTO();
+    public void testGetPaymentPlanShopFundAccountFlow() {
 
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(1);
 
-        when(shopFundAccountFlowDaoMock.loadShopFundAccountFlow(anyInt(),anyInt(),anyInt())).thenReturn(shopFundAccountFlowData);
+        when(shopFundAccountFlowDaoMock.loadShopFundAccountFlow(anyInt(), anyInt(), anyInt())).thenReturn(shopFundAccountFlowData);
 
-        ShopFundAccountFlowDTO actual = shopFundAccountServiceObjectStub.getPaymentPlanShopFundAccountFlow(exchangeOrder);
+        ShopFundAccountFlowDTO actual = shopFundAccountServiceObjectStub.getPaymentPlanShopFundAccountFlow(1);
 
         Assert.assertEquals(shopFundAccountFlowData.getFundAccountId(), actual.getFundAccountId());
     }
 
     @Test
-    public void testGetPaymentPlanShopFundAccountFlowOfNull()
-    {
-        ExchangeOrderDTO exchangeOrder = null;
+    public void testGetPaymentPlanShopFundAccountFlowWhenOrderIdIsInvalid() {
 
-        ShopFundAccountFlowDTO actual = shopFundAccountServiceObjectStub.getPaymentPlanShopFundAccountFlow(exchangeOrder);
+        ShopFundAccountFlowDTO actual = shopFundAccountServiceObjectStub.getPaymentPlanShopFundAccountFlow(-1);
 
         Assert.assertNull(actual);
+    }
+
+    @Test
+    public void testGetPaymentPlanShopFundAccountFlowSuccess() {
+        ShopFundAccountFlowData shopFundAccountFlowData = createShopFundAccountFlowData();
+
+        when(shopFundAccountFlowDaoMock.loadShopFundAccountFlow(anyInt(), anyInt(), anyInt())).thenReturn(shopFundAccountFlowData);
+
+        ShopFundAccountFlowDTO actual = shopFundAccountServiceObjectStub.getPaymentPlanShopFundAccountFlow(1);
+
+        Assert.assertEquals(shopFundAccountFlowData.getFundAccountId(), actual.getFundAccountId());
+    }
+
+    private ShopFundAccountFlowData createShopFundAccountFlowData(){
+        ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
+        shopFundAccountFlowData.setFundAccountId(1);
+        shopFundAccountFlowData.setFundAccountFlowId(1);
+        shopFundAccountFlowData.setFlowAmount(BigDecimal.TEN);
+        shopFundAccountFlowData.setFlowType(1);
+        shopFundAccountFlowData.setSourceType(1);
+        shopFundAccountFlowData.setExchangeOrderId(1);
+        shopFundAccountFlowData.setAddDate(Calendar.getInstance().getTime());
+        shopFundAccountFlowData.setLastUpdateDate(Calendar.getInstance().getTime());
+        shopFundAccountFlowData.setMemo("memo");
+        return shopFundAccountFlowData;
     }
 }
