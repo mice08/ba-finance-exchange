@@ -41,6 +41,8 @@
 
     <properties>
         <env>dev</env>
+        <aritifactId>${project.artifactId}}</aritifactId>
+        <version>${project.version}}</version>
         <springversion>3.2.5.RELEASE</springversion>
         <java.src.version>1.6</java.src.version>
         <java.target.version>1.6</java.target.version>
@@ -652,7 +654,7 @@
                 <plugin>
                     <artifactId>maven-war-plugin</artifactId>
                     <configuration>
-                        <warName>${project.artifactId}-${env}-${project.version}</warName>
+                        <warName>${artifactId}-${env}-${version}</warName>
                     </configuration>
                 </plugin>
                 <plugin>
