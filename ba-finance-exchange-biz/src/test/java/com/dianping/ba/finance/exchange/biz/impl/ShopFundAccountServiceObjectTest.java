@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
+import com.dianping.ba.finance.exchange.api.ShopFundAccountService;
 import com.dianping.ba.finance.exchange.api.beans.ShopFundAccountBean;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData;
@@ -15,6 +16,10 @@ import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -31,11 +36,18 @@ import static org.mockito.Mockito.when;
  * Time: 下午4:18
  * To change this template use File | Settings | File Templates.
  */
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath*:/config/spring/common/appcontext-*.xml", "classpath*:/config/spring/local/appcontext-*.xml" })
+
 public class ShopFundAccountServiceObjectTest {
     private ShopFundAccountFlowDao shopFundAccountFlowDaoMock;
     private ShopFundAccountDao shopFundAccountDaoMock;
     private ShopFundAccountServiceObject shopFundAccountServiceObjectStub;
     private ExchangeOrderServiceObject exchangeOrderServiceObjectMock;
+
+    @Autowired
+    private ShopFundAccountService shopFundAccountServiceWithoutMock;
 
     @Before
     public void runBeforeTest() {
@@ -73,7 +85,9 @@ public class ShopFundAccountServiceObjectTest {
         ShopFundAccountFlowDTO input = setShopFundAccountFlowDTO();
         int exchangeOrderId=3;
         int fundAccountFlowId=2;
-        when(shopFundAccountDaoMock.loadShopFundAccountData(any(ShopFundAccountBean.class))).thenReturn(null);
+        ShopFundAccountData existShopFundAccountData=new ShopFundAccountData();
+        existShopFundAccountData.setFundAccountId(111);
+        when(shopFundAccountDaoMock.loadShopFundAccountData(any(ShopFundAccountBean.class))).thenReturn(existShopFundAccountData);
         when(shopFundAccountDaoMock.insertShopFundAccount(any(ShopFundAccountData.class))).thenReturn(1);
         when(shopFundAccountFlowDaoMock.insertShopFundAccountFlow(any(ShopFundAccountFlowData.class))).thenReturn(fundAccountFlowId);
         when(exchangeOrderServiceObjectMock.insertExchangeOrder(any(ExchangeOrderData.class))).thenReturn(exchangeOrderId);
@@ -81,6 +95,11 @@ public class ShopFundAccountServiceObjectTest {
 
         int actual=shopFundAccountServiceObjectStub.createShopFundAccountFlow(input);
         Assert.assertEquals(3,actual);
+
+        //db
+        int result=shopFundAccountServiceWithoutMock.createShopFundAccountFlow(input);
+        System.out.print("exchangeOrderId:"+result);
+        System.out.println();
     }
 
     private ShopFundAccountFlowDTO setShopFundAccountFlowDTO() {

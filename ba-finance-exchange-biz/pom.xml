@@ -12,10 +12,6 @@
     <name>ba-finance-exchange-biz</name>
     <packaging>jar</packaging>
 
-    <properties>
-        <env>alpha</env>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
