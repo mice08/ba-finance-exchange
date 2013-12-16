@@ -5,7 +5,6 @@ import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
-import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
 
 import java.math.BigDecimal;
 
@@ -44,10 +43,10 @@ public class ShopFundAccountConvert {
         shopFundAccountData.setCompanyGlobalId(shopFundAccountFlowDTO.getCompanyGlobalId());
         shopFundAccountData.setCustomerGlobalId(shopFundAccountFlowDTO.getCustomerGlobalId());
         // 账户先不加金额
-        shopFundAccountData.setBalanceFrozen(new BigDecimal(0));
-        shopFundAccountData.setBalanceTotal(new BigDecimal(0));
-        shopFundAccountData.setCredit(new BigDecimal(0));
-        shopFundAccountData.setDebit(new BigDecimal(0));
+        shopFundAccountData.setBalanceFrozen(BigDecimal.ZERO);
+        shopFundAccountData.setBalanceTotal(BigDecimal.ZERO);
+        shopFundAccountData.setCredit(BigDecimal.ZERO);
+        shopFundAccountData.setDebit(BigDecimal.ZERO);
         return shopFundAccountData;
     }
 
