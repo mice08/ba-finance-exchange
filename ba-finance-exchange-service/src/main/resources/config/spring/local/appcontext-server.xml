@@ -13,7 +13,7 @@
         <property name="services">
             <map>
                 <entry key="http://service.dianping.com/baFinanceService/exchangeOrderService_1.0.0" value-ref="exchangeOrderService"/>
-                <entry key="http://service.dianping.com/baFinanceService/shopFundAccountService_1.0.0" value-ref="shopFundAccountService"/>
+                <entry key="http://service.dianping.com/baFinanceExchangeService/shopFundAccountService_1.0.0" value-ref="shopFundAccountService"/>
             </map>
         </property>
     </bean>
