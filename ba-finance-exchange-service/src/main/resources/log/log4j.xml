@@ -11,7 +11,7 @@
 
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="[ba-finance-tuangou-sync-server]%d %-5p [%c] %m%n" />
+            <param name="ConversionPattern" value="[ba-finance-exchange-service]%d %-5p [%c] %m%n" />
         </layout>
     </appender>
 
