@@ -5,8 +5,8 @@
     <parent>
         <artifactId>ba-finance-parent</artifactId>
         <groupId>com.dianping</groupId>
-        <version>1.0.0</version>
-        <relativePath>../ba-finance-parent/pom.xml</relativePath>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../ba-finance-parent/pomparent.xml</relativePath>
     </parent>
     <artifactId>ba-finance-exchange</artifactId>
     <version>0.0.1-SNAPSHOT</version>
