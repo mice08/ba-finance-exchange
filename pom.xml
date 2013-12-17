@@ -17,7 +17,7 @@
         <module>ba-finance-exchange-biz</module>
         <module>ba-finance-exchange-service</module>
     </modules>
-    <description>com.dianping.ba.finance.exchange</description>
+    <description>com.dianping.ba.finance</description>
     <organization>
         <name>com.dianping.ba.finance</name>
     </organization>
