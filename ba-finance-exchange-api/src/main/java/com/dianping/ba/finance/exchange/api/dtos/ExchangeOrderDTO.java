@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
- * User: jinyu.yin
+ * User: sally.zhu
  * Date: 13-12-12
  * Time: 下午6:01
  * To change this template use File | Settings | File Templates.
@@ -18,61 +18,25 @@ public class ExchangeOrderDTO implements Serializable {
      */
     private int exchangeOrderId;
     /**
-     * 金额（都是正数）
-     */
-    private BigDecimal orderAmount;
-    /**
      * 1:付款 2:收款
      */
     private int orderType;
-    /**
-     * bankAccountNo
-     */
-    private String bankAccountNo;
-    /**
-     * BankAccountName
-     */
-    private String bankAccountName;
-    /**
-     * BankName
-     */
-    private String bankName;
     /**
      * 交易状态；1初始；2支付中; 3成功；4失败
      */
     private int status;
     /**
-     * 对应的资金账户ID
-     */
-    private int relevantFundAccountId;
-    /**
      * 对应的源资金账户流水ID
      */
     private int relevantFundAccountFlowId;
     /**
-     * 添加时间
+     * 对应的资金账户ID
      */
-    private Date addDate;
+    private int relevantFundAccountId;
     /**
-     * 交易成功时间
+     * 交易金额
      */
-    private Date orderDate;
-    /**
-     * 更新时间
-     */
-    private Date lastUpdateDate;
-    /**
-     * 备注
-     */
-    private String memo;
-
-    public int getExchangeOrderId() {
-        return exchangeOrderId;
-    }
-
-    public void setExchangeOrderId(int exchangeOrderId) {
-        this.exchangeOrderId = exchangeOrderId;
-    }
+    private BigDecimal orderAmount;
 
     public BigDecimal getOrderAmount() {
         return orderAmount;
@@ -80,6 +44,14 @@ public class ExchangeOrderDTO implements Serializable {
 
     public void setOrderAmount(BigDecimal orderAmount) {
         this.orderAmount = orderAmount;
+    }
+
+    public int getExchangeOrderId() {
+        return exchangeOrderId;
+    }
+
+    public void setExchangeOrderId(int exchangeOrderId) {
+        this.exchangeOrderId = exchangeOrderId;
     }
 
     public int getOrderType() {
@@ -90,44 +62,12 @@ public class ExchangeOrderDTO implements Serializable {
         this.orderType = orderType;
     }
 
-    public String getBankAccountNo() {
-        return bankAccountNo;
-    }
-
-    public void setBankAccountNo(String bankAccountNo) {
-        this.bankAccountNo = bankAccountNo;
-    }
-
-    public String getBankAccountName() {
-        return bankAccountName;
-    }
-
-    public void setBankAccountName(String bankAccountName) {
-        this.bankAccountName = bankAccountName;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
-
     public int getStatus() {
         return status;
     }
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    public int getRelevantFundAccountId() {
-        return relevantFundAccountId;
-    }
-
-    public void setRelevantFundAccountId(int relevantFundAccountId) {
-        this.relevantFundAccountId = relevantFundAccountId;
     }
 
     public int getRelevantFundAccountFlowId() {
@@ -138,35 +78,13 @@ public class ExchangeOrderDTO implements Serializable {
         this.relevantFundAccountFlowId = relevantFundAccountFlowId;
     }
 
-    public Date getAddDate() {
-        return addDate;
+    public int getRelevantFundAccountId() {
+        return relevantFundAccountId;
     }
 
-    public void setAddDate(Date addDate) {
-        this.addDate = addDate;
+    public void setRelevantFundAccountId(int relevantFundAccountId) {
+        this.relevantFundAccountId = relevantFundAccountId;
     }
 
-    public Date getOrderDate() {
-        return orderDate;
-    }
 
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public Date getLastUpdateDate() {
-        return lastUpdateDate;
-    }
-
-    public void setLastUpdateDate(Date lastUpdateDate) {
-        this.lastUpdateDate = lastUpdateDate;
-    }
-
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
 }
