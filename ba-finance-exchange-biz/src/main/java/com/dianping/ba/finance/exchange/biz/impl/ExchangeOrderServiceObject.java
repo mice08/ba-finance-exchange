@@ -71,6 +71,13 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 		return exchangeOrderDao.paginateExchangeOrderList(orderIdList, addDateBegin, addDateEnd, page, pageSize);
 	}
 
+    private boolean isExchangeOrderValid(ExchangeOrderData exchangeOrderData){
+        if(exchangeOrderData == null || exchangeOrderData.getStatus() != ExchangeOrderStatusEnum.PENDING.getExchangeOrderStatus()) {
+            return false;
+        }
+        return true;
+    }
+
 	private boolean updateExchangeOrderToSuccess(int orderId) {
 		if (orderId <= 0) {
 			return false;
@@ -89,13 +96,6 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 				return false;
 			}
 		} else {
-			return false;
-		}
-		return true;
-	}
-
-	private boolean isExchangeOrderValid(ExchangeOrderData exchangeOrderData) {
-		if (exchangeOrderData == null || exchangeOrderData.getStatus() == ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus()) {
 			return false;
 		}
 		return true;
