@@ -61,10 +61,15 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
                 return null;
             ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDao.loadShopFundAccountFlow(orderId,
                     FlowTypeEnum.IN.getFlowType(), SourceTypeEnum.PaymentPlan.getSourceType());
+            if(paymentPlanShopFundAccountFlow == null){
+                BizUtils.log(monitorLogger, startTime, "getPaymentPlanShopFundAccountFlow error", "error",
+                        "orderId = " + orderId,
+                        null);
+            }
             ShopFundAccountFlowDTO shopFundAccountFlowDTO =  ConvertUtils.copy(paymentPlanShopFundAccountFlow, ShopFundAccountFlowDTO.class);
             return  shopFundAccountFlowDTO;
         } catch (Exception e) {
-            BizUtils.log(monitorLogger, startTime, "getPaymentPlanShopFundAccountFlow", "error",
+            BizUtils.log(monitorLogger, startTime, "getPaymentPlanShopFundAccountFlow error", "error",
                     "orderId = " + orderId,
                     e);
         }
