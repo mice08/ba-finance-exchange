@@ -35,12 +35,12 @@ public interface ExchangeOrderService {
 	/**
 	 * 分页获取支付订单
 	 *
-	 * @param orderIdList      支付订单ID的list
+	 * @param orderId      支付订单ID
 	 * @param addDateBegin 产生日期开始
 	 * @param addDateEnd   产生日期结束
 	 * @param page         第几页
 	 * @param pageSize     分页大小
 	 * @return
 	 */
-	PageModel paginateExchangeOrderList(List<Integer> orderIdList, Date addDateBegin, Date addDateEnd, int page, int pageSize);
+	PageModel paginateExchangeOrderList(int orderId, Date addDateBegin, Date addDateEnd, int page, int pageSize);
 }

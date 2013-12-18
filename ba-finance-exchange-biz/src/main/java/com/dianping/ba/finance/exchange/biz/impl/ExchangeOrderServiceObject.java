@@ -67,8 +67,8 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 	}
 
 	@Override
-	public PageModel paginateExchangeOrderList(List<Integer> orderIdList, Date addDateBegin, Date addDateEnd, int page, int pageSize) {
-		return exchangeOrderDao.paginateExchangeOrderList(orderIdList, addDateBegin, addDateEnd, page, pageSize);
+	public PageModel paginateExchangeOrderList(int orderId, Date addDateBegin, Date addDateEnd, int page, int pageSize) {
+		return exchangeOrderDao.paginateExchangeOrderList(orderId, addDateBegin, addDateEnd, page, pageSize);
 	}
 
     private boolean isExchangeOrderValid(ExchangeOrderData exchangeOrderData){
