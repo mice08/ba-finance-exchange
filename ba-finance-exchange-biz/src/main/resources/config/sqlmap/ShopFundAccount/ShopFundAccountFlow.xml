@@ -53,4 +53,11 @@
  		]]>
     </update>
 
+    <select id="loadShopFundAccountFlow" resultMap="shopFundAccountFlowData" parameterClass="map">
+        SELECT FAID,FlowAmount,FlowType,SourceType,ExchangeOrderID,AddDate,LastUpdateDate,Memo
+        FROM FS_ShopFundAccountFlow
+        WHERE ExchangeOrderID = #exchangeOrderId#
+        AND FlowType = #flowType#
+        AND SourceType = #sourceType#
+    </select>
 </sqlMap>
