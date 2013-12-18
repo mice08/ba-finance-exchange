@@ -11,4 +11,15 @@
     <artifactId>ba-finance-exchange-api</artifactId>
     <name>ba-finance-exchange-api</name>
     <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.dianping</groupId>
+            <artifactId>avatar-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping</groupId>
+            <artifactId>avatar-dao</artifactId>
+        </dependency>
+    </dependencies>
 </project>

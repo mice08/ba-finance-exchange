@@ -48,9 +48,6 @@ public class ShopFundAccountFlowDTO implements Serializable {
      */
     private BigDecimal flowAmount;
     /**
-     * 1:正向 2:负向
-     */
-    /**
      * 交易指令ID
      */
     private int exchangeOrderId;
@@ -66,7 +63,9 @@ public class ShopFundAccountFlowDTO implements Serializable {
      * 备注
      */
     private String memo;
-
+    /**
+     * 1:正向 2:负向
+     */
     private FlowTypeEnum flowType;
     /**
      * 源头类型：1.应付2.应收3.交易指令
