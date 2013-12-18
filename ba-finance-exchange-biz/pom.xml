@@ -22,6 +22,7 @@
         <dependency>
             <groupId>com.dianping</groupId>
             <artifactId>ba-finance-common-biz</artifactId>
+            <type>pom</type>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
