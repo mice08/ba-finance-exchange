@@ -63,4 +63,23 @@
         where ExchangeOrderID = #exchangeOrderId#
         ]]>
     </select>
+
+    <select id="paginateExchangeOrderList" resultMap="exchangeOrder" parameterClass="map">
+        SELECT ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,Status,OrderDate,AddDate,LastUpdateDate,Memo
+        FROM FP_Invoice
+        WHERE FS_ExchangeOrder
+        <isNotEmpty property="orderIdList">
+            ExchangeOrderID IN
+            <iterate open="(" close=")" conjunction="," property="orderIdList">
+                #orderIdList[]#
+            </iterate>
+        </isNotEmpty>
+        <isNotNull property="addDateBegin" prepend="and">
+            AddDate &gt;= #addDateBegin#
+        </isNotNull>
+        <isNotNull property="addDateEnd" prepend="and">
+            AddDate &lt;= #addDateEnd#
+        </isNotNull>
+        ORDER BY ExchangeOrderID
+    </select>
 </sqlMap>
