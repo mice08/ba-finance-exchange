@@ -91,7 +91,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     private boolean isExchangeOrderValid(ExchangeOrderData exchangeOrderData){
-        if(exchangeOrderData == null || exchangeOrderData.getStatus() == ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus()) {
+        if(exchangeOrderData == null || exchangeOrderData.getStatus() != ExchangeOrderStatusEnum.PENDING.getExchangeOrderStatus()) {
             return false;
         }
         return true;

@@ -72,7 +72,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
     }
 
     private boolean isExchangeOrderDTOValid(ExchangeOrderDTO exchangeOrderDTO){
-        if(exchangeOrderDTO == null || exchangeOrderDTO.getStatus() == ExchangeOrderStatusEnum.PENDING.ordinal()) {
+        if(exchangeOrderDTO == null || exchangeOrderDTO.getStatus() != ExchangeOrderStatusEnum.SUCCESS.ordinal()) {
             return false;
         }
         return true;
