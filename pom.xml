@@ -25,7 +25,10 @@
     <url></url>
     <developers>
         <developer>
-            <name>jinyu.yin</name>
+            <name>Andrew Yin</name>
+            <id>jinyu</id>
+            <email>jinyu.yin@dianping.com</email>
+            <timezone>8</timezone>
         </developer>
     </developers>
     <contributors>
