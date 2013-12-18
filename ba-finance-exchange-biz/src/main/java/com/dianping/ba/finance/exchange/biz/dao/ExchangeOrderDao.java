@@ -52,7 +52,7 @@ public interface ExchangeOrderDao extends GenericDao {
 	/**
 	 * 分页查询交易指令
 	 *
-	 * @param orderIdList
+	 * @param orderId
 	 * @param addDateBegin
 	 * @param addDateEnd
 	 * @param page
@@ -60,5 +60,5 @@ public interface ExchangeOrderDao extends GenericDao {
 	 * @return
 	 */
 	@DAOAction(action = DAOActionType.PAGE)
-	PageModel paginateExchangeOrderList(@DAOParam("orderIdList") List<Integer> orderIdList, @DAOParam("addDateBegin") Date addDateBegin, @DAOParam("addDateEnd") Date addDateEnd, @DAOParam("page") int page, @DAOParam("max") int max);
+	PageModel paginateExchangeOrderList(@DAOParam("orderId") int orderId, @DAOParam("addDateBegin") Date addDateBegin, @DAOParam("addDateEnd") Date addDateEnd, @DAOParam("page") int page, @DAOParam("max") int max);
 }

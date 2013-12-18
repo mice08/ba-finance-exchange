@@ -66,14 +66,12 @@
 
     <select id="paginateExchangeOrderList" resultMap="exchangeOrder" parameterClass="map">
         SELECT ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,Status,OrderDate,AddDate,LastUpdateDate,Memo
-        FROM FP_Invoice
-        WHERE FS_ExchangeOrder
-        <isNotEmpty property="orderIdList">
-            ExchangeOrderID IN
-            <iterate open="(" close=")" conjunction="," property="orderIdList">
-                #orderIdList[]#
-            </iterate>
-        </isNotEmpty>
+        FROM FS_ExchangeOrder
+        WHERE
+        ExchangeOrderID > 0
+        <isGreaterThan property="orderId" compareValue = "0" prepend="and">
+            ExchangeOrderID = #orderId#
+        </isGreaterThan>
         <isNotNull property="addDateBegin" prepend="and">
             AddDate &gt;= #addDateBegin#
         </isNotNull>
