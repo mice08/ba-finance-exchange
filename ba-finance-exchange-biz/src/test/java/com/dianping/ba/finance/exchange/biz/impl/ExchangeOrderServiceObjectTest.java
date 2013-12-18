@@ -45,7 +45,7 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testUpdateExchangeOrderSuccess(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.INIT.getExchangeOrderStatus());
+        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.PENDING.getExchangeOrderStatus());
 
         List<Integer> orderIds = new ArrayList<Integer>();
         orderIds.add(1);
@@ -67,7 +67,7 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testUpdateExchangeOrderFailWhenOrderIdInvalid(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.INIT.getExchangeOrderStatus());
+        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.PENDING.getExchangeOrderStatus());
 
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(1);
