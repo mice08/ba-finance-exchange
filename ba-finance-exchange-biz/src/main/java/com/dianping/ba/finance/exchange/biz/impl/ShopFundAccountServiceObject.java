@@ -46,7 +46,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             shopFundAccountFlowDao.insertShopFundAccountFlow(shopFundAccountFlowData);
             return true;
         } catch (Exception e) {
-            BizUtils.log(monitorLogger, startTime, "updateShopFundAccountCausedBySuccessfulExchangeOrder", "error",
+            BizUtils.log(monitorLogger, startTime, "updateShopFundAccountCausedBySuccessfulExchangeOrder error", "error",
                     "orderId = " + exchangeOrderDTO.getExchangeOrderId(),
                     e);
         }
@@ -61,10 +61,15 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
                 return null;
             ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDao.loadShopFundAccountFlow(orderId,
                     FlowTypeEnum.IN.getFlowType(), SourceTypeEnum.PaymentPlan.getSourceType());
+            if(paymentPlanShopFundAccountFlow == null){
+                BizUtils.log(monitorLogger, startTime, "getPaymentPlanShopFundAccountFlow error", "error",
+                        "orderId = " + orderId,
+                        null);
+            }
             ShopFundAccountFlowDTO shopFundAccountFlowDTO =  ConvertUtils.copy(paymentPlanShopFundAccountFlow, ShopFundAccountFlowDTO.class);
             return  shopFundAccountFlowDTO;
         } catch (Exception e) {
-            BizUtils.log(monitorLogger, startTime, "getPaymentPlanShopFundAccountFlow", "error",
+            BizUtils.log(monitorLogger, startTime, "getPaymentPlanShopFundAccountFlow error", "error",
                     "orderId = " + orderId,
                     e);
         }
@@ -121,7 +126,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             //回写资金流水中的exchangeOrderId
             shopFundAccountFlowDao.updateExchangeOrderId(exchangeOrderId, fundAccountFlowId);
         }catch (Exception e){
-            BizUtils.log(monitorLogger, beginTime, "createShopFundAccountFlow", "error",
+            BizUtils.log(monitorLogger, beginTime, "createShopFundAccountFlow error", "error",
                     "BusinessType = " + shopFundAccountFlowDTO.getBusinessType()
                             + "CustomerGlobalId = "+ shopFundAccountFlowDTO.getCustomerGlobalId()
                             + "CompanyGlobalId = "+ shopFundAccountFlowDTO.getCompanyGlobalId()
