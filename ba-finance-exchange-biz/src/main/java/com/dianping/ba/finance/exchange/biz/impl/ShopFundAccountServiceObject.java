@@ -46,7 +46,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             shopFundAccountFlowDao.insertShopFundAccountFlow(shopFundAccountFlowData);
             return true;
         } catch (Exception e) {
-            BizUtils.log(monitorLogger, startTime, "updateShopFundAccountCausedBySuccessfulExchangeOrder", "error",
+            BizUtils.log(monitorLogger, startTime, "updateShopFundAccountCausedBySuccessfulExchangeOrder error", "error",
                     "orderId = " + exchangeOrderDTO.getExchangeOrderId(),
                     e);
         }
