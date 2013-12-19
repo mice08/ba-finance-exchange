@@ -72,7 +72,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 	}
 
     private boolean isExchangeOrderValid(ExchangeOrderData exchangeOrderData){
-        if(exchangeOrderData == null || exchangeOrderData.getStatus() != ExchangeOrderStatusEnum.PENDING.getExchangeOrderStatus()) {
+        if(exchangeOrderData == null || exchangeOrderData.getStatus() == ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus()) {
             return false;
         }
         return true;
@@ -91,6 +91,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 				exchangeOrderDTO.setExchangeOrderId(orderId);
 				exchangeOrderDTO.setStatus(ExchangeOrderStatusEnum.SUCCESS.ordinal());
 				exchangeOrderDTO.setOrderType(exchangeOrderData.getOrderType());
+                exchangeOrderDTO.setOrderAmount(exchangeOrderData.getOrderAmount());
 				exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
 			} else {
 				return false;
