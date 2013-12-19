@@ -61,7 +61,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 			failedExchangeOrders.add(processExchangeOrderId);
 		}
 		if (failedExchangeOrders.size() > 0) {
-			BizUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", "error", "Failed exchange order ids: " + failedExchangeOrders.toString(), null);
+			BizUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess error", "error", "Failed exchange order ids: " + failedExchangeOrders.toString(), null);
 		}
 		return genericResult;
 	}
