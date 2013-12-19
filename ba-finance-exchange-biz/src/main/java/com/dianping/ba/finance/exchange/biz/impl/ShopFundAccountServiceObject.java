@@ -121,7 +121,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             //回写资金流水中的exchangeOrderId
             shopFundAccountFlowDao.updateExchangeOrderId(exchangeOrderId, fundAccountFlowId);
         }catch (Exception e){
-            BizUtils.log(monitorLogger, beginTime, "createShopFundAccountFlow", "error",
+            BizUtils.log(monitorLogger, beginTime, "createShopFundAccountFlow error", "error",
                     "BusinessType = " + shopFundAccountFlowDTO.getBusinessType()
                             + "CustomerGlobalId = "+ shopFundAccountFlowDTO.getCustomerGlobalId()
                             + "CompanyGlobalId = "+ shopFundAccountFlowDTO.getCompanyGlobalId()
