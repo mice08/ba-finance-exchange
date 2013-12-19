@@ -105,18 +105,18 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
 
     @Override
     public int createShopFundAccountFlow(ShopFundAccountFlowDTO shopFundAccountFlowDTO){
-        int exchangeOrderId=-1;
+        int fundAccountFlowId=-1;
         long beginTime=System.currentTimeMillis();
         try {
             if (shopFundAccountFlowDTO==null){
                 //异常
                 return -1;
             }
-            int fundAccountFlowId = createShopFundAccountAndFlow(shopFundAccountFlowDTO);
+            fundAccountFlowId = createShopFundAccountAndFlow(shopFundAccountFlowDTO);
 
             //调用支付指令接口 插入指令
             ExchangeOrderData exchangeOrderData = ShopFundAccountConvert.buildExchangeOrderData(shopFundAccountFlowDTO);
-            exchangeOrderId=exchangeOrderService.insertExchangeOrder(exchangeOrderData);
+            int exchangeOrderId=exchangeOrderService.insertExchangeOrder(exchangeOrderData);
 
             //回写资金流水中的exchangeOrderId
             shopFundAccountFlowDao.updateExchangeOrderId(exchangeOrderId, fundAccountFlowId);
@@ -131,7 +131,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
                             + "SourceType = "+ shopFundAccountFlowDTO.getSourceType().ordinal()
                     ,e);
         }
-        return exchangeOrderId;
+        return fundAccountFlowId;
     }
 
     /**
