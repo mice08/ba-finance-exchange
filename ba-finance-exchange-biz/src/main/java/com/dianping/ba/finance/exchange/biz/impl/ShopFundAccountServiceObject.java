@@ -64,7 +64,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             if(paymentPlanShopFundAccountFlow == null){
                 BizUtils.log(monitorLogger, startTime, "getPaymentPlanShopFundAccountFlow error", "error",
                         "orderId = " + orderId,
-                        null);
+                        new Exception("getPaymentPlanShopFundAccountFlow error"));
             }
             ShopFundAccountFlowDTO shopFundAccountFlowDTO =  ConvertUtils.copy(paymentPlanShopFundAccountFlow, ShopFundAccountFlowDTO.class);
             return  shopFundAccountFlowDTO;
@@ -74,23 +74,6 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
                     e);
         }
         return null;
-    }
-
-    private boolean isExchangeOrderDTOValid(ExchangeOrderDTO exchangeOrderDTO){
-        if(exchangeOrderDTO == null || exchangeOrderDTO.getStatus() != ExchangeOrderStatusEnum.SUCCESS.ordinal()) {
-            return false;
-        }
-        return true;
-    }
-
-    private ShopFundAccountFlowData buildShopFundAccountFlowDataForOut(ExchangeOrderDTO exchangeOrder){
-        ShopFundAccountFlowData shopFundAccountFlow= new ShopFundAccountFlowData();
-        shopFundAccountFlow.setExchangeOrderId(exchangeOrder.getExchangeOrderId());
-        shopFundAccountFlow.setFlowAmount(exchangeOrder.getOrderAmount());
-        shopFundAccountFlow.setFlowType(FlowTypeEnum.OUT.getFlowType());
-        shopFundAccountFlow.setSourceType(SourceTypeEnum.ExchangeOrder.getSourceType());
-        shopFundAccountFlow.setFundAccountId(exchangeOrder.getRelevantFundAccountId());
-        return shopFundAccountFlow;
     }
 
     @Override
@@ -110,18 +93,18 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
 
     @Override
     public int createShopFundAccountFlow(ShopFundAccountFlowDTO shopFundAccountFlowDTO){
-        int fundAccountFlowId=-1;
-        long beginTime=System.currentTimeMillis();
+        int fundAccountFlowId = -1;
+        long beginTime = System.currentTimeMillis();
         try {
-            if (shopFundAccountFlowDTO==null){
-                //异常
+            if (shopFundAccountFlowDTO == null){
+                BizUtils.log(monitorLogger, beginTime, "createShopFundAccountFlow error", "error", "argument is null"
+                        ,new Exception("createShopFundAccountFlow error"));
                 return -1;
             }
             fundAccountFlowId = createShopFundAccountAndFlow(shopFundAccountFlowDTO);
-
             //调用支付指令接口 插入指令
             ExchangeOrderData exchangeOrderData = ShopFundAccountConvert.buildExchangeOrderData(shopFundAccountFlowDTO);
-            int exchangeOrderId=exchangeOrderService.insertExchangeOrder(exchangeOrderData);
+            int exchangeOrderId = exchangeOrderService.insertExchangeOrder(exchangeOrderData);
 
             //回写资金流水中的exchangeOrderId
             shopFundAccountFlowDao.updateExchangeOrderId(exchangeOrderId, fundAccountFlowId);
@@ -148,21 +131,41 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         //判断资金账户时候存在
         ShopFundAccountBean shopFundAccountBean = ShopFundAccountConvert.buildShopFundAccountBeanfromShopFundAccountFlowDTO(shopFundAccountFlowDTO);
         ShopFundAccountData shopFundAccountData = loadShopFundAccountData(shopFundAccountBean);
-        int shopFundAccountId;
-        if (shopFundAccountData==null||shopFundAccountData.getFundAccountId()==0)
-        {
-             //插入资金账户  +余额
-             shopFundAccountData=ShopFundAccountConvert.buildShopFundAccountDataFromShopFundAccountFlowDTO(shopFundAccountFlowDTO);
-             shopFundAccountId=insertShopFundAccount(shopFundAccountData);
+        if (!isShopFundAccountDataValid(shopFundAccountData)) {
+            return -1;
         }
-        else{
-            shopFundAccountId=shopFundAccountData.getFundAccountId();
-        }
+        //插入资金账户  +余额
+        shopFundAccountData = ShopFundAccountConvert.buildShopFundAccountDataFromShopFundAccountFlowDTO(shopFundAccountFlowDTO);
+        int shopFundAccountId = insertShopFundAccount(shopFundAccountData);
         //插入资金流水
-        ShopFundAccountFlowData shopFundAccountFlowData=ShopFundAccountConvert.buildShopFundAccountFlowDataFromShopFundAccountFlowDTO(shopFundAccountFlowDTO,shopFundAccountId);
+        ShopFundAccountFlowData shopFundAccountFlowData = ShopFundAccountConvert.buildShopFundAccountFlowDataFromShopFundAccountFlowDTO(shopFundAccountFlowDTO,shopFundAccountId);
         return insertShopFundAccountFlow(shopFundAccountFlowData);
     }
 
+    private boolean isShopFundAccountDataValid(ShopFundAccountData shopFundAccountData){
+        if (shopFundAccountData == null|| shopFundAccountData.getFundAccountId() == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean isExchangeOrderDTOValid(ExchangeOrderDTO exchangeOrderDTO){
+        if(exchangeOrderDTO == null || exchangeOrderDTO.getStatus() != ExchangeOrderStatusEnum.SUCCESS.ordinal()) {
+            return false;
+        }
+        return true;
+    }
+
+    private ShopFundAccountFlowData buildShopFundAccountFlowDataForOut(ExchangeOrderDTO exchangeOrder){
+        ShopFundAccountFlowData shopFundAccountFlow= new ShopFundAccountFlowData();
+        shopFundAccountFlow.setExchangeOrderId(exchangeOrder.getExchangeOrderId());
+        shopFundAccountFlow.setFlowAmount(exchangeOrder.getOrderAmount());
+        shopFundAccountFlow.setFlowType(FlowTypeEnum.OUT.getFlowType());
+        shopFundAccountFlow.setSourceType(SourceTypeEnum.ExchangeOrder.getSourceType());
+        shopFundAccountFlow.setFundAccountId(exchangeOrder.getRelevantFundAccountId());
+        return shopFundAccountFlow;
+    }
 
     public void setShopFundAccountDao(ShopFundAccountDao shopFundAccountDao) {
         this.shopFundAccountDao = shopFundAccountDao;
