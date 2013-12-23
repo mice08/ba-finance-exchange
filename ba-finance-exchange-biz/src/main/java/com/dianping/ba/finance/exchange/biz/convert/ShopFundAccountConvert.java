@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 public class ShopFundAccountConvert {
     /**
      * 转换成查询资金账户的对象
+     *
      * @param shopFundAccountFlowDTO
      * @return
      * @throws Exception
@@ -33,6 +34,7 @@ public class ShopFundAccountConvert {
 
     /**
      * 转换成插入资金账户需要的Data
+     *
      * @param shopFundAccountFlowDTO
      * @return
      */
@@ -52,6 +54,7 @@ public class ShopFundAccountConvert {
 
     /**
      * 转换成插入资金流水的Data
+     *
      * @param shopFundAccountFlowDTO
      * @param shopFundAccountId
      * @return
@@ -69,6 +72,7 @@ public class ShopFundAccountConvert {
 
     /**
      * 构建交易指令bean
+     *
      * @return
      */
     public static ExchangeOrderData buildExchangeOrderData(ShopFundAccountFlowDTO shopFundAccountFlowDTO) {
@@ -80,4 +84,5 @@ public class ShopFundAccountConvert {
         exchangeOrderData.setBankName(shopFundAccountFlowDTO.getBankName());
         return exchangeOrderData;
     }
+
 }
