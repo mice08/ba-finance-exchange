@@ -3,11 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>dianping-parent</artifactId>
+        <artifactId>ba-finance-parent</artifactId>
         <groupId>com.dianping</groupId>
-        <version>2.0.0</version>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../ba-finance-parent/pomparent.xml</relativePath>
     </parent>
-    <groupId>com.dianping</groupId>
     <artifactId>ba-finance-exchange</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -17,4 +17,28 @@
         <module>ba-finance-exchange-biz</module>
         <module>ba-finance-exchange-service</module>
     </modules>
+    <description>com.dianping.ba.finance</description>
+    <organization>
+        <name>com.dianping.ba.finance</name>
+    </organization>
+    <inceptionYear>2013</inceptionYear>
+    <url></url>
+    <developers>
+        <developer>
+            <name>Andrew Yin</name>
+            <id>jinyu</id>
+            <email>jinyu.yin@dianping.com</email>
+            <timezone>8</timezone>
+        </developer>
+    </developers>
+    <contributors>
+        <contributor>
+            <name>weixuan.hu</name>
+        </contributor>
+    </contributors>
+    <mailingLists>
+        <mailingList>
+            <name>jinyu.yin</name>
+        </mailingList>
+    </mailingLists>
 </project>

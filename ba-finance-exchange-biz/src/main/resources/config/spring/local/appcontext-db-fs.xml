@@ -8,13 +8,13 @@
 
 	<!-- The DataSource configuration for ba-finance -->
 	<bean id="fsMainDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-		<property name="jdbcUrl" value="${ba-finance-settle-biz.jdbc.url}" />
-		<property name="user" value="${ba-finance-settle-biz.jdbc.username}" />
-		<property name="password" value="${ba-finance-settle-biz.jdbc.password}" />
-		<property name="driverClass" value="${ba-finance-settle-biz.jdbc.driverClassName}" />
-		<property name="minPoolSize" value="${ba-finance-settle-biz.c3p0.minSize}" />
+		<property name="jdbcUrl" value="${ba-finance-exchange-service.fsexchange.jdbc.url}" />
+		<property name="user" value="${ba-finance-exchange-service.fsexchange.jdbc.username}" />
+		<property name="password" value="${ba-finance-exchange-service.fsexchange.jdbc.password}" />
+		<property name="driverClass" value="${ba-finance-exchange-service.fsexchange.jdbc.driverClassName}" />
+		<property name="minPoolSize" value="${ba-finance-exchange-service.fsexchange.c3p0.minSize}" />
 		<property name="maxPoolSize" value="${ba-finance-settle-biz.c3p0.maxSize}" />
-		<property name="initialPoolSize" value="${ba-finance-settle-biz.c3p0.initialSize}" />
+		<property name="initialPoolSize" value="${ba-finance-exchange-service.fsexchange.c3p0.maxSize}" />
 		<property name="maxIdleTime" value="1800" />
 		<property name="idleConnectionTestPeriod" value="60" />
 		<property name="acquireRetryAttempts" value="50" />

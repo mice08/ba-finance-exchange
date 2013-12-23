@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ExchangeOrder">
+
+    <typeAlias alias="ExchangeOrder" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData"/>
+    <resultMap id="exchangeOrder" class="ExchangeOrder">
+        <result property="exchangeOrderId" column="ExchangeOrderID"/>
+        <result property="orderAmount" column="OrderAmount"/>
+        <result property="orderType" column="OrderType"/>
+        <result property="bankAccountNo" column="BankAccountNo"/>
+        <result property="bankAccountName" column="BankAccountName"/>
+        <result property="bankName" column="BankName"/>
+        <result property="status" column="Status"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="orderDate" column="OrderDate"/>
+        <result property="lastUpdateDate" column="LastUpdateDate"/>
+        <result property="memo" column="Memo"/>
+    </resultMap>
+
+    <insert id="insertExchangeOrder" parameterClass="map">
+        <![CDATA[
+        	 insert into FS_ExchangeOrder
+		            (OrderAmount,
+		             OrderType,
+		             BankAccountNo,
+		             BankAccountName,
+		             BankName,
+		             AddDate,
+		             LastUpdateDate,
+		             Memo
+		             )
+			values (#exchangeOrderData.orderAmount#,
+			         #exchangeOrderData.orderType#,
+			         #exchangeOrderData.bankAccountNo#,
+			         #exchangeOrderData.bankAccountName#,
+			         #exchangeOrderData.bankName#,
+			         NOW(),
+			         NOW(),
+			         #exchangeOrderData.memo#
+			        );
+ 		]]>
+        <selectKey resultClass="java.lang.Integer" keyProperty="exchangeOrderId">
+            <![CDATA[
+			SELECT @@IDENTITY AS id
+		]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateExchangeOrderData" parameterClass="map">
+        UPDATE FS_ExchangeOrder
+        SET Status = #status#,
+        <isNotEmpty property="orderDate">
+            OrderDate = #orderDate#,
+        </isNotEmpty>
+        LastUpdateDate = now()
+        WHERE ExchangeOrderID = #exchangeOrderId# AND Status != #status#
+    </update>
+
+    <select id="loadExchangeOrderByOrderId" parameterClass="map" resultMap="exchangeOrder">
+        <![CDATA[
+        select ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,Status,OrderDate,AddDate,LastUpdateDate,Memo
+        from FS_ExchangeOrder
+        where ExchangeOrderID = #exchangeOrderId#
+        ]]>
+    </select>
+
+    <select id="paginateExchangeOrderList" resultMap="exchangeOrder" parameterClass="map">
+        SELECT ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,Status,OrderDate,AddDate,LastUpdateDate,Memo
+        FROM FS_ExchangeOrder
+        WHERE ExchangeOrderID > 0
+        <isGreaterThan property="orderId" compareValue = "0" prepend="and">
+            ExchangeOrderID = #orderId#
+        </isGreaterThan>
+        <isNotNull property="addDateBegin" prepend="and">
+            AddDate &gt;= #addDateBegin#
+        </isNotNull>
+        <isNotNull property="addDateEnd" prepend="and">
+            AddDate &lt;= #addDateEnd#
+        </isNotNull>
+        ORDER BY ExchangeOrderID
+    </select>
+
+    <select id="paginateExchangeOrderList_COUNT" resultClass="int" parameterClass="map">
+        SELECT COUNT(ExchangeOrderID)
+        FROM FS_ExchangeOrder
+        WHERE ExchangeOrderID > 0
+        <isGreaterThan property="orderId" compareValue = "0" prepend="and">
+            ExchangeOrderID = #orderId#
+        </isGreaterThan>
+        <isNotNull property="addDateBegin" prepend="and">
+            AddDate &gt;= #addDateBegin#
+        </isNotNull>
+        <isNotNull property="addDateEnd" prepend="and">
+            AddDate &lt;= #addDateEnd#
+        </isNotNull>
+    </select>
+</sqlMap>

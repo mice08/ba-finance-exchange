@@ -2,12 +2,18 @@
 <!DOCTYPE log4j:configuration PUBLIC "-//log4j/log4j Configuration//EN" "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
 	threshold="null" debug="null">
-	<appender name="CONSOLE" class="com.dianping.combiz.misc.ExtendedConsoleAppender">
-		<param name="Target" value="System.out" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="[ba-finance-exchange-service]%d %-5p [%c] %m%n" />
-		</layout>
-	</appender>
+    <!--<appender name="CONSOLE" class="com.dianping.combiz.misc.ExtendedConsoleAppender">-->
+    <!--<param name="Target" value="System.out" />-->
+    <!--<layout class="org.apache.log4j.PatternLayout">-->
+    <!--<param name="ConversionPattern" value="[ba-finance-settle-biz]%d %-5p [%c] %m%n" />-->
+    <!--</layout>-->
+    <!--</appender>-->
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[ba-finance-exchange-service]%d %-5p [%c] %m%n" />
+        </layout>
+    </appender>
 
 	<appender name="avatarAppender" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="File" value="/data/applogs/ba-finance-exchange-service/logs/avatar.log" />

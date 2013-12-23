@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ShopFundAccountFlow">
+
+    <typeAlias alias="ShopFundAccountFlowData"
+               type="com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData"/>
+    <resultMap id="shopFundAccountFlowData" class="ShopFundAccountFlowData">
+        <result property="fundAccountFlowId" column="FAFlowID"/>
+        <result property="fundAccountId" column="FAID"/>
+        <result property="flowAmount" column="FlowAmount"/>
+        <result property="flowType" column="FlowType"/>
+        <result property="sourceType" column="SourceType"/>
+        <result property="exchangeOrderId" column="ExchangeOrderID"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="lastUpdateDate" column="LastUpdateDate"/>
+        <result property="memo" column="Memo"/>
+    </resultMap>
+
+    <insert id="insertShopFundAccountFlow" parameterClass="map">
+        <![CDATA[
+        	 insert into FS_ShopFundAccountFlow
+		            (FAID,
+		             FlowAmount,
+		             FlowType,
+		             SourceType,
+		             ExchangeOrderID,
+		             AddDate,
+		             LastUpdateDate,
+		             Memo
+		             )
+			values (#shopFundAccountFlowData.fundAccountId#,
+			         #shopFundAccountFlowData.flowAmount#,
+			         #shopFundAccountFlowData.flowType#,
+			         #shopFundAccountFlowData.sourceType#,
+			         #shopFundAccountFlowData.exchangeOrderId#,
+			         NOW(),
+			         NOW(),
+			         #shopFundAccountFlowData.memo#
+		            );
+ 		]]>
+        <selectKey resultClass="java.lang.Integer" keyProperty="fundAccountFlowId">
+            <![CDATA[
+			SELECT @@IDENTITY AS id
+		]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateExchangeOrderId" parameterClass="map">
+        <![CDATA[
+        UPDATE FS_ShopFundAccountFlow
+        SET ExchangeOrderID = #exchangeOrderId#,LastUpdateDate=NOW()
+        WHERE FAFlowID = #fundAccountFlowId#
+ 		]]>
+    </update>
+
+    <select id="loadShopFundAccountFlow" resultMap="shopFundAccountFlowData" parameterClass="map">
+        SELECT FAFlowID,FAID,FlowAmount,FlowType,SourceType,ExchangeOrderID,AddDate,LastUpdateDate,Memo
+        FROM FS_ShopFundAccountFlow
+        WHERE ExchangeOrderID = #exchangeOrderId#
+        AND FlowType = #flowType#
+        AND SourceType = #sourceType#
+    </select>
+</sqlMap>

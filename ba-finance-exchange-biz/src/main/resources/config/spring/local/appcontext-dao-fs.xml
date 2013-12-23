@@ -6,12 +6,31 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-    <bean id="shopFundAccountInfoDao" parent="parentDao">
-        <property name="proxyInterfaces" value="com.dianping.ba.finance.fundaccount.biz.dao.ShopFundAccountInfoDao" />
+    <bean id="exchangeOrderDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao" />
         <property name="target">
             <bean parent="fsMain.daoRealizeTarget">
-                <constructor-arg value="ShopFundAccountInfo" />
+                <constructor-arg value="ExchangeOrder" />
             </bean>
         </property>
     </bean>
+
+    <bean id="shopFundAccountDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountDao" />
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="ShopFundAccount" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="shopFundAccountFlowDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDao" />
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="ShopFundAccountFlow" />
+            </bean>
+        </property>
+    </bean>
+
 </beans>
