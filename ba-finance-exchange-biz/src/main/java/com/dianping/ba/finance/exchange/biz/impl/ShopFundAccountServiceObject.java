@@ -131,18 +131,19 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         //判断资金账户时候存在
         ShopFundAccountBean shopFundAccountBean = ShopFundAccountConvert.buildShopFundAccountBeanfromShopFundAccountFlowDTO(shopFundAccountFlowDTO);
         ShopFundAccountData shopFundAccountData = loadShopFundAccountData(shopFundAccountBean);
-        if (!isShopFundAccountDataValid(shopFundAccountData)) {
-            return -1;
+        int shopFundAccountId;
+        if (!isShopFundAccountDataExist(shopFundAccountData)) {
+            shopFundAccountData = ShopFundAccountConvert.buildShopFundAccountDataFromShopFundAccountFlowDTO(shopFundAccountFlowDTO);
+            shopFundAccountId = insertShopFundAccount(shopFundAccountData);
+        } else {
+            shopFundAccountId = shopFundAccountData.getFundAccountId();
         }
-        //插入资金账户  +余额
-        shopFundAccountData = ShopFundAccountConvert.buildShopFundAccountDataFromShopFundAccountFlowDTO(shopFundAccountFlowDTO);
-        int shopFundAccountId = insertShopFundAccount(shopFundAccountData);
         //插入资金流水
         ShopFundAccountFlowData shopFundAccountFlowData = ShopFundAccountConvert.buildShopFundAccountFlowDataFromShopFundAccountFlowDTO(shopFundAccountFlowDTO,shopFundAccountId);
         return insertShopFundAccountFlow(shopFundAccountFlowData);
     }
 
-    private boolean isShopFundAccountDataValid(ShopFundAccountData shopFundAccountData){
+    private boolean isShopFundAccountDataExist(ShopFundAccountData shopFundAccountData){
         if (shopFundAccountData == null|| shopFundAccountData.getFundAccountId() == 0) {
             return false;
         } else {
