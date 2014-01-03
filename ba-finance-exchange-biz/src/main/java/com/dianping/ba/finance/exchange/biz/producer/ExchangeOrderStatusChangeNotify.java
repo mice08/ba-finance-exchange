@@ -18,7 +18,7 @@ import java.util.Calendar;
  */
 public class ExchangeOrderStatusChangeNotify {
 
-    private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify");
+    private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.service.monitor.ExchangeOrderStatusChangeNotify");
     private Producer producerClient;
 
     public void exchangeOrderStatusChangeNotify(ExchangeOrderDTO exchangeOrderDTO) {
