@@ -30,7 +30,7 @@ import java.util.Calendar;
  */
 public class ShopFundAccountServiceObject implements ShopFundAccountService {
 
-    private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger(ShopFundAccountServiceObject.class);
+    private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.service.monitor.ShopFundAccountServiceObject");
 
     private ExchangeOrderService exchangeOrderService;
     private ShopFundAccountFlowDao shopFundAccountFlowDao;
