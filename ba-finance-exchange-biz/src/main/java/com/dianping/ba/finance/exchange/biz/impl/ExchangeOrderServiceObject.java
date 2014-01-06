@@ -31,7 +31,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     private ExchangeOrderDao exchangeOrderDao;
     private ExchangeOrderStatusChangeNotify exchangeOrderStatusChangeNotify;
 
-    private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger(ExchangeOrderServiceObject.class);
+    private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.service.monitor.ExchangeOrderServiceObject");
 
     @Override
     public int insertExchangeOrder(ExchangeOrderData exchangeOrderData) {
