@@ -37,4 +37,9 @@ public class BizUtils {
         sb.append("  " + method + "  " + result + "  " + params+":");
         return sb.toString();
     }
+
+    public static String createSequence(String clientNo, String bizId) {
+        return clientNo + "|" + bizId;
+    }
+
 }

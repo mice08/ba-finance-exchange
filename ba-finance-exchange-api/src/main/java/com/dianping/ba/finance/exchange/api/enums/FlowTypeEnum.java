@@ -53,4 +53,8 @@ public enum FlowTypeEnum {
 	public int getFlowType() {
 		return flowType;
 	}
+
+    public int value(){
+        return flowType;
+    }
 }

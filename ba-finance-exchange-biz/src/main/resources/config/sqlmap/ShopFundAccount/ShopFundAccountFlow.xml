@@ -26,6 +26,7 @@
 		             ExchangeOrderID,
 		             AddDate,
 		             LastUpdateDate,
+		             Sequence,
 		             Memo
 		             )
 			values (#shopFundAccountFlowData.fundAccountId#,
@@ -35,6 +36,7 @@
 			         #shopFundAccountFlowData.exchangeOrderId#,
 			         NOW(),
 			         NOW(),
+			         #shopFundAccountFlowData.sequence#,
 			         #shopFundAccountFlowData.memo#
 		            );
  		]]>
