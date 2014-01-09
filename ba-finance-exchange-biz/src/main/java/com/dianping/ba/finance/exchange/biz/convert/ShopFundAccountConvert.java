@@ -5,6 +5,7 @@ import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
+import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 
 import java.math.BigDecimal;
 
@@ -63,8 +64,9 @@ public class ShopFundAccountConvert {
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(shopFundAccountId);
         shopFundAccountFlowData.setFlowAmount(shopFundAccountFlowDTO.getFlowAmount());
-        shopFundAccountFlowData.setFlowType(shopFundAccountFlowDTO.getFlowType().ordinal());
-        shopFundAccountFlowData.setSourceType(shopFundAccountFlowDTO.getSourceType().ordinal());
+        shopFundAccountFlowData.setFlowType(shopFundAccountFlowDTO.getFlowType().value());
+        shopFundAccountFlowData.setSourceType(shopFundAccountFlowDTO.getSourceType().value());
+        shopFundAccountFlowData.setSequence(BizUtils.createSequence(shopFundAccountFlowDTO.getSourceType().clientNo(),shopFundAccountFlowDTO.getBizId()));
         //exchangeOrderId 先为0 后面回写
         shopFundAccountFlowData.setExchangeOrderId(0);
         return shopFundAccountFlowData;

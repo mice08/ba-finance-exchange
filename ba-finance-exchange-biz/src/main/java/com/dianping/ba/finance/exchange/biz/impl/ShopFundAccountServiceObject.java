@@ -76,6 +76,8 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         return null;
     }
 
+
+
     @Override
     public ShopFundAccountData loadShopFundAccountData(ShopFundAccountBean shopFundAccountBean) {
         return shopFundAccountDao.loadShopFundAccountData(shopFundAccountBean);

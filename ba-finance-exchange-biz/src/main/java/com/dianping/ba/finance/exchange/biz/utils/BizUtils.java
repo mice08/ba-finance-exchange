@@ -35,6 +35,12 @@ public class BizUtils {
         return sb.toString();
     }
 
+
+    public static String createSequence(String clientNo, String bizId) {
+        return clientNo + "|" + bizId;
+    }
+
+
     /**
      * 记录日志
      *

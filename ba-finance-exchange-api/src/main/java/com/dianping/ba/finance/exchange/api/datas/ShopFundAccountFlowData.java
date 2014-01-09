@@ -50,6 +50,11 @@ public class ShopFundAccountFlowData implements Serializable {
      */
     private String memo;
 
+    /**
+     * 唯一序列号
+     */
+    private String sequence;
+
     public int getFundAccountFlowId() {
         return fundAccountFlowId;
     }
@@ -120,5 +125,13 @@ public class ShopFundAccountFlowData implements Serializable {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public String getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(String sequence) {
+        this.sequence = sequence;
     }
 }
