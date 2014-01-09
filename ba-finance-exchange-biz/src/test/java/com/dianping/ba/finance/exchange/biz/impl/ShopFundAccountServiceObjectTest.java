@@ -36,18 +36,11 @@ import static org.mockito.Mockito.when;
  * Time: 下午4:18
  * To change this template use File | Settings | File Templates.
  */
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:/config/spring/common/appcontext-*.xml", "classpath*:/config/spring/local/appcontext-*.xml" })
-
 public class ShopFundAccountServiceObjectTest {
     private ShopFundAccountFlowDao shopFundAccountFlowDaoMock;
     private ShopFundAccountDao shopFundAccountDaoMock;
     private ShopFundAccountServiceObject shopFundAccountServiceObjectStub;
     private ExchangeOrderServiceObject exchangeOrderServiceObjectMock;
-
-    @Autowired
-    private ShopFundAccountService shopFundAccountServiceWithoutMock;
 
     @Before
     public void runBeforeTest() {
@@ -67,20 +60,6 @@ public class ShopFundAccountServiceObjectTest {
     }
 
     @Test
-    public void createShopFundAccountFlowWhenAccountNull(){
-        ShopFundAccountFlowDTO input = setShopFundAccountFlowDTO();
-        int exchangeOrderId=3;
-        int fundAccountFlowId=2;
-        when(shopFundAccountDaoMock.loadShopFundAccountData(any(ShopFundAccountBean.class))).thenReturn(null);
-        when(shopFundAccountFlowDaoMock.insertShopFundAccountFlow(any(ShopFundAccountFlowData.class))).thenReturn(fundAccountFlowId);
-        when(exchangeOrderServiceObjectMock.insertExchangeOrder(any(ExchangeOrderData.class))).thenReturn(exchangeOrderId);
-        when(shopFundAccountFlowDaoMock.updateExchangeOrderId(exchangeOrderId,fundAccountFlowId)).thenReturn(4);
-
-        int actual=shopFundAccountServiceObjectStub.createShopFundAccountFlow(input);
-        Assert.assertEquals(3,actual);
-    }
-
-    @Test
     public void createShopFundAccountFlowWhenAccountExist(){
         ShopFundAccountFlowDTO input = setShopFundAccountFlowDTO();
         int exchangeOrderId=3;
@@ -94,12 +73,8 @@ public class ShopFundAccountServiceObjectTest {
         when(shopFundAccountFlowDaoMock.updateExchangeOrderId(exchangeOrderId,fundAccountFlowId)).thenReturn(4);
 
         int actual=shopFundAccountServiceObjectStub.createShopFundAccountFlow(input);
-        Assert.assertEquals(3,actual);
+        Assert.assertEquals(2,actual);
 
-        //db
-        int result=shopFundAccountServiceWithoutMock.createShopFundAccountFlow(input);
-        System.out.print("exchangeOrderId:"+result);
-        System.out.println();
     }
 
     private ShopFundAccountFlowDTO setShopFundAccountFlowDTO() {
