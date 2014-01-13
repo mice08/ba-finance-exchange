@@ -91,7 +91,7 @@
         eo.BankName,
         eo.Status,
         eo.Memo,
-        eo.OrderDate
+        IFNULL(eo.OrderDate, "")
         FROM
         FS_ExchangeOrder eo,
         FS_ShopFundAccountFlow flow,
