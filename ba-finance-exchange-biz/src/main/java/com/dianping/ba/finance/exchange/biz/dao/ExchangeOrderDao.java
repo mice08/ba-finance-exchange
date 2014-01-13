@@ -6,10 +6,12 @@ import com.dianping.avatar.dao.annotation.DAOActionType;
 import com.dianping.avatar.dao.annotation.DAOParam;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSearchStatistics;
 import com.dianping.core.type.PageModel;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -62,4 +64,12 @@ public interface ExchangeOrderDao extends GenericDao {
 	PageModel paginateExchangeOrderList(@DAOParam("searchBean") ExchangeOrderSearchBean searchBean,
                                         @DAOParam("page") int page,
                                         @DAOParam("max") int max);
+
+    /**
+     * 获取付款总和的结果
+     * @param searchBean   查询条件
+     * @return
+     */
+    @DAOAction(action = DAOActionType.LOAD)
+    ExchangeOrderSearchStatistics getExchangeOrderStatisticResult(@DAOParam("searchBean") ExchangeOrderSearchBean searchBean);
 }

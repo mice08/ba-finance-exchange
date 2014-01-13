@@ -6,6 +6,7 @@ import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSearchStatistics;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
 import com.dianping.ba.finance.exchange.biz.convert.ExchangeOrderConvert;
@@ -17,10 +18,7 @@ import com.dianping.ba.finance.exchange.biz.utils.JsonUtils;
 import com.dianping.core.type.PageModel;
 import org.apache.log4j.Level;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -79,6 +77,21 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
                 //ignore
             }
             return new PageModel();
+        }
+    }
+
+    @Override
+    public ExchangeOrderSearchStatistics getExchangeOrderStatisticResult(ExchangeOrderSearchBean searchBean) {
+        long startTime = System.currentTimeMillis();
+        try{
+            return exchangeOrderDao.getExchangeOrderStatisticResult(searchBean);
+        }catch(Exception e){
+            try{
+                BizUtils.log(monitorLogger,startTime,"getExchangeOrderStatisticResult", Level.ERROR, JsonUtils.toStr(searchBean),e);
+            }catch(Exception ex){
+                //ignore
+            }
+            return null;
         }
     }
 
