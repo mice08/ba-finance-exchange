@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
+import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
@@ -65,8 +66,8 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
-    public PageModel paginateExchangeOrderList(int orderId, Date addDateBegin, Date addDateEnd, int page, int pageSize) {
-        return exchangeOrderDao.paginateExchangeOrderList(orderId, addDateBegin, addDateEnd, page, pageSize);
+    public PageModel paginateExchangeOrderList(ExchangeOrderSearchBean searchBean, int page, int pageSize) {
+        return exchangeOrderDao.paginateExchangeOrderList(searchBean, page, pageSize);
     }
 
     private boolean updateExchangeOrderToSuccess(int orderId) {

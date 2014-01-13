@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.api;
 
+import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.core.type.PageModel;
@@ -35,12 +36,10 @@ public interface ExchangeOrderService {
 	/**
 	 * 分页获取支付订单
 	 *
-	 * @param orderId      支付订单ID
-	 * @param addDateBegin 产生日期开始
-	 * @param addDateEnd   产生日期结束
+	 * @param searchBean   查询条件
 	 * @param page         第几页
 	 * @param pageSize     分页大小
 	 * @return
 	 */
-	PageModel paginateExchangeOrderList(int orderId, Date addDateBegin, Date addDateEnd, int page, int pageSize);
+	PageModel paginateExchangeOrderList(ExchangeOrderSearchBean searchBean, int page, int pageSize);
 }

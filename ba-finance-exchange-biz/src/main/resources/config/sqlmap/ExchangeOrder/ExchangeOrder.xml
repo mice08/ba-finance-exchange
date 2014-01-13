@@ -17,6 +17,21 @@
         <result property="memo" column="Memo"/>
     </resultMap>
 
+    <typeAlias alias="ExchangeOrderDisplayData" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData"/>
+    <resultMap id="exchangeOrderDisplayData" class="ExchangeOrderDisplayData">
+        <result property="exchangeOrderId" column="ExchangeOrderID"/>
+        <result property="customerGlobalId" column="CustomerGlobalId"/>
+        <result property="companyGlobalId" column="CompanyGlobalId"/>
+        <result property="shopId" column="ShopId"/>
+        <result property="orderAmount" column="OrderAmount"/>
+        <result property="bankAccountNo" column="BankAccountNo"/>
+        <result property="bankAccountName" column="BankAccountName"/>
+        <result property="bankName" column="BankName"/>
+        <result property="status" column="Status"/>
+        <result property="memo" column="Memo"/>
+        <result property="orderDate" column="OrderDate"/>
+    </resultMap>
+
     <insert id="insertExchangeOrder" parameterClass="map">
         <![CDATA[
         	 insert into FS_ExchangeOrder
@@ -64,34 +79,88 @@
         ]]>
     </select>
 
-    <select id="paginateExchangeOrderList" resultMap="exchangeOrder" parameterClass="map">
-        SELECT ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,Status,OrderDate,AddDate,LastUpdateDate,Memo
-        FROM FS_ExchangeOrder
-        WHERE ExchangeOrderID > 0
-        <isGreaterThan property="orderId" compareValue = "0" prepend="and">
-            ExchangeOrderID = #orderId#
+    <select id="paginateExchangeOrderList" resultMap="exchangeOrderDisplayData" parameterClass="map">
+        SELECT
+        eo.ExchangeOrderID,
+        sa.CustomerGlobalID,
+        sa.CompanyGlobalID,
+        sa.ShopID,
+        eo.OrderAmount,
+        eo.BankAccountNo,
+        eo.BankAccountName,
+        eo.BankName,
+        eo.Status,
+        eo.Memo,
+        eo.OrderDate
+        FROM
+        FS_ExchangeOrder eo,
+        FS_ShopFundAccountFlow flow,
+        FS_ShopFundAccount sa
+        WHERE
+        eo.ExchangeOrderID = flow.ExchangeOrderID
+        AND flow.FAID = sa.FAID
+        AND eo.OrderDate &lt;= NOW()
+        <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
+            eo.ExchangeOrderID = #orderId#
         </isGreaterThan>
-        <isNotNull property="addDateBegin" prepend="and">
-            AddDate &gt;= #addDateBegin#
+        <isNotNull property="searchBean.beginDate" prepend="and">
+            eo.OrderDate &gt;= #searchBean.beginDate#
         </isNotNull>
-        <isNotNull property="addDateEnd" prepend="and">
-            AddDate &lt;= #addDateEnd#
+        <isNotNull property="searchBean.endDate" prepend="and">
+            eo.OrderDate &lt;= #searchBean.endDate#
         </isNotNull>
-        ORDER BY ExchangeOrderID
+        <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
+            eo.Status = #searchBean.status#
+        </isGreaterThan>
+        GROUP BY
+        eo.ExchangeOrderID,
+        sa.CustomerGlobalID,
+        sa.CompanyGlobalID,
+        sa.ShopID,
+        eo.OrderAmount,
+        eo.BankAccountNo,
+        eo.BankAccountName,
+        eo.BankName,
+        eo.Status,
+        eo.Memo,
+        eo.OrderDate
+        ORDER BY eo.ExchangeOrderID
     </select>
 
     <select id="paginateExchangeOrderList_COUNT" resultClass="int" parameterClass="map">
-        SELECT COUNT(ExchangeOrderID)
-        FROM FS_ExchangeOrder
-        WHERE ExchangeOrderID > 0
-        <isGreaterThan property="orderId" compareValue = "0" prepend="and">
-            ExchangeOrderID = #orderId#
+        SELECT COUNT(eo.ExchangeOrderID)
+        FROM
+        FS_ExchangeOrder eo,
+        FS_ShopFundAccountFlow flow,
+        FS_ShopFundAccount sa
+        WHERE
+        eo.ExchangeOrderID = flow.ExchangeOrderID
+        AND flow.FAID = sa.FAID
+        AND eo.OrderDate &lt;= NOW()
+        <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
+            eo.ExchangeOrderID = #orderId#
         </isGreaterThan>
-        <isNotNull property="addDateBegin" prepend="and">
-            AddDate &gt;= #addDateBegin#
+        <isNotNull property="searchBean.beginDate" prepend="and">
+            eo.OrderDate &gt;= #searchBean.beginDate#
         </isNotNull>
-        <isNotNull property="addDateEnd" prepend="and">
-            AddDate &lt;= #addDateEnd#
+        <isNotNull property="searchBean.endDate" prepend="and">
+            eo.OrderDate &lt;= #searchBean.endDate#
         </isNotNull>
+        <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
+            eo.Status = #searchBean.status#
+        </isGreaterThan>
+        GROUP BY
+        eo.ExchangeOrderID,
+        sa.CustomerGlobalID,
+        sa.CompanyGlobalID,
+        sa.ShopID,
+        eo.OrderAmount,
+        eo.BankAccountNo,
+        eo.BankAccountName,
+        eo.BankName,
+        eo.Status,
+        eo.Memo,
+        eo.OrderDate
+        ORDER BY eo.ExchangeOrderID
     </select>
 </sqlMap>
