@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.api.beans;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -9,7 +10,8 @@ import java.util.Date;
  * Time: 上午11:39
  * To change this template use File | Settings | File Templates.
  */
-public class ExchangeOrderSearchBean {
+public class ExchangeOrderSearchBean implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private int exchangeOrderId;
     private Date beginDate;
