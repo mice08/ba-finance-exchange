@@ -4,6 +4,7 @@ import com.dianping.avatar.dao.GenericDao;
 import com.dianping.avatar.dao.annotation.DAOAction;
 import com.dianping.avatar.dao.annotation.DAOActionType;
 import com.dianping.avatar.dao.annotation.DAOParam;
+import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.core.type.PageModel;
 
@@ -52,13 +53,13 @@ public interface ExchangeOrderDao extends GenericDao {
 	/**
 	 * 分页查询交易指令
 	 *
-	 * @param orderId
-	 * @param addDateBegin
-	 * @param addDateEnd
+	 * @param searchBean
 	 * @param page
 	 * @param max
 	 * @return
 	 */
 	@DAOAction(action = DAOActionType.PAGE)
-	PageModel paginateExchangeOrderList(@DAOParam("orderId") int orderId, @DAOParam("addDateBegin") Date addDateBegin, @DAOParam("addDateEnd") Date addDateEnd, @DAOParam("page") int page, @DAOParam("max") int max);
+	PageModel paginateExchangeOrderList(@DAOParam("searchBean") ExchangeOrderSearchBean searchBean,
+                                        @DAOParam("page") int page,
+                                        @DAOParam("max") int max);
 }
