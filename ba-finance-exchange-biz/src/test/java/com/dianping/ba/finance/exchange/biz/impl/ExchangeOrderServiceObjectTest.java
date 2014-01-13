@@ -1,11 +1,13 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
+import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
+import com.dianping.core.type.PageModel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -160,5 +162,14 @@ public class ExchangeOrderServiceObjectTest {
         when(exchangeOrderDaoMock.insertExchangeOrder(exchangeOrderData)).thenReturn(1);
         int actual=exchangeOrderServiceObjectStub.insertExchangeOrder(exchangeOrderData);
         Assert.assertEquals(1,actual);
+    }
+
+    @Test
+    public void testPaginateExchangeOrderList() {
+        PageModel pageModel = new PageModel();
+        when(exchangeOrderDaoMock.paginateExchangeOrderList(any(ExchangeOrderSearchBean.class), anyInt(), anyInt()))
+                .thenReturn(pageModel);
+        PageModel result = exchangeOrderServiceObjectStub.paginateExchangeOrderList(new ExchangeOrderSearchBean(), 1, 20);
+        Assert.assertNotNull(result);
     }
 }
