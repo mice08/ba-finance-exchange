@@ -56,7 +56,7 @@
 			         #exchangeOrderData.bankAccountName#,
 			         #exchangeOrderData.bankName#,
 			         NOW(),
-			         NOW(),
+			         #exchangeOrderData.orderDate#,
 			         NOW(),
 			         #exchangeOrderData.memo#
 			        );
