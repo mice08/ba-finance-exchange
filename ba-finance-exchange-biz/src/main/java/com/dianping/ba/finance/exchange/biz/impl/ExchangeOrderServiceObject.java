@@ -13,7 +13,9 @@ import com.dianping.ba.finance.exchange.biz.convert.ShopFundAccountConvert;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
+import com.dianping.ba.finance.exchange.biz.utils.JsonUtils;
 import com.dianping.core.type.PageModel;
+import org.apache.log4j.Level;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -67,7 +69,17 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
     @Override
     public PageModel paginateExchangeOrderList(ExchangeOrderSearchBean searchBean, int page, int pageSize) {
-        return exchangeOrderDao.paginateExchangeOrderList(searchBean, page, pageSize);
+        long startTime = System.currentTimeMillis();
+        try{
+            return exchangeOrderDao.paginateExchangeOrderList(searchBean, page, pageSize);
+        }catch(Exception e){
+            try{
+                BizUtils.log(monitorLogger,startTime,"paginateExchangeOrderList", Level.ERROR, JsonUtils.toStr(searchBean),e);
+            }catch(Exception ex){
+                //ignore
+            }
+            return new PageModel();
+        }
     }
 
     private boolean updateExchangeOrderToSuccess(int orderId) {
