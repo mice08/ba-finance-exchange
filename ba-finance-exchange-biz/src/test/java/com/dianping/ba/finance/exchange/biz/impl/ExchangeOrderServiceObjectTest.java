@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSearchStatistics;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
@@ -12,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -171,5 +173,18 @@ public class ExchangeOrderServiceObjectTest {
                 .thenReturn(pageModel);
         PageModel result = exchangeOrderServiceObjectStub.paginateExchangeOrderList(new ExchangeOrderSearchBean(), 1, 20);
         Assert.assertNotNull(result);
+    }
+
+    @Test
+    public void testGetExchangeOrderStatisticResult() {
+        ExchangeOrderSearchStatistics result = new ExchangeOrderSearchStatistics();
+        result.setTotalAmount(new BigDecimal(1.0));
+        result.setTotalCount(10);
+        when(exchangeOrderDaoMock.getExchangeOrderStatisticResult(any(ExchangeOrderSearchBean.class)))
+                .thenReturn(result);
+        ExchangeOrderSearchStatistics result2 = exchangeOrderServiceObjectStub.getExchangeOrderStatisticResult(new ExchangeOrderSearchBean());
+        Assert.assertEquals(new BigDecimal(1.0), result2.getTotalAmount());
+        Assert.assertEquals(10, result2.getTotalCount());
+
     }
 }
