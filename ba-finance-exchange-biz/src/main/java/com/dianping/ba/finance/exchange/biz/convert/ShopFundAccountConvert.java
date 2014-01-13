@@ -5,6 +5,7 @@ import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
+import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 
 import java.math.BigDecimal;
 
@@ -18,6 +19,7 @@ import java.math.BigDecimal;
 public class ShopFundAccountConvert {
     /**
      * 转换成查询资金账户的对象
+     *
      * @param shopFundAccountFlowDTO
      * @return
      * @throws Exception
@@ -33,6 +35,7 @@ public class ShopFundAccountConvert {
 
     /**
      * 转换成插入资金账户需要的Data
+     *
      * @param shopFundAccountFlowDTO
      * @return
      */
@@ -52,6 +55,7 @@ public class ShopFundAccountConvert {
 
     /**
      * 转换成插入资金流水的Data
+     *
      * @param shopFundAccountFlowDTO
      * @param shopFundAccountId
      * @return
@@ -60,8 +64,9 @@ public class ShopFundAccountConvert {
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(shopFundAccountId);
         shopFundAccountFlowData.setFlowAmount(shopFundAccountFlowDTO.getFlowAmount());
-        shopFundAccountFlowData.setFlowType(shopFundAccountFlowDTO.getFlowType().ordinal());
-        shopFundAccountFlowData.setSourceType(shopFundAccountFlowDTO.getSourceType().ordinal());
+        shopFundAccountFlowData.setFlowType(shopFundAccountFlowDTO.getFlowType().value());
+        shopFundAccountFlowData.setSourceType(shopFundAccountFlowDTO.getSourceType().value());
+        shopFundAccountFlowData.setSequence(BizUtils.createSequence(shopFundAccountFlowDTO.getSourceType().clientNo(),shopFundAccountFlowDTO.getBizId()));
         //exchangeOrderId 先为0 后面回写
         shopFundAccountFlowData.setExchangeOrderId(0);
         return shopFundAccountFlowData;
@@ -69,6 +74,7 @@ public class ShopFundAccountConvert {
 
     /**
      * 构建交易指令bean
+     *
      * @return
      */
     public static ExchangeOrderData buildExchangeOrderData(ShopFundAccountFlowDTO shopFundAccountFlowDTO) {
@@ -80,4 +86,5 @@ public class ShopFundAccountConvert {
         exchangeOrderData.setBankName(shopFundAccountFlowDTO.getBankName());
         return exchangeOrderData;
     }
+
 }

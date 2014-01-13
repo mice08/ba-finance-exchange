@@ -1,6 +1,8 @@
 package com.dianping.ba.finance.exchange.api.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,6 +18,11 @@ public class  GenericResult<T> implements Serializable {
     private List<T> successList;
     private List<T> failList;
 
+    public GenericResult() {
+        successList = new ArrayList<T>();
+        failList = new ArrayList<T>();
+    }
+
     public List<T> getSuccessList() {
         return successList;
     }
@@ -30,6 +37,26 @@ public class  GenericResult<T> implements Serializable {
 
     public void setFailList(List<T> failList) {
         this.failList = failList;
+    }
+
+    public void addSuccess(T result){
+        successList.add(result);
+    }
+
+    public void addFail(T result) {
+        failList.add(result);
+    }
+
+    public boolean hasFailResult(){
+       if(failList.size() > 0){
+           return true;
+       } else {
+           return false;
+       }
+    }
+
+    public String failListToString(){
+       return Arrays.asList(failList).toString();
     }
 
 
