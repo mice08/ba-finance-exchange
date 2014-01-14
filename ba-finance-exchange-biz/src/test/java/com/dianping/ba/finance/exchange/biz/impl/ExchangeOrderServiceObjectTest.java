@@ -3,7 +3,6 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSearchStatistics;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
@@ -175,16 +174,27 @@ public class ExchangeOrderServiceObjectTest {
     }
 
     @Test
-    public void testGetExchangeOrderStatisticResult() {
-        ExchangeOrderSearchStatistics result = new ExchangeOrderSearchStatistics();
-        result.setTotalAmount(new BigDecimal(1.0));
-        result.setTotalCount(10);
-        when(exchangeOrderDaoMock.getExchangeOrderStatisticResult(any(ExchangeOrderSearchBean.class)))
-                .thenReturn(result);
-        ExchangeOrderSearchStatistics result2 = exchangeOrderServiceObjectStub.getExchangeOrderStatisticResult(new ExchangeOrderSearchBean());
-        Assert.assertEquals(new BigDecimal(1.0), result2.getTotalAmount());
-        Assert.assertEquals(10, result2.getTotalCount());
+    public void testPaginateExchangeOrderListThrowException() {
+        when(exchangeOrderDaoMock.paginateExchangeOrderList(any(ExchangeOrderSearchBean.class), anyInt(), anyInt()))
+                .thenThrow(new RuntimeException());
+        PageModel result = exchangeOrderServiceObjectStub.paginateExchangeOrderList(new ExchangeOrderSearchBean(), 1, 20);
+        Assert.assertNotNull(result);
+    }
 
+    @Test
+    public void testGetExchangeOrderStatisticResult() {
+        when(exchangeOrderDaoMock.findExchangeOrderTotalAmount(any(ExchangeOrderSearchBean.class)))
+                .thenReturn(new BigDecimal(1.0));
+        BigDecimal result = exchangeOrderServiceObjectStub.findExchangeOrderTotalAmount(new ExchangeOrderSearchBean());
+        Assert.assertEquals(new BigDecimal(1.0), result);
+    }
+
+    @Test
+    public void testGetExchangeOrderStatisticResultThrowException() {
+        when(exchangeOrderDaoMock.findExchangeOrderTotalAmount(any(ExchangeOrderSearchBean.class)))
+                .thenThrow(new RuntimeException());
+        BigDecimal r = exchangeOrderServiceObjectStub.findExchangeOrderTotalAmount(new ExchangeOrderSearchBean());
+        Assert.assertEquals(new BigDecimal(0), r);
     }
 
     @Test

@@ -6,7 +6,6 @@ import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSearchStatistics;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.biz.convert.ExchangeOrderConvert;
@@ -17,6 +16,7 @@ import com.dianping.ba.finance.exchange.biz.utils.JsonUtils;
 import com.dianping.core.type.PageModel;
 import org.apache.log4j.Level;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -67,12 +67,12 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     @Override
     public PageModel paginateExchangeOrderList(ExchangeOrderSearchBean searchBean, int page, int pageSize) {
         long startTime = System.currentTimeMillis();
-        try{
+        try {
             return exchangeOrderDao.paginateExchangeOrderList(searchBean, page, pageSize);
-        }catch(Exception e){
-            try{
-                BizUtils.log(monitorLogger,startTime,"paginateExchangeOrderList", Level.ERROR, JsonUtils.toStr(searchBean),e);
-            }catch(Exception ex){
+        } catch (Exception e) {
+            try {
+                BizUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, JsonUtils.toStr(searchBean), e);
+            } catch (Exception ex) {
                 //ignore
             }
             return new PageModel();
@@ -80,17 +80,17 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
-    public ExchangeOrderSearchStatistics getExchangeOrderStatisticResult(ExchangeOrderSearchBean searchBean) {
+    public BigDecimal findExchangeOrderTotalAmount(ExchangeOrderSearchBean searchBean) {
         long startTime = System.currentTimeMillis();
-        try{
-            return exchangeOrderDao.getExchangeOrderStatisticResult(searchBean);
-        }catch(Exception e){
-            try{
-                BizUtils.log(monitorLogger,startTime,"getExchangeOrderStatisticResult", Level.ERROR, JsonUtils.toStr(searchBean),e);
-            }catch(Exception ex){
+        try {
+            return exchangeOrderDao.findExchangeOrderTotalAmount(searchBean);
+        } catch (Exception e) {
+            try {
+                BizUtils.log(monitorLogger, startTime, "findExchangeOrderTotalAmount", Level.ERROR, JsonUtils.toStr(searchBean), e);
+            } catch (Exception ex) {
                 //ignore
             }
-            return null;
+            return new BigDecimal(0);
         }
     }
 
