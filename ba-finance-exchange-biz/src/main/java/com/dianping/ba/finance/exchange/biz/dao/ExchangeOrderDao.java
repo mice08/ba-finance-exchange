@@ -68,6 +68,6 @@ public interface ExchangeOrderDao extends GenericDao {
      * @param searchBean   查询条件
      * @return
      */
-    @DAOAction(action = DAOActionType.QUERY)
+    @DAOAction(action = DAOActionType.LOAD)
     BigDecimal findExchangeOrderTotalAmount(@DAOParam("searchBean") ExchangeOrderSearchBean searchBean);
 }
