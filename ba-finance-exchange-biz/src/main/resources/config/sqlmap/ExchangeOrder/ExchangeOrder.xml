@@ -170,7 +170,7 @@
     </select>
 
 
-    <select id="getExchangeOrderTotalAmount" resultClass="java.math.BigDecimal" parameterClass="map">
+    <select id="findExchangeOrderTotalAmount" resultClass="java.math.BigDecimal" parameterClass="map">
         SELECT
         SUM(eo.OrderAmount) AS totalAmount
         FROM
