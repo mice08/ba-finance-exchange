@@ -18,8 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -186,5 +185,39 @@ public class ExchangeOrderServiceObjectTest {
         Assert.assertEquals(new BigDecimal(1.0), result2.getTotalAmount());
         Assert.assertEquals(10, result2.getTotalCount());
 
+    }
+
+    @Test
+    public void testUpdateExchangeOrderToPending() {
+        List<Integer> orderIds = new ArrayList<Integer>();
+        orderIds.add(1);
+        orderIds.add(2);
+        orderIds.add(3);
+
+        when(exchangeOrderDaoMock.updateExchangeOrderToPending(anyListOf(Integer.class), anyInt())).thenReturn(3);
+
+        boolean actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds, ExchangeOrderStatusEnum.PENDING);
+        Assert.assertEquals(true, actual);
+    }
+
+    @Test
+    public void testUpdateExchangeOrderToPendingFalse() {
+        List<Integer> orderIds = new ArrayList<Integer>();
+        orderIds.add(1);
+        orderIds.add(2);
+        orderIds.add(3);
+
+        when(exchangeOrderDaoMock.updateExchangeOrderToPending(anyListOf(Integer.class), anyInt())).thenReturn(0);
+
+        boolean actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds, ExchangeOrderStatusEnum.PENDING);
+        Assert.assertEquals(false, actual);
+    }
+
+    @Test
+    public void testUpdateExchangeOrderToPendingError() {
+        List<Integer> orderIds = new ArrayList<Integer>();
+
+        boolean actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds, ExchangeOrderStatusEnum.PENDING);
+        Assert.assertEquals(false, actual);
     }
 }

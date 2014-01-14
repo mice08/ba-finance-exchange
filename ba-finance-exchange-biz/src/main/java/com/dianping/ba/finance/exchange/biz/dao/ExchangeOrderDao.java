@@ -72,4 +72,13 @@ public interface ExchangeOrderDao extends GenericDao {
      */
     @DAOAction(action = DAOActionType.LOAD)
     ExchangeOrderSearchStatistics getExchangeOrderStatisticResult(@DAOParam("searchBean") ExchangeOrderSearchBean searchBean);
+
+    /**
+     * 批量更新交易订单到处理中
+     * @param orderIds
+     * @param status 更新的状态
+     * @return
+     */
+    @DAOAction(action = DAOActionType.UPDATE)
+    int updateExchangeOrderToPending(@DAOParam("orderIds") List<Integer> orderIds,@DAOParam("status") int status);
 }

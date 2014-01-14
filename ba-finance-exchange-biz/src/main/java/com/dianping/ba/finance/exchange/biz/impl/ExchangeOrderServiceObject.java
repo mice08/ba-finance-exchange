@@ -95,6 +95,18 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         }
     }
 
+    @Override
+    public boolean updateExchangeOrderToPending(List<Integer> orderIds,ExchangeOrderStatusEnum exchangeOrderStatus){
+        long startTime = System.currentTimeMillis();
+        try{
+            if(exchangeOrderDao.updateExchangeOrderToPending(orderIds,exchangeOrderStatus.value())>0) {
+               return true;
+            }
+        }catch(Exception e){
+            BizUtils.log(monitorLogger,startTime,"updateExchangeOrderToPending", Level.ERROR, BizUtils.createLogParams(orderIds),e);
+        }
+        return false;
+    }
     private boolean updateExchangeOrderToSuccess(int orderId) {
         if (orderId <= 0) {
             return false;

@@ -4,6 +4,7 @@ import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSearchStatistics;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
 import com.dianping.core.type.PageModel;
 
 import java.util.Date;
@@ -51,4 +52,12 @@ public interface ExchangeOrderService {
      * @return
      */
     ExchangeOrderSearchStatistics getExchangeOrderStatisticResult(ExchangeOrderSearchBean searchBean);
+
+    /**
+     * 批量更新支付订单到处理中
+     * @param orderIds
+     * @param exchangeOrderStatus 更新的状态
+     * @return
+     */
+    boolean updateExchangeOrderToPending(List<Integer> orderIds,ExchangeOrderStatusEnum exchangeOrderStatus);
 }

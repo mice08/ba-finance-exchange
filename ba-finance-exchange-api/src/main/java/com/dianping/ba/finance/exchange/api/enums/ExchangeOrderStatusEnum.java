@@ -73,4 +73,8 @@ public enum ExchangeOrderStatusEnum {
 				return DEFAULT;
 		}
 	}
+
+    public int value(){
+        return exchangeOrderStatus;
+    }
 }
