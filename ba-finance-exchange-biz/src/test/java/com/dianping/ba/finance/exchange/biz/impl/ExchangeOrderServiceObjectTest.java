@@ -190,10 +190,11 @@ public class ExchangeOrderServiceObjectTest {
         Assert.assertEquals(new BigDecimal(1.0), result);
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void testGetExchangeOrderStatisticResultThrowException() {
         when(exchangeOrderDaoMock.findExchangeOrderTotalAmount(any(ExchangeOrderSearchBean.class)))
                 .thenThrow(new RuntimeException());
-        exchangeOrderServiceObjectStub.findExchangeOrderTotalAmount(new ExchangeOrderSearchBean());
+        BigDecimal r = exchangeOrderServiceObjectStub.findExchangeOrderTotalAmount(new ExchangeOrderSearchBean());
+        Assert.assertEquals(new BigDecimal(0), r);
     }
 }
