@@ -74,6 +74,12 @@ public interface ExchangeOrderDao extends GenericDao {
     @DAOAction(action = DAOActionType.UPDATE)
     int updateExchangeOrderToPending(@DAOParam("orderIds") List<Integer> orderIds,@DAOParam("status") int status);
 
+    /**
+     * 获取付款单总额
+     * @param searchBean
+     * @return
+     */
+    @DAOAction(action = DAOActionType.LOAD)
     BigDecimal findExchangeOrderTotalAmount(@DAOParam("searchBean") ExchangeOrderSearchBean searchBean);
 
 }
