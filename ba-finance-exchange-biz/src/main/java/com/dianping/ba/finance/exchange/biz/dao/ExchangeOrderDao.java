@@ -10,6 +10,7 @@ import com.dianping.core.type.PageModel;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -63,11 +64,22 @@ public interface ExchangeOrderDao extends GenericDao {
                                         @DAOParam("page") int page,
                                         @DAOParam("max") int max);
 
+
     /**
-     * 获取付款总和的结果
-     * @param searchBean   查询条件
+     * 批量更新交易订单到处理中
+     * @param orderIds
+     * @param status 更新的状态
+     * @return
+     */
+    @DAOAction(action = DAOActionType.UPDATE)
+    int updateExchangeOrderToPending(@DAOParam("orderIds") List<Integer> orderIds,@DAOParam("status") int status);
+
+    /**
+     * 获取付款单总额
+     * @param searchBean
      * @return
      */
     @DAOAction(action = DAOActionType.LOAD)
     BigDecimal findExchangeOrderTotalAmount(@DAOParam("searchBean") ExchangeOrderSearchBean searchBean);
+
 }

@@ -6,9 +6,9 @@ import com.dianping.ba.finance.exchange.api.ShopFundAccountService;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
-import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
-import com.dianping.ba.finance.exchange.api.enums.FlowTypeEnum;
-import com.dianping.ba.finance.exchange.api.enums.SourceTypeEnum;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
+import com.dianping.ba.finance.exchange.api.enums.FlowType;
+import com.dianping.ba.finance.exchange.api.enums.SourceType;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ShopFundAccountBean;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
@@ -60,7 +60,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             if(orderId <= 0)
                 return null;
             ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDao.loadShopFundAccountFlow(orderId,
-                    FlowTypeEnum.IN.getFlowType(), SourceTypeEnum.PaymentPlan.getSourceType());
+                    FlowType.IN.getFlowType(), SourceType.PaymentPlan.getSourceType());
             if(paymentPlanShopFundAccountFlow == null){
                 BizUtils.log(monitorLogger, startTime, "getPaymentPlanShopFundAccountFlow error", "error",
                         "orderId = " + orderId,
@@ -154,7 +154,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
     }
 
     private boolean isExchangeOrderDTOValid(ExchangeOrderDTO exchangeOrderDTO){
-        if(exchangeOrderDTO == null || exchangeOrderDTO.getStatus() != ExchangeOrderStatusEnum.SUCCESS.ordinal()) {
+        if(exchangeOrderDTO == null || exchangeOrderDTO.getStatus() != ExchangeOrderStatus.SUCCESS.ordinal()) {
             return false;
         }
         return true;
@@ -164,8 +164,8 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         ShopFundAccountFlowData shopFundAccountFlow= new ShopFundAccountFlowData();
         shopFundAccountFlow.setExchangeOrderId(exchangeOrder.getExchangeOrderId());
         shopFundAccountFlow.setFlowAmount(exchangeOrder.getOrderAmount());
-        shopFundAccountFlow.setFlowType(FlowTypeEnum.OUT.getFlowType());
-        shopFundAccountFlow.setSourceType(SourceTypeEnum.ExchangeOrder.getSourceType());
+        shopFundAccountFlow.setFlowType(FlowType.OUT.getFlowType());
+        shopFundAccountFlow.setSourceType(SourceType.ExchangeOrder.getSourceType());
         shopFundAccountFlow.setFundAccountId(exchangeOrder.getRelevantFundAccountId());
         return shopFundAccountFlow;
     }
