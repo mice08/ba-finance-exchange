@@ -96,12 +96,10 @@
         IFNULL(eo.OrderDate, "") AS OrderDate
         FROM
         FS_ExchangeOrder eo,
-        FS_ShopFundAccountFlow flow,
-        FS_ShopFundAccount sa
+        LEFT JOIN FS_ShopFundAccountFlow flow ON eo.ExchangeOrderID = flow.ExchangeOrderID
+        LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         WHERE
-        eo.ExchangeOrderID = flow.ExchangeOrderID
-        AND flow.FAID = sa.FAID
-        AND eo.OrderDate &lt;= NOW()
+        eo.OrderDate &lt;= NOW()
         <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
             eo.ExchangeOrderID = #searchBean.exchangeOrderId#
         </isGreaterThan>
@@ -135,12 +133,10 @@
             SELECT 1
             FROM
             FS_ExchangeOrder eo,
-            FS_ShopFundAccountFlow flow,
-            FS_ShopFundAccount sa
+            LEFT JOIN FS_ShopFundAccountFlow flow ON eo.ExchangeOrderID = flow.ExchangeOrderID
+            LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
             WHERE
-            eo.ExchangeOrderID = flow.ExchangeOrderID
-            AND flow.FAID = sa.FAID
-            AND eo.OrderDate &lt;= NOW()
+            eo.OrderDate &lt;= NOW()
             <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
                 eo.ExchangeOrderID = #searchBean.exchangeOrderId#
             </isGreaterThan>
