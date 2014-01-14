@@ -2,11 +2,6 @@
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 <sqlMap namespace="ExchangeOrder">
 
-
-
-    <typeAlias alias="ExchangeOrderSearchStatistics" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSearchStatistics"/>
-
-
     <typeAlias alias="ExchangeOrder" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData"/>
     <resultMap id="exchangeOrder" class="ExchangeOrder">
         <result property="exchangeOrderId" column="ExchangeOrderID"/>
@@ -175,10 +170,9 @@
     </select>
 
 
-    <select id="getExchangeOrderStatisticResult" resultClass="map" parameterClass="ExchangeOrderSearchStatistics">
+    <select id="getExchangeOrderTotalAmount" resultClass="java.math.BigDecimal" parameterClass="map">
         SELECT
-        SUM(eo.OrderAmount) AS totalAmount,
-        COUNT(eo.ExchangeOrderID) AS totalCount
+        SUM(eo.OrderAmount) AS totalAmount
         FROM
         FS_ExchangeOrder eo,
         FS_ShopFundAccountFlow flow,

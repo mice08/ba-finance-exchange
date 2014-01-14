@@ -3,12 +3,10 @@ package com.dianping.ba.finance.exchange.api;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSearchStatistics;
 import com.dianping.core.type.PageModel;
 
-import java.util.Date;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -46,9 +44,9 @@ public interface ExchangeOrderService {
 	PageModel paginateExchangeOrderList(ExchangeOrderSearchBean searchBean, int page, int pageSize);
 
     /**
-     * 获取付款总和的结果
+     * 获取付款总和
      * @param searchBean   查询条件
      * @return
      */
-    ExchangeOrderSearchStatistics getExchangeOrderStatisticResult(ExchangeOrderSearchBean searchBean);
+    BigDecimal findExchangeOrderTotalAmount(ExchangeOrderSearchBean searchBean);
 }
