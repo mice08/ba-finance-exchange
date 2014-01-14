@@ -46,6 +46,7 @@
 		             BankAccountName,
 		             BankName,
 		             AddDate,
+                     OrderDate,
 		             LastUpdateDate,
 		             Memo
 		             )
@@ -55,6 +56,7 @@
 			         #exchangeOrderData.bankAccountName#,
 			         #exchangeOrderData.bankName#,
 			         NOW(),
+			         #exchangeOrderData.orderDate#,
 			         NOW(),
 			         #exchangeOrderData.memo#
 			        );
