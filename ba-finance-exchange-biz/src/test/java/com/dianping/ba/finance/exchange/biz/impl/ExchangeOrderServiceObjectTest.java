@@ -5,7 +5,7 @@ import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSearchStatistics;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
-import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import com.dianping.core.type.PageModel;
@@ -48,7 +48,7 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testUpdateExchangeOrderSuccess(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.PENDING.getExchangeOrderStatus());
+        exchangeOrderData.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
 
         List<Integer> orderIds = new ArrayList<Integer>();
         orderIds.add(1);
@@ -70,7 +70,7 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testUpdateExchangeOrderFailWhenOrderIdInvalid(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.PENDING.getExchangeOrderStatus());
+        exchangeOrderData.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
 
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(1);
@@ -93,7 +93,7 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testUpdateExchangeOrderSuccessWhenExchangeTypeIsSuccess(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus());
+        exchangeOrderData.setStatus(ExchangeOrderStatus.SUCCESS.getExchangeOrderStatus());
 
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(1);
@@ -117,7 +117,7 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testUpdateExchangeOrderFailed(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.INIT.getExchangeOrderStatus());
+        exchangeOrderData.setStatus(ExchangeOrderStatus.INIT.getExchangeOrderStatus());
 
         List<Integer> orderIds = new ArrayList<Integer>();
         orderIds.add(1);
@@ -196,7 +196,7 @@ public class ExchangeOrderServiceObjectTest {
 
         when(exchangeOrderDaoMock.updateExchangeOrderToPending(anyListOf(Integer.class), anyInt())).thenReturn(3);
 
-        boolean actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds, ExchangeOrderStatusEnum.PENDING);
+        boolean actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds, ExchangeOrderStatus.PENDING);
         Assert.assertEquals(true, actual);
     }
 
@@ -209,7 +209,7 @@ public class ExchangeOrderServiceObjectTest {
 
         when(exchangeOrderDaoMock.updateExchangeOrderToPending(anyListOf(Integer.class), anyInt())).thenReturn(0);
 
-        boolean actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds, ExchangeOrderStatusEnum.PENDING);
+        boolean actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds, ExchangeOrderStatus.PENDING);
         Assert.assertEquals(false, actual);
     }
 
@@ -217,7 +217,7 @@ public class ExchangeOrderServiceObjectTest {
     public void testUpdateExchangeOrderToPendingError() {
         List<Integer> orderIds = new ArrayList<Integer>();
 
-        boolean actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds, ExchangeOrderStatusEnum.PENDING);
+        boolean actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds, ExchangeOrderStatus.PENDING);
         Assert.assertEquals(false, actual);
     }
 }

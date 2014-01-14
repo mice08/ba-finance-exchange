@@ -4,12 +4,10 @@ import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSearchStatistics;
-import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.core.type.PageModel;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -59,5 +57,5 @@ public interface ExchangeOrderService {
      * @param exchangeOrderStatus 更新的状态
      * @return
      */
-    boolean updateExchangeOrderToPending(List<Integer> orderIds,ExchangeOrderStatusEnum exchangeOrderStatus);
+    boolean updateExchangeOrderToPending(List<Integer> orderIds,ExchangeOrderStatus exchangeOrderStatus);
 }

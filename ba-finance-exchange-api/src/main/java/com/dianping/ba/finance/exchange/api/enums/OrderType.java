@@ -5,7 +5,7 @@ package com.dianping.ba.finance.exchange.api.enums;
  * @author junjie.mao
  *
  */
-public enum OrderTypeEnum {
+public enum OrderType {
 
 	/**
 	 * 默认
@@ -31,7 +31,7 @@ public enum OrderTypeEnum {
 
     private int orderType;
 
-	private OrderTypeEnum(int orderType) {
+	private OrderType(int orderType) {
 		this.setOrderType(orderType);
 	}
 
