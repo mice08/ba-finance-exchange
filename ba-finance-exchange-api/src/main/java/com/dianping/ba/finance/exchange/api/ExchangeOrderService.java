@@ -3,8 +3,8 @@ package com.dianping.ba.finance.exchange.api;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.core.type.PageModel;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -44,9 +44,13 @@ public interface ExchangeOrderService {
 	PageModel paginateExchangeOrderList(ExchangeOrderSearchBean searchBean, int page, int pageSize);
 
     /**
-     * 获取付款总和
-     * @param searchBean   查询条件
+     * 批量更新支付订单到处理中
+     * @param orderIds
+     * @param exchangeOrderStatus 更新的状态
      * @return
      */
+    boolean updateExchangeOrderToPending(List<Integer> orderIds,ExchangeOrderStatus exchangeOrderStatus);
+
     BigDecimal findExchangeOrderTotalAmount(ExchangeOrderSearchBean searchBean);
+
 }

@@ -7,7 +7,7 @@ package com.dianping.ba.finance.exchange.api.enums;
  */
 
 //TODO: refactor to uppercase
-public enum FlowTypeEnum {
+public enum FlowType {
 
 	/**
 	 * 默认
@@ -25,7 +25,7 @@ public enum FlowTypeEnum {
 
 	private int flowType;
 
-	private FlowTypeEnum(int flowType) {
+	private FlowType(int flowType) {
 		this.setFlowType(flowType);
 	}
 

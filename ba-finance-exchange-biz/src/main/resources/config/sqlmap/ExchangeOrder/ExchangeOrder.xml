@@ -194,4 +194,17 @@
             eo.Status = #searchBean.status#
         </isGreaterThan>
     </select>
+
+    <update id="updateExchangeOrderToPending" parameterClass="map">
+        UPDATE FS_ExchangeOrder
+        SET Status = #status#,
+        LastUpdateDate = now()
+        WHERE Status != #status#
+        <isNotEmpty prepend="and" property="orderIds">
+            ExchangeOrderID IN
+            <iterate open="(" close=")" conjunction="," property="orderIds">
+                #orderIds[]#
+            </iterate>
+        </isNotEmpty>
+    </update>
 </sqlMap>

@@ -7,7 +7,7 @@ import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
-import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.biz.convert.ExchangeOrderConvert;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
@@ -94,12 +94,24 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         }
     }
 
+    @Override
+    public boolean updateExchangeOrderToPending(List<Integer> orderIds,ExchangeOrderStatus exchangeOrderStatus){
+        long startTime = System.currentTimeMillis();
+        try{
+            if(exchangeOrderDao.updateExchangeOrderToPending(orderIds,exchangeOrderStatus.value())>0) {
+               return true;
+            }
+        }catch(Exception e){
+            BizUtils.log(monitorLogger,startTime,"updateExchangeOrderToPending", Level.ERROR, BizUtils.createLogParams(orderIds),e);
+        }
+        return false;
+    }
     private boolean updateExchangeOrderToSuccess(int orderId) {
         if (orderId <= 0) {
             return false;
         }
         Date orderDate = getCurrentTime();
-        int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus());
+        int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatus.SUCCESS.getExchangeOrderStatus());
         if (affectedRows > 0) {
             ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
             ExchangeOrderDTO exchangeOrderDTO = ExchangeOrderConvert.buildExchangeOrderDTO(exchangeOrderData);
