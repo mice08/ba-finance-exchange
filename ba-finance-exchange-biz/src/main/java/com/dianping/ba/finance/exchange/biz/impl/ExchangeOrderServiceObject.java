@@ -86,7 +86,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
             return exchangeOrderDao.findExchangeOrderTotalAmount(searchBean);
         } catch (Exception e) {
             try {
-                BizUtils.log(monitorLogger, startTime, "getExchangeOrderStatisticResult", Level.ERROR, JsonUtils.toStr(searchBean), e);
+                BizUtils.log(monitorLogger, startTime, "findExchangeOrderTotalAmount", Level.ERROR, JsonUtils.toStr(searchBean), e);
             } catch (Exception ex) {
                 //ignore
             }
