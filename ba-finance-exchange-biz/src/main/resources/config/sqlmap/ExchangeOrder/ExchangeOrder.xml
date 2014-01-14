@@ -103,7 +103,7 @@
         AND flow.FAID = sa.FAID
         AND eo.OrderDate &lt;= NOW()
         <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
-            eo.ExchangeOrderID = #orderId#
+            eo.ExchangeOrderID = #searchBean.exchangeOrderId#
         </isGreaterThan>
         <isNotNull property="searchBean.beginDate" prepend="and">
             eo.OrderDate &gt;= #searchBean.beginDate#
@@ -142,7 +142,7 @@
             AND flow.FAID = sa.FAID
             AND eo.OrderDate &lt;= NOW()
             <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
-                eo.ExchangeOrderID = #orderId#
+                eo.ExchangeOrderID = #searchBean.exchangeOrderId#
             </isGreaterThan>
             <isNotNull property="searchBean.beginDate" prepend="and">
                 eo.OrderDate &gt;= #searchBean.beginDate#
@@ -182,7 +182,7 @@
         AND flow.FAID = sa.FAID
         AND eo.OrderDate &lt;= NOW()
         <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
-            eo.ExchangeOrderID = #orderId#
+            eo.ExchangeOrderID = #searchBean.exchangeOrderId#
         </isGreaterThan>
         <isNotNull property="searchBean.beginDate" prepend="and">
             eo.OrderDate &gt;= #searchBean.beginDate#
