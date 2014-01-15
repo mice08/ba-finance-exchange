@@ -102,7 +102,7 @@
         eo.BankCity,
         eo.Status,
         eo.Memo,
-        IFNULL(eo.AddDate, "") AS AddDate
+        eo.AddDate
         FROM
         FS_ExchangeOrder eo
         LEFT JOIN FS_ShopFundAccountFlow flow ON eo.ExchangeOrderID = flow.ExchangeOrderID
@@ -135,7 +135,7 @@
         eo.Status,
         eo.Memo,
         eo.OrderDate
-        ORDER BY eo.ExchangeOrderID
+        ORDER BY eo.AddDate DESC, eo.ExchangeOrderID ASC
     </select>
 
     <select id="paginateExchangeOrderList_COUNT" resultClass="int" parameterClass="map">
@@ -174,7 +174,7 @@
             eo.Status,
             eo.Memo,
             eo.OrderDate
-            ORDER BY eo.ExchangeOrderID
+            ORDER BY eo.AddDate DESC, eo.ExchangeOrderID ASC
         ) A
     </select>
 
@@ -214,7 +214,7 @@
         eo.BankCity,
         eo.Status,
         eo.Memo,
-        IFNULL(eo.AddDate, "") AS AddDate
+        eo.AddDate
         FROM
         FS_ExchangeOrder eo
         LEFT JOIN FS_ShopFundAccountFlow flow ON eo.ExchangeOrderID = flow.ExchangeOrderID
@@ -247,7 +247,7 @@
         eo.Status,
         eo.Memo,
         eo.OrderDate
-        ORDER BY eo.ExchangeOrderID
+        ORDER BY eo.AddDate DESC, eo.ExchangeOrderID ASC
     </select>
 
     <update id="updateExchangeOrderToPending" parameterClass="map">
