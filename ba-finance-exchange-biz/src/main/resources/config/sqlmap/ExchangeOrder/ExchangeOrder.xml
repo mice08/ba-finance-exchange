@@ -95,7 +95,7 @@
         eo.Memo,
         IFNULL(eo.OrderDate, "") AS OrderDate
         FROM
-        FS_ExchangeOrder eo,
+        FS_ExchangeOrder eo
         LEFT JOIN FS_ShopFundAccountFlow flow ON eo.ExchangeOrderID = flow.ExchangeOrderID
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         WHERE
@@ -132,7 +132,7 @@
         FROM (
             SELECT 1
             FROM
-            FS_ExchangeOrder eo,
+            FS_ExchangeOrder eo
             LEFT JOIN FS_ShopFundAccountFlow flow ON eo.ExchangeOrderID = flow.ExchangeOrderID
             LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
             WHERE
