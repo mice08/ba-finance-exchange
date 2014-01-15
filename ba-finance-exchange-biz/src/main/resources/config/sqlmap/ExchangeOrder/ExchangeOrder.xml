@@ -260,7 +260,7 @@
         UPDATE FS_ExchangeOrder
         SET Status = #setStatus#,
         LastUpdateDate = now()
-        WHERE Status != #whereStatus#
+        WHERE Status = #whereStatus#
         <isNotEmpty prepend="and" property="orderIds">
             ExchangeOrderID IN
             <iterate open="(" close=")" conjunction="," property="orderIds">
