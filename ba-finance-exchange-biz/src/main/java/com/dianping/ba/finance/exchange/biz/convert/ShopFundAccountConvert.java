@@ -69,7 +69,7 @@ public class ShopFundAccountConvert {
         shopFundAccountFlowData.setFlowAmount(shopFundAccountFlowDTO.getFlowAmount());
         shopFundAccountFlowData.setFlowType(shopFundAccountFlowDTO.getFlowType().value());
         shopFundAccountFlowData.setSourceType(shopFundAccountFlowDTO.getSourceType().value());
-        shopFundAccountFlowData.setSequence(BizUtils.createSequence(shopFundAccountFlowDTO.getSourceType().clientNo(),shopFundAccountFlowDTO.getBizId()));
+        shopFundAccountFlowData.setSequence(BizUtils.createSequence(shopFundAccountFlowDTO.getSourceType().clientNo(),String.valueOf(shopFundAccountFlowDTO.getExchangeOrderId())));
         //exchangeOrderId 先为0 后面回写
         shopFundAccountFlowData.setExchangeOrderId(0);
         return shopFundAccountFlowData;
