@@ -34,7 +34,7 @@ public class ExchangeOrderDisplayData implements Serializable {
 
     private String memo;
 
-    private Date orderDate;
+    private Date addDate;
 
 
     public ExchangeOrderDisplayData() {
@@ -120,11 +120,11 @@ public class ExchangeOrderDisplayData implements Serializable {
         this.memo = memo;
     }
 
-    public Date getOrderDate() {
-        return orderDate;
+    public Date getAddDate() {
+        return addDate;
     }
 
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
+    public void setAddDate(Date addDate) {
+        this.addDate = addDate;
     }
 }
