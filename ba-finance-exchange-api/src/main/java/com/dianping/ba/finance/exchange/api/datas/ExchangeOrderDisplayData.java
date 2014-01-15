@@ -40,6 +40,15 @@ public class ExchangeOrderDisplayData implements Serializable {
 
     private Date addDate;
 
+    private Date orderDate;
+
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
 
     public ExchangeOrderDisplayData() {
     }

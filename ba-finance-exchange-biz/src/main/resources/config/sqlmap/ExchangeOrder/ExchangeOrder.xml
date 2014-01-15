@@ -34,6 +34,7 @@
         <result property="status" column="Status"/>
         <result property="memo" column="Memo"/>
         <result property="addDate" column="AddDate"/>
+        <result property="orderDate" column="OrderDate"/>
     </resultMap>
 
     <insert id="insertExchangeOrder" parameterClass="map">
@@ -102,7 +103,8 @@
         eo.BankCity,
         eo.Status,
         eo.Memo,
-        eo.AddDate
+        eo.AddDate,
+        eo.OrderDate
         FROM
         FS_ExchangeOrder eo
         LEFT JOIN FS_ShopFundAccountFlow flow ON eo.ExchangeOrderID = flow.ExchangeOrderID
@@ -134,6 +136,7 @@
         eo.BankCity,
         eo.Status,
         eo.Memo,
+        eo.AddDate,
         eo.OrderDate
         ORDER BY eo.AddDate DESC, eo.ExchangeOrderID ASC
     </select>
@@ -173,6 +176,7 @@
             eo.BankCity,
             eo.Status,
             eo.Memo,
+            eo.AddDate,
             eo.OrderDate
             ORDER BY eo.AddDate DESC, eo.ExchangeOrderID ASC
         ) A
@@ -214,7 +218,8 @@
         eo.BankCity,
         eo.Status,
         eo.Memo,
-        eo.AddDate
+        eo.AddDate,
+        eo.OrderDate
         FROM
         FS_ExchangeOrder eo
         LEFT JOIN FS_ShopFundAccountFlow flow ON eo.ExchangeOrderID = flow.ExchangeOrderID
@@ -246,6 +251,7 @@
         eo.BankCity,
         eo.Status,
         eo.Memo,
+        eo.AddDate,
         eo.OrderDate
         ORDER BY eo.AddDate DESC, eo.ExchangeOrderID ASC
     </select>
