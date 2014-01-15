@@ -58,6 +58,9 @@ public class ExchangeOrderData implements Serializable {
      */
     private String memo;
 
+    private String bankCity;
+    private String bankProvince;
+
     public int getExchangeOrderId() {
         return exchangeOrderId;
     }
@@ -144,5 +147,21 @@ public class ExchangeOrderData implements Serializable {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public String getBankProvince() {
+        return bankProvince;
+    }
+
+    public void setBankProvince(String bankProvince) {
+        this.bankProvince = bankProvince;
+    }
+
+    public String getBankCity() {
+        return bankCity;
+    }
+
+    public void setBankCity(String bankCity) {
+        this.bankCity = bankCity;
     }
 }
