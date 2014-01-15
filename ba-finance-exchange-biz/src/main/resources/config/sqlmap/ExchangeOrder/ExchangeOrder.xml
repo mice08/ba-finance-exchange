@@ -208,9 +208,9 @@
 
     <update id="updateExchangeOrderToPending" parameterClass="map">
         UPDATE FS_ExchangeOrder
-        SET Status = #status#,
+        SET Status = #setStatus#,
         LastUpdateDate = now()
-        WHERE Status != #status#
+        WHERE Status != #whereStatus#
         <isNotEmpty prepend="and" property="orderIds">
             ExchangeOrderID IN
             <iterate open="(" close=")" conjunction="," property="orderIds">
