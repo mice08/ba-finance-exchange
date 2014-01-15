@@ -84,6 +84,8 @@ public class ShopFundAccountConvert {
         exchangeOrderData.setBankAccountNo(shopFundAccountFlowDTO.getBankAccountNo());
         exchangeOrderData.setBankAccountName(shopFundAccountFlowDTO.getBankAccountName());
         exchangeOrderData.setBankName(shopFundAccountFlowDTO.getBankName());
+        exchangeOrderData.setBankCity(shopFundAccountFlowDTO.getBankCity());
+        exchangeOrderData.setBankProvince(shopFundAccountFlowDTO.getBankProvince());
         return exchangeOrderData;
     }
 
