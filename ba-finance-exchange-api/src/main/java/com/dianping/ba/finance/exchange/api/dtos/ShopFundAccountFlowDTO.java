@@ -87,10 +87,6 @@ public class ShopFundAccountFlowDTO implements Serializable {
      */
     private String bankName;
 
-     /**
-      * 唯一主键
-      */
-     private String bizId;
 
 
      public int getFundAccountFlowId() {
@@ -219,13 +215,5 @@ public class ShopFundAccountFlowDTO implements Serializable {
 
      public void setBankName(String bankName) {
          this.bankName = bankName;
-     }
-
-     public String getBizId() {
-         return bizId;
-     }
-
-     public void setBizId(String bizId) {
-         this.bizId = bizId;
      }
  }
