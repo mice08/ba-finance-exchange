@@ -82,6 +82,7 @@ public class ShopFundAccountFlowDTO implements Serializable {
     /**
      * 开户行名称
      */
+    private String bizId;
     private String bankName;
     private String bankCity;
     private String bankProvince;
@@ -228,5 +229,13 @@ public class ShopFundAccountFlowDTO implements Serializable {
 
     public void setBankProvince(String bankProvince) {
         this.bankProvince = bankProvince;
+    }
+
+    public String getBizId() {
+        return bizId;
+    }
+
+    public void setBizId(String bizId) {
+        this.bizId = bizId;
     }
 }
