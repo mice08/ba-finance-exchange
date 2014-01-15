@@ -10,6 +10,8 @@
         <result property="bankAccountNo" column="BankAccountNo"/>
         <result property="bankAccountName" column="BankAccountName"/>
         <result property="bankName" column="BankName"/>
+        <result property="bankProvince" column="BankProvince"/>
+        <result property="bankCity" column="BankCity"/>
         <result property="status" column="Status"/>
         <result property="addDate" column="AddDate"/>
         <result property="orderDate" column="OrderDate"/>
@@ -27,6 +29,8 @@
         <result property="bankAccountNo" column="BankAccountNo"/>
         <result property="bankAccountName" column="BankAccountName"/>
         <result property="bankName" column="BankName"/>
+        <result property="bankProvince" column="BankProvince"/>
+        <result property="bankCity" column="BankCity"/>
         <result property="status" column="Status"/>
         <result property="memo" column="Memo"/>
         <result property="orderDate" column="OrderDate"/>
@@ -40,6 +44,8 @@
 		             BankAccountNo,
 		             BankAccountName,
 		             BankName,
+		             BankProvince,
+                     BankCity,
 		             AddDate,
                      OrderDate,
 		             LastUpdateDate,
@@ -50,6 +56,8 @@
 			         #exchangeOrderData.bankAccountNo#,
 			         #exchangeOrderData.bankAccountName#,
 			         #exchangeOrderData.bankName#,
+			         #exchangeOrderData.bankProvince#,
+			         #exchangeOrderData.bankCity#,
 			         NOW(),
 			         #exchangeOrderData.orderDate#,
 			         NOW(),
@@ -75,7 +83,8 @@
 
     <select id="loadExchangeOrderByOrderId" parameterClass="map" resultMap="exchangeOrder">
         <![CDATA[
-        select ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,Status,OrderDate,AddDate,LastUpdateDate,Memo
+        select ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,BankProvince,
+                     BankCity,Status,OrderDate,AddDate,LastUpdateDate,Memo
         from FS_ExchangeOrder
         where ExchangeOrderID = #exchangeOrderId#
         ]]>
@@ -91,6 +100,8 @@
         eo.BankAccountNo,
         eo.BankAccountName,
         eo.BankName,
+        eo.BankProvince,
+        eo.BankCity,
         eo.Status,
         eo.Memo,
         IFNULL(eo.OrderDate, "") AS OrderDate
@@ -121,6 +132,8 @@
         eo.BankAccountNo,
         eo.BankAccountName,
         eo.BankName,
+        eo.BankProvince,
+        eo.BankCity,
         eo.Status,
         eo.Memo,
         eo.OrderDate
@@ -158,6 +171,8 @@
             eo.BankAccountNo,
             eo.BankAccountName,
             eo.BankName,
+            eo.BankProvince,
+            eo.BankCity,
             eo.Status,
             eo.Memo,
             eo.OrderDate
