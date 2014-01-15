@@ -30,6 +30,10 @@ public class ExchangeOrderDisplayData implements Serializable {
 
     private String bankName;
 
+    private String bankProvince;
+
+    private String bankCity;
+
     private int status;
 
     private String memo;
@@ -126,5 +130,21 @@ public class ExchangeOrderDisplayData implements Serializable {
 
     public void setAddDate(Date addDate) {
         this.addDate = addDate;
+    }
+
+    public String getBankProvince() {
+        return bankProvince;
+    }
+
+    public void setBankProvince(String bankProvince) {
+        this.bankProvince = bankProvince;
+    }
+
+    public String getBankCity() {
+        return bankCity;
+    }
+
+    public void setBankCity(String bankCity) {
+        this.bankCity = bankCity;
     }
 }

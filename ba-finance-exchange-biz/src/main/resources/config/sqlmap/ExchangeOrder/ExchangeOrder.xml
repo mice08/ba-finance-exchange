@@ -47,7 +47,6 @@
 		             BankProvince,
                      BankCity,
 		             AddDate,
-                     OrderDate,
 		             LastUpdateDate,
 		             Memo
 		             )
@@ -59,7 +58,6 @@
 			         #exchangeOrderData.bankProvince#,
 			         #exchangeOrderData.bankCity#,
 			         NOW(),
-			         #exchangeOrderData.orderDate#,
 			         NOW(),
 			         #exchangeOrderData.memo#
 			        );
