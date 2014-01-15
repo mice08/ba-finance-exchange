@@ -84,6 +84,9 @@ public class ShopFundAccountFlowDTO implements Serializable {
      */
     private String bankName;
 
+    private String bankCity;
+    private String bankProvince;
+
      /**
       * 唯一主键
       */
@@ -225,4 +228,20 @@ public class ShopFundAccountFlowDTO implements Serializable {
      public void setBizId(String bizId) {
          this.bizId = bizId;
      }
- }
+
+    public String getBankCity() {
+        return bankCity;
+    }
+
+    public void setBankCity(String bankCity) {
+        this.bankCity = bankCity;
+    }
+
+    public String getBankProvince() {
+        return bankProvince;
+    }
+
+    public void setBankProvince(String bankProvince) {
+        this.bankProvince = bankProvince;
+    }
+}
