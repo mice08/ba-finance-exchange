@@ -76,4 +76,8 @@ public enum BusinessType {
     public void setBusinessType(int businessType) {
         this.businessType = businessType;
     }
+
+    public int value(){
+        return businessType;
+    }
 }
