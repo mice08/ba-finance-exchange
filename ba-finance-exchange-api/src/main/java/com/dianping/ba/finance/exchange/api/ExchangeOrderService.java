@@ -47,10 +47,9 @@ public interface ExchangeOrderService {
     /**
      * 批量更新支付订单到处理中
      * @param orderIds
-     * @param exchangeOrderStatus 更新的状态
      * @return
      */
-    boolean updateExchangeOrderToPending(List<Integer> orderIds,ExchangeOrderStatus exchangeOrderStatus);
+    int updateExchangeOrderToPending(List<Integer> orderIds);
 
     /**
      * 根据查询条件获取交易指令集总金额

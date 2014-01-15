@@ -100,16 +100,16 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
-    public boolean updateExchangeOrderToPending(List<Integer> orderIds,ExchangeOrderStatus exchangeOrderStatus){
+    public int updateExchangeOrderToPending(List<Integer> orderIds){
         long startTime = System.currentTimeMillis();
         try{
-            if(exchangeOrderDao.updateExchangeOrderToPending(orderIds,exchangeOrderStatus.value())>0) {
-               return true;
-            }
+            ExchangeOrderStatus whereStatus=ExchangeOrderStatus.INIT;
+            ExchangeOrderStatus setStatus=ExchangeOrderStatus.PENDING;
+            return exchangeOrderDao.updateExchangeOrderToPending(orderIds,whereStatus.value(),setStatus.value());
         }catch(Exception e){
             BizUtils.log(monitorLogger,startTime,"updateExchangeOrderToPending", Level.ERROR, BizUtils.createLogParams(orderIds),e);
         }
-        return false;
+        return -1;
     }
 
     private boolean updateExchangeOrderToSuccess(int orderId) {
@@ -129,7 +129,6 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     private Date getCurrentTime() {
-        Calendar calendar = Calendar.getInstance();
         return Calendar.getInstance().getTime();
     }
 

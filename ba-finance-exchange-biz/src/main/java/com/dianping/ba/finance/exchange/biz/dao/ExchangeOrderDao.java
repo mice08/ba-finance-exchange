@@ -70,11 +70,12 @@ public interface ExchangeOrderDao extends GenericDao {
     /**
      * 批量更新交易订单到处理中
      * @param orderIds
-     * @param status 更新的状态
+     * @param whereStatus    where条件
+     * @param setStatus     更新条件
      * @return
      */
     @DAOAction(action = DAOActionType.UPDATE)
-    int updateExchangeOrderToPending(@DAOParam("orderIds") List<Integer> orderIds,@DAOParam("status") int status);
+    int updateExchangeOrderToPending(@DAOParam("orderIds") List<Integer> orderIds,@DAOParam("whereStatus") int whereStatus,@DAOParam("setStatus") int setStatus);
 
     /**
      * 获取付款单总额
