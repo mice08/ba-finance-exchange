@@ -41,27 +41,26 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
     @Override
     public GenericResult<Integer> updateExchangeOrderToSuccess(List<Integer> orderIds) {
-        Long startTime = Calendar.getInstance().getTimeInMillis();
-
-        GenericResult genericResult = new GenericResult<Integer>();
+        Long startTime = System.currentTimeMillis();
+        GenericResult result = new GenericResult<Integer>();
         int processExchangeOrderId = 0;
         try {
             for (int orderId : orderIds) {
                 processExchangeOrderId = orderId;
                 boolean success = updateExchangeOrderToSuccess(orderId);
                 if (success) {
-                    genericResult.addSuccess(orderId);
+                    result.addSuccess(orderId);
                 } else {
-                    genericResult.addFail(orderId);
+                    result.addFail(orderId);
                 }
             }
         } catch (Exception e) {
-            genericResult.addFail(processExchangeOrderId);
+            result.addFail(processExchangeOrderId);
         }
-        if (genericResult.hasFailResult()) {
-            BizUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess error", "error", "Failed exchange order ids: " + genericResult.failListToString(), new Exception("updateExchangeOrderToSuccess error"));
+        if (result.hasFailResult()) {
+            BizUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", Level.ERROR, "Failed exchange order ids: " + result.failListToString());
         }
-        return genericResult;
+        return result;
     }
 
     @Override
@@ -106,25 +105,25 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         }
         return false;
     }
+
     private boolean updateExchangeOrderToSuccess(int orderId) {
         if (orderId <= 0) {
             return false;
         }
         Date orderDate = getCurrentTime();
-        int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatus.SUCCESS.getExchangeOrderStatus());
-        if (affectedRows > 0) {
-            ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
-            ExchangeOrderDTO exchangeOrderDTO = ExchangeOrderConvert.buildExchangeOrderDTO(exchangeOrderData);
-            exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
-        } else {
+        int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatus.PENDING.value(),ExchangeOrderStatus.SUCCESS.value());
+        if(affectedRows <= 0){
             return false;
         }
+        ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
+        ExchangeOrderDTO exchangeOrderDTO = ExchangeOrderConvert.buildExchangeOrderDTO(exchangeOrderData);
+        exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
+
         return true;
     }
 
     private Date getCurrentTime() {
-        Calendar calendar = Calendar.getInstance();
-        return calendar.getTime();
+        return Calendar.getInstance().getTime();
     }
 
     public void setExchangeOrderDao(ExchangeOrderDao exchangeOrderDao) {

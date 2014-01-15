@@ -55,7 +55,7 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(3);
 
         when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt())).thenReturn(1);
+        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(), any(Date.class),anyInt(), anyInt())).thenReturn(1);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
@@ -80,7 +80,7 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(3);
 
         when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(),any(Date.class),anyInt())).thenReturn(1);
+        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(),any(Date.class),anyInt(), anyInt())).thenReturn(1);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
@@ -124,7 +124,7 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(3);
 
         when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt())).thenReturn(-1);
+        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt(), anyInt())).thenReturn(-1);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
