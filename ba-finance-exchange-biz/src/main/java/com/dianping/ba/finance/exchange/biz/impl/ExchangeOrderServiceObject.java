@@ -6,6 +6,7 @@ import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.biz.convert.ExchangeOrderConvert;
@@ -94,6 +95,11 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
+    public List<ExchangeOrderDisplayData> findExchangeOrderDataList(ExchangeOrderSearchBean searchBean) {
+        return exchangeOrderDao.findExchangeOrderList(searchBean);
+    }
+
+    @Override
     public boolean updateExchangeOrderToPending(List<Integer> orderIds,ExchangeOrderStatus exchangeOrderStatus){
         long startTime = System.currentTimeMillis();
         try{
@@ -123,6 +129,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     private Date getCurrentTime() {
+        Calendar calendar = Calendar.getInstance();
         return Calendar.getInstance().getTime();
     }
 
