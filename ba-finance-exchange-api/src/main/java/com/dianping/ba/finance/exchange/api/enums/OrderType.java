@@ -51,4 +51,8 @@ public enum OrderType {
 		this.setOrderType(flowType);
 		return this.toString();
 	}
+
+    public int value() {
+        return orderType;
+    }
 }
