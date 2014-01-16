@@ -1,5 +1,7 @@
 package com.dianping.ba.finance.exchange.api.beans;
 
+import com.dianping.ba.finance.exchange.api.enums.OrderType;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,6 +19,15 @@ public class ExchangeOrderSearchBean implements Serializable {
     private Date beginDate;
     private Date endDate;
     private int status;
+    private int orderType;
+
+    public int getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(int orderType) {
+        this.orderType = orderType;
+    }
 
     public int getExchangeOrderId() {
         return exchangeOrderId;
