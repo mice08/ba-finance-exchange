@@ -101,33 +101,34 @@
         eo.BankName,
         eo.BankProvince,
         eo.BankCity,
-        eo.Status,
+        eo. STATUS,
         eo.Memo,
         eo.AddDate,
         eo.OrderDate
         FROM
-        FS_ExchangeOrder eo,
-        FS_ShopFundAccountFlow flow,
-        FS_ShopFundAccount sa
-        WHERE
+        FS_ExchangeOrder eo
+        LEFT JOIN FS_ShopFundAccountFlow flow ON (
         eo.ExchangeOrderID = flow.ExchangeOrderID
         AND flow.FlowType = 1
-        AND flow.FAID = sa.FAID
-        <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
-            eo.ExchangeOrderID = #searchBean.exchangeOrderId#
-        </isGreaterThan>
-        <isNotNull property="searchBean.beginDate" prepend="and">
-            eo.AddDate &gt;= #searchBean.beginDate#
-        </isNotNull>
-        <isNotNull property="searchBean.endDate" prepend="and">
-            eo.AddDate &lt;= #searchBean.endDate#
-        </isNotNull>
-        <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
-            eo.Status = #searchBean.status#
-        </isGreaterThan>
-        <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
-            eo.OrderType = #searchBean.orderType#
-        </isGreaterThan>
+        )
+        LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
+        <dynamic prepend="WHERE">
+            <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
+                eo.ExchangeOrderID = #searchBean.exchangeOrderId#
+            </isGreaterThan>
+            <isNotNull property="searchBean.beginDate" prepend="and">
+                eo.AddDate &gt;= #searchBean.beginDate#
+            </isNotNull>
+            <isNotNull property="searchBean.endDate" prepend="and">
+                eo.AddDate &lt;= #searchBean.endDate#
+            </isNotNull>
+            <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
+                eo.Status = #searchBean.status#
+            </isGreaterThan>
+            <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
+                eo.OrderType = #searchBean.orderType#
+            </isGreaterThan>
+        </dynamic>
         ORDER BY
         eo.AddDate DESC,
         eo.ExchangeOrderID ASC
@@ -137,28 +138,29 @@
         SELECT
         COUNT(1)
         FROM
-        FS_ExchangeOrder eo,
-        FS_ShopFundAccountFlow flow,
-        FS_ShopFundAccount sa
-        WHERE
+        FS_ExchangeOrder eo
+        LEFT JOIN FS_ShopFundAccountFlow flow ON (
         eo.ExchangeOrderID = flow.ExchangeOrderID
         AND flow.FlowType = 1
-        AND flow.FAID = sa.FAID
-        <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
-            eo.ExchangeOrderID = #searchBean.exchangeOrderId#
-        </isGreaterThan>
-        <isNotNull property="searchBean.beginDate" prepend="and">
-            eo.AddDate &gt;= #searchBean.beginDate#
-        </isNotNull>
-        <isNotNull property="searchBean.endDate" prepend="and">
-            eo.AddDate &lt;= #searchBean.endDate#
-        </isNotNull>
-        <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
-            eo.Status = #searchBean.status#
-        </isGreaterThan>
-        <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
-            eo.OrderType = #searchBean.orderType#
-        </isGreaterThan>
+        )
+        LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
+        <dynamic prepend="WHERE">
+            <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
+                eo.ExchangeOrderID = #searchBean.exchangeOrderId#
+            </isGreaterThan>
+            <isNotNull property="searchBean.beginDate" prepend="and">
+                eo.AddDate &gt;= #searchBean.beginDate#
+            </isNotNull>
+            <isNotNull property="searchBean.endDate" prepend="and">
+                eo.AddDate &lt;= #searchBean.endDate#
+            </isNotNull>
+            <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
+                eo.Status = #searchBean.status#
+            </isGreaterThan>
+            <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
+                eo.OrderType = #searchBean.orderType#
+            </isGreaterThan>
+        </dynamic>
         ORDER BY
         eo.AddDate DESC,
         eo.ExchangeOrderID ASC
@@ -201,33 +203,34 @@
         eo.BankName,
         eo.BankProvince,
         eo.BankCity,
-        eo.Status,
+        eo. STATUS,
         eo.Memo,
         eo.AddDate,
         eo.OrderDate
         FROM
-        FS_ExchangeOrder eo,
-        FS_ShopFundAccountFlow flow,
-        FS_ShopFundAccount sa
-        WHERE
+        FS_ExchangeOrder eo
+        LEFT JOIN FS_ShopFundAccountFlow flow ON (
         eo.ExchangeOrderID = flow.ExchangeOrderID
         AND flow.FlowType = 1
-        AND flow.FAID = sa.FAID
-        <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
-            eo.ExchangeOrderID = #searchBean.exchangeOrderId#
-        </isGreaterThan>
-        <isNotNull property="searchBean.beginDate" prepend="and">
-            eo.AddDate &gt;= #searchBean.beginDate#
-        </isNotNull>
-        <isNotNull property="searchBean.endDate" prepend="and">
-            eo.AddDate &lt;= #searchBean.endDate#
-        </isNotNull>
-        <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
-            eo.Status = #searchBean.status#
-        </isGreaterThan>
-        <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
-            eo.OrderType = #searchBean.orderType#
-        </isGreaterThan>
+        )
+        LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
+        <dynamic prepend="WHERE">
+            <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
+                eo.ExchangeOrderID = #searchBean.exchangeOrderId#
+            </isGreaterThan>
+            <isNotNull property="searchBean.beginDate" prepend="and">
+                eo.AddDate &gt;= #searchBean.beginDate#
+            </isNotNull>
+            <isNotNull property="searchBean.endDate" prepend="and">
+                eo.AddDate &lt;= #searchBean.endDate#
+            </isNotNull>
+            <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
+                eo.Status = #searchBean.status#
+            </isGreaterThan>
+            <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
+                eo.OrderType = #searchBean.orderType#
+            </isGreaterThan>
+        </dynamic>
         ORDER BY
         eo.AddDate DESC,
         eo.ExchangeOrderID ASC
