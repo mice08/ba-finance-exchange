@@ -69,11 +69,11 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         try {
             return exchangeOrderDao.paginateExchangeOrderList(searchBean, page, pageSize);
         } catch (Exception e) {
-            try {
-                BizUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, JsonUtils.toStr(searchBean), e);
-            } catch (Exception ex) {
-                //ignore
-            }
+            String message = "searchBean [exchangeOrderId: " + searchBean.getExchangeOrderId() + ", " +
+                                "beginDate: " + searchBean.getBeginDate() + ", " +
+                                "endDate: " + searchBean.getEndDate() + ", " +
+                                "status: " + searchBean.getStatus() + "]";
+            BizUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, message, e);
             return new PageModel();
         }
     }
@@ -84,11 +84,11 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         try {
             return exchangeOrderDao.findExchangeOrderTotalAmount(searchBean);
         } catch (Exception e) {
-            try {
-                BizUtils.log(monitorLogger, startTime, "findExchangeOrderTotalAmount", Level.ERROR, JsonUtils.toStr(searchBean), e);
-            } catch (Exception ex) {
-                //ignore
-            }
+            String message = "searchBean [exchangeOrderId: " + searchBean.getExchangeOrderId() + ", " +
+                    "beginDate: " + searchBean.getBeginDate() + ", " +
+                    "endDate: " + searchBean.getEndDate() + ", " +
+                    "status: " + searchBean.getStatus() + "]";
+            BizUtils.log(monitorLogger, startTime, "findExchangeOrderTotalAmount", Level.ERROR, message, e);
             return new BigDecimal(0);
         }
     }
