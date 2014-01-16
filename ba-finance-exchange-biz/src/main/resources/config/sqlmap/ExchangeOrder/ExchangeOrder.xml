@@ -93,7 +93,7 @@
         eo.ExchangeOrderID,
         sa.CustomerGlobalID,
         sa.CompanyGlobalID,
-        sa.ShopID,
+        IFNULL(sa.ShopID, 0) AS ShopID,
         eo.OrderAmount,
         eo.BankAccountNo,
         eo.BankAccountName,
