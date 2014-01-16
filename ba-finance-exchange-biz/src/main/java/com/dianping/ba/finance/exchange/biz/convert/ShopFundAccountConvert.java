@@ -45,7 +45,7 @@ public class ShopFundAccountConvert {
     public static ShopFundAccountData buildShopFundAccountDataFromShopFundAccountFlowDTO(ShopFundAccountFlowDTO shopFundAccountFlowDTO)  {
         ShopFundAccountData shopFundAccountData = new ShopFundAccountData();
         shopFundAccountData.setShopId(shopFundAccountFlowDTO.getShopId());
-        shopFundAccountData.setBusinessType(shopFundAccountFlowDTO.getBusinessType().ordinal());
+        shopFundAccountData.setBusinessType(shopFundAccountFlowDTO.getBusinessType().value());
         shopFundAccountData.setCompanyGlobalId(shopFundAccountFlowDTO.getCompanyGlobalId());
         shopFundAccountData.setCustomerGlobalId(shopFundAccountFlowDTO.getCustomerGlobalId());
         // 账户先不加金额
@@ -83,7 +83,7 @@ public class ShopFundAccountConvert {
     public static ExchangeOrderData convertShopFundAccountFlowDTOToExchangeOrderData(ShopFundAccountFlowDTO shopFundAccountFlowDTO) {
         ExchangeOrderData exchangeOrderData=new ExchangeOrderData();
         exchangeOrderData.setOrderAmount(shopFundAccountFlowDTO.getFlowAmount());
-        exchangeOrderData.setOrderType(shopFundAccountFlowDTO.getFlowType().ordinal());
+        exchangeOrderData.setOrderType(shopFundAccountFlowDTO.getFlowType().value());
         exchangeOrderData.setBankAccountNo(shopFundAccountFlowDTO.getBankAccountNo());
         exchangeOrderData.setBankAccountName(shopFundAccountFlowDTO.getBankAccountName());
         exchangeOrderData.setBankName(shopFundAccountFlowDTO.getBankName());
