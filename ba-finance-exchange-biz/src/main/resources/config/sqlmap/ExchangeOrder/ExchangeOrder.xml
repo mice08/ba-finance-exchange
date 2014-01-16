@@ -22,9 +22,9 @@
     <typeAlias alias="ExchangeOrderDisplayData" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData"/>
     <resultMap id="exchangeOrderDisplayData" class="ExchangeOrderDisplayData">
         <result property="exchangeOrderId" column="ExchangeOrderID"/>
-        <result property="customerGlobalId" column="CustomerGlobalId"/>
-        <result property="companyGlobalId" column="CompanyGlobalId"/>
-        <result property="shopId" column="ShopId"/>
+        <result property="customerGlobalId" column="CustomerGlobalID"/>
+        <result property="companyGlobalId" column="CompanyGlobalID"/>
+        <result property="shopId" column="ShopID"/>
         <result property="orderAmount" column="OrderAmount"/>
         <result property="bankAccountNo" column="BankAccountNo"/>
         <result property="bankAccountName" column="BankAccountName"/>
