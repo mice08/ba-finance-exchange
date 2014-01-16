@@ -55,7 +55,7 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(3);
 
         when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt())).thenReturn(1);
+        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(), any(Date.class),anyInt(), anyInt())).thenReturn(1);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
@@ -80,7 +80,7 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(3);
 
         when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(),any(Date.class),anyInt())).thenReturn(1);
+        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(),any(Date.class),anyInt(), anyInt())).thenReturn(1);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
@@ -124,7 +124,7 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(3);
 
         when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt())).thenReturn(-1);
+        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt(), anyInt())).thenReturn(-1);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
@@ -204,10 +204,10 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(2);
         orderIds.add(3);
 
-        when(exchangeOrderDaoMock.updateExchangeOrderToPending(anyListOf(Integer.class), anyInt())).thenReturn(3);
+        when(exchangeOrderDaoMock.updateExchangeOrderToPending(anyListOf(Integer.class), anyInt(),anyInt())).thenReturn(3);
 
-        boolean actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds, ExchangeOrderStatus.PENDING);
-        Assert.assertEquals(true, actual);
+        int actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds);
+        Assert.assertEquals(3, actual);
     }
 
     @Test
@@ -217,17 +217,10 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(2);
         orderIds.add(3);
 
-        when(exchangeOrderDaoMock.updateExchangeOrderToPending(anyListOf(Integer.class), anyInt())).thenReturn(0);
+        when(exchangeOrderDaoMock.updateExchangeOrderToPending(anyListOf(Integer.class), anyInt(),anyInt())).thenReturn(0);
 
-        boolean actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds, ExchangeOrderStatus.PENDING);
-        Assert.assertEquals(false, actual);
+        int actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds);
+        Assert.assertEquals(0, actual);
     }
 
-    @Test
-    public void testUpdateExchangeOrderToPendingError() {
-        List<Integer> orderIds = new ArrayList<Integer>();
-
-        boolean actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds, ExchangeOrderStatus.PENDING);
-        Assert.assertEquals(false, actual);
-    }
 }

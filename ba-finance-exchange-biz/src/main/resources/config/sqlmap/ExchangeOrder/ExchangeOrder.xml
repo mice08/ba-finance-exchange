@@ -71,12 +71,12 @@
 
     <update id="updateExchangeOrderData" parameterClass="map">
         UPDATE FS_ExchangeOrder
-        SET Status = #status#,
+        SET Status = #postStatus#,
         <isNotEmpty property="orderDate">
             OrderDate = #orderDate#,
         </isNotEmpty>
         LastUpdateDate = now()
-        WHERE ExchangeOrderID = #exchangeOrderId# AND Status != #status#
+        WHERE ExchangeOrderID = #exchangeOrderId# AND Status = #preStatus#
     </update>
 
     <select id="loadExchangeOrderByOrderId" parameterClass="map" resultMap="exchangeOrder">
@@ -93,7 +93,7 @@
         eo.ExchangeOrderID,
         sa.CustomerGlobalID,
         sa.CompanyGlobalID,
-        sa.ShopID,
+        IFNULL(sa.ShopID, 0) AS ShopID,
         eo.OrderAmount,
         eo.BankAccountNo,
         eo.BankAccountName,
@@ -202,9 +202,9 @@
 
     <update id="updateExchangeOrderToPending" parameterClass="map">
         UPDATE FS_ExchangeOrder
-        SET Status = #status#,
+        SET Status = #setStatus#,
         LastUpdateDate = now()
-        WHERE Status != #status#
+        WHERE Status != #whereStatus#
         <isNotEmpty prepend="and" property="orderIds">
             ExchangeOrderID IN
             <iterate open="(" close=")" conjunction="," property="orderIds">
