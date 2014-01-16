@@ -5,7 +5,7 @@ package com.dianping.ba.finance.exchange.api.enums;
  *
  * @author junjie.mao
  */
-public enum SourceTypeEnum {
+public enum SourceType {
 
     /**
      * 默认
@@ -25,7 +25,7 @@ public enum SourceTypeEnum {
     ExchangeOrder(3);
     private int sourceType;
 
-    private SourceTypeEnum(int sourceType) {
+    private SourceType(int sourceType) {
         this.setSourceType(sourceType);
     }
 

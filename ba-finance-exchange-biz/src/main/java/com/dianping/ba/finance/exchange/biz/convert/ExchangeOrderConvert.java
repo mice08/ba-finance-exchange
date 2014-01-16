@@ -2,7 +2,6 @@ package com.dianping.ba.finance.exchange.biz.convert;
 
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
-import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
 
 /**
  * Created with IntelliJ IDEA.
