@@ -122,6 +122,9 @@
             <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
                 eo.Status = #searchBean.status#
             </isGreaterThan>
+            <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
+                eo.OrderType = #searchBean.orderType#
+            </isGreaterThan>
         </dynamic>
         GROUP BY
         eo.ExchangeOrderID,
@@ -162,6 +165,9 @@
                 <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
                     eo.Status = #searchBean.status#
                 </isGreaterThan>
+                <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
+                    eo.OrderType = #searchBean.orderType#
+                </isGreaterThan>
             </dynamic>
             GROUP BY
             eo.ExchangeOrderID,
@@ -201,6 +207,9 @@
             <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
                 eo.Status = #searchBean.status#
             </isGreaterThan>
+            <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
+                eo.OrderType = #searchBean.orderType#
+            </isGreaterThan>
         </dynamic>
     </select>
 
@@ -209,7 +218,7 @@
         eo.ExchangeOrderID,
         sa.CustomerGlobalID,
         sa.CompanyGlobalID,
-        sa.ShopID,
+        IFNULL(sa.ShopID, 0) AS ShopID,
         eo.OrderAmount,
         eo.BankAccountNo,
         eo.BankAccountName,
@@ -236,6 +245,9 @@
             </isNotNull>
             <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
                 eo.Status = #searchBean.status#
+            </isGreaterThan>
+            <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
+                eo.OrderType = #searchBean.orderType#
             </isGreaterThan>
         </dynamic>
         GROUP BY
