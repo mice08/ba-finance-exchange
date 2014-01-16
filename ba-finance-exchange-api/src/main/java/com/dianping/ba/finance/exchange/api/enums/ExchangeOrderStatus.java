@@ -25,7 +25,7 @@ public enum ExchangeOrderStatus {
      */
     SUCCESS(3),
     /**
-     * 4-失败
+     * 4-退票
      */
     FAIL(4);
 
@@ -53,7 +53,7 @@ public enum ExchangeOrderStatus {
             case 3:
                 return "成功";
             case 4:
-                return "失败";
+                return "退票";
             default:
                 return "错误";
         }

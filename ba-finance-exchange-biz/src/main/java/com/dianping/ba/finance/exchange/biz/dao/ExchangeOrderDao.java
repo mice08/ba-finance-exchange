@@ -6,6 +6,7 @@ import com.dianping.avatar.dao.annotation.DAOActionType;
 import com.dianping.avatar.dao.annotation.DAOParam;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.core.type.PageModel;
 
 import java.math.BigDecimal;
@@ -83,5 +84,16 @@ public interface ExchangeOrderDao extends GenericDao {
      */
     @DAOAction(action = DAOActionType.LOAD)
     BigDecimal findExchangeOrderTotalAmount(@DAOParam("searchBean") ExchangeOrderSearchBean searchBean);
+
+
+    /**
+     * 查询交易指令
+     *
+     * @param searchBean
+     * @return
+     */
+    @DAOAction(action = DAOActionType.QUERY)
+    List<ExchangeOrderDisplayData> findExchangeOrderList(@DAOParam("searchBean") ExchangeOrderSearchBean searchBean);
+
 
 }
