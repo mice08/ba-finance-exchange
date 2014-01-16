@@ -72,6 +72,22 @@ public class ShopFundAccountServiceObjectTest {
 
     }
 
+    @Test
+    public void createShopFundAccountFlowWhenAccountNotExist(){
+        ShopFundAccountFlowDTO input = setShopFundAccountFlowDTO();
+        int exchangeOrderId=3;
+        int fundAccountFlowId=2;
+        when(shopFundAccountDaoMock.loadShopFundAccountData(any(ShopFundAccountBean.class))).thenReturn(null);
+        when(shopFundAccountDaoMock.insertShopFundAccount(any(ShopFundAccountData.class))).thenReturn(1);
+        when(shopFundAccountFlowDaoMock.insertShopFundAccountFlow(any(ShopFundAccountFlowData.class))).thenReturn(fundAccountFlowId);
+        when(exchangeOrderServiceObjectMock.insertExchangeOrder(any(ExchangeOrderData.class))).thenReturn(exchangeOrderId);
+        when(shopFundAccountFlowDaoMock.updateExchangeOrderId(exchangeOrderId,fundAccountFlowId)).thenReturn(4);
+
+        int actual=shopFundAccountServiceObjectStub.createShopFundAccountFlow(input);
+        Assert.assertEquals(2,actual);
+
+    }
+
     private ShopFundAccountFlowDTO setShopFundAccountFlowDTO() {
         ShopFundAccountFlowDTO input=new ShopFundAccountFlowDTO();
         input.setShopId(0);
@@ -128,6 +144,16 @@ public class ShopFundAccountServiceObjectTest {
         ShopFundAccountFlowDTO actual = shopFundAccountServiceObjectStub.getPaymentPlanShopFundAccountFlow(1);
 
         Assert.assertEquals(shopFundAccountFlowData.getFundAccountId(), actual.getFundAccountId());
+    }
+
+    @Test
+    public void testGetPaymentPlanShopFundAccountFlowWhenNothingFound() {
+
+        when(shopFundAccountFlowDaoMock.loadShopFundAccountFlow(anyInt(), anyInt(), anyInt())).thenReturn(null);
+
+        ShopFundAccountFlowDTO actual = shopFundAccountServiceObjectStub.getPaymentPlanShopFundAccountFlow(1);
+
+        Assert.assertNull(actual);
     }
 
     @Test

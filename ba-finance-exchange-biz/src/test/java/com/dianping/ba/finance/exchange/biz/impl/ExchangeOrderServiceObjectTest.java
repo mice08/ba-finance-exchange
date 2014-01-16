@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
@@ -221,6 +222,15 @@ public class ExchangeOrderServiceObjectTest {
 
         int actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds);
         Assert.assertEquals(0, actual);
+    }
+
+    @Test
+    public void testFindExchangeOrderListSuccess(){
+        ExchangeOrderSearchBean searchBean = new ExchangeOrderSearchBean();
+        when(exchangeOrderDaoMock.findExchangeOrderList(any(ExchangeOrderSearchBean.class))).thenReturn(new ArrayList<ExchangeOrderDisplayData>());
+
+        List<ExchangeOrderDisplayData> exList = exchangeOrderServiceObjectStub.findExchangeOrderDataList(searchBean);
+        Assert.assertNotNull(exList);
     }
 
 }
