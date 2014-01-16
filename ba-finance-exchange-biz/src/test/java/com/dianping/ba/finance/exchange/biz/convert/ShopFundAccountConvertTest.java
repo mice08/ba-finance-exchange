@@ -76,7 +76,7 @@ public class ShopFundAccountConvertTest {
         Assert.assertEquals(BigDecimal.TEN, actual.getFlowAmount());
         Assert.assertEquals(FlowType.IN.value(), actual.getFlowType());
         Assert.assertEquals(SourceType.PaymentPlan.value(), actual.getSourceType());
-        Assert.assertEquals(111, actual.getFundAccountId());
+        Assert.assertEquals(123, actual.getFundAccountId());
         Assert.assertEquals("PP|111", actual.getSequence());
     }
 
