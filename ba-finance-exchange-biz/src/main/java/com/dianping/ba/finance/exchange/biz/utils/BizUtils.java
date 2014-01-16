@@ -110,8 +110,9 @@ public class BizUtils {
     public static String createLogParams(List<? extends Object> listToBeLogged){
         StringBuilder sb = new StringBuilder(listToBeLogged.getClass().getName());
         try{
+            sb.append("{");
             for(Object o: listToBeLogged){
-                sb.append("{").append(JsonUtils.toStr(o)).append(",");
+                sb.append(JsonUtils.toStr(o)).append(",");
             }
             sb.deleteCharAt(sb.toString().lastIndexOf(",")).append("}");
         } catch (Exception e) {
