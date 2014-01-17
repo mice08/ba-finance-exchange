@@ -100,6 +100,11 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
+    public List<Integer> findExchangeOrderIdList(ExchangeOrderSearchBean searchBean) {
+        return exchangeOrderDao.findExchangeOrderIdList(searchBean);
+    }
+
+    @Override
     public int updateExchangeOrderToPending(List<Integer> orderIds){
         long startTime = System.currentTimeMillis();
         try{

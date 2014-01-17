@@ -233,4 +233,13 @@ public class ExchangeOrderServiceObjectTest {
         Assert.assertNotNull(exList);
     }
 
+    @Test
+    public void testFindExchangeOrderIdListSuccess(){
+        ExchangeOrderSearchBean searchBean = new ExchangeOrderSearchBean();
+        when(exchangeOrderDaoMock.findExchangeOrderIdList(any(ExchangeOrderSearchBean.class))).thenReturn(new ArrayList<Integer>());
+
+        List<Integer> exList = exchangeOrderServiceObjectStub.findExchangeOrderIdList(searchBean);
+        Assert.assertNotNull(exList);
+    }
+
 }
