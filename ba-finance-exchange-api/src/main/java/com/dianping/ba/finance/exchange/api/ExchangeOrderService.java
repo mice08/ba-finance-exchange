@@ -67,4 +67,12 @@ public interface ExchangeOrderService {
      */
     List<ExchangeOrderDisplayData> findExchangeOrderDataList(ExchangeOrderSearchBean searchBean);
 
+    /**
+     * 根据查询条件获取交易指令集主键
+     *
+     * @param searchBean
+     * @return
+     */
+    List<Integer> findExchangeOrderIdList(ExchangeOrderSearchBean searchBean);
+
 }

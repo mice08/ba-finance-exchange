@@ -95,5 +95,13 @@ public interface ExchangeOrderDao extends GenericDao {
     @DAOAction(action = DAOActionType.QUERY)
     List<ExchangeOrderDisplayData> findExchangeOrderList(@DAOParam("searchBean") ExchangeOrderSearchBean searchBean);
 
+    /**
+     * 查询交易指令主键
+     *
+     * @param searchBean
+     * @return
+     */
 
+    @DAOAction(action = DAOActionType.QUERY)
+    List<Integer> findExchangeOrderIdList(@DAOParam("searchBean") ExchangeOrderSearchBean searchBean);
 }
