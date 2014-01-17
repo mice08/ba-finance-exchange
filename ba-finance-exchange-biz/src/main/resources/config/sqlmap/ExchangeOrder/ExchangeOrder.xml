@@ -236,7 +236,7 @@
         eo.ExchangeOrderID ASC
     </select>
 
-    <select id="findExchangeOrderIdList" resultMap="Integer" parameterClass="map">
+    <select id="findExchangeOrderIdList" resultClass="Integer" parameterClass="map">
         SELECT
         eo.ExchangeOrderID
         FROM
