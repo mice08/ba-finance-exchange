@@ -1,10 +1,12 @@
 package com.dianping.ba.finance.exchange.api;
 
+import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.core.type.PageModel;
-
-import java.util.Date;
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -35,12 +37,42 @@ public interface ExchangeOrderService {
 	/**
 	 * 分页获取支付订单
 	 *
-	 * @param orderId      支付订单ID
-	 * @param addDateBegin 产生日期开始
-	 * @param addDateEnd   产生日期结束
+	 * @param searchBean   查询条件
 	 * @param page         第几页
 	 * @param pageSize     分页大小
 	 * @return
 	 */
-	PageModel paginateExchangeOrderList(int orderId, Date addDateBegin, Date addDateEnd, int page, int pageSize);
+	PageModel paginateExchangeOrderList(ExchangeOrderSearchBean searchBean, int page, int pageSize);
+
+    /**
+     * 批量更新支付订单到处理中
+     * @param orderIds
+     * @return
+     */
+    int updateExchangeOrderToPending(List<Integer> orderIds);
+
+    /**
+     * 根据查询条件获取交易指令集总金额
+     *
+     * @param searchBean
+     * @return
+     */
+    BigDecimal findExchangeOrderTotalAmount(ExchangeOrderSearchBean searchBean);
+
+    /**
+     * 根据查询条件获取交易指令集详细数据
+     *
+     * @param searchBean
+     * @return
+     */
+    List<ExchangeOrderDisplayData> findExchangeOrderDataList(ExchangeOrderSearchBean searchBean);
+
+    /**
+     * 根据查询条件获取交易指令集主键
+     *
+     * @param searchBean
+     * @return
+     */
+    List<Integer> findExchangeOrderIdList(ExchangeOrderSearchBean searchBean);
+
 }

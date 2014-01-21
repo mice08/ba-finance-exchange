@@ -1,21 +1,24 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
+import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
-import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
+import com.dianping.core.type.PageModel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -45,7 +48,7 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testUpdateExchangeOrderSuccess(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.PENDING.getExchangeOrderStatus());
+        exchangeOrderData.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
 
         List<Integer> orderIds = new ArrayList<Integer>();
         orderIds.add(1);
@@ -53,7 +56,7 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(3);
 
         when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt())).thenReturn(1);
+        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(), any(Date.class),anyInt(), anyInt())).thenReturn(1);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
@@ -67,7 +70,7 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testUpdateExchangeOrderFailWhenOrderIdInvalid(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.PENDING.getExchangeOrderStatus());
+        exchangeOrderData.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
 
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(1);
@@ -78,7 +81,7 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(3);
 
         when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(),any(Date.class),anyInt())).thenReturn(1);
+        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(),any(Date.class),anyInt(), anyInt())).thenReturn(1);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
@@ -90,7 +93,7 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testUpdateExchangeOrderSuccessWhenExchangeTypeIsSuccess(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus());
+        exchangeOrderData.setStatus(ExchangeOrderStatus.SUCCESS.getExchangeOrderStatus());
 
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(1);
@@ -114,7 +117,7 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testUpdateExchangeOrderFailed(){
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeOrderStatusEnum.INIT.getExchangeOrderStatus());
+        exchangeOrderData.setStatus(ExchangeOrderStatus.INIT.getExchangeOrderStatus());
 
         List<Integer> orderIds = new ArrayList<Integer>();
         orderIds.add(1);
@@ -122,7 +125,7 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(3);
 
         when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt())).thenReturn(-1);
+        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt(), anyInt())).thenReturn(-1);
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds);
 
@@ -161,4 +164,82 @@ public class ExchangeOrderServiceObjectTest {
         int actual=exchangeOrderServiceObjectStub.insertExchangeOrder(exchangeOrderData);
         Assert.assertEquals(1,actual);
     }
+
+    @Test
+    public void testPaginateExchangeOrderList() {
+        PageModel pageModel = new PageModel();
+        when(exchangeOrderDaoMock.paginateExchangeOrderList(any(ExchangeOrderSearchBean.class), anyInt(), anyInt()))
+                .thenReturn(pageModel);
+        PageModel result = exchangeOrderServiceObjectStub.paginateExchangeOrderList(new ExchangeOrderSearchBean(), 1, 20);
+        Assert.assertNotNull(result);
+    }
+
+    @Test
+    public void testPaginateExchangeOrderListThrowException() {
+        when(exchangeOrderDaoMock.paginateExchangeOrderList(any(ExchangeOrderSearchBean.class), anyInt(), anyInt()))
+                .thenThrow(new RuntimeException());
+        PageModel result = exchangeOrderServiceObjectStub.paginateExchangeOrderList(new ExchangeOrderSearchBean(), 1, 20);
+        Assert.assertNotNull(result);
+    }
+
+    @Test
+    public void testGetExchangeOrderStatisticResult() {
+        when(exchangeOrderDaoMock.findExchangeOrderTotalAmount(any(ExchangeOrderSearchBean.class)))
+                .thenReturn(new BigDecimal(1.0));
+        BigDecimal result = exchangeOrderServiceObjectStub.findExchangeOrderTotalAmount(new ExchangeOrderSearchBean());
+        Assert.assertEquals(new BigDecimal(1.0), result);
+    }
+
+    @Test
+    public void testGetExchangeOrderStatisticResultThrowException() {
+        when(exchangeOrderDaoMock.findExchangeOrderTotalAmount(any(ExchangeOrderSearchBean.class)))
+                .thenThrow(new RuntimeException());
+        BigDecimal r = exchangeOrderServiceObjectStub.findExchangeOrderTotalAmount(new ExchangeOrderSearchBean());
+        Assert.assertEquals(new BigDecimal(0), r);
+    }
+
+    @Test
+    public void testUpdateExchangeOrderToPending() {
+        List<Integer> orderIds = new ArrayList<Integer>();
+        orderIds.add(1);
+        orderIds.add(2);
+        orderIds.add(3);
+
+        when(exchangeOrderDaoMock.updateExchangeOrderToPending(anyListOf(Integer.class), anyInt(),anyInt())).thenReturn(3);
+
+        int actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds);
+        Assert.assertEquals(3, actual);
+    }
+
+    @Test
+    public void testUpdateExchangeOrderToPendingFalse() {
+        List<Integer> orderIds = new ArrayList<Integer>();
+        orderIds.add(1);
+        orderIds.add(2);
+        orderIds.add(3);
+
+        when(exchangeOrderDaoMock.updateExchangeOrderToPending(anyListOf(Integer.class), anyInt(),anyInt())).thenReturn(0);
+
+        int actual=exchangeOrderServiceObjectStub.updateExchangeOrderToPending(orderIds);
+        Assert.assertEquals(0, actual);
+    }
+
+    @Test
+    public void testFindExchangeOrderListSuccess(){
+        ExchangeOrderSearchBean searchBean = new ExchangeOrderSearchBean();
+        when(exchangeOrderDaoMock.findExchangeOrderList(any(ExchangeOrderSearchBean.class))).thenReturn(new ArrayList<ExchangeOrderDisplayData>());
+
+        List<ExchangeOrderDisplayData> exList = exchangeOrderServiceObjectStub.findExchangeOrderDataList(searchBean);
+        Assert.assertNotNull(exList);
+    }
+
+    @Test
+    public void testFindExchangeOrderIdListSuccess(){
+        ExchangeOrderSearchBean searchBean = new ExchangeOrderSearchBean();
+        when(exchangeOrderDaoMock.findExchangeOrderIdList(any(ExchangeOrderSearchBean.class))).thenReturn(new ArrayList<Integer>());
+
+        List<Integer> exList = exchangeOrderServiceObjectStub.findExchangeOrderIdList(searchBean);
+        Assert.assertNotNull(exList);
+    }
+
 }

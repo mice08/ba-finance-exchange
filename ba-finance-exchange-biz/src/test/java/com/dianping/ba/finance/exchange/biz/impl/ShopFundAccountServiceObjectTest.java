@@ -1,25 +1,20 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
-import com.dianping.ba.finance.exchange.api.ShopFundAccountService;
 import com.dianping.ba.finance.exchange.api.beans.ShopFundAccountBean;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
-import com.dianping.ba.finance.exchange.api.enums.BusinessTypeEnum;
-import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
-import com.dianping.ba.finance.exchange.api.enums.FlowTypeEnum;
-import com.dianping.ba.finance.exchange.api.enums.SourceTypeEnum;
+import com.dianping.ba.finance.exchange.api.enums.BusinessType;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
+import com.dianping.ba.finance.exchange.api.enums.FlowType;
+import com.dianping.ba.finance.exchange.api.enums.SourceType;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountDao;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -36,18 +31,11 @@ import static org.mockito.Mockito.when;
  * Time: 下午4:18
  * To change this template use File | Settings | File Templates.
  */
-
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = { "classpath*:/config/spring/common/appcontext-*.xml", "classpath*:/config/spring/local/appcontext-*.xml" })
-
 public class ShopFundAccountServiceObjectTest {
     private ShopFundAccountFlowDao shopFundAccountFlowDaoMock;
     private ShopFundAccountDao shopFundAccountDaoMock;
     private ShopFundAccountServiceObject shopFundAccountServiceObjectStub;
     private ExchangeOrderServiceObject exchangeOrderServiceObjectMock;
-
-//    @Autowired
-//    private ShopFundAccountService shopFundAccountServiceWithoutMock;
 
     @Before
     public void runBeforeTest() {
@@ -67,20 +55,6 @@ public class ShopFundAccountServiceObjectTest {
     }
 
     @Test
-    public void createShopFundAccountFlowWhenAccountNull(){
-        ShopFundAccountFlowDTO input = setShopFundAccountFlowDTO();
-        int exchangeOrderId=3;
-        int fundAccountFlowId=2;
-        when(shopFundAccountDaoMock.loadShopFundAccountData(any(ShopFundAccountBean.class))).thenReturn(null);
-        when(shopFundAccountFlowDaoMock.insertShopFundAccountFlow(any(ShopFundAccountFlowData.class))).thenReturn(fundAccountFlowId);
-        when(exchangeOrderServiceObjectMock.insertExchangeOrder(any(ExchangeOrderData.class))).thenReturn(exchangeOrderId);
-        when(shopFundAccountFlowDaoMock.updateExchangeOrderId(exchangeOrderId,fundAccountFlowId)).thenReturn(4);
-
-        int actual=shopFundAccountServiceObjectStub.createShopFundAccountFlow(input);
-        Assert.assertEquals(2,actual);
-    }
-
-    @Test
     public void createShopFundAccountFlowWhenAccountExist(){
         ShopFundAccountFlowDTO input = setShopFundAccountFlowDTO();
         int exchangeOrderId=3;
@@ -96,10 +70,22 @@ public class ShopFundAccountServiceObjectTest {
         int actual=shopFundAccountServiceObjectStub.createShopFundAccountFlow(input);
         Assert.assertEquals(2,actual);
 
-        //db
-//        int result=shopFundAccountServiceWithoutMock.createShopFundAccountFlow(input);
-//        System.out.print("exchangeOrderId:"+result);
-//        System.out.println();
+    }
+
+    @Test
+    public void createShopFundAccountFlowWhenAccountNotExist(){
+        ShopFundAccountFlowDTO input = setShopFundAccountFlowDTO();
+        int exchangeOrderId=3;
+        int fundAccountFlowId=2;
+        when(shopFundAccountDaoMock.loadShopFundAccountData(any(ShopFundAccountBean.class))).thenReturn(null);
+        when(shopFundAccountDaoMock.insertShopFundAccount(any(ShopFundAccountData.class))).thenReturn(1);
+        when(shopFundAccountFlowDaoMock.insertShopFundAccountFlow(any(ShopFundAccountFlowData.class))).thenReturn(fundAccountFlowId);
+        when(exchangeOrderServiceObjectMock.insertExchangeOrder(any(ExchangeOrderData.class))).thenReturn(exchangeOrderId);
+        when(shopFundAccountFlowDaoMock.updateExchangeOrderId(exchangeOrderId,fundAccountFlowId)).thenReturn(4);
+
+        int actual=shopFundAccountServiceObjectStub.createShopFundAccountFlow(input);
+        Assert.assertEquals(2,actual);
+
     }
 
     private ShopFundAccountFlowDTO setShopFundAccountFlowDTO() {
@@ -110,17 +96,17 @@ public class ShopFundAccountServiceObjectTest {
         input.setCompanyGlobalId("2222");
         input.setBankAccountNo("1234");
         input.setBankName("工行");
-        input.setBusinessType(BusinessTypeEnum.PREPAID_CARD);
+        input.setBusinessType(BusinessType.PREPAID_CARD);
         input.setFlowAmount(new BigDecimal(2));
-        input.setFlowType(FlowTypeEnum.IN);
-        input.setSourceType(SourceTypeEnum.PaymentPlan);
+        input.setFlowType(FlowType.IN);
+        input.setSourceType(SourceType.PaymentPlan);
         return input;
     }
 
     @Test
     public void testUpdateShopFundAccountSuccess(){
         ExchangeOrderDTO exchangeOrder = new ExchangeOrderDTO();
-        exchangeOrder.setStatus(ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus());
+        exchangeOrder.setStatus(ExchangeOrderStatus.SUCCESS.getExchangeOrderStatus());
         exchangeOrder.setExchangeOrderId(1);
         exchangeOrder.setOrderAmount(BigDecimal.TEN);
 
@@ -133,7 +119,7 @@ public class ShopFundAccountServiceObjectTest {
     @Test
     public void testUpdateShopFundAccountsWhenStatusIsFAIL(){
         ExchangeOrderDTO exchangeOrder = new ExchangeOrderDTO();
-        exchangeOrder.setStatus(ExchangeOrderStatusEnum.FAIL.getExchangeOrderStatus());
+        exchangeOrder.setStatus(ExchangeOrderStatus.FAIL.getExchangeOrderStatus());
         exchangeOrder.setExchangeOrderId(1);
         exchangeOrder.setOrderAmount(BigDecimal.TEN);
 
@@ -158,6 +144,16 @@ public class ShopFundAccountServiceObjectTest {
         ShopFundAccountFlowDTO actual = shopFundAccountServiceObjectStub.getPaymentPlanShopFundAccountFlow(1);
 
         Assert.assertEquals(shopFundAccountFlowData.getFundAccountId(), actual.getFundAccountId());
+    }
+
+    @Test
+    public void testGetPaymentPlanShopFundAccountFlowWhenNothingFound() {
+
+        when(shopFundAccountFlowDaoMock.loadShopFundAccountFlow(anyInt(), anyInt(), anyInt())).thenReturn(null);
+
+        ShopFundAccountFlowDTO actual = shopFundAccountServiceObjectStub.getPaymentPlanShopFundAccountFlow(1);
+
+        Assert.assertNull(actual);
     }
 
     @Test

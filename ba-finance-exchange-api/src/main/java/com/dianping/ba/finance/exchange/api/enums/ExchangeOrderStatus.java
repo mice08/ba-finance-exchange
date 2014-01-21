@@ -6,7 +6,7 @@ package com.dianping.ba.finance.exchange.api.enums;
  * Date: 13-12-13
  * Time: 下午4:04
  */
-public enum ExchangeOrderStatusEnum {
+public enum ExchangeOrderStatus {
 
 	/**
 	 * 0-默认错误
@@ -25,7 +25,7 @@ public enum ExchangeOrderStatusEnum {
      */
     SUCCESS(3),
     /**
-     * 4-失败
+     * 4-退票
      */
     FAIL(4);
 
@@ -39,7 +39,7 @@ public enum ExchangeOrderStatusEnum {
 
     private int exchangeOrderStatus;
 
-    private ExchangeOrderStatusEnum(int exchangeOrderStatus) {
+    private ExchangeOrderStatus(int exchangeOrderStatus) {
         this.exchangeOrderStatus = exchangeOrderStatus;
     }
 
@@ -53,13 +53,13 @@ public enum ExchangeOrderStatusEnum {
             case 3:
                 return "成功";
             case 4:
-                return "失败";
+                return "退票";
             default:
                 return "错误";
         }
     }
 
-	public static ExchangeOrderStatusEnum valueOf(int value){
+	public static ExchangeOrderStatus valueOf(int value){
 		switch (value){
 			case 1:
 				return INIT;
@@ -73,4 +73,8 @@ public enum ExchangeOrderStatusEnum {
 				return DEFAULT;
 		}
 	}
+
+    public int value(){
+        return exchangeOrderStatus;
+    }
 }
