@@ -4,7 +4,7 @@ package com.dianping.ba.finance.exchange.api.enums;
 /**
  * 业务类型
  */
-public enum BusinessTypeEnum {
+public enum BusinessType {
 
     /**
      * 错误
@@ -29,7 +29,7 @@ public enum BusinessTypeEnum {
 
     private int businessType;
 
-    private BusinessTypeEnum(int businessType) {
+    private BusinessType(int businessType) {
         this.setBusinessType(businessType);
     }
 
@@ -49,7 +49,7 @@ public enum BusinessTypeEnum {
         }
     }
 
-    public static BusinessTypeEnum valueOf(int value){
+    public static BusinessType valueOf(int value){
         switch (value){
             case 1:
                 return GROUP_PURCHASE;
@@ -75,5 +75,9 @@ public enum BusinessTypeEnum {
 
     public void setBusinessType(int businessType) {
         this.businessType = businessType;
+    }
+
+    public int value(){
+        return businessType;
     }
 }

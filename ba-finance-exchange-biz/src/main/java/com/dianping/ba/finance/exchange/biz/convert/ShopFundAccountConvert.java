@@ -4,7 +4,10 @@ import com.dianping.ba.finance.exchange.api.beans.ShopFundAccountBean;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
+import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.api.dtos.ShopFundAccountFlowDTO;
+import com.dianping.ba.finance.exchange.api.enums.FlowType;
+import com.dianping.ba.finance.exchange.api.enums.SourceType;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 
 import java.math.BigDecimal;
@@ -24,9 +27,9 @@ public class ShopFundAccountConvert {
      * @return
      * @throws Exception
      */
-     public static ShopFundAccountBean buildShopFundAccountBeanfromShopFundAccountFlowDTO(ShopFundAccountFlowDTO shopFundAccountFlowDTO) {
+     public static ShopFundAccountBean convertShopFundAccountFlowDTOToShopFundAccountBean(ShopFundAccountFlowDTO shopFundAccountFlowDTO) {
          ShopFundAccountBean shopFundAccountBean = new ShopFundAccountBean();
-         shopFundAccountBean.setBusinessType(shopFundAccountFlowDTO.getBusinessType().ordinal());
+         shopFundAccountBean.setBusinessType(shopFundAccountFlowDTO.getBusinessType().value());
          shopFundAccountBean.setCustomerGlobalId(shopFundAccountFlowDTO.getCustomerGlobalId());
          shopFundAccountBean.setCompanyGlobalId(shopFundAccountFlowDTO.getCompanyGlobalId());
          shopFundAccountBean.setShopId(shopFundAccountFlowDTO.getShopId());
@@ -42,7 +45,7 @@ public class ShopFundAccountConvert {
     public static ShopFundAccountData buildShopFundAccountDataFromShopFundAccountFlowDTO(ShopFundAccountFlowDTO shopFundAccountFlowDTO)  {
         ShopFundAccountData shopFundAccountData = new ShopFundAccountData();
         shopFundAccountData.setShopId(shopFundAccountFlowDTO.getShopId());
-        shopFundAccountData.setBusinessType(shopFundAccountFlowDTO.getBusinessType().ordinal());
+        shopFundAccountData.setBusinessType(shopFundAccountFlowDTO.getBusinessType().value());
         shopFundAccountData.setCompanyGlobalId(shopFundAccountFlowDTO.getCompanyGlobalId());
         shopFundAccountData.setCustomerGlobalId(shopFundAccountFlowDTO.getCustomerGlobalId());
         // 账户先不加金额
@@ -66,7 +69,7 @@ public class ShopFundAccountConvert {
         shopFundAccountFlowData.setFlowAmount(shopFundAccountFlowDTO.getFlowAmount());
         shopFundAccountFlowData.setFlowType(shopFundAccountFlowDTO.getFlowType().value());
         shopFundAccountFlowData.setSourceType(shopFundAccountFlowDTO.getSourceType().value());
-        shopFundAccountFlowData.setSequence(BizUtils.createSequence(shopFundAccountFlowDTO.getSourceType().clientNo(),shopFundAccountFlowDTO.getBizId()));
+        shopFundAccountFlowData.setSequence(BizUtils.createSequence(shopFundAccountFlowDTO.getSourceType().clientNo(),String.valueOf(shopFundAccountFlowDTO.getBizId())));
         //exchangeOrderId 先为0 后面回写
         shopFundAccountFlowData.setExchangeOrderId(0);
         return shopFundAccountFlowData;
@@ -77,14 +80,27 @@ public class ShopFundAccountConvert {
      *
      * @return
      */
-    public static ExchangeOrderData buildExchangeOrderData(ShopFundAccountFlowDTO shopFundAccountFlowDTO) {
+    public static ExchangeOrderData convertShopFundAccountFlowDTOToExchangeOrderData(ShopFundAccountFlowDTO shopFundAccountFlowDTO) {
         ExchangeOrderData exchangeOrderData=new ExchangeOrderData();
         exchangeOrderData.setOrderAmount(shopFundAccountFlowDTO.getFlowAmount());
-        exchangeOrderData.setOrderType(shopFundAccountFlowDTO.getFlowType().ordinal());
+        exchangeOrderData.setOrderType(shopFundAccountFlowDTO.getFlowType().value());
         exchangeOrderData.setBankAccountNo(shopFundAccountFlowDTO.getBankAccountNo());
         exchangeOrderData.setBankAccountName(shopFundAccountFlowDTO.getBankAccountName());
         exchangeOrderData.setBankName(shopFundAccountFlowDTO.getBankName());
+        exchangeOrderData.setBankCity(shopFundAccountFlowDTO.getBankCity());
+        exchangeOrderData.setBankProvince(shopFundAccountFlowDTO.getBankProvince());
         return exchangeOrderData;
     }
 
+
+    public static ShopFundAccountFlowData buildShopFundAccountFlowDataForOut(ExchangeOrderDTO exchangeOrder){
+        ShopFundAccountFlowData shopFundAccountFlow= new ShopFundAccountFlowData();
+        shopFundAccountFlow.setExchangeOrderId(exchangeOrder.getExchangeOrderId());
+        shopFundAccountFlow.setFlowAmount(exchangeOrder.getOrderAmount());
+        shopFundAccountFlow.setFlowType(FlowType.OUT.getFlowType());
+        shopFundAccountFlow.setSourceType(SourceType.ExchangeOrder.value());
+        shopFundAccountFlow.setFundAccountId(exchangeOrder.getRelevantFundAccountId());
+        shopFundAccountFlow.setSequence(BizUtils.createSequence(SourceType.ExchangeOrder.clientNo(),String.valueOf(exchangeOrder.getExchangeOrderId())));
+        return shopFundAccountFlow;
+    }
 }

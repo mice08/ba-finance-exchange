@@ -3,21 +3,22 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
+import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
-import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatusEnum;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.biz.convert.ExchangeOrderConvert;
-import com.dianping.ba.finance.exchange.biz.convert.ShopFundAccountConvert;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
+import com.dianping.ba.finance.exchange.biz.utils.JsonUtils;
 import com.dianping.core.type.PageModel;
+import org.apache.log4j.Level;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,32 +42,79 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
     @Override
     public GenericResult<Integer> updateExchangeOrderToSuccess(List<Integer> orderIds) {
-        Long startTime = Calendar.getInstance().getTimeInMillis();
-
-        GenericResult genericResult = new GenericResult<Integer>();
+        Long startTime = System.currentTimeMillis();
+        GenericResult result = new GenericResult<Integer>();
         int processExchangeOrderId = 0;
         try {
             for (int orderId : orderIds) {
                 processExchangeOrderId = orderId;
                 boolean success = updateExchangeOrderToSuccess(orderId);
                 if (success) {
-                    genericResult.addSuccess(orderId);
+                    result.addSuccess(orderId);
                 } else {
-                    genericResult.addFail(orderId);
+                    result.addFail(orderId);
                 }
             }
         } catch (Exception e) {
-            genericResult.addFail(processExchangeOrderId);
+            result.addFail(processExchangeOrderId);
         }
-        if (genericResult.hasFailResult()) {
-            BizUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess error", "error", "Failed exchange order ids: " + genericResult.failListToString(), new Exception("updateExchangeOrderToSuccess error"));
+        if (result.hasFailResult()) {
+            BizUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", Level.ERROR, "Failed exchange order ids: " + result.failListToString());
         }
-        return genericResult;
+        return result;
     }
 
     @Override
-    public PageModel paginateExchangeOrderList(int orderId, Date addDateBegin, Date addDateEnd, int page, int pageSize) {
-        return exchangeOrderDao.paginateExchangeOrderList(orderId, addDateBegin, addDateEnd, page, pageSize);
+    public PageModel paginateExchangeOrderList(ExchangeOrderSearchBean searchBean, int page, int pageSize) {
+        long startTime = System.currentTimeMillis();
+        try {
+            return exchangeOrderDao.paginateExchangeOrderList(searchBean, page, pageSize);
+        } catch (Exception e) {
+            String message = "searchBean [exchangeOrderId: " + searchBean.getExchangeOrderId() + ", " +
+                                "beginDate: " + searchBean.getBeginDate() + ", " +
+                                "endDate: " + searchBean.getEndDate() + ", " +
+                                "status: " + searchBean.getStatus() + "]";
+            BizUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, message, e);
+            return new PageModel();
+        }
+    }
+
+    @Override
+    public BigDecimal findExchangeOrderTotalAmount(ExchangeOrderSearchBean searchBean) {
+        long startTime = System.currentTimeMillis();
+        try {
+            return exchangeOrderDao.findExchangeOrderTotalAmount(searchBean);
+        } catch (Exception e) {
+            String message = "searchBean [exchangeOrderId: " + searchBean.getExchangeOrderId() + ", " +
+                    "beginDate: " + searchBean.getBeginDate() + ", " +
+                    "endDate: " + searchBean.getEndDate() + ", " +
+                    "status: " + searchBean.getStatus() + "]";
+            BizUtils.log(monitorLogger, startTime, "findExchangeOrderTotalAmount", Level.ERROR, message, e);
+            return new BigDecimal(0);
+        }
+    }
+
+    @Override
+    public List<ExchangeOrderDisplayData> findExchangeOrderDataList(ExchangeOrderSearchBean searchBean) {
+        return exchangeOrderDao.findExchangeOrderList(searchBean);
+    }
+
+    @Override
+    public List<Integer> findExchangeOrderIdList(ExchangeOrderSearchBean searchBean) {
+        return exchangeOrderDao.findExchangeOrderIdList(searchBean);
+    }
+
+    @Override
+    public int updateExchangeOrderToPending(List<Integer> orderIds){
+        long startTime = System.currentTimeMillis();
+        try{
+            ExchangeOrderStatus whereStatus=ExchangeOrderStatus.INIT;
+            ExchangeOrderStatus setStatus=ExchangeOrderStatus.PENDING;
+            return exchangeOrderDao.updateExchangeOrderToPending(orderIds,whereStatus.value(),setStatus.value());
+        }catch(Exception e){
+            BizUtils.log(monitorLogger,startTime,"updateExchangeOrderToPending", Level.ERROR, BizUtils.createLogParams(orderIds),e);
+        }
+        return -1;
     }
 
     private boolean updateExchangeOrderToSuccess(int orderId) {
@@ -74,20 +122,19 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
             return false;
         }
         Date orderDate = getCurrentTime();
-        int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatusEnum.SUCCESS.getExchangeOrderStatus());
-        if (affectedRows > 0) {
-            ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
-            ExchangeOrderDTO exchangeOrderDTO = ExchangeOrderConvert.buildExchangeOrderDTO(exchangeOrderData);
-            exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
-        } else {
+        int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatus.PENDING.value(),ExchangeOrderStatus.SUCCESS.value());
+        if(affectedRows <= 0){
             return false;
         }
+        ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
+        ExchangeOrderDTO exchangeOrderDTO = ExchangeOrderConvert.buildExchangeOrderDTO(exchangeOrderData);
+        exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
+
         return true;
     }
 
     private Date getCurrentTime() {
-        Calendar calendar = Calendar.getInstance();
-        return calendar.getTime();
+        return Calendar.getInstance().getTime();
     }
 
     public void setExchangeOrderDao(ExchangeOrderDao exchangeOrderDao) {
