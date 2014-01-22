@@ -46,7 +46,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             }
             fundAccountFlowId = createShopFundAccountAndFlow(shopFundAccountFlowDTO);
             //调用支付指令接口 插入指令
-            ExchangeOrderData exchangeOrderData = ShopFundAccountConvert.convertShopFundAccountFlowDTOToExchangeOrderData(shopFundAccountFlowDTO);
+            ExchangeOrderData exchangeOrderData = ShopFundAccountConvert.convertShopFundAccountFlowDTOToExchangeOrderData(shopFundAccountFlowDTO, fundAccountFlowId);
             int exchangeOrderId = exchangeOrderService.insertExchangeOrder(exchangeOrderData);
 
             //回写资金流水中的exchangeOrderId

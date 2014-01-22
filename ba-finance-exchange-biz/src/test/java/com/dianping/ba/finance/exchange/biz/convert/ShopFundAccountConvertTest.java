@@ -91,7 +91,7 @@ public class ShopFundAccountConvertTest {
         shopFundAccountFlowDTO.setBankCity("bankCity");
         shopFundAccountFlowDTO.setBankProvince("bankProvince");
 
-        ExchangeOrderData actual = ShopFundAccountConvert.convertShopFundAccountFlowDTOToExchangeOrderData(shopFundAccountFlowDTO);
+        ExchangeOrderData actual = ShopFundAccountConvert.convertShopFundAccountFlowDTOToExchangeOrderData(shopFundAccountFlowDTO, 123);
 
         Assert.assertNotNull(actual);
         Assert.assertEquals(BigDecimal.TEN, actual.getOrderAmount());
@@ -101,6 +101,7 @@ public class ShopFundAccountConvertTest {
         Assert.assertEquals("bankName", actual.getBankName());
         Assert.assertEquals("bankCity", actual.getBankCity());
         Assert.assertEquals("bankProvince", actual.getBankProvince());
+        Assert.assertEquals("P123", actual.getBizCode());
     }
 
     @Test
