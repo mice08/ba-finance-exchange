@@ -80,7 +80,7 @@ public class ShopFundAccountConvert {
      *
      * @return
      */
-    public static ExchangeOrderData convertShopFundAccountFlowDTOToExchangeOrderData(ShopFundAccountFlowDTO shopFundAccountFlowDTO) {
+    public static ExchangeOrderData convertShopFundAccountFlowDTOToExchangeOrderData(ShopFundAccountFlowDTO shopFundAccountFlowDTO, int fundAccountFlowId) {
         ExchangeOrderData exchangeOrderData=new ExchangeOrderData();
         exchangeOrderData.setOrderAmount(shopFundAccountFlowDTO.getFlowAmount());
         exchangeOrderData.setOrderType(shopFundAccountFlowDTO.getFlowType().value());
@@ -89,6 +89,7 @@ public class ShopFundAccountConvert {
         exchangeOrderData.setBankName(shopFundAccountFlowDTO.getBankName());
         exchangeOrderData.setBankCity(shopFundAccountFlowDTO.getBankCity());
         exchangeOrderData.setBankProvince(shopFundAccountFlowDTO.getBankProvince());
+        exchangeOrderData.setBizCode("P" + fundAccountFlowId);       //TODO BizCode P开头
         return exchangeOrderData;
     }
 

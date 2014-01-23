@@ -21,7 +21,7 @@ public enum ExchangeOrderStatus {
      */
     PENDING(2),
     /**
-     * 3-成功
+     * 3-支付成功
      */
     SUCCESS(3),
     /**
@@ -51,7 +51,7 @@ public enum ExchangeOrderStatus {
             case 2:
                 return "支付中";
             case 3:
-                return "成功";
+                return "支付成功";
             case 4:
                 return "退票";
             default:

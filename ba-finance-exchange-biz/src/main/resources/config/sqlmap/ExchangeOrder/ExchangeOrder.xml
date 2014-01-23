@@ -17,6 +17,7 @@
         <result property="orderDate" column="OrderDate"/>
         <result property="lastUpdateDate" column="LastUpdateDate"/>
         <result property="memo" column="Memo"/>
+        <result property="bizCode" column="BizCode"/>
     </resultMap>
 
     <typeAlias alias="ExchangeOrderDisplayData" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData"/>
@@ -35,6 +36,7 @@
         <result property="memo" column="Memo"/>
         <result property="addDate" column="AddDate"/>
         <result property="orderDate" column="OrderDate"/>
+        <result property="bizCode" column="BizCode"/>
     </resultMap>
 
     <insert id="insertExchangeOrder" parameterClass="map">
@@ -49,7 +51,8 @@
                      BankCity,
 		             AddDate,
 		             LastUpdateDate,
-		             Memo
+		             Memo,
+		             BizCode
 		             )
 			values (#exchangeOrderData.orderAmount#,
 			         #exchangeOrderData.orderType#,
@@ -60,7 +63,8 @@
 			         #exchangeOrderData.bankCity#,
 			         NOW(),
 			         NOW(),
-			         #exchangeOrderData.memo#
+			         #exchangeOrderData.memo#,
+			         #exchangeOrderData.bizCode#
 			        );
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="exchangeOrderId">
@@ -104,7 +108,8 @@
         eo. STATUS,
         eo.Memo,
         eo.AddDate,
-        eo.OrderDate
+        eo.OrderDate,
+        eo.BizCode
         FROM
         FS_ExchangeOrder eo
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
@@ -113,9 +118,9 @@
         )
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         <dynamic prepend="WHERE">
-            <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
-                eo.ExchangeOrderID = #searchBean.exchangeOrderId#
-            </isGreaterThan>
+            <isNotEmpty property="searchBean.bizCode" prepend="and">
+                eo.BizCode = #searchBean.bizCode#
+            </isNotEmpty>
             <isNotNull property="searchBean.beginDate" prepend="and">
                 eo.AddDate &gt;= #searchBean.beginDate#
             </isNotNull>
@@ -145,9 +150,9 @@
         )
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         <dynamic prepend="WHERE">
-            <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
-                eo.ExchangeOrderID = #searchBean.exchangeOrderId#
-            </isGreaterThan>
+            <isNotEmpty property="searchBean.bizCode" prepend="and">
+                eo.BizCode = #searchBean.bizCode#
+            </isNotEmpty>
             <isNotNull property="searchBean.beginDate" prepend="and">
                 eo.AddDate &gt;= #searchBean.beginDate#
             </isNotNull>
@@ -173,9 +178,9 @@
         FROM
         FS_ExchangeOrder eo
         <dynamic prepend="WHERE">
-            <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
-                eo.ExchangeOrderID = #searchBean.exchangeOrderId#
-            </isGreaterThan>
+            <isNotEmpty property="searchBean.bizCode" prepend="and">
+                eo.BizCode = #searchBean.bizCode#
+            </isNotEmpty>
             <isNotNull property="searchBean.beginDate" prepend="and">
                 eo.AddDate &gt;= #searchBean.beginDate#
             </isNotNull>
@@ -206,7 +211,8 @@
         eo. STATUS,
         eo.Memo,
         eo.AddDate,
-        eo.OrderDate
+        eo.OrderDate,
+        eo.BizCode
         FROM
         FS_ExchangeOrder eo
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
@@ -215,9 +221,9 @@
         )
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         <dynamic prepend="WHERE">
-            <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
-                eo.ExchangeOrderID = #searchBean.exchangeOrderId#
-            </isGreaterThan>
+            <isNotEmpty property="searchBean.bizCode" prepend="and">
+                eo.BizCode = #searchBean.bizCode#
+            </isNotEmpty>
             <isNotNull property="searchBean.beginDate" prepend="and">
                 eo.AddDate &gt;= #searchBean.beginDate#
             </isNotNull>
@@ -247,9 +253,9 @@
         )
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         <dynamic prepend="WHERE">
-            <isGreaterThan property="searchBean.exchangeOrderId" compareValue="0" prepend="and">
-                eo.ExchangeOrderID = #searchBean.exchangeOrderId#
-            </isGreaterThan>
+            <isNotEmpty property="searchBean.bizCode" prepend="and">
+                eo.BizCode = #searchBean.bizCode#
+            </isNotEmpty>
             <isNotNull property="searchBean.beginDate" prepend="and">
                 eo.AddDate &gt;= #searchBean.beginDate#
             </isNotNull>
