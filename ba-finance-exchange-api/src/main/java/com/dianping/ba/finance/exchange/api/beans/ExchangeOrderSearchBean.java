@@ -20,6 +20,7 @@ public class ExchangeOrderSearchBean implements Serializable {
     private Date endDate;
     private int status;
     private int orderType;
+    private String bizCode;
 
     public int getOrderType() {
         return orderType;
@@ -61,4 +62,11 @@ public class ExchangeOrderSearchBean implements Serializable {
         this.status = status;
     }
 
+    public String getBizCode() {
+        return bizCode;
+    }
+
+    public void setBizCode(String bizCode) {
+        this.bizCode = bizCode;
+    }
 }
