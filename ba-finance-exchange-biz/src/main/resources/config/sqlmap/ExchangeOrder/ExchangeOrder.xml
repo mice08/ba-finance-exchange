@@ -87,7 +87,7 @@
     <select id="loadExchangeOrderByOrderId" parameterClass="map" resultMap="exchangeOrder">
         <![CDATA[
         select ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,BankProvince,
-                     BankCity,Status,OrderDate,AddDate,LastUpdateDate,Memo
+                     BankCity,Status,OrderDate,AddDate,LastUpdateDate,Memo,BizCode
         from FS_ExchangeOrder
         where ExchangeOrderID = #exchangeOrderId#
         ]]>
