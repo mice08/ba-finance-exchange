@@ -17,7 +17,7 @@
         <result property="orderDate" column="OrderDate"/>
         <result property="lastUpdateDate" column="LastUpdateDate"/>
         <result property="memo" column="Memo"/>
-        <result property="bizCode" column="BizCode" nullValue="empty"/>
+        <result property="bizCode" column="BizCode"/>
     </resultMap>
 
     <typeAlias alias="ExchangeOrderDisplayData" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData"/>
@@ -87,7 +87,7 @@
     <select id="loadExchangeOrderByOrderId" parameterClass="map" resultMap="exchangeOrder">
         <![CDATA[
         select ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,BankProvince,
-                     BankCity,Status,OrderDate,AddDate,LastUpdateDate,Memo
+                     BankCity,Status,OrderDate,AddDate,LastUpdateDate,Memo,BizCode
         from FS_ExchangeOrder
         where ExchangeOrderID = #exchangeOrderId#
         ]]>
