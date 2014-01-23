@@ -17,6 +17,7 @@
         <result property="orderDate" column="OrderDate"/>
         <result property="lastUpdateDate" column="LastUpdateDate"/>
         <result property="memo" column="Memo"/>
+        <result property="bizCode" column="BizCode"/>
     </resultMap>
 
     <typeAlias alias="ExchangeOrderDisplayData" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData"/>
@@ -35,6 +36,7 @@
         <result property="memo" column="Memo"/>
         <result property="addDate" column="AddDate"/>
         <result property="orderDate" column="OrderDate"/>
+        <result property="bizCode" column="BizCode"/>
     </resultMap>
 
     <insert id="insertExchangeOrder" parameterClass="map">
@@ -49,7 +51,8 @@
                      BankCity,
 		             AddDate,
 		             LastUpdateDate,
-		             Memo
+		             Memo,
+		             BizCode
 		             )
 			values (#exchangeOrderData.orderAmount#,
 			         #exchangeOrderData.orderType#,
@@ -60,7 +63,8 @@
 			         #exchangeOrderData.bankCity#,
 			         NOW(),
 			         NOW(),
-			         #exchangeOrderData.memo#
+			         #exchangeOrderData.memo#,
+			         #exchangeOrderData.bizCode#
 			        );
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="exchangeOrderId">
@@ -104,7 +108,8 @@
         eo. STATUS,
         eo.Memo,
         eo.AddDate,
-        eo.OrderDate
+        eo.OrderDate,
+        eo.BizCode
         FROM
         FS_ExchangeOrder eo
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
@@ -206,7 +211,8 @@
         eo. STATUS,
         eo.Memo,
         eo.AddDate,
-        eo.OrderDate
+        eo.OrderDate,
+        eo.BizCode
         FROM
         FS_ExchangeOrder eo
         LEFT JOIN FS_ShopFundAccountFlow flow ON (

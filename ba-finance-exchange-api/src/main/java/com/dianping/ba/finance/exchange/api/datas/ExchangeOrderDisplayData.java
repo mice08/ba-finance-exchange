@@ -42,6 +42,8 @@ public class ExchangeOrderDisplayData implements Serializable {
 
     private Date orderDate;
 
+    private String bizCode;
+
     public Date getOrderDate() {
         return orderDate;
     }
@@ -155,5 +157,13 @@ public class ExchangeOrderDisplayData implements Serializable {
 
     public void setBankCity(String bankCity) {
         this.bankCity = bankCity;
+    }
+
+    public String getBizCode() {
+        return bizCode;
+    }
+
+    public void setBizCode(String bizCode) {
+        this.bizCode = bizCode;
     }
 }
