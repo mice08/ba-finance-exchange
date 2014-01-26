@@ -9,11 +9,10 @@ import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
-import com.dianping.ba.finance.exchange.biz.convert.ExchangeOrderConvert;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
-import com.dianping.ba.finance.exchange.biz.utils.JsonUtils;
+import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
 import com.dianping.core.type.PageModel;
 import org.apache.log4j.Level;
 
@@ -117,7 +116,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         return -1;
     }
 
-    private boolean updateExchangeOrderToSuccess(int orderId) {
+    private boolean updateExchangeOrderToSuccess(int orderId) throws Exception{
         if (orderId <= 0) {
             return false;
         }
@@ -127,7 +126,8 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
             return false;
         }
         ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
-        ExchangeOrderDTO exchangeOrderDTO = ExchangeOrderConvert.buildExchangeOrderDTO(exchangeOrderData);
+
+        ExchangeOrderDTO exchangeOrderDTO = ConvertUtils.copy(exchangeOrderData, ExchangeOrderDTO.class);
         exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
 
         return true;
