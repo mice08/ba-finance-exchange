@@ -17,6 +17,7 @@ import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountDao;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDao;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
+import com.dianping.ba.finance.exchange.biz.utils.LogUtils;
 import org.apache.log4j.Level;
 
 import java.math.BigDecimal;
@@ -42,7 +43,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         long startTime = System.currentTimeMillis();
         try {
             if (shopFundAccountFlowDTO == null){
-                BizUtils.log(monitorLogger, startTime, "createShopFundAccountFlow", Level.ERROR, "argument is null");
+                LogUtils.log(monitorLogger, startTime, "createShopFundAccountFlow", Level.ERROR, "argument is null");
                 return -1;
             }
             fundAccountFlowId = createShopFundAccountAndFlow(shopFundAccountFlowDTO);
@@ -53,7 +54,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             //回写资金流水中的exchangeOrderId
             shopFundAccountFlowDao.updateExchangeOrderId(exchangeOrderId, fundAccountFlowId);
         }catch (Exception e){
-            BizUtils.log(monitorLogger, startTime, "createShopFundAccountFlow", Level.ERROR,
+            LogUtils.log(monitorLogger, startTime, "createShopFundAccountFlow", Level.ERROR,
                     "BusinessType = " + shopFundAccountFlowDTO.getBusinessType()
                             + "CustomerGlobalId = "+ shopFundAccountFlowDTO.getCustomerGlobalId()
                             + "CompanyGlobalId = "+ shopFundAccountFlowDTO.getCompanyGlobalId()
@@ -77,7 +78,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             shopFundAccountFlowDao.insertShopFundAccountFlow(shopFundAccountFlowData);
             return true;
         } catch (Exception e) {
-            BizUtils.log(monitorLogger, startTime, "updateShopFundAccountCausedBySuccessfulExchangeOrder", Level.ERROR,
+            LogUtils.log(monitorLogger, startTime, "updateShopFundAccountCausedBySuccessfulExchangeOrder", Level.ERROR,
                     "orderId = " + exchangeOrderDTO.getExchangeOrderId(),
                     e);
         }
@@ -93,13 +94,13 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             ShopFundAccountFlowData paymentPlanShopFundAccountFlow = shopFundAccountFlowDao.loadShopFundAccountFlow(orderId,
                     FlowType.IN.getFlowType(), SourceType.PaymentPlan.getSourceType());
             if(paymentPlanShopFundAccountFlow == null){
-                BizUtils.log(monitorLogger, startTime, "getPaymentPlanShopFundAccountFlow", Level.ERROR,
+                LogUtils.log(monitorLogger, startTime, "getPaymentPlanShopFundAccountFlow", Level.ERROR,
                         "orderId = " + orderId);
             }
             ShopFundAccountFlowDTO shopFundAccountFlowDTO =  ConvertUtils.copy(paymentPlanShopFundAccountFlow, ShopFundAccountFlowDTO.class);
             return  shopFundAccountFlowDTO;
         } catch (Exception e) {
-            BizUtils.log(monitorLogger, startTime, "getPaymentPlanShopFundAccountFlow",Level.ERROR,
+            LogUtils.log(monitorLogger, startTime, "getPaymentPlanShopFundAccountFlow",Level.ERROR,
                     "orderId = " + orderId,
                     e);
         }

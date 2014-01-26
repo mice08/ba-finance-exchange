@@ -11,8 +11,8 @@ import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
-import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
+import com.dianping.ba.finance.exchange.biz.utils.LogUtils;
 import com.dianping.core.type.PageModel;
 import org.apache.log4j.Level;
 
@@ -58,7 +58,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
             result.addFail(processExchangeOrderId);
         }
         if (result.hasFailResult()) {
-            BizUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", Level.ERROR, "Failed exchange order ids: " + result.failListToString());
+            LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", Level.ERROR, "Failed exchange order ids: " + result.failListToString());
         }
         return result;
     }
@@ -73,7 +73,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
                                 "beginDate: " + searchBean.getBeginDate() + ", " +
                                 "endDate: " + searchBean.getEndDate() + ", " +
                                 "status: " + searchBean.getStatus() + "]";
-            BizUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, message, e);
+            LogUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, message, e);
             return new PageModel();
         }
     }
@@ -88,7 +88,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
                     "beginDate: " + searchBean.getBeginDate() + ", " +
                     "endDate: " + searchBean.getEndDate() + ", " +
                     "status: " + searchBean.getStatus() + "]";
-            BizUtils.log(monitorLogger, startTime, "findExchangeOrderTotalAmount", Level.ERROR, message, e);
+            LogUtils.log(monitorLogger, startTime, "findExchangeOrderTotalAmount", Level.ERROR, message, e);
             return new BigDecimal(0);
         }
     }
@@ -111,7 +111,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
             ExchangeOrderStatus setStatus=ExchangeOrderStatus.PENDING;
             return exchangeOrderDao.updateExchangeOrderToPending(orderIds,whereStatus.value(),setStatus.value());
         }catch(Exception e){
-            BizUtils.log(monitorLogger,startTime,"updateExchangeOrderToPending", Level.ERROR, BizUtils.createLogParams(orderIds),e);
+            LogUtils.log(monitorLogger,startTime,"updateExchangeOrderToPending", Level.ERROR, LogUtils.createLogParams(orderIds),e);
         }
         return -1;
     }
