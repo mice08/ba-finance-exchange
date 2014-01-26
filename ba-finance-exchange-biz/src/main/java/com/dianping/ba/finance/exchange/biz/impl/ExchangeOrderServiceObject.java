@@ -12,6 +12,7 @@ import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
+import com.dianping.ba.finance.exchange.biz.utils.JsonUtils;
 import com.dianping.ba.finance.exchange.biz.utils.LogUtils;
 import com.dianping.core.type.PageModel;
 import org.apache.log4j.Level;
@@ -69,13 +70,14 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         try {
             return exchangeOrderDao.paginateExchangeOrderList(searchBean, page, pageSize);
         } catch (Exception e) {
-            String message = "searchBean [exchangeOrderId: " + searchBean.getExchangeOrderId() + ", " +
-                                "beginDate: " + searchBean.getBeginDate() + ", " +
-                                "endDate: " + searchBean.getEndDate() + ", " +
-                                "status: " + searchBean.getStatus() + "]";
-            LogUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, message, e);
-            return new PageModel();
+            try{
+                LogUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, JsonUtils.toStr(searchBean), e);
+                return new PageModel();
+            }catch (Exception ex){
+                //ignore
+            }
         }
+        return new PageModel();
     }
 
     @Override
@@ -84,13 +86,14 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         try {
             return exchangeOrderDao.findExchangeOrderTotalAmount(searchBean);
         } catch (Exception e) {
-            String message = "searchBean [exchangeOrderId: " + searchBean.getExchangeOrderId() + ", " +
-                    "beginDate: " + searchBean.getBeginDate() + ", " +
-                    "endDate: " + searchBean.getEndDate() + ", " +
-                    "status: " + searchBean.getStatus() + "]";
-            LogUtils.log(monitorLogger, startTime, "findExchangeOrderTotalAmount", Level.ERROR, message, e);
-            return new BigDecimal(0);
+            try{
+                LogUtils.log(monitorLogger, startTime, "findExchangeOrderTotalAmount", Level.ERROR, JsonUtils.toStr(searchBean), e);
+                return BigDecimal.ZERO;
+            }catch (Exception ex){
+                //ignore
+            }
         }
+        return BigDecimal.ZERO;
     }
 
     @Override

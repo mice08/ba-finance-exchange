@@ -17,6 +17,7 @@ import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountDao;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDao;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
+import com.dianping.ba.finance.exchange.biz.utils.JsonUtils;
 import com.dianping.ba.finance.exchange.biz.utils.LogUtils;
 import org.apache.log4j.Level;
 
@@ -54,15 +55,11 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             //回写资金流水中的exchangeOrderId
             shopFundAccountFlowDao.updateExchangeOrderId(exchangeOrderId, fundAccountFlowId);
         }catch (Exception e){
-            LogUtils.log(monitorLogger, startTime, "createShopFundAccountFlow", Level.ERROR,
-                    "BusinessType = " + shopFundAccountFlowDTO.getBusinessType()
-                            + "CustomerGlobalId = "+ shopFundAccountFlowDTO.getCustomerGlobalId()
-                            + "CompanyGlobalId = "+ shopFundAccountFlowDTO.getCompanyGlobalId()
-                            + "ShopId = "+ shopFundAccountFlowDTO.getShopId()
-                            + "FlowAmount = "+ shopFundAccountFlowDTO.getFlowAmount()
-                            + "FlowType = "+ shopFundAccountFlowDTO.getFlowType()
-                            + "SourceType = "+ shopFundAccountFlowDTO.getSourceType().value()
-                    ,e);
+            try{
+            LogUtils.log(monitorLogger, startTime, "createShopFundAccountFlow", Level.ERROR, JsonUtils.toStr(shopFundAccountFlowDTO),e);
+            }catch (Exception ex){
+                //ignore
+            }
         }
         return fundAccountFlowId;
     }
