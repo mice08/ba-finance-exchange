@@ -5,7 +5,9 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 import com.dianping.ba.finance.exchange.biz.utils.JsonUtils;
+import com.dianping.ba.finance.exchange.biz.utils.LogUtils;
 import com.dianping.swallow.producer.Producer;
+import org.apache.log4j.Level;
 
 import java.util.Calendar;
 
@@ -29,7 +31,7 @@ public class ExchangeOrderStatusChangeNotify {
             producerClient.sendMessage(message);
             monitorLogger.info("ExchangeOrderStatusChangeNotify invoked!!!");
         } catch (Exception ex) {
-            BizUtils.log(monitorLogger, startTime, "exchangeOrderStatusChangeNotify", "error", "ExchangeOrderId=" + exchangeOrderDTO.getExchangeOrderId() + "&OrderStatus=" +
+            LogUtils.log(monitorLogger, startTime, "exchangeOrderStatusChangeNotify", Level.ERROR, "ExchangeOrderId=" + exchangeOrderDTO.getExchangeOrderId() + "&OrderStatus=" +
                     exchangeOrderDTO.getStatus() + "&message=" + message, ex);
         }
     }
