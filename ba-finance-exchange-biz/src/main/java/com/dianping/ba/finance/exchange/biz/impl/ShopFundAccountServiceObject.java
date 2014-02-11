@@ -126,7 +126,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
      */
     private int createShopFundAccountAndFlow(ShopFundAccountFlowDTO shopFundAccountFlowDTO) throws Exception{
         //判断资金账户时候存在
-        ShopFundAccountBean shopFundAccountBean = ConvertUtils.copy(shopFundAccountFlowDTO, ShopFundAccountBean.class);
+        ShopFundAccountBean shopFundAccountBean = buildShopFundAccountBeanFromShopFundAccountFlowDTO(shopFundAccountFlowDTO);
         ShopFundAccountData shopFundAccountData = loadShopFundAccountData(shopFundAccountBean);
         int shopFundAccountId;
         if (!isShopFundAccountDataExist(shopFundAccountData)) {
@@ -140,6 +140,15 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         return insertShopFundAccountFlow(shopFundAccountFlowData);
     }
 
+    private ShopFundAccountBean buildShopFundAccountBeanFromShopFundAccountFlowDTO(ShopFundAccountFlowDTO shopFundAccountFlowDTO){
+        ShopFundAccountBean shopFundAccountBean = new ShopFundAccountBean();
+        shopFundAccountBean.setCustomerGlobalId(shopFundAccountFlowDTO.getCustomerGlobalId());
+        shopFundAccountBean.setCompanyGlobalId(shopFundAccountFlowDTO.getCompanyGlobalId());
+        shopFundAccountBean.setBusinessType(shopFundAccountFlowDTO.getBusinessType().value());
+        shopFundAccountBean.setShopId(shopFundAccountFlowDTO.getShopId());
+        return shopFundAccountBean;
+
+    }
     /**
      * 转换成插入资金账户需要的Data
      *
