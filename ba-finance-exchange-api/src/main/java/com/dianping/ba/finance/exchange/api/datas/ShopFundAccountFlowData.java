@@ -55,6 +55,25 @@ public class ShopFundAccountFlowData implements Serializable {
      */
     private String sequence;
 
+    private int addLoginId;
+    private int lastUpdateLoginId;
+
+    public int getAddLoginId() {
+        return addLoginId;
+    }
+
+    public void setAddLoginId(int addLoginId) {
+        this.addLoginId = addLoginId;
+    }
+
+    public int getLastUpdateLoginId() {
+        return lastUpdateLoginId;
+    }
+
+    public void setLastUpdateLoginId(int lastUpdateLoginId) {
+        this.lastUpdateLoginId = lastUpdateLoginId;
+    }
+
     public int getFundAccountFlowId() {
         return fundAccountFlowId;
     }
