@@ -59,7 +59,10 @@ public class ExchangeOrderData implements Serializable {
     private String memo;
 
     private String bankCity;
+
     private String bankProvince;
+
+    private String bizCode;
 
     public int getExchangeOrderId() {
         return exchangeOrderId;
@@ -163,5 +166,13 @@ public class ExchangeOrderData implements Serializable {
 
     public void setBankCity(String bankCity) {
         this.bankCity = bankCity;
+    }
+
+    public String getBizCode() {
+        return bizCode;
+    }
+
+    public void setBizCode(String bizCode) {
+        this.bizCode = bizCode;
     }
 }

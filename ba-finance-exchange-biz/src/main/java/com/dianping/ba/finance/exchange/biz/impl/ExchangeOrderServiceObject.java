@@ -9,11 +9,11 @@ import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
-import com.dianping.ba.finance.exchange.biz.convert.ExchangeOrderConvert;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
-import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
+import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
 import com.dianping.ba.finance.exchange.biz.utils.JsonUtils;
+import com.dianping.ba.finance.exchange.biz.utils.LogUtils;
 import com.dianping.core.type.PageModel;
 import org.apache.log4j.Level;
 
@@ -59,7 +59,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
             result.addFail(processExchangeOrderId);
         }
         if (result.hasFailResult()) {
-            BizUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", Level.ERROR, "Failed exchange order ids: " + result.failListToString());
+            LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", Level.ERROR, "Failed exchange order ids: " + result.failListToString());
         }
         return result;
     }
@@ -70,13 +70,14 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         try {
             return exchangeOrderDao.paginateExchangeOrderList(searchBean, page, pageSize);
         } catch (Exception e) {
-            String message = "searchBean [exchangeOrderId: " + searchBean.getExchangeOrderId() + ", " +
-                                "beginDate: " + searchBean.getBeginDate() + ", " +
-                                "endDate: " + searchBean.getEndDate() + ", " +
-                                "status: " + searchBean.getStatus() + "]";
-            BizUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, message, e);
-            return new PageModel();
+            try{
+                LogUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, JsonUtils.toStr(searchBean), e);
+                return new PageModel();
+            }catch (Exception ex){
+                //ignore
+            }
         }
+        return new PageModel();
     }
 
     @Override
@@ -85,13 +86,14 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         try {
             return exchangeOrderDao.findExchangeOrderTotalAmount(searchBean);
         } catch (Exception e) {
-            String message = "searchBean [exchangeOrderId: " + searchBean.getExchangeOrderId() + ", " +
-                    "beginDate: " + searchBean.getBeginDate() + ", " +
-                    "endDate: " + searchBean.getEndDate() + ", " +
-                    "status: " + searchBean.getStatus() + "]";
-            BizUtils.log(monitorLogger, startTime, "findExchangeOrderTotalAmount", Level.ERROR, message, e);
-            return new BigDecimal(0);
+            try{
+                LogUtils.log(monitorLogger, startTime, "findExchangeOrderTotalAmount", Level.ERROR, JsonUtils.toStr(searchBean), e);
+                return BigDecimal.ZERO;
+            }catch (Exception ex){
+                //ignore
+            }
         }
+        return BigDecimal.ZERO;
     }
 
     @Override
@@ -112,12 +114,12 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
             ExchangeOrderStatus setStatus=ExchangeOrderStatus.PENDING;
             return exchangeOrderDao.updateExchangeOrderToPending(orderIds,whereStatus.value(),setStatus.value());
         }catch(Exception e){
-            BizUtils.log(monitorLogger,startTime,"updateExchangeOrderToPending", Level.ERROR, BizUtils.createLogParams(orderIds),e);
+            LogUtils.log(monitorLogger,startTime,"updateExchangeOrderToPending", Level.ERROR, LogUtils.createLogParams(orderIds),e);
         }
         return -1;
     }
 
-    private boolean updateExchangeOrderToSuccess(int orderId) {
+    private boolean updateExchangeOrderToSuccess(int orderId) throws Exception{
         if (orderId <= 0) {
             return false;
         }
@@ -127,7 +129,8 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
             return false;
         }
         ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
-        ExchangeOrderDTO exchangeOrderDTO = ExchangeOrderConvert.buildExchangeOrderDTO(exchangeOrderData);
+
+        ExchangeOrderDTO exchangeOrderDTO = ConvertUtils.copy(exchangeOrderData, ExchangeOrderDTO.class);
         exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
 
         return true;
