@@ -18,6 +18,8 @@
         <result property="lastUpdateDate" column="LastUpdateDate"/>
         <result property="memo" column="Memo"/>
         <result property="bizCode" column="BizCode"/>
+        <result property="addLoginId" column="AddLoginID"/>
+        <result property="lastUpdateLoginID" column="LastUpdateLoginID"/>
     </resultMap>
 
     <typeAlias alias="ExchangeOrderDisplayData" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData"/>
@@ -52,7 +54,8 @@
 		             AddDate,
 		             LastUpdateDate,
 		             Memo,
-		             BizCode
+		             BizCode,
+		             AddLoginID
 		             )
 			values (#exchangeOrderData.orderAmount#,
 			         #exchangeOrderData.orderType#,
@@ -64,7 +67,8 @@
 			         NOW(),
 			         NOW(),
 			         #exchangeOrderData.memo#,
-			         #exchangeOrderData.bizCode#
+			         #exchangeOrderData.bizCode#,
+			         #exchangeOrderData.addLoginId#
 			        );
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="exchangeOrderId">
@@ -87,7 +91,7 @@
     <select id="loadExchangeOrderByOrderId" parameterClass="map" resultMap="exchangeOrder">
         <![CDATA[
         select ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,BankProvince,
-                     BankCity,Status,OrderDate,AddDate,LastUpdateDate,Memo,BizCode
+                     BankCity,Status,OrderDate,AddDate,LastUpdateDate,Memo,BizCode,AddLoginID,LastUpdateLoginID
         from FS_ExchangeOrder
         where ExchangeOrderID = #exchangeOrderId#
         ]]>
@@ -109,7 +113,9 @@
         eo.Memo,
         eo.AddDate,
         eo.OrderDate,
-        eo.BizCode
+        eo.BizCode,
+        eo.AddLoginID,
+        eo.LastUpdateLoginID
         FROM
         FS_ExchangeOrder eo
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
@@ -212,7 +218,9 @@
         eo.Memo,
         eo.AddDate,
         eo.OrderDate,
-        eo.BizCode
+        eo.BizCode,
+        eo.AddLoginID,
+        eo.LastUpdateLoginID
         FROM
         FS_ExchangeOrder eo
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
