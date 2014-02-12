@@ -65,7 +65,7 @@ public class ShopFundAccountServiceObjectTest {
         when(shopFundAccountDaoMock.insertShopFundAccount(any(ShopFundAccountData.class))).thenReturn(1);
         when(shopFundAccountFlowDaoMock.insertShopFundAccountFlow(any(ShopFundAccountFlowData.class))).thenReturn(fundAccountFlowId);
         when(exchangeOrderServiceObjectMock.insertExchangeOrder(any(ExchangeOrderData.class))).thenReturn(exchangeOrderId);
-        when(shopFundAccountFlowDaoMock.updateExchangeOrderId(exchangeOrderId,fundAccountFlowId)).thenReturn(4);
+        when(shopFundAccountFlowDaoMock.updateExchangeOrderId(exchangeOrderId,fundAccountFlowId,1)).thenReturn(4);
 
         int actual=shopFundAccountServiceObjectStub.createShopFundAccountFlow(input);
         Assert.assertEquals(2,actual);
@@ -81,7 +81,7 @@ public class ShopFundAccountServiceObjectTest {
         when(shopFundAccountDaoMock.insertShopFundAccount(any(ShopFundAccountData.class))).thenReturn(1);
         when(shopFundAccountFlowDaoMock.insertShopFundAccountFlow(any(ShopFundAccountFlowData.class))).thenReturn(fundAccountFlowId);
         when(exchangeOrderServiceObjectMock.insertExchangeOrder(any(ExchangeOrderData.class))).thenReturn(exchangeOrderId);
-        when(shopFundAccountFlowDaoMock.updateExchangeOrderId(exchangeOrderId,fundAccountFlowId)).thenReturn(4);
+        when(shopFundAccountFlowDaoMock.updateExchangeOrderId(exchangeOrderId,fundAccountFlowId,1)).thenReturn(4);
 
         int actual=shopFundAccountServiceObjectStub.createShopFundAccountFlow(input);
         Assert.assertEquals(2,actual);

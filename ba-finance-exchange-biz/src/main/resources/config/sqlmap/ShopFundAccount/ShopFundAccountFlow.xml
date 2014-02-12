@@ -14,6 +14,8 @@
         <result property="addDate" column="AddDate"/>
         <result property="lastUpdateDate" column="LastUpdateDate"/>
         <result property="memo" column="Memo"/>
+        <result property="addLoginId" column="AddLoginID"/>
+        <result property="lastUpdateLoginId" column="LastUpdateLoginID"/>
     </resultMap>
 
     <insert id="insertShopFundAccountFlow" parameterClass="map">
@@ -27,7 +29,8 @@
 		             AddDate,
 		             LastUpdateDate,
 		             Sequence,
-		             Memo
+		             Memo,
+		             AddLoginID
 		             )
 			values (#shopFundAccountFlowData.fundAccountId#,
 			         #shopFundAccountFlowData.flowAmount#,
@@ -37,7 +40,8 @@
 			         NOW(),
 			         NOW(),
 			         #shopFundAccountFlowData.sequence#,
-			         #shopFundAccountFlowData.memo#
+			         #shopFundAccountFlowData.memo#,
+			         #shopFundAccountFlowData.addLoginId#
 		            );
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="fundAccountFlowId">
@@ -50,7 +54,7 @@
     <update id="updateExchangeOrderId" parameterClass="map">
         <![CDATA[
         UPDATE FS_ShopFundAccountFlow
-        SET ExchangeOrderID = #exchangeOrderId#,LastUpdateDate=NOW()
+        SET ExchangeOrderID = #exchangeOrderId#,LastUpdateDate=NOW(),LastUpdateLoginID = #loginId#
         WHERE FAFlowID = #fundAccountFlowId#
  		]]>
     </update>
