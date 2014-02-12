@@ -19,7 +19,7 @@
         <result property="memo" column="Memo"/>
         <result property="bizCode" column="BizCode"/>
         <result property="addLoginId" column="AddLoginID"/>
-        <result property="lastUpdateLoginID" column="LastUpdateLoginID"/>
+        <result property="lastUpdateLoginId" column="LastUpdateLoginID"/>
     </resultMap>
 
     <typeAlias alias="ExchangeOrderDisplayData" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData"/>
