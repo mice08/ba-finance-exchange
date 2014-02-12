@@ -80,7 +80,7 @@
 
     <update id="updateExchangeOrderData" parameterClass="map">
         UPDATE FS_ExchangeOrder
-        SET Status = #postStatus#,
+        SET Status = #postStatus#,LastUpdateLoginID = #loginId#
         <isNotEmpty property="orderDate">
             OrderDate = #orderDate#,
         </isNotEmpty>
@@ -285,7 +285,8 @@
     <update id="updateExchangeOrderToPending" parameterClass="map">
         UPDATE FS_ExchangeOrder
         SET Status = #setStatus#,
-        LastUpdateDate = now()
+        LastUpdateDate = now(),
+        LastUpdateLoginID = #loginId#
         WHERE Status = #whereStatus#
         <isNotEmpty prepend="and" property="orderIds">
             ExchangeOrderID IN

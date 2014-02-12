@@ -219,6 +219,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         shopFundAccountFlow.setSourceType(SourceType.ExchangeOrder.value());
         shopFundAccountFlow.setFundAccountId(exchangeOrder.getRelevantFundAccountId());
         shopFundAccountFlow.setSequence(BizUtils.createSequence(SourceType.ExchangeOrder.clientNo(),String.valueOf(exchangeOrder.getExchangeOrderId())));
+        shopFundAccountFlow.setAddLoginId(exchangeOrder.getAddLoginId());
         return shopFundAccountFlow;
     }
 
