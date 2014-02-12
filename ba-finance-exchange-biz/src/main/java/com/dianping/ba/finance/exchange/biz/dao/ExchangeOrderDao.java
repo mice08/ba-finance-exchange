@@ -29,10 +29,11 @@ public interface ExchangeOrderDao extends GenericDao {
 	 * @param orderDate 确认交易指令时间
 	 * @param preStatus    更新前状态
      * @param postStatus    更新状态
+     * @param loginId
 	 * @return
 	 */
 	@DAOAction(action = DAOActionType.UPDATE)
-	int updateExchangeOrderData(@DAOParam("exchangeOrderId") int orderId, @DAOParam("orderDate") Date orderDate, @DAOParam("preStatus") int preStatus, @DAOParam("postStatus") int postStatus);
+	int updateExchangeOrderData(@DAOParam("exchangeOrderId") int orderId, @DAOParam("orderDate") Date orderDate, @DAOParam("preStatus") int preStatus, @DAOParam("postStatus") int postStatus,@DAOParam("loginId")int loginId);
 
 
 	/**
@@ -72,10 +73,11 @@ public interface ExchangeOrderDao extends GenericDao {
      * @param orderIds
      * @param whereStatus    where条件
      * @param setStatus     更新条件
+     * @param loginId
      * @return
      */
     @DAOAction(action = DAOActionType.UPDATE)
-    int updateExchangeOrderToPending(@DAOParam("orderIds") List<Integer> orderIds,@DAOParam("whereStatus") int whereStatus,@DAOParam("setStatus") int setStatus);
+    int updateExchangeOrderToPending(@DAOParam("orderIds") List<Integer> orderIds,@DAOParam("whereStatus") int whereStatus,@DAOParam("setStatus") int setStatus,@DAOParam("loginId") int loginId);
 
     /**
      * 获取付款单总额
