@@ -41,13 +41,14 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
     @Override
     public int createShopFundAccountFlow(ShopFundAccountFlowDTO shopFundAccountFlowDTO){
         int fundAccountFlowId = -1;
-        int loginId = shopFundAccountFlowDTO.getAddLoginId();
+
         long startTime = System.currentTimeMillis();
         try {
             if (shopFundAccountFlowDTO == null){
                 LogUtils.log(monitorLogger, startTime, "createShopFundAccountFlow", Level.ERROR, "argument is null");
                 return -1;
             }
+            int loginId = shopFundAccountFlowDTO.getAddLoginId();
             fundAccountFlowId = createShopFundAccountAndFlow(shopFundAccountFlowDTO);
             //调用支付指令接口 插入指令
             ExchangeOrderData exchangeOrderData = buildExchangeOrderDataFromShopFundAccountFlowDTO(shopFundAccountFlowDTO, fundAccountFlowId);
