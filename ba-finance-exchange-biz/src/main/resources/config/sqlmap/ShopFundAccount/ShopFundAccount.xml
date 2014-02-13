@@ -54,7 +54,7 @@
     </insert>
 
     <select id="loadShopFundAccountData" resultMap="shopFundAccount" parameterClass="map">
-        SELECT FAID, CustomerGlobalID, CompanyGlobalID, ShopID, BusinessType, Credit, Debit, BalanceTotal, BalanceFrozen
+        SELECT FAID, CustomerGlobalID, CompanyGlobalID, ShopID, BusinessType, Credit, Debit, BalanceTotal, BalanceFrozen,AddLoginID,LastUpdateLoginID
         FROM FS_ShopFundAccount
         WHERE BusinessType = #shopFundAccountBean.businessType#
         AND CustomerGlobalID = #shopFundAccountBean.customerGlobalId#
