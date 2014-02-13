@@ -48,7 +48,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
                 LogUtils.log(monitorLogger, startTime, "createShopFundAccountFlow", Level.ERROR, "argument is null");
                 return -1;
             }
-            int loginId = shopFundAccountFlowDTO.getAddLoginId();
+            int loginId = shopFundAccountFlowDTO.getLoginId();
             fundAccountFlowId = createShopFundAccountAndFlow(shopFundAccountFlowDTO);
             //调用支付指令接口 插入指令
             ExchangeOrderData exchangeOrderData = buildExchangeOrderDataFromShopFundAccountFlowDTO(shopFundAccountFlowDTO, fundAccountFlowId);
@@ -168,7 +168,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         shopFundAccountData.setBalanceTotal(BigDecimal.ZERO);
         shopFundAccountData.setCredit(BigDecimal.ZERO);
         shopFundAccountData.setDebit(BigDecimal.ZERO);
-        shopFundAccountData.setAddLoginId(shopFundAccountFlowDTO.getAddLoginId());
+        shopFundAccountData.setAddLoginId(shopFundAccountFlowDTO.getLoginId());
         return shopFundAccountData;
     }
 
@@ -188,7 +188,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         shopFundAccountFlowData.setSequence(BizUtils.createSequence(shopFundAccountFlowDTO.getSourceType().clientNo(),String.valueOf(shopFundAccountFlowDTO.getBizId())));
         //exchangeOrderId 先为0 后面回写
         shopFundAccountFlowData.setExchangeOrderId(0);
-        shopFundAccountFlowData.setAddLoginId(shopFundAccountFlowDTO.getAddLoginId());
+        shopFundAccountFlowData.setAddLoginId(shopFundAccountFlowDTO.getLoginId());
         return shopFundAccountFlowData;
     }
 
@@ -207,7 +207,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         exchangeOrderData.setBankCity(shopFundAccountFlowDTO.getBankCity());
         exchangeOrderData.setBankProvince(shopFundAccountFlowDTO.getBankProvince());
         exchangeOrderData.setBizCode("P" + fundAccountFlowId);       //TODO BizCode P开头
-        exchangeOrderData.setAddLoginId(shopFundAccountFlowDTO.getAddLoginId());
+        exchangeOrderData.setAddLoginId(shopFundAccountFlowDTO.getLoginId());
         return exchangeOrderData;
     }
 
@@ -219,7 +219,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         shopFundAccountFlow.setSourceType(SourceType.ExchangeOrder.value());
         shopFundAccountFlow.setFundAccountId(exchangeOrder.getRelevantFundAccountId());
         shopFundAccountFlow.setSequence(BizUtils.createSequence(SourceType.ExchangeOrder.clientNo(),String.valueOf(exchangeOrder.getExchangeOrderId())));
-        shopFundAccountFlow.setAddLoginId(exchangeOrder.getAddLoginId());
+        shopFundAccountFlow.setAddLoginId(exchangeOrder.getLoginId());
         return shopFundAccountFlow;
     }
 
