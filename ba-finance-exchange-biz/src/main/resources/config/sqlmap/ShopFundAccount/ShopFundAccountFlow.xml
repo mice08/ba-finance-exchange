@@ -15,7 +15,6 @@
         <result property="lastUpdateDate" column="LastUpdateDate"/>
         <result property="memo" column="Memo"/>
         <result property="addLoginId" column="AddLoginID"/>
-        <result property="lastUpdateLoginId" column="LastUpdateLoginID"/>
     </resultMap>
 
     <insert id="insertShopFundAccountFlow" parameterClass="map">
@@ -60,7 +59,7 @@
     </update>
 
     <select id="loadShopFundAccountFlow" resultMap="shopFundAccountFlowData" parameterClass="map">
-        SELECT FAFlowID,FAID,FlowAmount,FlowType,SourceType,ExchangeOrderID,AddDate,LastUpdateDate,Memo
+        SELECT FAFlowID,FAID,FlowAmount,FlowType,SourceType,ExchangeOrderID,AddDate,LastUpdateDate,Memo,AddLoginID
         FROM FS_ShopFundAccountFlow
         WHERE ExchangeOrderID = #exchangeOrderId#
         AND FlowType = #flowType#
