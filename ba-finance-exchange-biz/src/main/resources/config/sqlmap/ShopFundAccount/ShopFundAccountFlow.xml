@@ -53,7 +53,7 @@
     <update id="updateExchangeOrderId" parameterClass="map">
         <![CDATA[
         UPDATE FS_ShopFundAccountFlow
-        SET ExchangeOrderID = #exchangeOrderId#,LastUpdateDate=NOW(),LastUpdateLoginID = #loginId#
+        SET ExchangeOrderID = #exchangeOrderId#,LastUpdateDate=NOW()
         WHERE FAFlowID = #fundAccountFlowId#
  		]]>
     </update>
