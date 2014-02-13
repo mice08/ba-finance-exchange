@@ -131,7 +131,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
 
         ExchangeOrderDTO exchangeOrderDTO = ConvertUtils.copy(exchangeOrderData, ExchangeOrderDTO.class);
-        exchangeOrderDTO.setAddLoginId(loginId);
+        exchangeOrderDTO.setLoginId(loginId);
         exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
 
         return true;
