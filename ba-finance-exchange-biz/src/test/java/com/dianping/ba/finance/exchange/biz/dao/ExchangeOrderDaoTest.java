@@ -8,7 +8,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,14 +21,14 @@ import java.util.Calendar;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:/config/spring/common/appcontext-*.xml","classpath*:/config/spring/local/appcontext-*.xml" })
+@ContextConfiguration(locations = {"classpath*:/config/spring/common/appcontext-*.xml", "classpath*:/config/spring/local/appcontext-*.xml"})
 
 public class ExchangeOrderDaoTest {
     @Autowired
     private ExchangeOrderDao exchangeOrderDao;
 
     @Test
-    public void testInsertExchangeOrder(){
+    public void testInsertExchangeOrder() {
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
         exchangeOrderData.setAddDate(Calendar.getInstance().getTime());
         exchangeOrderData.setAddLoginId(-1);
@@ -36,5 +38,15 @@ public class ExchangeOrderDaoTest {
         exchangeOrderData.setOrderAmount(BigDecimal.ONE);
 
         exchangeOrderDao.insertExchangeOrder(exchangeOrderData);
+    }
+
+    @Test
+    public void testUpdateExchangeOrderToPending() {
+        int status = 1;
+        int setStatus = 2;
+        int loginId = 2;
+        List<Integer> integerList = new ArrayList<Integer>();
+        integerList.add(878799);
+        exchangeOrderDao.updateExchangeOrderToPending(integerList,status,setStatus,loginId);
     }
 }
