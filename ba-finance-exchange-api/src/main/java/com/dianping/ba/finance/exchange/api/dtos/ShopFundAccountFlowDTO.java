@@ -86,14 +86,14 @@ public class ShopFundAccountFlowDTO implements Serializable {
     private String bankName;
     private String bankCity;
     private String bankProvince;
-    private int addLoginId;
+    private int loginId;
 
-    public int getAddLoginId() {
-        return addLoginId;
+    public int getLoginId() {
+        return loginId;
     }
 
-    public void setAddLoginId(int addLoginId) {
-        this.addLoginId = addLoginId;
+    public void setLoginId(int loginId) {
+        this.loginId = loginId;
     }
 
     public int getFundAccountFlowId() {
