@@ -49,4 +49,14 @@ public class ExchangeOrderDaoTest {
         integerList.add(878799);
         exchangeOrderDao.updateExchangeOrderToPending(integerList,status,setStatus,loginId);
     }
+
+    @Test
+    public void testUpdateExchangeOrderData(){
+        int status = 2;
+        int setStatus = 4;
+        int loginId = 2;
+        List<Integer> integerList = new ArrayList<Integer>();
+        integerList.add(878799);
+        exchangeOrderDao.updateExchangeOrderToPending(integerList,status,setStatus,loginId);
+    }
 }
