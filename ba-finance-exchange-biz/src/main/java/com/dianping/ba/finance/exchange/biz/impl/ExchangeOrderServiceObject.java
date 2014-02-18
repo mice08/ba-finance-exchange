@@ -5,6 +5,7 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
+import com.dianping.ba.finance.exchange.api.beans.RefundBean;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
@@ -104,6 +105,11 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     @Override
     public List<Integer> findExchangeOrderIdList(ExchangeOrderSearchBean searchBean) {
         return exchangeOrderDao.findExchangeOrderIdList(searchBean);
+    }
+
+    @Override
+    public int updateExchangeOrderToRefund(RefundBean refundBean, int loginId) {
+        return 0;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
