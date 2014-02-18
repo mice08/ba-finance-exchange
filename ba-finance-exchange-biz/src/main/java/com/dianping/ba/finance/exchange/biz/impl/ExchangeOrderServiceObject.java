@@ -41,14 +41,14 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
-    public GenericResult<Integer> updateExchangeOrderToSuccess(List<Integer> orderIds) {
+    public GenericResult<Integer> updateExchangeOrderToSuccess(List<Integer> orderIds,int loginId) {
         Long startTime = System.currentTimeMillis();
         GenericResult result = new GenericResult<Integer>();
         int processExchangeOrderId = 0;
         try {
             for (int orderId : orderIds) {
                 processExchangeOrderId = orderId;
-                boolean success = updateExchangeOrderToSuccess(orderId);
+                boolean success = updateExchangeOrderToSuccess(orderId,loginId);
                 if (success) {
                     result.addSuccess(orderId);
                 } else {
@@ -107,30 +107,31 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
-    public int updateExchangeOrderToPending(List<Integer> orderIds){
+    public int updateExchangeOrderToPending(List<Integer> orderIds,int loginId){
         long startTime = System.currentTimeMillis();
         try{
             ExchangeOrderStatus whereStatus=ExchangeOrderStatus.INIT;
             ExchangeOrderStatus setStatus=ExchangeOrderStatus.PENDING;
-            return exchangeOrderDao.updateExchangeOrderToPending(orderIds,whereStatus.value(),setStatus.value());
+            return exchangeOrderDao.updateExchangeOrderToPending(orderIds,whereStatus.value(),setStatus.value(),loginId);
         }catch(Exception e){
             LogUtils.log(monitorLogger,startTime,"updateExchangeOrderToPending", Level.ERROR, LogUtils.createLogParams(orderIds),e);
         }
         return -1;
     }
 
-    private boolean updateExchangeOrderToSuccess(int orderId) throws Exception{
+    private boolean updateExchangeOrderToSuccess(int orderId,int loginId) throws Exception{
         if (orderId <= 0) {
             return false;
         }
         Date orderDate = getCurrentTime();
-        int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatus.PENDING.value(),ExchangeOrderStatus.SUCCESS.value());
+        int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatus.PENDING.value(),ExchangeOrderStatus.SUCCESS.value(),loginId);
         if(affectedRows <= 0){
             return false;
         }
         ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
 
         ExchangeOrderDTO exchangeOrderDTO = ConvertUtils.copy(exchangeOrderData, ExchangeOrderDTO.class);
+        exchangeOrderDTO.setLoginId(loginId);
         exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
 
         return true;

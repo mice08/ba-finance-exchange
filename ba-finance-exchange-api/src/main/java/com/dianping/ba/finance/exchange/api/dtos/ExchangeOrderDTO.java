@@ -38,6 +38,16 @@ public class ExchangeOrderDTO implements Serializable {
      */
     private BigDecimal orderAmount;
 
+    private int loginId;
+
+    public int getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(int loginId) {
+        this.loginId = loginId;
+    }
+
     public BigDecimal getOrderAmount() {
         return orderAmount;
     }

@@ -30,9 +30,10 @@ public interface ExchangeOrderService {
 	 * 更新交易指令成功
 	 *
 	 * @param orderIds 交易指令集
+     * @param loginId
 	 * @return 更新结果集
 	 */
-	GenericResult<Integer> updateExchangeOrderToSuccess(List<Integer> orderIds);
+	GenericResult<Integer> updateExchangeOrderToSuccess(List<Integer> orderIds,int loginId);
 
 	/**
 	 * 分页获取支付订单
@@ -47,9 +48,10 @@ public interface ExchangeOrderService {
     /**
      * 批量更新支付订单到处理中
      * @param orderIds
+     * @param loginId
      * @return
      */
-    int updateExchangeOrderToPending(List<Integer> orderIds);
+    int updateExchangeOrderToPending(List<Integer> orderIds,int loginId);
 
     /**
      * 根据查询条件获取交易指令集总金额

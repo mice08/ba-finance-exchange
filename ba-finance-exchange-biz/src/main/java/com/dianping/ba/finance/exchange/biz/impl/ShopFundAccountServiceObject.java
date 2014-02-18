@@ -41,6 +41,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
     @Override
     public int createShopFundAccountFlow(ShopFundAccountFlowDTO shopFundAccountFlowDTO){
         int fundAccountFlowId = -1;
+
         long startTime = System.currentTimeMillis();
         try {
             if (shopFundAccountFlowDTO == null){
@@ -166,6 +167,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         shopFundAccountData.setBalanceTotal(BigDecimal.ZERO);
         shopFundAccountData.setCredit(BigDecimal.ZERO);
         shopFundAccountData.setDebit(BigDecimal.ZERO);
+        shopFundAccountData.setAddLoginId(shopFundAccountFlowDTO.getLoginId());
         return shopFundAccountData;
     }
 
@@ -185,6 +187,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         shopFundAccountFlowData.setSequence(BizUtils.createSequence(shopFundAccountFlowDTO.getSourceType().clientNo(),String.valueOf(shopFundAccountFlowDTO.getBizId())));
         //exchangeOrderId 先为0 后面回写
         shopFundAccountFlowData.setExchangeOrderId(0);
+        shopFundAccountFlowData.setAddLoginId(shopFundAccountFlowDTO.getLoginId());
         return shopFundAccountFlowData;
     }
 
@@ -203,6 +206,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         exchangeOrderData.setBankCity(shopFundAccountFlowDTO.getBankCity());
         exchangeOrderData.setBankProvince(shopFundAccountFlowDTO.getBankProvince());
         exchangeOrderData.setBizCode("P" + fundAccountFlowId);       //TODO BizCode P开头
+        exchangeOrderData.setAddLoginId(shopFundAccountFlowDTO.getLoginId());
         return exchangeOrderData;
     }
 
@@ -214,6 +218,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         shopFundAccountFlow.setSourceType(SourceType.ExchangeOrder.value());
         shopFundAccountFlow.setFundAccountId(exchangeOrder.getRelevantFundAccountId());
         shopFundAccountFlow.setSequence(BizUtils.createSequence(SourceType.ExchangeOrder.clientNo(),String.valueOf(exchangeOrder.getExchangeOrderId())));
+        shopFundAccountFlow.setAddLoginId(exchangeOrder.getLoginId());
         return shopFundAccountFlow;
     }
 
