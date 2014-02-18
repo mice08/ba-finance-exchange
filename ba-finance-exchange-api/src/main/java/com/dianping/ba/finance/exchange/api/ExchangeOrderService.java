@@ -86,6 +86,6 @@ public interface ExchangeOrderService {
      * @param loginId
      * @return
      */
-    GenericResult<Integer> updateExchangeOrderToRefund(List<RefundDTO> refundDTOList, int loginId);
+    GenericResult<String> updateExchangeOrderToRefund(List<RefundDTO> refundDTOList, int loginId);
 
 }

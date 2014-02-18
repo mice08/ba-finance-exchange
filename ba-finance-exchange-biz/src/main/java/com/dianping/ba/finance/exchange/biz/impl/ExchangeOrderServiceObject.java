@@ -109,7 +109,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
-    public GenericResult<Integer> updateExchangeOrderToRefund(List<RefundDTO> refundDTOList, int loginId) {
+    public GenericResult<String> updateExchangeOrderToRefund(List<RefundDTO> refundDTOList, int loginId) {
         long startTime = System.currentTimeMillis();
         GenericResult<Integer> result = new GenericResult<Integer>();
         String processRefundId = "";
