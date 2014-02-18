@@ -89,7 +89,11 @@
 
     <update id="updateExchangeOrderToRefund"parameterClass="map">
         UPDATE FS_ExchangeOrder
-        SET LastUpdateLoginID = ##
+        SET LastUpdateLoginID = #loginId#,
+        Status = #setStatus#,
+        Memo = #refundDTO.refundReason#,
+        LastUpdateDate = NOW()
+        WHERE BizCode = #refundDTO.refundId# AND Status = #preStatus#
     </update>
 
     <select id="loadExchangeOrderByOrderId" parameterClass="map" resultMap="exchangeOrder">

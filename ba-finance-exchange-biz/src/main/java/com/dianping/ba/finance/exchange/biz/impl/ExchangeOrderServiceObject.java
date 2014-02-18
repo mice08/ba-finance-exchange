@@ -143,12 +143,12 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     public GenericResult<String> refundExchangeOrder(List<RefundDTO> refundDTOList, int loginId) {
         long startTime = System.currentTimeMillis();
         GenericResult<String> result = new GenericResult<String>();
-        int preStatus = ExchangeOrderStatus.SUCCESS.value();
+
         String processRefundId = "";
         try {
             for (RefundDTO data : refundDTOList) {
                 processRefundId = data.getRefundId();
-                boolean success = updateExchangeOrderToRefund(data, preStatus, loginId);
+                boolean success = updateExchangeOrderToRefund(data, loginId);
 
                 if (success) {
                     result.addSuccess(data.getRefundId());
@@ -165,8 +165,10 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         return result;
     }
 
-    private boolean updateExchangeOrderToRefund(RefundDTO refundDTO,int preStatus,int loginId){
-        int affectedRows = exchangeOrderDao.updateExchangeOrderToRefund(refundDTO,preStatus,loginId);
+    private boolean updateExchangeOrderToRefund(RefundDTO refundDTO,int loginId){
+        int preStatus = ExchangeOrderStatus.SUCCESS.value();
+        int setStatus = ExchangeOrderStatus.FAIL.value();
+        int affectedRows = exchangeOrderDao.updateExchangeOrderToRefund(refundDTO,preStatus,setStatus,loginId);
         if(affectedRows<=0){
             return false;
         }

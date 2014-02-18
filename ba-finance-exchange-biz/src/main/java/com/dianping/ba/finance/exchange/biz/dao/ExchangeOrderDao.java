@@ -109,5 +109,5 @@ public interface ExchangeOrderDao extends GenericDao {
     List<Integer> findExchangeOrderIdList(@DAOParam("searchBean") ExchangeOrderSearchBean searchBean);
 
     @DAOAction(action = DAOActionType.UPDATE)
-    int updateExchangeOrderToRefund(@DAOParam("refundDTO")RefundDTO refundDTO,@DAOParam("preStatus") int preStatus,@DAOParam("loginId")int loginId);
+    int updateExchangeOrderToRefund(@DAOParam("refundDTO")RefundDTO refundDTO,@DAOParam("preStatus") int preStatus,@DAOParam("setStatus") int setStatus,@DAOParam("loginId")int loginId);
 }
