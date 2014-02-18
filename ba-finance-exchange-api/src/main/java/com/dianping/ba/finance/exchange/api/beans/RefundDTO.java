@@ -7,7 +7,7 @@ package com.dianping.ba.finance.exchange.api.beans;
  * Time: 下午4:24
  * To change this template use File | Settings | File Templates.
  */
-public class RefundBean {
+public class RefundDTO {
     private String refundId;
     private String refundReason;
 

@@ -2,10 +2,9 @@ package com.dianping.ba.finance.exchange.api;
 
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
-import com.dianping.ba.finance.exchange.api.beans.RefundBean;
+import com.dianping.ba.finance.exchange.api.beans.RefundDTO;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
-import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.core.type.PageModel;
 import java.math.BigDecimal;
 import java.util.List;
@@ -80,10 +79,10 @@ public interface ExchangeOrderService {
 
     /**
      * 退票更新状态
-     * @param refundBean
+     * @param refundDTO
      * @param loginId
      * @return
      */
-    int updateExchangeOrderToRefund(RefundBean refundBean,int loginId);
+    int updateExchangeOrderToRefund(RefundDTO refundDTO,int loginId);
 
 }
