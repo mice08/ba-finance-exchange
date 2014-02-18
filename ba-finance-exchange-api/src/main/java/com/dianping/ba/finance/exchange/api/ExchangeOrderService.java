@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.api;
 
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
+import com.dianping.ba.finance.exchange.api.beans.RefundBean;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
@@ -76,5 +77,13 @@ public interface ExchangeOrderService {
      * @return
      */
     List<Integer> findExchangeOrderIdList(ExchangeOrderSearchBean searchBean);
+
+    /**
+     * 退票更新状态
+     * @param refundBean
+     * @param loginId
+     * @return
+     */
+    int updateExchangeOrderToRefund(RefundBean refundBean,int loginId);
 
 }
