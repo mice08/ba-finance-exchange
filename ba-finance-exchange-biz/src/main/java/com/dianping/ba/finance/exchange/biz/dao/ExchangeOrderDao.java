@@ -5,6 +5,7 @@ import com.dianping.avatar.dao.annotation.DAOAction;
 import com.dianping.avatar.dao.annotation.DAOActionType;
 import com.dianping.avatar.dao.annotation.DAOParam;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
+import com.dianping.ba.finance.exchange.api.beans.RefundDTO;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.core.type.PageModel;
@@ -106,4 +107,7 @@ public interface ExchangeOrderDao extends GenericDao {
 
     @DAOAction(action = DAOActionType.QUERY)
     List<Integer> findExchangeOrderIdList(@DAOParam("searchBean") ExchangeOrderSearchBean searchBean);
+
+    @DAOAction(action = DAOActionType.UPDATE)
+    int updateExchangeOrderToRefund(@DAOParam("refundDTO")RefundDTO refundDTO,@DAOParam("preStatus") int preStatus,@DAOParam("loginId")int loginId);
 }

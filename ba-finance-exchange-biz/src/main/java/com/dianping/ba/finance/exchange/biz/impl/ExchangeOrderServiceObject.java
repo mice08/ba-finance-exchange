@@ -109,17 +109,6 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
-    public GenericResult<String> updateExchangeOrderToRefund(List<RefundDTO> refundDTOList, int loginId) {
-        long startTime = System.currentTimeMillis();
-        GenericResult<Integer> result = new GenericResult<Integer>();
-        String processRefundId = "";
-        for(RefundDTO data:refundDTOList){
-
-        }
-        return null;
-    }
-
-    @Override
     public int updateExchangeOrderToPending(List<Integer> orderIds, int loginId) {
         long startTime = System.currentTimeMillis();
         try {
@@ -147,6 +136,41 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         exchangeOrderDTO.setLoginId(loginId);
         exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
 
+        return true;
+    }
+
+    @Override
+    public GenericResult<String> refundExchangeOrder(List<RefundDTO> refundDTOList, int loginId) {
+        long startTime = System.currentTimeMillis();
+        GenericResult<String> result = new GenericResult<String>();
+        int preStatus = ExchangeOrderStatus.SUCCESS.value();
+        String processRefundId = "";
+        try {
+            for (RefundDTO data : refundDTOList) {
+                processRefundId = data.getRefundId();
+                boolean success = updateExchangeOrderToRefund(data, preStatus, loginId);
+
+                if (success) {
+                    result.addSuccess(data.getRefundId());
+                } else {
+                    result.addFail(data.getRefundId());
+                }
+            }
+        } catch (Exception e) {
+            result.addFail(processRefundId);
+        }
+        if (result.hasFailResult()) {
+            LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToRefund", Level.ERROR, "Fail Refund RefundIds:" + result.failListToString());
+        }
+        return result;
+    }
+
+    private boolean updateExchangeOrderToRefund(RefundDTO refundDTO,int preStatus,int loginId){
+        int affectedRows = exchangeOrderDao.updateExchangeOrderToRefund(refundDTO,preStatus,loginId);
+        if(affectedRows<=0){
+            return false;
+        }
+        //发送mq消息更新付款计划和结算单，插入流水
         return true;
     }
 

@@ -87,6 +87,11 @@
         WHERE ExchangeOrderID = #exchangeOrderId# AND Status = #preStatus#
     </update>
 
+    <update id="updateExchangeOrderToRefund"parameterClass="map">
+        UPDATE FS_ExchangeOrder
+        SET LastUpdateLoginID = ##
+    </update>
+
     <select id="loadExchangeOrderByOrderId" parameterClass="map" resultMap="exchangeOrder">
         <![CDATA[
         select ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,BankProvince,
