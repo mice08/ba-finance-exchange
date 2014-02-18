@@ -82,10 +82,10 @@ public interface ExchangeOrderService {
     /**
      * 退票更新状态
      *
-     * @param refundDTO
+     * @param refundDTOList
      * @param loginId
      * @return
      */
-    GenericResult<Integer> updateExchangeOrderToRefund(RefundDTO refundDTO, int loginId);
+    GenericResult<Integer> updateExchangeOrderToRefund(List<RefundDTO> refundDTOList, int loginId);
 
 }
