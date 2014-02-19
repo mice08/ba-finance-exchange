@@ -87,13 +87,16 @@
         WHERE ExchangeOrderID = #exchangeOrderId# AND Status = #preStatus#
     </update>
 
-    <update id="updateExchangeOrderToRefund" parameterClass="map">
+    <update id="updateExchangeOrderToRefund" parameterClass="hashMap">
         UPDATE FS_ExchangeOrder
         SET LastUpdateLoginID = #loginId#,
         Status = #setStatus#,
-        Memo = #refundDTO.refundReason#,
+        Memo = #refundDTOList[].refundReason#,
         LastUpdateDate = NOW()
-        WHERE BizCode = #refundDTO.refundId# AND Status = #preStatus#
+        WHERE BizCode IN
+        <iterate open="(" close=")" conjunction="," property="refundDTOList">
+            #refundDTOList[].refundId# AND Status = #preStatus#
+        </iterate>
     </update>
 
     <select id="loadExchangeOrderByOrderId" parameterClass="map" resultMap="exchangeOrder">
@@ -216,6 +219,16 @@
         WHERE BizCode IN
         <iterate open="(" close=")" conjunction="," property="bizCodeList">
           #bizCodeList[]#
+        </iterate>
+    </select>
+
+    <select id="findExchangeOrderByBizCode" resultMap="exchangeOrder" parameterClass="map">
+        SELECT ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,BankProvince,
+        BankCity,Status,AddDate,OrderDate,LastUpdateDate,Memo,BizCode,AddLoginID,LastUpdateLoginID
+        FROM FS_ExchangeOrder
+        WHERE BizCode IN
+        <iterate open="(" close=")" conjunction="," property="bizCodeList">
+            #bizCodeList[]#
         </iterate>
     </select>
 
