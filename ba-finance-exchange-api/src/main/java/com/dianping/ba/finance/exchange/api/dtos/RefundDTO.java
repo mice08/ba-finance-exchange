@@ -1,4 +1,6 @@
-package com.dianping.ba.finance.exchange.api.beans;
+package com.dianping.ba.finance.exchange.api.dtos;
+
+import java.io.Serializable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -7,7 +9,9 @@ package com.dianping.ba.finance.exchange.api.beans;
  * Time: 下午4:24
  * To change this template use File | Settings | File Templates.
  */
-public class RefundDTO {
+public class RefundDTO implements Serializable{
+
+   private static final long serialVersionUID = 1L;
     private String refundId;
     private String refundReason;
 

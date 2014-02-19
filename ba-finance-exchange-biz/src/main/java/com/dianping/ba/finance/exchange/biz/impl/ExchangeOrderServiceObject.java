@@ -5,10 +5,11 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
-import com.dianping.ba.finance.exchange.api.beans.RefundDTO;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
+import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
+import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
@@ -17,6 +18,7 @@ import com.dianping.ba.finance.exchange.biz.utils.JsonUtils;
 import com.dianping.ba.finance.exchange.biz.utils.LogUtils;
 import com.dianping.core.type.PageModel;
 import org.apache.log4j.Level;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -140,39 +142,47 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
-    public GenericResult<String> refundExchangeOrder(List<RefundDTO> refundDTOList, int loginId) {
+    public RefundResultDTO refundExchangeOrder(List<RefundDTO> refundDTOList, int loginId) {
         long startTime = System.currentTimeMillis();
-        GenericResult<String> result = new GenericResult<String>();
-
+        RefundResultDTO refundResultDTO = new RefundResultDTO();
         String processRefundId = "";
         try {
             for (RefundDTO data : refundDTOList) {
                 processRefundId = data.getRefundId();
                 boolean success = updateExchangeOrderToRefund(data, loginId);
-
                 if (success) {
-                    result.addSuccess(data.getRefundId());
+                    refundResultDTO.addSuccess(data.getRefundId());
                 } else {
-                    result.addFail(data.getRefundId());
+                    refundResultDTO.addFail(data.getRefundId());
                 }
             }
         } catch (Exception e) {
-            result.addFail(processRefundId);
+            refundResultDTO.addFail(processRefundId);
         }
-        if (result.hasFailResult()) {
-            LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToRefund", Level.ERROR, "Fail Refund RefundIds:" + result.failListToString());
+        if (refundResultDTO.hasFailResult()) {
+            LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToRefund", Level.ERROR, "Fail Refund RefundIds:" + refundResultDTO.failListToString());
         }
-        return result;
+        return findExchangeOrderTotalAmountByRefundId(refundResultDTO);
     }
 
-    private boolean updateExchangeOrderToRefund(RefundDTO refundDTO,int loginId){
+    private RefundResultDTO findExchangeOrderTotalAmountByRefundId(RefundResultDTO refundResultDTO) {
+        if(!CollectionUtils.isEmpty(refundResultDTO.getSuccessList())) {
+            refundResultDTO.setSucceedTotalAmount(exchangeOrderDao.findExchangeOrderTotalAmountByBizCode(refundResultDTO.getSuccessList()));
+        }
+        if(!CollectionUtils.isEmpty(refundResultDTO.getFailList())){
+            refundResultDTO.setFailedTotalAmount(exchangeOrderDao.findExchangeOrderTotalAmountByBizCode(refundResultDTO.getFailList()));
+        }
+        return refundResultDTO;
+    }
+
+    private boolean updateExchangeOrderToRefund(RefundDTO refundDTO, int loginId) {
         int preStatus = ExchangeOrderStatus.SUCCESS.value();
         int setStatus = ExchangeOrderStatus.FAIL.value();
-        int affectedRows = exchangeOrderDao.updateExchangeOrderToRefund(refundDTO,preStatus,setStatus,loginId);
-        if(affectedRows<=0){
+        int affectedRows = exchangeOrderDao.updateExchangeOrderToRefund(refundDTO, preStatus, setStatus, loginId);
+        if (affectedRows <= 0) {
             return false;
         }
-        //发送mq消息更新付款计划和结算单，插入流水
+        //TODO 发送mq消息更新付款计划和结算单，插入流水
         return true;
     }
 

@@ -2,9 +2,10 @@ package com.dianping.ba.finance.exchange.api;
 
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
-import com.dianping.ba.finance.exchange.api.beans.RefundDTO;
+import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
+import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
 import com.dianping.core.type.PageModel;
 
 import java.math.BigDecimal;
@@ -86,6 +87,6 @@ public interface ExchangeOrderService {
      * @param loginId
      * @return
      */
-    GenericResult<String> refundExchangeOrder(List<RefundDTO> refundDTOList, int loginId);
+    RefundResultDTO refundExchangeOrder(List<RefundDTO> refundDTOList, int loginId);
 
 }

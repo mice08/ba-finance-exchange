@@ -87,7 +87,7 @@
         WHERE ExchangeOrderID = #exchangeOrderId# AND Status = #preStatus#
     </update>
 
-    <update id="updateExchangeOrderToRefund"parameterClass="map">
+    <update id="updateExchangeOrderToRefund" parameterClass="map">
         UPDATE FS_ExchangeOrder
         SET LastUpdateLoginID = #loginId#,
         Status = #setStatus#,
@@ -208,6 +208,15 @@
                 eo.OrderType = #searchBean.orderType#
             </isGreaterThan>
         </dynamic>
+    </select>
+
+    <select id="findExchangeOrderTotalAmountByBizCode" resultClass="java.math.BigDecimal" parameterClass="map">
+        SELECT IFNULL(SUM(OrderAmount),0)
+        FROM   FS_ExchangeOrder
+        WHERE BizCode IN
+        <iterate open="(" close=")" conjunction="," property="bizCodeList">
+          #bizCodeList[]#
+        </iterate>
     </select>
 
     <select id="findExchangeOrderList" resultMap="exchangeOrderDisplayData" parameterClass="map">
