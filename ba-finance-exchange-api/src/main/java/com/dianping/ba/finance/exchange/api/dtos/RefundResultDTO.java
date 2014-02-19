@@ -4,6 +4,8 @@ import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,25 +14,30 @@ import java.math.BigDecimal;
  * Time: 上午9:54
  * To change this template use File | Settings | File Templates.
  */
-public class RefundResultDTO extends GenericResult{
+public class RefundResultDTO implements Serializable{
     private static final long serialVersionUID = 1L;
 
-    private BigDecimal succeedTotalAmount;
-    private BigDecimal failedTotalAmount;
+    private Map<String,String> refundFailedMap;
+    private BigDecimal refundTotalAmount;
 
-    public BigDecimal getSucceedTotalAmount() {
-        return succeedTotalAmount;
+    public RefundResultDTO() {
+        this.refundFailedMap = new HashMap<String, String>();
+        this.refundTotalAmount = BigDecimal.ZERO;
     }
 
-    public void setSucceedTotalAmount(BigDecimal succeedTotalAmount) {
-        this.succeedTotalAmount = succeedTotalAmount;
+    public Map<String, String> getRefundFailedMap() {
+        return refundFailedMap;
     }
 
-    public BigDecimal getFailedTotalAmount() {
-        return failedTotalAmount;
+    public void setRefundFailedMap(Map<String, String> refundFailedMap) {
+        this.refundFailedMap = refundFailedMap;
     }
 
-    public void setFailedTotalAmount(BigDecimal failedTotalAmount) {
-        this.failedTotalAmount = failedTotalAmount;
+    public BigDecimal getRefundTotalAmount() {
+        return refundTotalAmount;
+    }
+
+    public void setRefundTotalAmount(BigDecimal refundTotalAmount) {
+        this.refundTotalAmount = refundTotalAmount;
     }
 }

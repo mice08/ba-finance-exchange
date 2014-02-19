@@ -143,39 +143,40 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
     @Override
     public RefundResultDTO refundExchangeOrder(List<RefundDTO> refundDTOList, int loginId) {
-        long startTime = System.currentTimeMillis();
-        RefundResultDTO refundResultDTO = new RefundResultDTO();
-        String processRefundId = "";
-        try {
-            for (RefundDTO data : refundDTOList) {
-                processRefundId = data.getRefundId();
-                boolean success = updateExchangeOrderToRefund(data, loginId);
-                if (success) {
-                    refundResultDTO.addSuccess(data.getRefundId());
-                } else {
-                    refundResultDTO.addFail(data.getRefundId());
-                }
-            }
-        } catch (Exception e) {
-            refundResultDTO.addFail(processRefundId);
-        }
-        if (refundResultDTO.hasFailResult()) {
-            LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToRefund", Level.ERROR, "Fail Refund RefundIds:" + refundResultDTO.failListToString());
-        }
-        return findExchangeOrderTotalAmountByRefundId(refundResultDTO);
+        return null;
+//        long startTime = System.currentTimeMillis();
+//        RefundResultDTO refundResultDTO = new RefundResultDTO();
+//        String processRefundId = "";
+//        try {
+//            for (RefundDTO data : refundDTOList) {
+//                processRefundId = data.getRefundId();
+//                boolean success = updateExchangeOrderToRefund(data, loginId);
+//                if (success) {
+//                    refundResultDTO.addSuccess(data.getRefundId());
+//                } else {
+//                    refundResultDTO.addFail(data.getRefundId());
+//                }
+//            }
+//        } catch (Exception e) {
+//            refundResultDTO.addFail(processRefundId);
+//        }
+//        if (refundResultDTO.hasFailResult()) {
+//            LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToRefund", Level.ERROR, "Fail Refund RefundIds:" + refundResultDTO.failListToString());
+//        }
+//        return findExchangeOrderTotalAmountByRefundId(refundResultDTO);
     }
 
-    private RefundResultDTO findExchangeOrderTotalAmountByRefundId(RefundResultDTO refundResultDTO) {
-        if(!CollectionUtils.isEmpty(refundResultDTO.getSuccessList())) {
-            refundResultDTO.setSucceedTotalAmount(exchangeOrderDao.findExchangeOrderTotalAmountByBizCode(refundResultDTO.getSuccessList()));
-        }
-        if(!CollectionUtils.isEmpty(refundResultDTO.getFailList())){
-            refundResultDTO.setFailedTotalAmount(exchangeOrderDao.findExchangeOrderTotalAmountByBizCode(refundResultDTO.getFailList()));
-        }
-        return refundResultDTO;
-    }
+//    private RefundResultDTO findExchangeOrderTotalAmountByRefundId(RefundResultDTO refundResultDTO) {
+//        if(!CollectionUtils.isEmpty(refundResultDTO.getSuccessList())) {
+//            refundResultDTO.setSucceedTotalAmount(exchangeOrderDao.findExchangeOrderTotalAmountByBizCode(refundResultDTO.getSuccessList()));
+//        }
+//        if(!CollectionUtils.isEmpty(refundResultDTO.getFailList())){
+//            refundResultDTO.setFailedTotalAmount(exchangeOrderDao.findExchangeOrderTotalAmountByBizCode(refundResultDTO.getFailList()));
+//        }
+//        return refundResultDTO;
+//    }
 
-    private boolean updateExchangeOrderToRefund(RefundDTO refundDTO, int loginId) {
+    private boolean updateExchangeOrderToRefund(RefundDTO refundDTO, int loginId) throws Exception{
         int preStatus = ExchangeOrderStatus.SUCCESS.value();
         int setStatus = ExchangeOrderStatus.FAIL.value();
         int affectedRows = exchangeOrderDao.updateExchangeOrderToRefund(refundDTO, preStatus, setStatus, loginId);
