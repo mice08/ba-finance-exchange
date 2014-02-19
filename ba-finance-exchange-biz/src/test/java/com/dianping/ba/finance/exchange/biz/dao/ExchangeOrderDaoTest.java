@@ -1,6 +1,8 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
+import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,4 +61,28 @@ public class ExchangeOrderDaoTest {
         integerList.add(878799);
         exchangeOrderDao.updateExchangeOrderToPending(integerList,status,setStatus,loginId);
     }
+
+    @Test
+    public void testFindExchangeOrderTotalAmountByBizCode(){
+        List<String> stringList = new ArrayList<String>();
+        String str= "111";
+        String str1 = "222";
+        stringList.add(str);
+        stringList.add(str1);
+        BigDecimal totalAmount = exchangeOrderDao.findExchangeOrderTotalAmountByBizCode(stringList);
+        System.out.println(totalAmount);
+    }
+
+    @Test
+    public void testUpdateExchangeOrderToRefund(){
+        RefundDTO refundDTO = new RefundDTO();
+        refundDTO.setRefundId("222");
+        refundDTO.setRefundReason("test");
+        int preStatus = ExchangeOrderStatus.SUCCESS.value();
+        int setStatus = ExchangeOrderStatus.FAIL.value();
+        int loginId = -12000;
+        exchangeOrderDao.updateExchangeOrderToRefund(refundDTO,preStatus,setStatus,loginId);
+    }
+
+
 }
