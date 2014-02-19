@@ -107,9 +107,30 @@ public interface ExchangeOrderDao extends GenericDao {
     @DAOAction(action = DAOActionType.QUERY)
     List<Integer> findExchangeOrderIdList(@DAOParam("searchBean") ExchangeOrderSearchBean searchBean);
 
+    /**
+     * 更新交易指令为退票状态
+     * @param refundDTO
+     * @param preStatus
+     * @param setStatus
+     * @param loginId
+     * @return
+     */
     @DAOAction(action = DAOActionType.UPDATE)
     int updateExchangeOrderToRefund(@DAOParam("refundDTO") RefundDTO refundDTO, @DAOParam("preStatus") int preStatus, @DAOParam("setStatus") int setStatus, @DAOParam("loginId") int loginId);
 
+    /**
+     * 根据bizCode返回总金额
+     * @param bizCodeList
+     * @return
+     */
     @DAOAction(action = DAOActionType.LOAD)
     BigDecimal findExchangeOrderTotalAmountByBizCode(@DAOParam("bizCodeList") List<String> bizCodeList);
+
+    /**
+     * 根据bizCode返回付款单
+     * @param bizCodeList
+     * @return
+     */
+    @DAOAction(action = DAOActionType.QUERY)
+    List<ExchangeOrderData> findExchangeOrderByBizCode(@DAOParam("bizCodeList")List<String> bizCodeList);
 }

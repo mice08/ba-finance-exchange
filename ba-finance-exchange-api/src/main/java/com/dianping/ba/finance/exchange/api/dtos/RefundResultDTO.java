@@ -1,6 +1,7 @@
 package com.dianping.ba.finance.exchange.api.dtos;
 
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
+import com.dianping.ba.finance.exchange.api.enums.RefundFailedReason;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -17,19 +18,19 @@ import java.util.Map;
 public class RefundResultDTO implements Serializable{
     private static final long serialVersionUID = 1L;
 
-    private Map<String,String> refundFailedMap;
+    private Map<String,RefundFailedReason> refundFailedMap;
     private BigDecimal refundTotalAmount;
 
     public RefundResultDTO() {
-        this.refundFailedMap = new HashMap<String, String>();
+        this.refundFailedMap = new HashMap<String, RefundFailedReason>();
         this.refundTotalAmount = BigDecimal.ZERO;
     }
 
-    public Map<String, String> getRefundFailedMap() {
+    public Map<String, RefundFailedReason> getRefundFailedMap() {
         return refundFailedMap;
     }
 
-    public void setRefundFailedMap(Map<String, String> refundFailedMap) {
+    public void setRefundFailedMap(Map<String, RefundFailedReason> refundFailedMap) {
         this.refundFailedMap = refundFailedMap;
     }
 

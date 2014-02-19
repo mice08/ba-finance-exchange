@@ -78,6 +78,13 @@ public class ExchangeOrderDaoTest {
         RefundDTO refundDTO = new RefundDTO();
         refundDTO.setRefundId("222");
         refundDTO.setRefundReason("test");
+
+        RefundDTO refundDTO1 = new RefundDTO();
+        refundDTO1.setRefundId("111");
+        refundDTO1.setRefundReason("test");
+        List<RefundDTO> refundDTOList = new ArrayList<RefundDTO>();
+        refundDTOList.add(refundDTO);
+        refundDTOList.add(refundDTO1);
         int preStatus = ExchangeOrderStatus.SUCCESS.value();
         int setStatus = ExchangeOrderStatus.FAIL.value();
         int loginId = -12000;
