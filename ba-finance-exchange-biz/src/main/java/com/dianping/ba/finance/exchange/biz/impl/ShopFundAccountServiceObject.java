@@ -75,12 +75,14 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
             ShopFundAccountFlowData originExchangeOutFlow = shopFundAccountFlowDao.loadShopFundAccountFlow(exchangeOrderDTO.getExchangeOrderId(),FlowType.OUT.value(), SourceType.ExchangeOrder.value());
             ShopFundAccountFlowData addExchangeInFlow = ConvertUtils.copy(originExchangeOutFlow,ShopFundAccountFlowData.class);
             addExchangeInFlow.setSequence(createSequenceForRefund(originExchangeOutFlow.getSequence()));
+            addExchangeInFlow.setFlowType(FlowType.IN.value());
             addExchangeInFlow.setAddLoginId(exchangeOrderDTO.getLoginId());
 
             //paymentplan in
             ShopFundAccountFlowData originPaymentPlanInFlow = shopFundAccountFlowDao.loadShopFundAccountFlowById(exchangeOrderDTO.getRelevantFundAccountFlowId());
             ShopFundAccountFlowData addPaymentPlanOutFlow = ConvertUtils.copy(originPaymentPlanInFlow, ShopFundAccountFlowData.class);
             addPaymentPlanOutFlow.setSequence(createSequenceForRefund(originPaymentPlanInFlow.getSequence()));
+            addPaymentPlanOutFlow.setFlowType(FlowType.OUT.value());
             addPaymentPlanOutFlow.setAddLoginId(exchangeOrderDTO.getLoginId());
 
 
