@@ -65,4 +65,9 @@
         AND FlowType = #flowType#
         AND SourceType = #sourceType#
     </select>
+
+    <select id="loadShopFundAccountFlowById" resultMap="shopFundAccountFlowData" parameterClass="map">
+        SELECT FAFlowID,FAID,FlowAmount,FlowType,SourceType,ExchangeOrderID,AddDate,LastUpdateDate,Memo,AddLoginID
+        FROM FS_ShopFundAccountFlow
+        WHERE FAFlowID = #flowId#
 </sqlMap>

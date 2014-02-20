@@ -67,7 +67,32 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
 
     @Override
     public boolean insertShopFundAccountFlowForRefundExchangeOrder(ExchangeOrderDTO exchangeOrderDTO) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        long startTime = System.currentTimeMillis();
+        try {
+            if(!isExchangeOrderInRefundStatus(exchangeOrderDTO))
+                return false;
+            //exchangeorder out
+            ShopFundAccountFlowData originExchangeOutFlow = shopFundAccountFlowDao.loadShopFundAccountFlow(exchangeOrderDTO.getExchangeOrderId(),FlowType.OUT.value(), SourceType.ExchangeOrder.value());
+            ShopFundAccountFlowData addExchangeInFlow = ConvertUtils.copy(originExchangeOutFlow,ShopFundAccountFlowData.class);
+            addExchangeInFlow.setSequence(createSequenceForRefund(originExchangeOutFlow.getSequence()));
+            addExchangeInFlow.setAddLoginId(exchangeOrderDTO.getLoginId());
+
+            //paymentplan in
+            ShopFundAccountFlowData originPaymentPlanInFlow = shopFundAccountFlowDao.loadShopFundAccountFlowById(exchangeOrderDTO.getRelevantFundAccountFlowId());
+            ShopFundAccountFlowData addPaymentPlanOutFlow = ConvertUtils.copy(originPaymentPlanInFlow, ShopFundAccountFlowData.class);
+            addPaymentPlanOutFlow.setSequence(createSequenceForRefund(originPaymentPlanInFlow.getSequence()));
+            addPaymentPlanOutFlow.setAddLoginId(exchangeOrderDTO.getLoginId());
+
+
+            shopFundAccountFlowDao.insertShopFundAccountFlow(addExchangeInFlow);
+            shopFundAccountFlowDao.insertShopFundAccountFlow(addPaymentPlanOutFlow);
+            return true;
+        } catch (Exception e) {
+            LogUtils.log(monitorLogger, startTime, "insertShopFundAccountFlowForRefundExchangeOrder", Level.ERROR,
+                    "orderId = " + exchangeOrderDTO.getExchangeOrderId(),
+                    e);
+        }
+        return false;
     }
 
     @Override
@@ -75,7 +100,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         long startTime = System.currentTimeMillis();
         try {
             //TODO: 更新资金账户之后要做
-            if(!isExchangeOrderDTOValid(exchangeOrderDTO))
+            if(!isExchangeOrderInSuccessStatus(exchangeOrderDTO))
                 return false;
             ShopFundAccountFlowData shopFundAccountFlowData = buildShopFundAccountFlowDataForOut(exchangeOrderDTO);
             shopFundAccountFlowDao.insertShopFundAccountFlow(shopFundAccountFlowData);
@@ -125,6 +150,12 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         return shopFundAccountFlowDao.insertShopFundAccountFlow(shopFundAccountFlowData);
     }
 
+    private boolean isExchangeOrderInRefundStatus(ExchangeOrderDTO exchangeOrderDTO){
+        if(exchangeOrderDTO == null || ExchangeOrderStatus.FAIL.value() != exchangeOrderDTO.getStatus()){
+            return false;
+        }
+        return true;
+    }
     /**
      * 创建资金账户+流水
      * @param shopFundAccountFlowDTO
@@ -227,6 +258,23 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         return shopFundAccountFlow;
     }
 
+    private ShopFundAccountFlowData buildShopFundAccountFlowDataForIn(ExchangeOrderDTO exchangeOrder){
+        ShopFundAccountFlowData shopFundAccountFlow= new ShopFundAccountFlowData();
+        shopFundAccountFlow.setExchangeOrderId(exchangeOrder.getExchangeOrderId());
+        shopFundAccountFlow.setFlowAmount(exchangeOrder.getOrderAmount());
+        shopFundAccountFlow.setFlowType(FlowType.OUT.getFlowType());
+        shopFundAccountFlow.setSourceType(SourceType.ExchangeOrder.value());
+        shopFundAccountFlow.setFundAccountId(exchangeOrder.getRelevantFundAccountId());
+        shopFundAccountFlow.setSequence(BizUtils.createSequence(SourceType.ExchangeOrder.clientNo(),String.valueOf(exchangeOrder.getExchangeOrderId())));
+        shopFundAccountFlow.setAddLoginId(exchangeOrder.getLoginId());
+        return shopFundAccountFlow;
+    }
+
+
+    private String createSequenceForRefund(String originSequence) {
+        return originSequence + "|R";
+    }
+
     private boolean isShopFundAccountDataExist(ShopFundAccountData shopFundAccountData){
         if (shopFundAccountData == null|| shopFundAccountData.getFundAccountId() == 0) {
             return false;
@@ -235,7 +283,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         }
     }
 
-    private boolean isExchangeOrderDTOValid(ExchangeOrderDTO exchangeOrderDTO){
+    private boolean isExchangeOrderInSuccessStatus(ExchangeOrderDTO exchangeOrderDTO){
         if(exchangeOrderDTO == null || exchangeOrderDTO.getStatus() != ExchangeOrderStatus.SUCCESS.value()) {
             return false;
         }
