@@ -143,21 +143,22 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     @Override
     public RefundResultDTO refundExchangeOrder(List<RefundDTO> refundDTOList, int loginId) throws Exception {
         long startTime = System.currentTimeMillis();
-
+        if (CollectionUtils.isEmpty(refundDTOList)) {
+            return new RefundResultDTO();
+        }
         List<String> bizCodeList = new ArrayList<String>();
         for (RefundDTO item : refundDTOList) {
             bizCodeList.add(item.getRefundId());
         }
-        if (CollectionUtils.isEmpty(refundDTOList)) {
-            return new RefundResultDTO();
-        }
+
         RefundResultDTO refundResultDTO = checkExchangeOrderStatus(bizCodeList);
 
         if (!refundResultDTO.getRefundFailedMap().isEmpty()) {
             return refundResultDTO;
-        } else {
-            updateExchangeOrderToRefund(refundDTOList, loginId);
         }
+
+        updateExchangeOrderToRefund(refundDTOList, loginId);
+
         try {
             refundResultDTO.setRefundTotalAmount(findExchangeOrderTotalAmountByRefundId(bizCodeList));
             sendMessage(loginId, bizCodeList);
@@ -195,12 +196,10 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
                 }
             }
         } else {
-            Iterator iterator = bizCodeMap.keySet().iterator();
-            while (iterator.hasNext()) {
-                String key = (String) iterator.next();
-                int status = bizCodeMap.get(key);
-                if (status != ExchangeOrderStatus.SUCCESS.value()) {
-                    refundFailedMap.put(key, RefundFailedReason.STATUS_ERROR);
+            for (Map.Entry<String, Integer> entry : bizCodeMap.entrySet()) {
+                int status = entry.getValue();
+                if(status !=  ExchangeOrderStatus.SUCCESS.value()){
+                    refundFailedMap.put(entry.getKey(),RefundFailedReason.STATUS_ERROR);
                 }
             }
         }
