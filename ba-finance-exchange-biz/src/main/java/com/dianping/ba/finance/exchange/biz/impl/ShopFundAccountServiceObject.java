@@ -66,6 +66,11 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
     }
 
     @Override
+    public boolean insertShopFundAccountFlowForRefundExchangeOrder(ExchangeOrderDTO exchangeOrderDTO) {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public boolean updateShopFundAccountCausedBySuccessfulExchangeOrder(ExchangeOrderDTO exchangeOrderDTO) {
         long startTime = System.currentTimeMillis();
         try {
