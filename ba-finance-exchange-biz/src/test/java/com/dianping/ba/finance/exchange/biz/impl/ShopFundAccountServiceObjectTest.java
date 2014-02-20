@@ -194,6 +194,19 @@ public class ShopFundAccountServiceObjectTest {
 
     }
 
+    @Test
+    public void testInsertShopFundAccountFlowForRefundExchangeOrderFailWhenStatusInvalid(){
+        ExchangeOrderDTO exchangeOrderDTO = new ExchangeOrderDTO();
+        exchangeOrderDTO.setRelevantFundAccountFlowId(1);
+        exchangeOrderDTO.setLoginId(1);
+        exchangeOrderDTO.setStatus(ExchangeOrderStatus.SUCCESS.value());
+
+        boolean actual = shopFundAccountServiceObjectStub.insertShopFundAccountFlowForRefundExchangeOrder(exchangeOrderDTO);
+
+        Assert.assertFalse(actual);
+
+    }
+
     private ShopFundAccountFlowData createShopFundAccountFlowData(){
         ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
         shopFundAccountFlowData.setFundAccountId(1);
