@@ -12,13 +12,15 @@ import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
-import com.dianping.ba.finance.exchange.biz.utils.JsonUtils;
 import com.dianping.ba.finance.exchange.biz.utils.LogUtils;
+import com.dianping.ba.finance.exchange.biz.utils.ObjectUtils;
 import com.dianping.core.type.PageModel;
 import org.apache.log4j.Level;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -70,12 +72,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         try {
             return exchangeOrderDao.paginateExchangeOrderList(searchBean, page, pageSize);
         } catch (Exception e) {
-            try{
-                LogUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, JsonUtils.toStr(searchBean), e);
-                return new PageModel();
-            }catch (Exception ex){
-                //ignore
-            }
+            LogUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, ObjectUtils.toString(searchBean), e);
         }
         return new PageModel();
     }
@@ -86,12 +83,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         try {
             return exchangeOrderDao.findExchangeOrderTotalAmount(searchBean);
         } catch (Exception e) {
-            try{
-                LogUtils.log(monitorLogger, startTime, "findExchangeOrderTotalAmount", Level.ERROR, JsonUtils.toStr(searchBean), e);
-                return BigDecimal.ZERO;
-            }catch (Exception ex){
-                //ignore
-            }
+            LogUtils.log(monitorLogger, startTime, "findExchangeOrderTotalAmount", Level.ERROR, ObjectUtils.toString(searchBean), e);
         }
         return BigDecimal.ZERO;
     }

@@ -16,6 +16,14 @@ public class ConvertUtils {
         return copy(object, (Class<TI>)object.getClass());
     }
 
+    /**
+     * 拷贝源类的成员值到目标类，并返回目标类的实例。
+     * copy规则：只有变量名相同的成员值才会被copy，不同的成员变量会被忽略
+     * @param object 被读取的拷贝的源类
+     * @param retClassType 返回的目标类的类型
+     * @return
+     * @throws Exception
+     */
     public static <TI extends Object,TO extends Object> TO copy(TI object, Class<TO> retClassType) throws Exception {
         Class<?> classType = object.getClass();
 
