@@ -48,20 +48,16 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     public GenericResult<Integer> updateExchangeOrderToSuccess(List<Integer> orderIds, int loginId) {
         Long startTime = System.currentTimeMillis();
         GenericResult result = new GenericResult<Integer>();
-        int processExchangeOrderId = 0;
-        try {
-            for (int orderId : orderIds) {
-                processExchangeOrderId = orderId;
-                boolean success = updateExchangeOrderToSuccess(orderId, loginId);
-                if (success) {
-                    result.addSuccess(orderId);
-                } else {
-                    result.addFail(orderId);
-                }
+
+        for (int orderId : orderIds) {
+            boolean success = updateExchangeOrderToSuccess(orderId, loginId);
+            if (success) {
+                result.addSuccess(orderId);
+            } else {
+                result.addFail(orderId);
             }
-        } catch (Exception e) {
-            result.addFail(processExchangeOrderId);
         }
+
         if (result.hasFailResult()) {
             LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", Level.ERROR, "Failed exchange order ids: " + result.failListToString());
         }
@@ -125,22 +121,24 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         return -1;
     }
 
-    private boolean updateExchangeOrderToSuccess(int orderId, int loginId) throws Exception {
+    private boolean updateExchangeOrderToSuccess(int orderId, int loginId) {
         if (orderId <= 0) {
             return false;
         }
         Date orderDate = getCurrentTime();
-        int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatus.PENDING.value(), ExchangeOrderStatus.SUCCESS.value(), loginId);
-        if (affectedRows <= 0) {
-            return false;
-        }
-        ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
+        try {
+            int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatus.PENDING.value(), ExchangeOrderStatus.SUCCESS.value(), loginId);
+            if (affectedRows <= 0) {
+                return false;
+            }
+            ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
 
-        ExchangeOrderDTO exchangeOrderDTO = ConvertUtils.copy(exchangeOrderData, ExchangeOrderDTO.class);
-        exchangeOrderDTO.setLoginId(loginId);
-        exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
+            ExchangeOrderDTO exchangeOrderDTO = ConvertUtils.copy(exchangeOrderData, ExchangeOrderDTO.class);
+            exchangeOrderDTO.setLoginId(loginId);
+            exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
 
-        return true;
+            return true;
+        } catch(Exception ex) { return false;}
     }
 
     @Override
@@ -166,7 +164,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
             refundResultDTO.setRefundTotalAmount(findExchangeOrderTotalAmountByRefundId(bizCodeList));
             sendMessage(loginId, bizCodeList);
         } catch (Exception e) {
-            LogUtils.log(monitorLogger, startTime, "refundExchangeOrder", Level.ERROR, "RefundIDs:"+bizCodeList.toString(), e);
+            LogUtils.log(monitorLogger, startTime, "refundExchangeOrder", Level.ERROR, "RefundIDs:" + bizCodeList.toString(), e);
         }
         return refundResultDTO;
     }
@@ -201,8 +199,8 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         } else {
             for (Map.Entry<String, Integer> entry : bizCodeMap.entrySet()) {
                 int status = entry.getValue();
-                if(status !=  ExchangeOrderStatus.SUCCESS.value()){
-                    refundFailedMap.put(entry.getKey(),RefundFailedReason.STATUS_ERROR);
+                if (status != ExchangeOrderStatus.SUCCESS.value()) {
+                    refundFailedMap.put(entry.getKey(), RefundFailedReason.STATUS_ERROR);
                 }
             }
         }
