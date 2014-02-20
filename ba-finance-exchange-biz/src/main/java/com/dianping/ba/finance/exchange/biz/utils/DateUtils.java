@@ -70,7 +70,7 @@ public class DateUtils {
      * @return  日期转字符串
      */
     public static String getFormatDateString(Date date,String formatString) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHH");
+        SimpleDateFormat format = new SimpleDateFormat(formatString);
         return format.format(date);
     }
 
