@@ -1,8 +1,10 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
+import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,23 +51,23 @@ public class ExchangeOrderDaoTest {
         int loginId = 2;
         List<Integer> integerList = new ArrayList<Integer>();
         integerList.add(878799);
-        exchangeOrderDao.updateExchangeOrderToPending(integerList,status,setStatus,loginId);
+        exchangeOrderDao.updateExchangeOrderToPending(integerList, status, setStatus, loginId);
     }
 
     @Test
-    public void testUpdateExchangeOrderData(){
+    public void testUpdateExchangeOrderData() {
         int status = 2;
         int setStatus = 4;
         int loginId = 2;
         List<Integer> integerList = new ArrayList<Integer>();
         integerList.add(878799);
-        exchangeOrderDao.updateExchangeOrderToPending(integerList,status,setStatus,loginId);
+        exchangeOrderDao.updateExchangeOrderToPending(integerList, status, setStatus, loginId);
     }
 
     @Test
-    public void testFindExchangeOrderTotalAmountByBizCode(){
+    public void testFindExchangeOrderTotalAmountByBizCode() {
         List<String> stringList = new ArrayList<String>();
-        String str= "111";
+        String str = "111";
         String str1 = "222";
         stringList.add(str);
         stringList.add(str1);
@@ -74,21 +76,26 @@ public class ExchangeOrderDaoTest {
     }
 
     @Test
-    public void testUpdateExchangeOrderToRefund(){
-        RefundDTO refundDTO = new RefundDTO();
-        refundDTO.setRefundId("222");
-        refundDTO.setRefundReason("test");
-
+    public void testUpdateExchangeOrderToRefund() {
         RefundDTO refundDTO1 = new RefundDTO();
         refundDTO1.setRefundId("111");
         refundDTO1.setRefundReason("test");
-        List<RefundDTO> refundDTOList = new ArrayList<RefundDTO>();
-        refundDTOList.add(refundDTO);
-        refundDTOList.add(refundDTO1);
         int preStatus = ExchangeOrderStatus.SUCCESS.value();
         int setStatus = ExchangeOrderStatus.FAIL.value();
         int loginId = -12000;
-        exchangeOrderDao.updateExchangeOrderToRefund(refundDTO,preStatus,setStatus,loginId);
+        exchangeOrderDao.updateExchangeOrderToRefund(refundDTO1, preStatus, setStatus, loginId);
+    }
+
+    @Test
+    public void testFindExchangeOrderByBizCode() {
+        List<String> stringList = new ArrayList<String>();
+        String str = "111";
+        String str1 = "222";
+        stringList.add(str);
+        stringList.add(str1);
+        List<ExchangeOrderData> exchangeOrderDataList = new ArrayList<ExchangeOrderData>();
+        exchangeOrderDataList = exchangeOrderDao.findExchangeOrderByBizCode(stringList);
+        Assert.assertEquals(2,exchangeOrderDataList.size());
     }
 
 
