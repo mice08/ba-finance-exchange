@@ -258,19 +258,6 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
         return shopFundAccountFlow;
     }
 
-    private ShopFundAccountFlowData buildShopFundAccountFlowDataForIn(ExchangeOrderDTO exchangeOrder){
-        ShopFundAccountFlowData shopFundAccountFlow= new ShopFundAccountFlowData();
-        shopFundAccountFlow.setExchangeOrderId(exchangeOrder.getExchangeOrderId());
-        shopFundAccountFlow.setFlowAmount(exchangeOrder.getOrderAmount());
-        shopFundAccountFlow.setFlowType(FlowType.OUT.getFlowType());
-        shopFundAccountFlow.setSourceType(SourceType.ExchangeOrder.value());
-        shopFundAccountFlow.setFundAccountId(exchangeOrder.getRelevantFundAccountId());
-        shopFundAccountFlow.setSequence(BizUtils.createSequence(SourceType.ExchangeOrder.clientNo(),String.valueOf(exchangeOrder.getExchangeOrderId())));
-        shopFundAccountFlow.setAddLoginId(exchangeOrder.getLoginId());
-        return shopFundAccountFlow;
-    }
-
-
     private String createSequenceForRefund(String originSequence) {
         return originSequence + "|R";
     }
