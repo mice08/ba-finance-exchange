@@ -64,6 +64,17 @@ public class DateUtils {
     }
 
     /**
+     * 根据时间和格式化返回String
+     * @param date   时间
+     * @param formatString 格式化
+     * @return  日期转字符串
+     */
+    public static String getFormatDateString(Date date,String formatString) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHH");
+        return format.format(date);
+    }
+
+    /**
      * 去除日期中的时分秒
      *
      * @param date 含时分秒的日期

@@ -80,4 +80,11 @@ public class DateUtilsTest {
         Assert.assertEquals(dateExpect.toString(), DateUtils.removeTime(date).toString());
 
     }
+
+    @Test
+    public void getFormatDateStringTest()  {
+        Calendar c=Calendar.getInstance();
+        c.set(2012,1,5,8,50,59);    //month 从0开始
+        Assert.assertEquals("2012020508",DateUtils.getFormatDateString(c.getTime(),"yyyyMMddHH"));
+    }
 }
