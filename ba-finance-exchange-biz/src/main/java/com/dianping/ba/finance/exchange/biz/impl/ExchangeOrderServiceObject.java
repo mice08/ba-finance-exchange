@@ -122,13 +122,16 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     private boolean updateExchangeOrderToSuccess(int orderId, int loginId) {
+        long startTime = System.currentTimeMillis();
         if (orderId <= 0) {
+            LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", Level.ERROR, "orderId<=0,orderId:" + orderId, null);
             return false;
         }
         Date orderDate = getCurrentTime();
         try {
             int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatus.PENDING.value(), ExchangeOrderStatus.SUCCESS.value(), loginId);
             if (affectedRows <= 0) {
+                LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", Level.ERROR, "orderId:" + orderId + ",affectedRows<=0,affectedRows:" + affectedRows, null);
                 return false;
             }
             ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
@@ -138,7 +141,10 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
             exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
 
             return true;
-        } catch(Exception ex) { return false;}
+        } catch (Exception ex) {
+            LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", Level.ERROR, "orderId:" + orderId, ex);
+            return false;
+        }
     }
 
     @Override
