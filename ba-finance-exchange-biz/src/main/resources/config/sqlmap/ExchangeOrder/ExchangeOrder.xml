@@ -91,12 +91,10 @@
         UPDATE FS_ExchangeOrder
         SET LastUpdateLoginID = #loginId#,
         Status = #setStatus#,
-        Memo = #refundDTOList[].refundReason#,
+        Memo = #refundDTO.refundReason#,
         LastUpdateDate = NOW()
-        WHERE BizCode IN
-        <iterate open="(" close=")" conjunction="," property="refundDTOList">
-            #refundDTOList[].refundId# AND Status = #preStatus#
-        </iterate>
+        WHERE BizCode = #refundDTO.refundId#
+        AND Status = #preStatus#
     </update>
 
     <select id="loadExchangeOrderByOrderId" parameterClass="map" resultMap="exchangeOrder">

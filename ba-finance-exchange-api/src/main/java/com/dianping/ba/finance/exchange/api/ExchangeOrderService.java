@@ -87,6 +87,6 @@ public interface ExchangeOrderService {
      * @param loginId
      * @return
      */
-    RefundResultDTO refundExchangeOrder(List<RefundDTO> refundDTOList, int loginId);
+    RefundResultDTO refundExchangeOrder(List<RefundDTO> refundDTOList, int loginId) throws Exception;
 
 }
