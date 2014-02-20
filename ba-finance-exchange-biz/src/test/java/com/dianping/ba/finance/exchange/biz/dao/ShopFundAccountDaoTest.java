@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.biz.dao;
 
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,14 @@ public class ShopFundAccountDaoTest {
         shopFundAccountFlowData.setLastUpdateDate(Calendar.getInstance().getTime());
         shopFundAccountFlowDao.insertShopFundAccountFlow(shopFundAccountFlowData);
 
+    }
+
+    @Test
+    public void testLoadShopFundAccountFlowById(){
+        ShopFundAccountFlowData actual = shopFundAccountFlowDao.loadShopFundAccountFlowById(11194);
+
+        Assert.assertNotNull(actual);
+        Assert.assertEquals(2289,actual.getFundAccountId());
+        Assert.assertEquals("PP|1",actual.getSequence());
     }
 }
