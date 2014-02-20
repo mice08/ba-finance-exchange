@@ -160,12 +160,21 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         }
         try {
             refundResultDTO.setRefundTotalAmount(findExchangeOrderTotalAmountByRefundId(bizCodeList));
-            //TODO 发送swallow消息
+            sendMessage(loginId, bizCodeList);
         } catch (Exception e) {
-            LogUtils.log(monitorLogger, startTime, "findExchangeOrderTotalAmount", Level.ERROR,bizCodeList.toString(), e);
+            LogUtils.log(monitorLogger, startTime, "refundExchangeOrder", Level.ERROR, "RefundIDs:"+bizCodeList.toString(), e);
         }
         return refundResultDTO;
+    }
 
+    private void sendMessage(int loginId, List<String> bizCodeList) throws Exception {
+        List<ExchangeOrderData> exchangeOrderDataList;
+        exchangeOrderDataList = findExchangeOrderDataByRefundId(bizCodeList);
+        for (ExchangeOrderData data : exchangeOrderDataList) {
+            ExchangeOrderDTO exchangeOrderDTO = ConvertUtils.copy(data, ExchangeOrderDTO.class);
+            exchangeOrderDTO.setLoginId(loginId);
+            exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
+        }
     }
 
     private RefundResultDTO checkExchangeOrderStatus(List<String> bizCodeList) {
@@ -212,14 +221,11 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         int setStatus = ExchangeOrderStatus.FAIL.value();
 
         for (RefundDTO item : refundDTOList) {
-
             int affectedRows = exchangeOrderDao.updateExchangeOrderToRefund(item, preStatus, setStatus, loginId);
             if (affectedRows <= 0) {
-                throw new Exception("status error");
+                throw new Exception("System is abnormal");
             }
         }
-
-        //TODO 发送mq消息更新付款计划和结算单，插入流水
         return true;
     }
 
