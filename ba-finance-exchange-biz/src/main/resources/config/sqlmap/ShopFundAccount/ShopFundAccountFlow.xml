@@ -13,6 +13,7 @@
         <result property="exchangeOrderId" column="ExchangeOrderID"/>
         <result property="addDate" column="AddDate"/>
         <result property="lastUpdateDate" column="LastUpdateDate"/>
+        <result property="sequence" column="Sequence"/>
         <result property="memo" column="Memo"/>
         <result property="addLoginId" column="AddLoginID"/>
     </resultMap>
@@ -59,7 +60,7 @@
     </update>
 
     <select id="loadShopFundAccountFlow" resultMap="shopFundAccountFlowData" parameterClass="map">
-        SELECT FAFlowID,FAID,FlowAmount,FlowType,SourceType,ExchangeOrderID,AddDate,LastUpdateDate,Memo,AddLoginID
+        SELECT FAFlowID,FAID,FlowAmount,FlowType,SourceType,ExchangeOrderID,AddDate,LastUpdateDate,Sequence,Memo,AddLoginID
         FROM FS_ShopFundAccountFlow
         WHERE ExchangeOrderID = #exchangeOrderId#
         AND FlowType = #flowType#
@@ -67,7 +68,8 @@
     </select>
 
     <select id="loadShopFundAccountFlowById" resultMap="shopFundAccountFlowData" parameterClass="map">
-        SELECT FAFlowID,FAID,FlowAmount,FlowType,SourceType,ExchangeOrderID,AddDate,LastUpdateDate,Memo,AddLoginID
+        SELECT FAFlowID,FAID,FlowAmount,FlowType,SourceType,ExchangeOrderID,AddDate,LastUpdateDate,Sequence,Memo,AddLoginID
         FROM FS_ShopFundAccountFlow
         WHERE FAFlowID = #flowId#
+    </select>
 </sqlMap>
