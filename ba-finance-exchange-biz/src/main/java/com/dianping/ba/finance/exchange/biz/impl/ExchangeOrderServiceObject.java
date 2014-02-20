@@ -17,6 +17,7 @@ import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNo
 import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
 import com.dianping.ba.finance.exchange.biz.utils.JsonUtils;
 import com.dianping.ba.finance.exchange.biz.utils.LogUtils;
+import com.dianping.ba.finance.exchange.biz.utils.ObjectUtils;
 import com.dianping.core.type.PageModel;
 import org.apache.log4j.Level;
 import org.springframework.util.CollectionUtils;
@@ -79,6 +80,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
             } catch (Exception ex) {
                 //ignore
             }
+            LogUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, ObjectUtils.toString(searchBean), e);
         }
         return new PageModel();
     }
@@ -95,6 +97,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
             } catch (Exception ex) {
                 //ignore
             }
+            LogUtils.log(monitorLogger, startTime, "findExchangeOrderTotalAmount", Level.ERROR, ObjectUtils.toString(searchBean), e);
         }
         return BigDecimal.ZERO;
     }

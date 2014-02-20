@@ -48,11 +48,7 @@ public class  GenericResult<T> implements Serializable {
     }
 
     public boolean hasFailResult(){
-       if(failList.size() > 0){
-           return true;
-       } else {
-           return false;
-       }
+       return !failList.isEmpty();
     }
 
     public String failListToString(){
