@@ -1,7 +1,9 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
+import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import org.junit.Assert;
@@ -96,6 +98,14 @@ public class ExchangeOrderDaoTest {
         List<ExchangeOrderData> exchangeOrderDataList = new ArrayList<ExchangeOrderData>();
         exchangeOrderDataList = exchangeOrderDao.findExchangeOrderByBizCode(stringList);
         Assert.assertEquals(2,exchangeOrderDataList.size());
+    }
+
+    @Test
+    public void testFindExchangeOrderDataList() {
+        ExchangeOrderSearchBean searchBean = new ExchangeOrderSearchBean();
+        searchBean.setBizCode("P11194");
+        List<ExchangeOrderDisplayData> exchangeOrderDataList= exchangeOrderDao.findExchangeOrderList(searchBean);
+        Assert.assertEquals(1,exchangeOrderDataList.size());
     }
 
 
