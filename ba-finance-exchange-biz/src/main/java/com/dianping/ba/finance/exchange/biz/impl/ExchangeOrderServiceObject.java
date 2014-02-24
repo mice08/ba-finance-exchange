@@ -7,7 +7,9 @@ import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
+import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderSummaryDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
@@ -173,6 +175,15 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
             LogUtils.log(monitorLogger, startTime, "refundExchangeOrder", Level.ERROR, "RefundIDs:" + bizCodeList.toString(), e);
         }
         return refundResultDTO;
+    }
+
+    @Override
+    public ExchangeOrderSummaryDTO getExchangeOrderSummaryInfo(int flowId) throws Exception {
+        ExchangeOrderSummaryData summaryData = exchangeOrderDao.loadExchangeOrderSummaryDataByShopFundAccountFlowId(flowId);
+        if(summaryData != null){
+            return ConvertUtils.copy(summaryData, ExchangeOrderSummaryDTO.class);
+        }
+        return new ExchangeOrderSummaryDTO();
     }
 
     private void sendMessage(int loginId, List<String> bizCodeList) throws Exception {

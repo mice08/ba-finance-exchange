@@ -4,7 +4,9 @@ import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
+import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderSummaryDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
@@ -89,7 +91,6 @@ public class ExchangeOrderServiceObjectTest {
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds, 1);
 
         Assert.assertEquals(2, result.getFailList().size());
-        Assert.assertEquals(-1, result.getFailList().get(0).intValue());
 
         Assert.assertEquals(2, result.getSuccessList().size());
         Assert.assertEquals(2, result.getSuccessList().get(0).intValue());
@@ -354,6 +355,18 @@ public class ExchangeOrderServiceObjectTest {
         RefundResultDTO actual = exchangeOrderServiceObjectStub.refundExchangeOrder(refundDTOList, loginId);
         Assert.assertEquals(0, actual.getRefundFailedMap().size());
         Assert.assertEquals(0,actual.getRefundTotalAmount().compareTo(BigDecimal.ONE));
+    }
+
+    @Test
+    public void testGetExchangeOrderSummaryInfo() throws Exception{
+        ExchangeOrderSummaryData summaryData = new ExchangeOrderSummaryData();
+        summaryData.setBizCode("P111");
+        when(exchangeOrderDaoMock.loadExchangeOrderSummaryDataByShopFundAccountFlowId(anyInt())).thenReturn(summaryData);
+
+        ExchangeOrderSummaryDTO actual = exchangeOrderServiceObjectStub.getExchangeOrderSummaryInfo(1);
+
+        Assert.assertNotNull(actual);
+        Assert.assertEquals("P111", actual.getBizCode());
     }
 
 }
