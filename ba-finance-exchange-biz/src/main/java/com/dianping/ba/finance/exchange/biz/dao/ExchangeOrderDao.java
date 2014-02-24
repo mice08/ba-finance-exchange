@@ -140,6 +140,6 @@ public interface ExchangeOrderDao extends GenericDao {
      *
      * @return
      */
-    @DAOAction(action = DAOActionType.LOAD)
-    ExchangeOrderSummaryData loadExchangeOrderSummaryDataByShopFundAccountFlowId(@DAOParam("flowId") int flowId);
+    @DAOAction(action = DAOActionType.QUERY)
+    List<ExchangeOrderSummaryData> findExchangeOrderSummaryDataListByFlowIdList(@DAOParam("flowIdList") List<Integer> flowIdList);
 }

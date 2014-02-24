@@ -178,12 +178,16 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
-    public ExchangeOrderSummaryDTO getExchangeOrderSummaryInfo(int flowId) throws Exception {
-        ExchangeOrderSummaryData summaryData = exchangeOrderDao.loadExchangeOrderSummaryDataByShopFundAccountFlowId(flowId);
-        if(summaryData != null){
-            return ConvertUtils.copy(summaryData, ExchangeOrderSummaryDTO.class);
+    public List<ExchangeOrderSummaryDTO> getExchangeOrderSummaryInfo(List<Integer> flowIdList) throws Exception {
+        List<ExchangeOrderSummaryDTO> summaryDTOList = new ArrayList<ExchangeOrderSummaryDTO>();
+        List<ExchangeOrderSummaryData> summaryDataList = exchangeOrderDao.findExchangeOrderSummaryDataListByFlowIdList(flowIdList);
+        if(summaryDataList == null){
+            return summaryDTOList;
         }
-        return new ExchangeOrderSummaryDTO();
+        for(ExchangeOrderSummaryData data: summaryDataList) {
+            summaryDTOList.add(ConvertUtils.copy(data, ExchangeOrderSummaryDTO.class));
+        }
+        return summaryDTOList;
     }
 
     private void sendMessage(int loginId, List<String> bizCodeList) throws Exception {
