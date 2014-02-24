@@ -1,4 +1,4 @@
-package com.dianping.ba.finance.exchange.api.datas;
+package com.dianping.ba.finance.exchange.api.dtos;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,7 +11,7 @@ import java.util.Date;
  * Time: 下午1:52
  * To change this template use File | Settings | File Templates.
  */
-public class EOAndFlowIdSummaryData implements Serializable {
+public class EOAndFlowIdSummaryDTO implements Serializable {
 
     private static final long serialVersionUID = 8872187550686706215L;
 
@@ -25,7 +25,7 @@ public class EOAndFlowIdSummaryData implements Serializable {
 
     private int flowId;
 
-    public EOAndFlowIdSummaryData() {
+    public EOAndFlowIdSummaryDTO() {
     }
 
     public String getBizCode() {
