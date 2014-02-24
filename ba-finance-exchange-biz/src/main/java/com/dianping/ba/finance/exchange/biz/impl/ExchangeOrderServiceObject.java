@@ -5,9 +5,9 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderAndFlowIdData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderWithFlowIdData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
@@ -177,9 +177,8 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
-    public ExchangeOrderWithFlowIdData loadExchangeOrderDataWithFlowId(int exchangeOrderId) {
-        ExchangeOrderWithFlowIdData exchangeOrderWithFlowIdData = exchangeOrderDao.loadExchangeOrderAndPositiveFlow(exchangeOrderId);
-        return exchangeOrderWithFlowIdData;
+    public ExchangeOrderAndFlowIdData loadExchangeOrderDataWithFlowId(int exchangeOrderId) {
+        return exchangeOrderDao.loadExchangeOrderAndPositiveFlow(exchangeOrderId);
     }
 
     private void sendMessage(int loginId, List<String> bizCodeList) throws Exception {

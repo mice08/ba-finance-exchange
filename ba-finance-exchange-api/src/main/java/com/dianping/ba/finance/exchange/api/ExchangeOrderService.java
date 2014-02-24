@@ -2,10 +2,10 @@ package com.dianping.ba.finance.exchange.api;
 
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderWithFlowIdData;
-import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderAndFlowIdData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
+import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
 import com.dianping.core.type.PageModel;
 
@@ -95,5 +95,5 @@ public interface ExchangeOrderService {
      * @param exchangeOrderId
      * @return
      */
-    ExchangeOrderWithFlowIdData loadExchangeOrderDataWithFlowId(int exchangeOrderId);
+    ExchangeOrderAndFlowIdData loadExchangeOrderDataWithFlowId(int exchangeOrderId);
 }
