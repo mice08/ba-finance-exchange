@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
+import com.dianping.ba.finance.exchange.api.datas.EOAndFlowIdSummaryData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData;
@@ -91,9 +92,10 @@ public class ExchangeOrderServiceObjectTest {
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds, 1);
 
         Assert.assertEquals(2, result.getFailList().size());
+        Assert.assertTrue(result.getFailList().get(0) < 0);
 
         Assert.assertEquals(2, result.getSuccessList().size());
-        Assert.assertEquals(2, result.getSuccessList().get(0).intValue());
+        Assert.assertTrue(result.getSuccessList().get(0) > 0);
 
     }
 
@@ -358,6 +360,19 @@ public class ExchangeOrderServiceObjectTest {
     }
 
     @Test
+    public void testLoadExchangeOrderData() {
+        String bizCode = "123";
+        EOAndFlowIdSummaryData eoAndFlowIdSummaryData = new EOAndFlowIdSummaryData();
+        eoAndFlowIdSummaryData.setBizCode(bizCode);
+        eoAndFlowIdSummaryData.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
+
+        when(exchangeOrderDaoMock.loadExchangeOrderAndPositiveFlow(anyInt(), anyInt(), anyInt())).thenReturn(eoAndFlowIdSummaryData);
+
+        EOAndFlowIdSummaryData result = exchangeOrderServiceObjectStub.loadExchangeOrderDataWithFlowId(123);
+
+        Assert.assertEquals(bizCode, result.getBizCode());
+    }
+    @Test
     public void testGetExchangeOrderSummaryInfo() throws Exception{
         ExchangeOrderSummaryData summaryData = new ExchangeOrderSummaryData();
         summaryData.setBizCode("P111");
@@ -385,5 +400,4 @@ public class ExchangeOrderServiceObjectTest {
         Assert.assertNotNull(actual);
         Assert.assertEquals(0, actual.size());
     }
-
 }

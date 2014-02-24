@@ -5,6 +5,7 @@ import com.dianping.avatar.dao.annotation.DAOAction;
 import com.dianping.avatar.dao.annotation.DAOActionType;
 import com.dianping.avatar.dao.annotation.DAOParam;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
+import com.dianping.ba.finance.exchange.api.datas.EOAndFlowIdSummaryData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData;
@@ -135,6 +136,17 @@ public interface ExchangeOrderDao extends GenericDao {
     @DAOAction(action = DAOActionType.QUERY)
     List<ExchangeOrderData> findExchangeOrderByBizCode(@DAOParam("bizCodeList")List<String> bizCodeList);
 
+    /**
+     * 获取对应交易指令主键的记录及对应的正向Flow
+     *
+     * @param orderId 交易指令主键
+     * @return
+     */
+    @DAOAction(action = DAOActionType.LOAD)
+    EOAndFlowIdSummaryData loadExchangeOrderAndPositiveFlow(@DAOParam("exchangeOrderId") int orderId,
+                                                            @DAOParam("flowType") int flowType,
+                                                            @DAOParam("sourceType") int sourceType
+                                                            );
     /**
      * 根据资金账户流水主键获取关联付款单概要信息
      *

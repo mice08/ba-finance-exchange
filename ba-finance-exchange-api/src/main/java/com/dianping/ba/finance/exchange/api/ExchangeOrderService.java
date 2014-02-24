@@ -2,10 +2,11 @@ package com.dianping.ba.finance.exchange.api;
 
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
-import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderSummaryDTO;
-import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
+import com.dianping.ba.finance.exchange.api.datas.EOAndFlowIdSummaryData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
+import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderSummaryDTO;
+import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
 import com.dianping.core.type.PageModel;
 
@@ -89,6 +90,13 @@ public interface ExchangeOrderService {
      * @return
      */
     RefundResultDTO refundExchangeOrder(List<RefundDTO> refundDTOList, int loginId) throws Exception;
+
+    /**
+     * 根据exchangeOrderId获取ExchangeOrderData及其关联的正向FlowId
+     * @param exchangeOrderId
+     * @return
+     */
+    EOAndFlowIdSummaryData loadExchangeOrderDataWithFlowId(int exchangeOrderId);
 
     /**
      * 根绝资金账户流水号集获取付款单的概要信息集
