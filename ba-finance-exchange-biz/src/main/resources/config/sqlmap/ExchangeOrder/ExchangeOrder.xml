@@ -41,6 +41,14 @@
         <result property="bizCode" column="BizCode"/>
     </resultMap>
 
+    <typeAlias alias="ExchangeOrderSummaryData" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData"/>
+    <resultMap id="exchangeOrderSummaryData" class="ExchangeOrderSummaryData">
+        <result property="orderAmount" column="OrderAmount"/>
+        <result property="status" column="Status"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="bizCode" column="BizCode"/>
+    </resultMap>
+
     <insert id="insertExchangeOrder" parameterClass="map">
         <![CDATA[
         	 insert into FS_ExchangeOrder
@@ -323,4 +331,10 @@
             </iterate>
         </isNotEmpty>
     </update>
+
+    <select id="loadExchangeOrderSummaryDataByShopFundAccountFlowId" resultMap="exchangeOrderSummaryData" parameterClass="map">
+        SELECT OrderAmount,Status,AddDate,BizCode
+        FROM FS_ExchangeOrder
+        WHERE exchangeOrderId = (SELECT ExchangeOrderId FROM FS_ShopFundAccountFlow WHERE FAFlowID = #flowId#)
+    </select>
 </sqlMap>

@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.api;
 
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
+import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderSummaryDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
@@ -89,4 +90,11 @@ public interface ExchangeOrderService {
      */
     RefundResultDTO refundExchangeOrder(List<RefundDTO> refundDTOList, int loginId) throws Exception;
 
+    /**
+     * 根绝资金账户流水号获取付款单的概要信息
+     *
+     * @param flowId
+     * @return
+     */
+    ExchangeOrderSummaryDTO getExchangeOrderSummaryInfo(int flowId) throws Exception;
 }
