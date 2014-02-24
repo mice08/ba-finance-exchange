@@ -91,7 +91,6 @@ public class ExchangeOrderServiceObjectTest {
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds, 1);
 
         Assert.assertEquals(2, result.getFailList().size());
-        Assert.assertEquals(-1, result.getFailList().get(0).intValue());
 
         Assert.assertEquals(2, result.getSuccessList().size());
         Assert.assertEquals(2, result.getSuccessList().get(0).intValue());

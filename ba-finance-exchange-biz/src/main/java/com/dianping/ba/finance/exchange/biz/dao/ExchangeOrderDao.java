@@ -136,7 +136,7 @@ public interface ExchangeOrderDao extends GenericDao {
     List<ExchangeOrderData> findExchangeOrderByBizCode(@DAOParam("bizCodeList")List<String> bizCodeList);
 
     /**
-     * 根据资金账户流水逐渐获取关联付款单概要信息
+     * 根据资金账户流水主键获取关联付款单概要信息
      *
      * @return
      */

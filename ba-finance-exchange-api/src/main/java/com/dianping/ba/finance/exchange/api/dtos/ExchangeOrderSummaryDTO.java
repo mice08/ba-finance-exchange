@@ -15,10 +15,10 @@ public class ExchangeOrderSummaryDTO implements Serializable {
     private static final long serialVersionUID = -1L;
 
     private String bizCode;
-
     private BigDecimal orderAmount;
     private int status;
     private Date addDate;
+
     public String getBizCode() {
         return bizCode;
     }
