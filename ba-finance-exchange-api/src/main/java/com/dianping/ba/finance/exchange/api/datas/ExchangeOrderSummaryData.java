@@ -6,31 +6,17 @@ import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
- * User: noahshen
+ * User: 遐
  * Date: 14-2-24
- * Time: 下午1:52
+ * Time: 下午2:03
  * To change this template use File | Settings | File Templates.
  */
-public class EOAndFlowIdSummaryData implements Serializable {
-
-    private static final long serialVersionUID = 8872187550686706215L;
+public class ExchangeOrderSummaryData {
 
     private String bizCode;
-
     private BigDecimal orderAmount;
-
     private int status;
-
     private Date addDate;
-
-    private int flowId;
-
-    public EOAndFlowIdSummaryData() {
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 
     public String getBizCode() {
         return bizCode;
@@ -64,11 +50,4 @@ public class EOAndFlowIdSummaryData implements Serializable {
         this.addDate = addDate;
     }
 
-    public int getFlowId() {
-        return flowId;
-    }
-
-    public void setFlowId(int flowId) {
-        this.flowId = flowId;
-    }
 }
