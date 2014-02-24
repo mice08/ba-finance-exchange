@@ -5,14 +5,10 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
-import com.dianping.ba.finance.exchange.api.datas.EOAndFlowIdSummaryData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData;
-import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
-import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderSummaryDTO;
-import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
-import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
+import com.dianping.ba.finance.exchange.api.dtos.*;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.FlowType;
 import com.dianping.ba.finance.exchange.api.enums.RefundFailedReason;
@@ -181,7 +177,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
-    public EOAndFlowIdSummaryData loadExchangeOrderDataWithFlowId(int exchangeOrderId) {
+    public EOAndFlowIdSummaryDTO loadExchangeOrderDataAndPositiveFlow(int exchangeOrderId) {
         return exchangeOrderDao.loadExchangeOrderAndPositiveFlow(exchangeOrderId,
                                                                     FlowType.IN.value(),
                                                                     SourceType.PaymentPlan.value());

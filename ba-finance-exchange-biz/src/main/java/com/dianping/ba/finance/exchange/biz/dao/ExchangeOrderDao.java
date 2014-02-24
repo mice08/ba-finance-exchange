@@ -5,10 +5,10 @@ import com.dianping.avatar.dao.annotation.DAOAction;
 import com.dianping.avatar.dao.annotation.DAOActionType;
 import com.dianping.avatar.dao.annotation.DAOParam;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
-import com.dianping.ba.finance.exchange.api.datas.EOAndFlowIdSummaryData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData;
+import com.dianping.ba.finance.exchange.api.dtos.EOAndFlowIdSummaryDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.core.type.PageModel;
 
@@ -143,7 +143,7 @@ public interface ExchangeOrderDao extends GenericDao {
      * @return
      */
     @DAOAction(action = DAOActionType.LOAD)
-    EOAndFlowIdSummaryData loadExchangeOrderAndPositiveFlow(@DAOParam("exchangeOrderId") int orderId,
+    EOAndFlowIdSummaryDTO loadExchangeOrderAndPositiveFlow(@DAOParam("exchangeOrderId") int orderId,
                                                             @DAOParam("flowType") int flowType,
                                                             @DAOParam("sourceType") int sourceType
                                                             );

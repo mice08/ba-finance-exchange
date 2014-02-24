@@ -2,11 +2,11 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
-import com.dianping.ba.finance.exchange.api.datas.EOAndFlowIdSummaryData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
+import com.dianping.ba.finance.exchange.api.dtos.EOAndFlowIdSummaryDTO;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderSummaryDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
@@ -362,13 +362,13 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testLoadExchangeOrderData() {
         String bizCode = "123";
-        EOAndFlowIdSummaryData eoAndFlowIdSummaryData = new EOAndFlowIdSummaryData();
-        eoAndFlowIdSummaryData.setBizCode(bizCode);
-        eoAndFlowIdSummaryData.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
+        EOAndFlowIdSummaryDTO eoAndFlowIdSummaryDTO = new EOAndFlowIdSummaryDTO();
+        eoAndFlowIdSummaryDTO.setBizCode(bizCode);
+        eoAndFlowIdSummaryDTO.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
 
-        when(exchangeOrderDaoMock.loadExchangeOrderAndPositiveFlow(anyInt(), anyInt(), anyInt())).thenReturn(eoAndFlowIdSummaryData);
+        when(exchangeOrderDaoMock.loadExchangeOrderAndPositiveFlow(anyInt(), anyInt(), anyInt())).thenReturn(eoAndFlowIdSummaryDTO);
 
-        EOAndFlowIdSummaryData result = exchangeOrderServiceObjectStub.loadExchangeOrderDataWithFlowId(123);
+        EOAndFlowIdSummaryDTO result = exchangeOrderServiceObjectStub.loadExchangeOrderDataAndPositiveFlow(123);
 
         Assert.assertEquals(bizCode, result.getBizCode());
     }
