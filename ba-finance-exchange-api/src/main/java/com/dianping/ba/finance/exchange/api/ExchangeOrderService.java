@@ -96,7 +96,7 @@ public interface ExchangeOrderService {
      * @param exchangeOrderId
      * @return
      */
-    EOAndFlowIdSummaryDTO loadExchangeOrderDataAndPositiveFlow(int exchangeOrderId);
+    EOAndFlowIdSummaryDTO loadExchangeOrderDataAndPositiveFlow(int exchangeOrderId) throws Exception;
 
     /**
      * 根绝资金账户流水号集获取付款单的概要信息集

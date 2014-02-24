@@ -2,10 +2,7 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData;
-import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
+import com.dianping.ba.finance.exchange.api.datas.*;
 import com.dianping.ba.finance.exchange.api.dtos.EOAndFlowIdSummaryDTO;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderSummaryDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
@@ -360,13 +357,13 @@ public class ExchangeOrderServiceObjectTest {
     }
 
     @Test
-    public void testLoadExchangeOrderData() {
+    public void testLoadExchangeOrderData() throws Exception {
         String bizCode = "123";
-        EOAndFlowIdSummaryDTO eoAndFlowIdSummaryDTO = new EOAndFlowIdSummaryDTO();
-        eoAndFlowIdSummaryDTO.setBizCode(bizCode);
-        eoAndFlowIdSummaryDTO.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
+        EOAndFlowIdSummaryData eoAndFlowIdSummaryData = new EOAndFlowIdSummaryData();
+        eoAndFlowIdSummaryData.setBizCode(bizCode);
+        eoAndFlowIdSummaryData.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
 
-        when(exchangeOrderDaoMock.loadExchangeOrderAndPositiveFlow(anyInt(), anyInt(), anyInt())).thenReturn(eoAndFlowIdSummaryDTO);
+        when(exchangeOrderDaoMock.loadExchangeOrderAndPositiveFlow(anyInt(), anyInt(), anyInt())).thenReturn(eoAndFlowIdSummaryData);
 
         EOAndFlowIdSummaryDTO result = exchangeOrderServiceObjectStub.loadExchangeOrderDataAndPositiveFlow(123);
 

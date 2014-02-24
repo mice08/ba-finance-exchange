@@ -5,6 +5,7 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
+import com.dianping.ba.finance.exchange.api.datas.EOAndFlowIdSummaryData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData;
@@ -177,10 +178,12 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
-    public EOAndFlowIdSummaryDTO loadExchangeOrderDataAndPositiveFlow(int exchangeOrderId) {
-        return exchangeOrderDao.loadExchangeOrderAndPositiveFlow(exchangeOrderId,
-                                                                    FlowType.IN.value(),
-                                                                    SourceType.PaymentPlan.value());
+    public EOAndFlowIdSummaryDTO loadExchangeOrderDataAndPositiveFlow(int exchangeOrderId) throws Exception {
+        EOAndFlowIdSummaryData summaryData =  exchangeOrderDao.loadExchangeOrderAndPositiveFlow(exchangeOrderId,
+                                                                                                FlowType.IN.value(),
+                                                                                                SourceType.PaymentPlan.value());
+        EOAndFlowIdSummaryDTO summaryDTO = ConvertUtils.copy(summaryData, EOAndFlowIdSummaryDTO.class);
+        return summaryDTO;
     }
 
     @Override

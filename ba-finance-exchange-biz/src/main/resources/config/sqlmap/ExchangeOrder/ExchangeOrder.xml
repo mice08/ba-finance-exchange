@@ -41,8 +41,8 @@
         <result property="bizCode" column="BizCode"/>
     </resultMap>
 
-    <typeAlias alias="EOAndFlowIdSummaryDTO" type="com.dianping.ba.finance.exchange.api.dtos.EOAndFlowIdSummaryDTO"/>
-    <resultMap id="eoAndFlowIdSummaryDTO" class="EOAndFlowIdSummaryDTO">
+    <typeAlias alias="EOAndFlowIdSummaryData" type="com.dianping.ba.finance.exchange.api.datas.EOAndFlowIdSummaryData"/>
+    <resultMap id="eoAndFlowIdSummaryData" class="EOAndFlowIdSummaryData">
         <result property="bizCode" column="BizCode"/>
         <result property="orderAmount" column="OrderAmount"/>
         <result property="status" column="Status"/>
@@ -341,7 +341,7 @@
         </isNotEmpty>
     </update>
 
-    <select id="loadExchangeOrderAndPositiveFlow" resultMap="eoAndFlowIdSummaryDTO" parameterClass="map">
+    <select id="loadExchangeOrderAndPositiveFlow" resultMap="eoAndFlowIdSummaryData" parameterClass="map">
         SELECT
                eo.BizCode,
                eo.OrderAmount,
