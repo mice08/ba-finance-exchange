@@ -91,10 +91,10 @@ public interface ExchangeOrderService {
     RefundResultDTO refundExchangeOrder(List<RefundDTO> refundDTOList, int loginId) throws Exception;
 
     /**
-     * 根绝资金账户流水号获取付款单的概要信息
+     * 根绝资金账户流水号集获取付款单的概要信息集
      *
-     * @param flowId
+     * @param flowIdList
      * @return
      */
-    ExchangeOrderSummaryDTO getExchangeOrderSummaryInfo(int flowId) throws Exception;
+    List<ExchangeOrderSummaryDTO> getExchangeOrderSummaryInfo(List<Integer> flowIdList) throws Exception;
 }

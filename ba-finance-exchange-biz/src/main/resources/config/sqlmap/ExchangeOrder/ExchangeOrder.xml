@@ -332,9 +332,16 @@
         </isNotEmpty>
     </update>
 
-    <select id="loadExchangeOrderSummaryDataByShopFundAccountFlowId" resultMap="exchangeOrderSummaryData" parameterClass="map">
+    <select id="findExchangeOrderSummaryDataListByFlowIdList" resultMap="exchangeOrderSummaryData" parameterClass="map">
         SELECT OrderAmount,Status,AddDate,BizCode
         FROM FS_ExchangeOrder
-        WHERE exchangeOrderId = (SELECT ExchangeOrderId FROM FS_ShopFundAccountFlow WHERE FAFlowID = #flowId#)
+        WHERE exchangeOrderId =
+        (SELECT ExchangeOrderId
+        FROM FS_ShopFundAccountFlow
+        WHERE FAFlowID IN
+        <iterate open="(" close=")" conjunction="," property="flowIdList">
+            #flowIdList[]#
+        </iterate>
+        )
     </select>
 </sqlMap>
