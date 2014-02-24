@@ -11,7 +11,7 @@ import java.util.Date;
  * Time: 下午1:52
  * To change this template use File | Settings | File Templates.
  */
-public class ExchangeOrderAndFlowIdData implements Serializable {
+public class EOAndFlowIdSummaryData implements Serializable {
 
     private static final long serialVersionUID = 8872187550686706215L;
     /**
@@ -77,7 +77,7 @@ public class ExchangeOrderAndFlowIdData implements Serializable {
 
     private int flowId;
 
-    public ExchangeOrderAndFlowIdData() {
+    public EOAndFlowIdSummaryData() {
     }
 
     public int getExchangeOrderId() {

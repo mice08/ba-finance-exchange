@@ -2,7 +2,7 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderAndFlowIdData;
+import com.dianping.ba.finance.exchange.api.datas.EOAndFlowIdSummaryData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
@@ -361,13 +361,13 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testLoadExchangeOrderData() {
         int exchangeOrderId = 123;
-        ExchangeOrderAndFlowIdData exchangeOrderAndFlowIdData = new ExchangeOrderAndFlowIdData();
-        exchangeOrderAndFlowIdData.setExchangeOrderId(exchangeOrderId);
-        exchangeOrderAndFlowIdData.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
+        EOAndFlowIdSummaryData eoAndFlowIdSummaryData = new EOAndFlowIdSummaryData();
+        eoAndFlowIdSummaryData.setExchangeOrderId(exchangeOrderId);
+        eoAndFlowIdSummaryData.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
 
-        when(exchangeOrderDaoMock.loadExchangeOrderAndPositiveFlow(anyInt())).thenReturn(exchangeOrderAndFlowIdData);
+        when(exchangeOrderDaoMock.loadExchangeOrderAndPositiveFlow(anyInt())).thenReturn(eoAndFlowIdSummaryData);
 
-        ExchangeOrderAndFlowIdData result = exchangeOrderServiceObjectStub.loadExchangeOrderDataWithFlowId(123);
+        EOAndFlowIdSummaryData result = exchangeOrderServiceObjectStub.loadExchangeOrderDataWithFlowId(123);
 
         Assert.assertEquals(exchangeOrderId, result.getExchangeOrderId());
     }

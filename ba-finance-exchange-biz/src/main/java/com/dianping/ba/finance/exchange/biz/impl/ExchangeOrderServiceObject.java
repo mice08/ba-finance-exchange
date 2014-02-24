@@ -5,7 +5,7 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderAndFlowIdData;
+import com.dianping.ba.finance.exchange.api.datas.EOAndFlowIdSummaryData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
@@ -177,7 +177,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
-    public ExchangeOrderAndFlowIdData loadExchangeOrderDataWithFlowId(int exchangeOrderId) {
+    public EOAndFlowIdSummaryData loadExchangeOrderDataWithFlowId(int exchangeOrderId) {
         return exchangeOrderDao.loadExchangeOrderAndPositiveFlow(exchangeOrderId);
     }
 
