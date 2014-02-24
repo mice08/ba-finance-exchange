@@ -4,6 +4,7 @@ import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderWithFlowIdData;
 import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
@@ -356,4 +357,18 @@ public class ExchangeOrderServiceObjectTest {
         Assert.assertEquals(0,actual.getRefundTotalAmount().compareTo(BigDecimal.ONE));
     }
 
+
+    @Test
+    public void testLoadExchangeOrderData() {
+        int exchangeOrderId = 123;
+        ExchangeOrderWithFlowIdData exchangeOrderWithFlowIdData = new ExchangeOrderWithFlowIdData();
+        exchangeOrderWithFlowIdData.setExchangeOrderId(exchangeOrderId);
+        exchangeOrderWithFlowIdData.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
+
+        when(exchangeOrderDaoMock.loadExchangeOrderAndPositiveFlow(anyInt())).thenReturn(exchangeOrderWithFlowIdData);
+
+        ExchangeOrderWithFlowIdData result = exchangeOrderServiceObjectStub.loadExchangeOrderDataWithFlowId(123);
+
+        Assert.assertEquals(exchangeOrderId, result.getExchangeOrderId());
+    }
 }
