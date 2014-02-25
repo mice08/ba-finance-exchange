@@ -356,7 +356,7 @@
     <select id="findExchangeOrderSummaryDataListByFlowIdList" resultMap="exchangeOrderSummaryData" parameterClass="map">
         SELECT OrderAmount,Status,AddDate,BizCode
         FROM FS_ExchangeOrder
-        WHERE exchangeOrderId =
+        WHERE exchangeOrderId IN
         (SELECT ExchangeOrderId
         FROM FS_ShopFundAccountFlow
         WHERE FAFlowID IN
