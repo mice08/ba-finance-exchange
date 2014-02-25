@@ -2,9 +2,9 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
-import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountFlowData;
+import com.dianping.ba.finance.exchange.api.datas.*;
+import com.dianping.ba.finance.exchange.api.dtos.EOAndFlowIdSummaryDTO;
+import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderSummaryDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
@@ -89,10 +89,9 @@ public class ExchangeOrderServiceObjectTest {
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds, 1);
 
         Assert.assertEquals(2, result.getFailList().size());
-        Assert.assertEquals(-2, result.getFailList().get(0).intValue());
 
         Assert.assertEquals(2, result.getSuccessList().size());
-        Assert.assertEquals(2, result.getSuccessList().get(0).intValue());
+        Assert.assertTrue(result.getSuccessList().get(0) > 0);
 
     }
 
@@ -358,4 +357,47 @@ public class ExchangeOrderServiceObjectTest {
         Assert.assertEquals(0,actual.getRefundTotalAmount().compareTo(new BigDecimal(21)));
     }
 
+    @Test
+    public void testLoadExchangeOrderData() throws Exception {
+        String bizCode = "P100045678";
+        EOAndFlowIdSummaryData eoAndFlowIdSummaryData = new EOAndFlowIdSummaryData();
+        eoAndFlowIdSummaryData.setBizCode(bizCode);
+        eoAndFlowIdSummaryData.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
+
+        when(exchangeOrderDaoMock.loadExchangeOrderAndPositiveFlow(anyInt(), anyInt(), anyInt())).thenReturn(eoAndFlowIdSummaryData);
+
+        EOAndFlowIdSummaryDTO result = exchangeOrderServiceObjectStub.loadExchangeOrderDataAndPositiveFlow(123);
+
+        Assert.assertEquals(bizCode, result.getBizCode());
+    }
+
+    @Test
+    public void testGetExchangeOrderSummaryInfo() throws Exception{
+        String bizCode = "P10005678";
+        ExchangeOrderSummaryData summaryData = new ExchangeOrderSummaryData();
+        summaryData.setBizCode(bizCode);
+        List<ExchangeOrderSummaryData> summaryDataList = new ArrayList<ExchangeOrderSummaryData>();
+        summaryDataList.add(summaryData);
+        List<Integer> flowIdList = new ArrayList<Integer>();
+        flowIdList.add(1);
+        when(exchangeOrderDaoMock.findExchangeOrderSummaryDataListByFlowIdList(anyList())).thenReturn(summaryDataList);
+
+        List<ExchangeOrderSummaryDTO> actual = exchangeOrderServiceObjectStub.getExchangeOrderSummaryInfo(flowIdList);
+
+        Assert.assertNotNull(actual);
+        Assert.assertEquals(bizCode, actual.get(0).getBizCode());
+    }
+
+
+    @Test
+    public void testGetExchangeOrderSummaryInfoWhenNoExchangeOrderFound() throws Exception{
+        List<Integer> flowIdList = new ArrayList<Integer>();
+        flowIdList.add(1);
+        when(exchangeOrderDaoMock.findExchangeOrderSummaryDataListByFlowIdList(anyList())).thenReturn(null);
+
+        List<ExchangeOrderSummaryDTO> actual = exchangeOrderServiceObjectStub.getExchangeOrderSummaryInfo(flowIdList);
+
+        Assert.assertNotNull(actual);
+        Assert.assertEquals(0, actual.size());
+    }
 }
