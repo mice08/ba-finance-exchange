@@ -78,6 +78,7 @@ public class ExchangeOrderServiceObjectTest {
         shopFundAccountFlowData.setFundAccountId(1);
 
         List<Integer> orderIds = new ArrayList<Integer>();
+        orderIds.add(-2);
         orderIds.add(-1);
         orderIds.add(2);
         orderIds.add(3);
@@ -87,8 +88,11 @@ public class ExchangeOrderServiceObjectTest {
 
         GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds, 1);
 
-        Assert.assertEquals(1, result.getFailList().size());
-        Assert.assertEquals(-1, result.getFailList().get(0).intValue());
+        Assert.assertEquals(2, result.getFailList().size());
+        Assert.assertEquals(-2, result.getFailList().get(0).intValue());
+
+        Assert.assertEquals(2, result.getSuccessList().size());
+        Assert.assertEquals(2, result.getSuccessList().get(0).intValue());
 
     }
 

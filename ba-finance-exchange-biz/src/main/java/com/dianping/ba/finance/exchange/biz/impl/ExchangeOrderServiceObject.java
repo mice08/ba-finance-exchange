@@ -48,20 +48,16 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     public GenericResult<Integer> updateExchangeOrderToSuccess(List<Integer> orderIds, int loginId) {
         Long startTime = System.currentTimeMillis();
         GenericResult result = new GenericResult<Integer>();
-        int processExchangeOrderId = 0;
-        try {
-            for (int orderId : orderIds) {
-                processExchangeOrderId = orderId;
-                boolean success = updateExchangeOrderToSuccess(orderId, loginId);
-                if (success) {
-                    result.addSuccess(orderId);
-                } else {
-                    result.addFail(orderId);
-                }
+
+        for (int orderId : orderIds) {
+            boolean success = updateExchangeOrderToSuccess(orderId, loginId);
+            if (success) {
+                result.addSuccess(orderId);
+            } else {
+                result.addFail(orderId);
             }
-        } catch (Exception e) {
-            result.addFail(processExchangeOrderId);
         }
+
         if (result.hasFailResult()) {
             LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", Level.ERROR, "Failed exchange order ids: " + result.failListToString());
         }
@@ -125,22 +121,30 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         return -1;
     }
 
-    private boolean updateExchangeOrderToSuccess(int orderId, int loginId) throws Exception {
+    private boolean updateExchangeOrderToSuccess(int orderId, int loginId) {
+        long startTime = System.currentTimeMillis();
         if (orderId <= 0) {
+            LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", Level.ERROR, "orderId<=0,orderId:" + orderId, null);
             return false;
         }
         Date orderDate = getCurrentTime();
-        int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatus.PENDING.value(), ExchangeOrderStatus.SUCCESS.value(), loginId);
-        if (affectedRows <= 0) {
+        try {
+            int affectedRows = exchangeOrderDao.updateExchangeOrderData(orderId, orderDate, ExchangeOrderStatus.PENDING.value(), ExchangeOrderStatus.SUCCESS.value(), loginId);
+            if (affectedRows <= 0) {
+                LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", Level.ERROR, "orderId:" + orderId + ",affectedRows<=0,affectedRows:" + affectedRows, null);
+                return false;
+            }
+            ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
+
+            ExchangeOrderDTO exchangeOrderDTO = ConvertUtils.copy(exchangeOrderData, ExchangeOrderDTO.class);
+            exchangeOrderDTO.setLoginId(loginId);
+            exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
+
+            return true;
+        } catch (Exception ex) {
+            LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", Level.ERROR, "orderId:" + orderId, ex);
             return false;
         }
-        ExchangeOrderData exchangeOrderData = exchangeOrderDao.loadExchangeOrderByOrderId(orderId);
-
-        ExchangeOrderDTO exchangeOrderDTO = ConvertUtils.copy(exchangeOrderData, ExchangeOrderDTO.class);
-        exchangeOrderDTO.setLoginId(loginId);
-        exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
-
-        return true;
     }
 
     @Override
@@ -165,7 +169,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         try {
             sendMessage(loginId, exchangeOrderDataList);
         } catch (Exception e) {
-            LogUtils.log(monitorLogger, startTime, "refundExchangeOrder", Level.ERROR, "RefundIDs:"+bizCodeList.toString(), e);
+            LogUtils.log(monitorLogger, startTime, "refundExchangeOrder", Level.ERROR, "RefundIDs:" + bizCodeList.toString(), e);
         }
         return refundResultDTO;
     }
