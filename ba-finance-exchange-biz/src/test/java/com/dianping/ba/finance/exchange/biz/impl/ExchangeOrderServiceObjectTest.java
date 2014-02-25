@@ -10,7 +10,6 @@ import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
-import com.dianping.ba.finance.exchange.biz.utils.RandomUtils;
 import com.dianping.core.type.PageModel;
 import org.junit.Assert;
 import org.junit.Before;
@@ -359,7 +358,7 @@ public class ExchangeOrderServiceObjectTest {
 
     @Test
     public void testLoadExchangeOrderData() throws Exception {
-        String bizCode = "P" + RandomUtils.getRandomNumbers(10);
+        String bizCode = "P100045678";
         EOAndFlowIdSummaryData eoAndFlowIdSummaryData = new EOAndFlowIdSummaryData();
         eoAndFlowIdSummaryData.setBizCode(bizCode);
         eoAndFlowIdSummaryData.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
@@ -373,7 +372,7 @@ public class ExchangeOrderServiceObjectTest {
 
     @Test
     public void testGetExchangeOrderSummaryInfo() throws Exception{
-        String bizCode = "P" + RandomUtils.getRandomNumbers(10);
+        String bizCode = "P10005678";
         ExchangeOrderSummaryData summaryData = new ExchangeOrderSummaryData();
         summaryData.setBizCode(bizCode);
         List<ExchangeOrderSummaryData> summaryDataList = new ArrayList<ExchangeOrderSummaryData>();
