@@ -130,6 +130,7 @@
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
         eo.ExchangeOrderID = flow.ExchangeOrderID
         AND flow.FlowType = 1
+        AND flow.SourceType = 1
         )
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         <dynamic prepend="WHERE">
@@ -162,6 +163,7 @@
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
         eo.ExchangeOrderID = flow.ExchangeOrderID
         AND flow.FlowType = 1
+        AND flow.SourceType = 1
         )
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         <dynamic prepend="WHERE">
@@ -211,15 +213,6 @@
         </dynamic>
     </select>
 
-    <select id="findExchangeOrderTotalAmountByBizCode" resultClass="java.math.BigDecimal" parameterClass="map">
-        SELECT IFNULL(SUM(OrderAmount),0)
-        FROM   FS_ExchangeOrder
-        WHERE BizCode IN
-        <iterate open="(" close=")" conjunction="," property="bizCodeList">
-          #bizCodeList[]#
-        </iterate>
-    </select>
-
     <select id="findExchangeOrderByBizCode" resultMap="exchangeOrder" parameterClass="map">
         SELECT ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,BankProvince,
         BankCity,Status,AddDate,OrderDate,LastUpdateDate,Memo,BizCode,AddLoginID,LastUpdateLoginID
@@ -254,6 +247,7 @@
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
         eo.ExchangeOrderID = flow.ExchangeOrderID
         AND flow.FlowType = 1
+        AND flow.SourceType = 1
         )
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         <dynamic prepend="WHERE">
@@ -286,6 +280,7 @@
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
         eo.ExchangeOrderID = flow.ExchangeOrderID
         AND flow.FlowType = 1
+        AND flow.SourceType = 1
         )
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         <dynamic prepend="WHERE">

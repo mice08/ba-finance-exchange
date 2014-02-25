@@ -275,11 +275,11 @@ public class ExchangeOrderServiceObjectTest {
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
         exchangeOrderData.setBizCode("111");
         exchangeOrderData.setStatus(ExchangeOrderStatus.SUCCESS.value());
+        exchangeOrderData.setOrderAmount(BigDecimal.TEN);
         exchangeOrderDataList.add(exchangeOrderData);
 
         when(exchangeOrderDaoMock.updateExchangeOrderToRefund(any(RefundDTO.class), anyInt(), anyInt(), anyInt())).thenReturn(1);
         when(exchangeOrderDaoMock.findExchangeOrderByBizCode(anyList())).thenReturn(exchangeOrderDataList);
-        when(exchangeOrderDaoMock.findExchangeOrderTotalAmountByBizCode(anyList())).thenReturn(BigDecimal.ONE);
         RefundResultDTO actual = exchangeOrderServiceObjectStub.refundExchangeOrder(refundDTOList, loginId);
         Assert.assertEquals(2, actual.getRefundFailedMap().size());
     }
@@ -300,11 +300,11 @@ public class ExchangeOrderServiceObjectTest {
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
         exchangeOrderData.setBizCode("111");
         exchangeOrderData.setStatus(ExchangeOrderStatus.INIT.value());
+        exchangeOrderData.setOrderAmount(BigDecimal.TEN);
         exchangeOrderDataList.add(exchangeOrderData);
 
         when(exchangeOrderDaoMock.updateExchangeOrderToRefund(any(RefundDTO.class), anyInt(), anyInt(), anyInt())).thenReturn(1);
         when(exchangeOrderDaoMock.findExchangeOrderByBizCode(anyList())).thenReturn(exchangeOrderDataList);
-        when(exchangeOrderDaoMock.findExchangeOrderTotalAmountByBizCode(anyList())).thenReturn(BigDecimal.ONE);
         RefundResultDTO actual = exchangeOrderServiceObjectStub.refundExchangeOrder(refundDTOList, loginId);
         Assert.assertEquals(1, actual.getRefundFailedMap().size());
     }
@@ -336,24 +336,26 @@ public class ExchangeOrderServiceObjectTest {
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
         exchangeOrderData.setBizCode("111");
         exchangeOrderData.setStatus(ExchangeOrderStatus.SUCCESS.value());
+        exchangeOrderData.setOrderAmount(BigDecimal.ONE);
         exchangeOrderDataList.add(exchangeOrderData);
 
         ExchangeOrderData exchangeOrderData1 = new ExchangeOrderData();
         exchangeOrderData1.setBizCode("222");
         exchangeOrderData1.setStatus(ExchangeOrderStatus.SUCCESS.value());
+        exchangeOrderData1.setOrderAmount(BigDecimal.TEN);
         exchangeOrderDataList.add(exchangeOrderData1);
 
         ExchangeOrderData exchangeOrderData2 = new ExchangeOrderData();
         exchangeOrderData2.setBizCode("333");
         exchangeOrderData2.setStatus(ExchangeOrderStatus.SUCCESS.value());
+        exchangeOrderData2.setOrderAmount(BigDecimal.TEN);
         exchangeOrderDataList.add(exchangeOrderData2);
 
         when(exchangeOrderDaoMock.updateExchangeOrderToRefund(any(RefundDTO.class), anyInt(), anyInt(), anyInt())).thenReturn(1);
         when(exchangeOrderDaoMock.findExchangeOrderByBizCode(anyList())).thenReturn(exchangeOrderDataList);
-        when(exchangeOrderDaoMock.findExchangeOrderTotalAmountByBizCode(anyList())).thenReturn(BigDecimal.ONE);
         RefundResultDTO actual = exchangeOrderServiceObjectStub.refundExchangeOrder(refundDTOList, loginId);
         Assert.assertEquals(0, actual.getRefundFailedMap().size());
-        Assert.assertEquals(0,actual.getRefundTotalAmount().compareTo(BigDecimal.ONE));
+        Assert.assertEquals(0,actual.getRefundTotalAmount().compareTo(new BigDecimal(21)));
     }
 
 }
