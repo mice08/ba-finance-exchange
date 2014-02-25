@@ -213,15 +213,6 @@
         </dynamic>
     </select>
 
-    <select id="findExchangeOrderTotalAmountByBizCode" resultClass="java.math.BigDecimal" parameterClass="map">
-        SELECT IFNULL(SUM(OrderAmount),0)
-        FROM   FS_ExchangeOrder
-        WHERE BizCode IN
-        <iterate open="(" close=")" conjunction="," property="bizCodeList">
-          #bizCodeList[]#
-        </iterate>
-    </select>
-
     <select id="findExchangeOrderByBizCode" resultMap="exchangeOrder" parameterClass="map">
         SELECT ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,BankProvince,
         BankCity,Status,AddDate,OrderDate,LastUpdateDate,Memo,BizCode,AddLoginID,LastUpdateLoginID

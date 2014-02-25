@@ -67,17 +67,6 @@ public class ExchangeOrderDaoTest {
     }
 
     @Test
-    public void testFindExchangeOrderTotalAmountByBizCode() {
-        List<String> stringList = new ArrayList<String>();
-        String str = "111";
-        String str1 = "222";
-        stringList.add(str);
-        stringList.add(str1);
-        BigDecimal totalAmount = exchangeOrderDao.findExchangeOrderTotalAmountByBizCode(stringList);
-        System.out.println(totalAmount);
-    }
-
-    @Test
     public void testUpdateExchangeOrderToRefund() {
         RefundDTO refundDTO1 = new RefundDTO();
         refundDTO1.setRefundId("111");
