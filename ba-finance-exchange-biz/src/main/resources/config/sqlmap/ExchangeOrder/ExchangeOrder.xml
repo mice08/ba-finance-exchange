@@ -342,7 +342,7 @@
                eo.OrderAmount,
                eo.Status,
                eo.AddDate,
-               flow.FAFlowID AS FlowId
+               IFNULL(flow.FAFlowID, 0) AS FlowId
         FROM   FS_ExchangeOrder eo
                LEFT JOIN FS_ShopFundAccountFlow flow
                       ON ( eo.ExchangeOrderID = flow.ExchangeOrderID
