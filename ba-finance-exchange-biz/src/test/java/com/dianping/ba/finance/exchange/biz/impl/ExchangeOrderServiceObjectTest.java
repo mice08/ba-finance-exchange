@@ -358,7 +358,7 @@ public class ExchangeOrderServiceObjectTest {
 
     @Test
     public void testLoadExchangeOrderData() throws Exception {
-        String bizCode = "123";
+        String bizCode = "P100045678";
         EOAndFlowIdSummaryData eoAndFlowIdSummaryData = new EOAndFlowIdSummaryData();
         eoAndFlowIdSummaryData.setBizCode(bizCode);
         eoAndFlowIdSummaryData.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
@@ -369,10 +369,12 @@ public class ExchangeOrderServiceObjectTest {
 
         Assert.assertEquals(bizCode, result.getBizCode());
     }
+
     @Test
     public void testGetExchangeOrderSummaryInfo() throws Exception{
+        String bizCode = "P10005678";
         ExchangeOrderSummaryData summaryData = new ExchangeOrderSummaryData();
-        summaryData.setBizCode("P111");
+        summaryData.setBizCode(bizCode);
         List<ExchangeOrderSummaryData> summaryDataList = new ArrayList<ExchangeOrderSummaryData>();
         summaryDataList.add(summaryData);
         List<Integer> flowIdList = new ArrayList<Integer>();
@@ -382,7 +384,7 @@ public class ExchangeOrderServiceObjectTest {
         List<ExchangeOrderSummaryDTO> actual = exchangeOrderServiceObjectStub.getExchangeOrderSummaryInfo(flowIdList);
 
         Assert.assertNotNull(actual);
-        Assert.assertEquals("P111", actual.get(0).getBizCode());
+        Assert.assertEquals(bizCode, actual.get(0).getBizCode());
     }
 
 
