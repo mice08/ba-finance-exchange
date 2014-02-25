@@ -121,14 +121,6 @@ public interface ExchangeOrderDao extends GenericDao {
     int updateExchangeOrderToRefund(@DAOParam("refundDTO") RefundDTO refundDTO, @DAOParam("preStatus") int preStatus, @DAOParam("setStatus") int setStatus, @DAOParam("loginId") int loginId);
 
     /**
-     * 根据bizCode返回总金额
-     * @param bizCodeList
-     * @return
-     */
-    @DAOAction(action = DAOActionType.LOAD)
-    BigDecimal findExchangeOrderTotalAmountByBizCode(@DAOParam("bizCodeList") List<String> bizCodeList);
-
-    /**
      * 根据bizCode返回付款单
      * @param bizCodeList
      * @return

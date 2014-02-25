@@ -1,7 +1,8 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
+import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import org.junit.Assert;
@@ -65,17 +66,6 @@ public class ExchangeOrderDaoTest {
     }
 
     @Test
-    public void testFindExchangeOrderTotalAmountByBizCode() {
-        List<String> stringList = new ArrayList<String>();
-        String str = "111";
-        String str1 = "222";
-        stringList.add(str);
-        stringList.add(str1);
-        BigDecimal totalAmount = exchangeOrderDao.findExchangeOrderTotalAmountByBizCode(stringList);
-        System.out.println(totalAmount);
-    }
-
-    @Test
     public void testUpdateExchangeOrderToRefund() {
         RefundDTO refundDTO1 = new RefundDTO();
         refundDTO1.setRefundId("111");
@@ -99,13 +89,11 @@ public class ExchangeOrderDaoTest {
     }
 
     @Test
-    public void testLoadExchangeOrderSummaryDataByShopFundAccountFlowId(){
-        List<Integer> flowIdList = new ArrayList<Integer>();
-        flowIdList.add(11194);
-        List<ExchangeOrderSummaryData> actual = exchangeOrderDao.findExchangeOrderSummaryDataListByFlowIdList(flowIdList);
-
-        Assert.assertNotNull(actual);
-        Assert.assertEquals("P11194", actual.get(0).getBizCode());
+    public void testFindExchangeOrderDataList() {
+        ExchangeOrderSearchBean searchBean = new ExchangeOrderSearchBean();
+        searchBean.setBizCode("P11194");
+        List<ExchangeOrderDisplayData> exchangeOrderDataList= exchangeOrderDao.findExchangeOrderList(searchBean);
+        Assert.assertEquals(1,exchangeOrderDataList.size());
     }
 
 

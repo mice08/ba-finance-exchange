@@ -159,8 +159,8 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         for (RefundDTO item : refundDTOList) {
             bizCodeList.add(item.getRefundId());
         }
-
-        RefundResultDTO refundResultDTO = checkExchangeOrderStatus(bizCodeList);
+        List<ExchangeOrderData> exchangeOrderDataList = findExchangeOrderDataByRefundId(bizCodeList);
+        RefundResultDTO refundResultDTO = checkExchangeOrderStatus(bizCodeList,exchangeOrderDataList);
 
         if (!refundResultDTO.getRefundFailedMap().isEmpty()) {
             return refundResultDTO;
@@ -169,8 +169,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         updateExchangeOrderToRefund(refundDTOList, loginId);
 
         try {
-            refundResultDTO.setRefundTotalAmount(findExchangeOrderTotalAmountByRefundId(bizCodeList));
-            sendMessage(loginId, bizCodeList);
+            sendMessage(loginId, exchangeOrderDataList);
         } catch (Exception e) {
             LogUtils.log(monitorLogger, startTime, "refundExchangeOrder", Level.ERROR, "RefundIDs:" + bizCodeList.toString(), e);
         }
@@ -199,9 +198,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         return summaryDTOList;
     }
 
-    private void sendMessage(int loginId, List<String> bizCodeList) throws Exception {
-        List<ExchangeOrderData> exchangeOrderDataList;
-        exchangeOrderDataList = findExchangeOrderDataByRefundId(bizCodeList);
+    private void sendMessage(int loginId, List<ExchangeOrderData> exchangeOrderDataList) throws Exception {
         for (ExchangeOrderData data : exchangeOrderDataList) {
             ExchangeOrderDTO exchangeOrderDTO = ConvertUtils.copy(data, ExchangeOrderDTO.class);
             exchangeOrderDTO.setLoginId(loginId);
@@ -209,10 +206,9 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         }
     }
 
-    private RefundResultDTO checkExchangeOrderStatus(List<String> bizCodeList) {
+    private RefundResultDTO checkExchangeOrderStatus(List<String> bizCodeList,List<ExchangeOrderData> exchangeOrderDataList) {
         RefundResultDTO refundResultDTO = new RefundResultDTO();
 
-        List<ExchangeOrderData> exchangeOrderDataList = findExchangeOrderDataByRefundId(bizCodeList);
         Map<String, Integer> bizCodeMap = new HashMap<String, Integer>();
         Map<String, RefundFailedReason> refundFailedMap = new HashMap<String, RefundFailedReason>();
         for (ExchangeOrderData data : exchangeOrderDataList) {
@@ -227,10 +223,11 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
                 }
             }
         } else {
-            for (Map.Entry<String, Integer> entry : bizCodeMap.entrySet()) {
-                int status = entry.getValue();
-                if (status != ExchangeOrderStatus.SUCCESS.value()) {
-                    refundFailedMap.put(entry.getKey(), RefundFailedReason.STATUS_ERROR);
+            for (ExchangeOrderData data : exchangeOrderDataList) {
+                if (data.getStatus() == ExchangeOrderStatus.SUCCESS.value()) {
+                    refundResultDTO.setRefundTotalAmount(refundResultDTO.getRefundTotalAmount().add(data.getOrderAmount()));
+                } else {
+                     refundFailedMap.put(data.getBizCode(),RefundFailedReason.STATUS_ERROR);
                 }
             }
         }
@@ -240,10 +237,6 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
     private List<ExchangeOrderData> findExchangeOrderDataByRefundId(List<String> bizCodeList) {
         return exchangeOrderDao.findExchangeOrderByBizCode(bizCodeList);
-    }
-
-    private BigDecimal findExchangeOrderTotalAmountByRefundId(List<String> bizCodeList) {
-        return exchangeOrderDao.findExchangeOrderTotalAmountByBizCode(bizCodeList);
     }
 
     public boolean updateExchangeOrderToRefund(List<RefundDTO> refundDTOList, int loginId) throws Exception {
