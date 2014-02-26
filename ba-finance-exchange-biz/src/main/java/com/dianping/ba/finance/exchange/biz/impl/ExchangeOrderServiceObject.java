@@ -166,6 +166,9 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
         updateExchangeOrderToRefund(refundDTOList, loginId);
 
+        for(ExchangeOrderData data: exchangeOrderDataList){
+            data.setStatus(ExchangeOrderStatus.FAIL.value());
+        }
         try {
             sendMessage(loginId, exchangeOrderDataList);
         } catch (Exception e) {
