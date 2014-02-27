@@ -71,19 +71,18 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     @Retry
     public PageModel paginateExchangeOrderList(ExchangeOrderSearchBean searchBean, int page, int pageSize) {
         long startTime = System.currentTimeMillis();
-        return null;
-//        try {
-//            return exchangeOrderDao.paginateExchangeOrderList(searchBean, page, pageSize);
-//        } catch (Exception e) {
-//            try {
-//                LogUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, JsonUtils.toStr(searchBean), e);
-//                return new PageModel();
-//            } catch (Exception ex) {
-//                //ignore
-//            }
-//            LogUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, ObjectUtils.toString(searchBean), e);
-//        }
-//        return new PageModel();
+        try {
+            return exchangeOrderDao.paginateExchangeOrderList(searchBean, page, pageSize);
+        } catch (Exception e) {
+            try {
+                LogUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, JsonUtils.toStr(searchBean), e);
+                return new PageModel();
+            } catch (Exception ex) {
+                //ignore
+            }
+            LogUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, ObjectUtils.toString(searchBean), e);
+        }
+        return new PageModel();
     }
 
     @Override

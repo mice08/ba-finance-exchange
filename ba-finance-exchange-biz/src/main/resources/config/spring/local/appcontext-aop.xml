@@ -14,6 +14,6 @@
 
     <bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator" />
 
-    <!--<bean id="logAspect" class="com.dianping.ba.finance.exchange.biz.aspect.LogAspect"></bean>-->
+    <bean id="logAspect" class="com.dianping.ba.finance.exchange.biz.aspect.LogAspect"></bean>
     <bean id="retryAspect" class="com.dianping.ba.finance.exchange.biz.aspect.RetryAspect"></bean>
 </beans>
