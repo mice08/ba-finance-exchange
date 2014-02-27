@@ -5,13 +5,15 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
+import com.dianping.ba.finance.exchange.api.datas.EOAndFlowIdSummaryData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
-import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
-import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
-import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
+import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData;
+import com.dianping.ba.finance.exchange.api.dtos.*;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
+import com.dianping.ba.finance.exchange.api.enums.FlowType;
 import com.dianping.ba.finance.exchange.api.enums.RefundFailedReason;
+import com.dianping.ba.finance.exchange.api.enums.SourceType;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
@@ -166,12 +168,37 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
         updateExchangeOrderToRefund(refundDTOList, loginId);
 
+        for(ExchangeOrderData data: exchangeOrderDataList){
+            data.setStatus(ExchangeOrderStatus.FAIL.value());
+        }
         try {
             sendMessage(loginId, exchangeOrderDataList);
         } catch (Exception e) {
             LogUtils.log(monitorLogger, startTime, "refundExchangeOrder", Level.ERROR, "RefundIDs:" + bizCodeList.toString(), e);
         }
         return refundResultDTO;
+    }
+
+    @Override
+    public EOAndFlowIdSummaryDTO loadExchangeOrderDataAndPositiveFlow(int exchangeOrderId) throws Exception {
+        EOAndFlowIdSummaryData summaryData =  exchangeOrderDao.loadExchangeOrderAndPositiveFlow(exchangeOrderId,
+                                                                                                FlowType.IN.value(),
+                                                                                                SourceType.PaymentPlan.value());
+        EOAndFlowIdSummaryDTO summaryDTO = ConvertUtils.copy(summaryData, EOAndFlowIdSummaryDTO.class);
+        return summaryDTO;
+    }
+
+    @Override
+    public List<ExchangeOrderSummaryDTO> getExchangeOrderSummaryInfo(List<Integer> flowIdList) throws Exception {
+        List<ExchangeOrderSummaryDTO> summaryDTOList = new ArrayList<ExchangeOrderSummaryDTO>();
+        List<ExchangeOrderSummaryData> summaryDataList = exchangeOrderDao.findExchangeOrderSummaryDataListByFlowIdList(flowIdList);
+        if(summaryDataList == null){
+            return summaryDTOList;
+        }
+        for(ExchangeOrderSummaryData data: summaryDataList) {
+            summaryDTOList.add(ConvertUtils.copy(data, ExchangeOrderSummaryDTO.class));
+        }
+        return summaryDTOList;
     }
 
     private void sendMessage(int loginId, List<ExchangeOrderData> exchangeOrderDataList) throws Exception {
