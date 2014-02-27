@@ -14,6 +14,7 @@ import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.FlowType;
 import com.dianping.ba.finance.exchange.api.enums.RefundFailedReason;
 import com.dianping.ba.finance.exchange.api.enums.SourceType;
+import com.dianping.ba.finance.exchange.biz.annotation.Retry;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
@@ -67,20 +68,22 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
+    @Retry
     public PageModel paginateExchangeOrderList(ExchangeOrderSearchBean searchBean, int page, int pageSize) {
         long startTime = System.currentTimeMillis();
-        try {
-            return exchangeOrderDao.paginateExchangeOrderList(searchBean, page, pageSize);
-        } catch (Exception e) {
-            try {
-                LogUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, JsonUtils.toStr(searchBean), e);
-                return new PageModel();
-            } catch (Exception ex) {
-                //ignore
-            }
-            LogUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, ObjectUtils.toString(searchBean), e);
-        }
-        return new PageModel();
+        return null;
+//        try {
+//            return exchangeOrderDao.paginateExchangeOrderList(searchBean, page, pageSize);
+//        } catch (Exception e) {
+//            try {
+//                LogUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, JsonUtils.toStr(searchBean), e);
+//                return new PageModel();
+//            } catch (Exception ex) {
+//                //ignore
+//            }
+//            LogUtils.log(monitorLogger, startTime, "paginateExchangeOrderList", Level.ERROR, ObjectUtils.toString(searchBean), e);
+//        }
+//        return new PageModel();
     }
 
     @Override
