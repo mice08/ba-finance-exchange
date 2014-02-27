@@ -68,7 +68,6 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
-    @Retry
     public PageModel paginateExchangeOrderList(ExchangeOrderSearchBean searchBean, int page, int pageSize) {
         long startTime = System.currentTimeMillis();
         try {
