@@ -85,7 +85,7 @@ public class ExchangeOrderDaoTest {
         stringList.add(str1);
         List<ExchangeOrderData> exchangeOrderDataList = new ArrayList<ExchangeOrderData>();
         exchangeOrderDataList = exchangeOrderDao.findExchangeOrderByBizCode(stringList);
-        Assert.assertEquals(2,exchangeOrderDataList.size());
+        Assert.assertEquals(1,exchangeOrderDataList.size());
     }
 
     @Test
