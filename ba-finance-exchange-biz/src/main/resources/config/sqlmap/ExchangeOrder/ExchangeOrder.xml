@@ -41,6 +41,23 @@
         <result property="bizCode" column="BizCode"/>
     </resultMap>
 
+    <typeAlias alias="EOAndFlowIdSummaryData" type="com.dianping.ba.finance.exchange.api.datas.EOAndFlowIdSummaryData"/>
+    <resultMap id="eoAndFlowIdSummaryData" class="EOAndFlowIdSummaryData">
+        <result property="bizCode" column="BizCode"/>
+        <result property="orderAmount" column="OrderAmount"/>
+        <result property="status" column="Status"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="flowId" column="FlowId"/>
+    </resultMap>
+
+    <typeAlias alias="ExchangeOrderSummaryData" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData"/>
+    <resultMap id="exchangeOrderSummaryData" class="ExchangeOrderSummaryData">
+        <result property="orderAmount" column="OrderAmount"/>
+        <result property="status" column="Status"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="bizCode" column="BizCode"/>
+    </resultMap>
+
     <insert id="insertExchangeOrder" parameterClass="map">
         <![CDATA[
         	 insert into FS_ExchangeOrder
@@ -318,4 +335,34 @@
             </iterate>
         </isNotEmpty>
     </update>
+
+    <select id="loadExchangeOrderAndPositiveFlow" resultMap="eoAndFlowIdSummaryData" parameterClass="map">
+        SELECT
+               eo.BizCode,
+               eo.OrderAmount,
+               eo.Status,
+               eo.AddDate,
+               IFNULL(flow.FAFlowID, 0) AS FlowId
+        FROM   FS_ExchangeOrder eo
+               LEFT JOIN FS_ShopFundAccountFlow flow
+                      ON ( eo.ExchangeOrderID = flow.ExchangeOrderID
+                           AND flow.FlowType = #flowType#
+                           AND flow.SourceType = #sourceType# )
+        WHERE  eo.ExchangeOrderID = #exchangeOrderId#
+        ORDER  BY eo.AddDate DESC,
+                  eo.ExchangeOrderID ASC
+    </select>
+
+    <select id="findExchangeOrderSummaryDataListByFlowIdList" resultMap="exchangeOrderSummaryData" parameterClass="map">
+        SELECT OrderAmount,Status,AddDate,BizCode
+        FROM FS_ExchangeOrder
+        WHERE exchangeOrderId IN
+        (SELECT ExchangeOrderId
+        FROM FS_ShopFundAccountFlow
+        WHERE FAFlowID IN
+        <iterate open="(" close=")" conjunction="," property="flowIdList">
+            #flowIdList[]#
+        </iterate>
+        )
+    </select>
 </sqlMap>

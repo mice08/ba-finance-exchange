@@ -1,6 +1,5 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
-import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
@@ -86,7 +85,7 @@ public class ExchangeOrderDaoTest {
         stringList.add(str1);
         List<ExchangeOrderData> exchangeOrderDataList = new ArrayList<ExchangeOrderData>();
         exchangeOrderDataList = exchangeOrderDao.findExchangeOrderByBizCode(stringList);
-        Assert.assertEquals(2,exchangeOrderDataList.size());
+        Assert.assertEquals(1,exchangeOrderDataList.size());
     }
 
     @Test
