@@ -156,8 +156,10 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
             return new RefundResultDTO();
         }
         List<String> bizCodeList = new ArrayList<String>();
+        Map<String,String> refundDTOMap = new HashMap<String, String>();
         for (RefundDTO item : refundDTOList) {
             bizCodeList.add(item.getRefundId());
+            refundDTOMap.put(item.getRefundId(),item.getRefundReason());
         }
         List<ExchangeOrderData> exchangeOrderDataList = findExchangeOrderDataByRefundId(bizCodeList);
         RefundResultDTO refundResultDTO = checkExchangeOrderStatus(bizCodeList,exchangeOrderDataList);
@@ -170,6 +172,8 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
         for(ExchangeOrderData data: exchangeOrderDataList){
             data.setStatus(ExchangeOrderStatus.FAIL.value());
+            String memo = refundDTOMap.get(data.getBizCode());
+            data.setMemo(memo);
         }
         try {
             sendMessage(loginId, exchangeOrderDataList);
@@ -182,8 +186,8 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     @Override
     public EOAndFlowIdSummaryDTO loadExchangeOrderDataAndPositiveFlow(int exchangeOrderId) throws Exception {
         EOAndFlowIdSummaryData summaryData =  exchangeOrderDao.loadExchangeOrderAndPositiveFlow(exchangeOrderId,
-                                                                                                FlowType.IN.value(),
-                                                                                                SourceType.PaymentPlan.value());
+                FlowType.IN.value(),
+                SourceType.PaymentPlan.value());
         EOAndFlowIdSummaryDTO summaryDTO = ConvertUtils.copy(summaryData, EOAndFlowIdSummaryDTO.class);
         return summaryDTO;
     }
