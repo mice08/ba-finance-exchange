@@ -17,8 +17,7 @@ public class BizUtilsTest {
     @Test
     public void testCreateSequence(){
         String actual = BizUtils.createSequence("PP", "0001");
-
-        Assert.assertEquals("PP|0001", actual);
+        Assert.assertEquals("PP|0001", actual.substring(0,7));     //ignore 当日
     }
 
 }

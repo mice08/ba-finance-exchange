@@ -41,6 +41,23 @@
         <result property="bizCode" column="BizCode"/>
     </resultMap>
 
+    <typeAlias alias="EOAndFlowIdSummaryData" type="com.dianping.ba.finance.exchange.api.datas.EOAndFlowIdSummaryData"/>
+    <resultMap id="eoAndFlowIdSummaryData" class="EOAndFlowIdSummaryData">
+        <result property="bizCode" column="BizCode"/>
+        <result property="orderAmount" column="OrderAmount"/>
+        <result property="status" column="Status"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="flowId" column="FlowId"/>
+    </resultMap>
+
+    <typeAlias alias="ExchangeOrderSummaryData" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData"/>
+    <resultMap id="exchangeOrderSummaryData" class="ExchangeOrderSummaryData">
+        <result property="orderAmount" column="OrderAmount"/>
+        <result property="status" column="Status"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="bizCode" column="BizCode"/>
+    </resultMap>
+
     <insert id="insertExchangeOrder" parameterClass="map">
         <![CDATA[
         	 insert into FS_ExchangeOrder
@@ -87,6 +104,16 @@
         WHERE ExchangeOrderID = #exchangeOrderId# AND Status = #preStatus#
     </update>
 
+    <update id="updateExchangeOrderToRefund" parameterClass="hashMap">
+        UPDATE FS_ExchangeOrder
+        SET LastUpdateLoginID = #loginId#,
+        Status = #setStatus#,
+        Memo = #refundDTO.refundReason#,
+        LastUpdateDate = NOW()
+        WHERE BizCode = #refundDTO.refundId#
+        AND Status = #preStatus#
+    </update>
+
     <select id="loadExchangeOrderByOrderId" parameterClass="map" resultMap="exchangeOrder">
         <![CDATA[
         select ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,BankProvince,
@@ -120,6 +147,7 @@
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
         eo.ExchangeOrderID = flow.ExchangeOrderID
         AND flow.FlowType = 1
+        AND flow.SourceType = 1
         )
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         <dynamic prepend="WHERE">
@@ -152,6 +180,7 @@
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
         eo.ExchangeOrderID = flow.ExchangeOrderID
         AND flow.FlowType = 1
+        AND flow.SourceType = 1
         )
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         <dynamic prepend="WHERE">
@@ -201,6 +230,16 @@
         </dynamic>
     </select>
 
+    <select id="findExchangeOrderByBizCode" resultMap="exchangeOrder" parameterClass="map">
+        SELECT ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,BankProvince,
+        BankCity,Status,AddDate,OrderDate,LastUpdateDate,Memo,BizCode,AddLoginID,LastUpdateLoginID
+        FROM FS_ExchangeOrder
+        WHERE BizCode IN
+        <iterate open="(" close=")" conjunction="," property="bizCodeList">
+            #bizCodeList[]#
+        </iterate>
+    </select>
+
     <select id="findExchangeOrderList" resultMap="exchangeOrderDisplayData" parameterClass="map">
         SELECT
         eo.ExchangeOrderID,
@@ -225,6 +264,7 @@
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
         eo.ExchangeOrderID = flow.ExchangeOrderID
         AND flow.FlowType = 1
+        AND flow.SourceType = 1
         )
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         <dynamic prepend="WHERE">
@@ -257,6 +297,7 @@
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
         eo.ExchangeOrderID = flow.ExchangeOrderID
         AND flow.FlowType = 1
+        AND flow.SourceType = 1
         )
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         <dynamic prepend="WHERE">
@@ -294,4 +335,34 @@
             </iterate>
         </isNotEmpty>
     </update>
+
+    <select id="loadExchangeOrderAndPositiveFlow" resultMap="eoAndFlowIdSummaryData" parameterClass="map">
+        SELECT
+               eo.BizCode,
+               eo.OrderAmount,
+               eo.Status,
+               eo.AddDate,
+               IFNULL(flow.FAFlowID, 0) AS FlowId
+        FROM   FS_ExchangeOrder eo
+               LEFT JOIN FS_ShopFundAccountFlow flow
+                      ON ( eo.ExchangeOrderID = flow.ExchangeOrderID
+                           AND flow.FlowType = #flowType#
+                           AND flow.SourceType = #sourceType# )
+        WHERE  eo.ExchangeOrderID = #exchangeOrderId#
+        ORDER  BY eo.AddDate DESC,
+                  eo.ExchangeOrderID ASC
+    </select>
+
+    <select id="findExchangeOrderSummaryDataListByFlowIdList" resultMap="exchangeOrderSummaryData" parameterClass="map">
+        SELECT OrderAmount,Status,AddDate,BizCode
+        FROM FS_ExchangeOrder
+        WHERE exchangeOrderId IN
+        (SELECT ExchangeOrderId
+        FROM FS_ShopFundAccountFlow
+        WHERE FAFlowID IN
+        <iterate open="(" close=")" conjunction="," property="flowIdList">
+            #flowIdList[]#
+        </iterate>
+        )
+    </select>
 </sqlMap>
