@@ -1,7 +1,11 @@
 package com.dianping.ba.finance.exchange.biz.aspect;
 
+import com.dianping.avatar.log.AvatarLogger;
+import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.exchange.biz.utils.LogUtils;
 import com.dianping.core.type.PageModel;
 import com.site.lookup.util.StringUtils;
+import org.apache.log4j.Level;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -24,8 +28,11 @@ import java.util.Collection;
  * To change this template use File | Settings | File Templates.
  */
 public class RetryAspect {
+    private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.service.monitor");
+
+
     @Around(value="@annotation(com.dianping.ba.finance.exchange.biz.annotation.Retry)")
-    public Object afterThrowingRetry(ProceedingJoinPoint proceedingJoinPoint)  {
+    public Object afterThrowingRetry(ProceedingJoinPoint proceedingJoinPoint) throws Exception {
         Object rt;
         int retryTimes=3;
         for(int i=1;i<=retryTimes;i++){
@@ -35,23 +42,16 @@ public class RetryAspect {
                     return rt;
                 }
             } catch (Throwable throwable) {
-                throwable.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                LogUtils.log(monitorLogger, System.currentTimeMillis(), "retry", Level.ERROR, proceedingJoinPoint.getArgs().toString(), throwable);
             }
         }
         return getReturnObject(proceedingJoinPoint);
     }
 
-    private Object getReturnObject(ProceedingJoinPoint proceedingJoinPoint)  {
+    private Object getReturnObject(ProceedingJoinPoint proceedingJoinPoint) throws Exception {
         Object rt=null;
         MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
-        try {
-            rt = signature.getReturnType().newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return rt;
+        return signature.getReturnType().newInstance();
     }
 
     private Object process(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
