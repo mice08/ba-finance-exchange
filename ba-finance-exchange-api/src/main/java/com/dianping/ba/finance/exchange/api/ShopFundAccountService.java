@@ -57,4 +57,12 @@ public interface ShopFundAccountService {
      * @return
      */
     int createShopFundAccountFlow(ShopFundAccountFlowDTO shopFundAccountFlowDTO);
+
+    /**
+     * 为退票的付款单插入正负向流水
+     *
+     * @param exchangeOrderDTO
+     * @return
+     */
+    boolean insertShopFundAccountFlowForRefundExchangeOrder(ExchangeOrderDTO exchangeOrderDTO);
 }
