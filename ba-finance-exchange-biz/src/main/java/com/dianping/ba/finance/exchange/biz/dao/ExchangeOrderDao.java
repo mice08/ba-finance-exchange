@@ -118,7 +118,7 @@ public interface ExchangeOrderDao extends GenericDao {
      * @return
      */
     @DAOAction(action = DAOActionType.UPDATE)
-    int updateExchangeOrderToRefund(@DAOParam("refundDTO") RefundDTO refundDTO, @DAOParam("preStatus") int preStatus, @DAOParam("setStatus") int setStatus, @DAOParam("loginId") int loginId);
+    int updateExchangeOrderToRefund(@DAOParam("refundDTO") RefundDTO refundDTO, @DAOParam("preStatus") int preStatus, @DAOParam("setStatus") int setStatus,@DAOParam("todayDate") Date todayDate, @DAOParam("loginId") int loginId);
 
     /**
      * 根据bizCode返回付款单

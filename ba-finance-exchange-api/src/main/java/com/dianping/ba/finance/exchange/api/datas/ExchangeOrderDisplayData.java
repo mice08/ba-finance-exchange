@@ -44,6 +44,16 @@ public class ExchangeOrderDisplayData implements Serializable {
 
     private String bizCode;
 
+    private Date lastUpdateDate;
+
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
+
     public Date getOrderDate() {
         return orderDate;
     }

@@ -277,7 +277,7 @@ public class ExchangeOrderServiceObjectTest {
         exchangeOrderData.setOrderAmount(BigDecimal.TEN);
         exchangeOrderDataList.add(exchangeOrderData);
 
-        when(exchangeOrderDaoMock.updateExchangeOrderToRefund(any(RefundDTO.class), anyInt(), anyInt(), anyInt())).thenReturn(1);
+        when(exchangeOrderDaoMock.updateExchangeOrderToRefund(any(RefundDTO.class), anyInt(), anyInt(),any(Date.class), anyInt())).thenReturn(1);
         when(exchangeOrderDaoMock.findExchangeOrderByBizCode(anyList())).thenReturn(exchangeOrderDataList);
         RefundResultDTO actual = exchangeOrderServiceObjectStub.refundExchangeOrder(refundDTOList, loginId);
         Assert.assertEquals(2, actual.getRefundFailedMap().size());
@@ -302,7 +302,7 @@ public class ExchangeOrderServiceObjectTest {
         exchangeOrderData.setOrderAmount(BigDecimal.TEN);
         exchangeOrderDataList.add(exchangeOrderData);
 
-        when(exchangeOrderDaoMock.updateExchangeOrderToRefund(any(RefundDTO.class), anyInt(), anyInt(), anyInt())).thenReturn(1);
+        when(exchangeOrderDaoMock.updateExchangeOrderToRefund(any(RefundDTO.class), anyInt(), anyInt(),any(Date.class), anyInt())).thenReturn(1);
         when(exchangeOrderDaoMock.findExchangeOrderByBizCode(anyList())).thenReturn(exchangeOrderDataList);
         RefundResultDTO actual = exchangeOrderServiceObjectStub.refundExchangeOrder(refundDTOList, loginId);
         Assert.assertEquals(1, actual.getRefundFailedMap().size());
@@ -350,7 +350,7 @@ public class ExchangeOrderServiceObjectTest {
         exchangeOrderData2.setOrderAmount(BigDecimal.TEN);
         exchangeOrderDataList.add(exchangeOrderData2);
 
-        when(exchangeOrderDaoMock.updateExchangeOrderToRefund(any(RefundDTO.class), anyInt(), anyInt(), anyInt())).thenReturn(1);
+        when(exchangeOrderDaoMock.updateExchangeOrderToRefund(any(RefundDTO.class), anyInt(), anyInt(),any(Date.class), anyInt())).thenReturn(1);
         when(exchangeOrderDaoMock.findExchangeOrderByBizCode(anyList())).thenReturn(exchangeOrderDataList);
         RefundResultDTO actual = exchangeOrderServiceObjectStub.refundExchangeOrder(refundDTOList, loginId);
         Assert.assertEquals(0, actual.getRefundFailedMap().size());
