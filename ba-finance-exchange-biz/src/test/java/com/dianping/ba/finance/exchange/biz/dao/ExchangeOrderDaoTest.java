@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -72,8 +73,9 @@ public class ExchangeOrderDaoTest {
         refundDTO1.setRefundReason("test");
         int preStatus = ExchangeOrderStatus.SUCCESS.value();
         int setStatus = ExchangeOrderStatus.FAIL.value();
+        Date todayDate = new Date();
         int loginId = -12000;
-        exchangeOrderDao.updateExchangeOrderToRefund(refundDTO1, preStatus, setStatus, loginId);
+        exchangeOrderDao.updateExchangeOrderToRefund(refundDTO1, preStatus, setStatus,todayDate, loginId);
     }
 
     @Test

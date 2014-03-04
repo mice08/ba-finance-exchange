@@ -249,9 +249,10 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     public boolean updateExchangeOrderToRefund(List<RefundDTO> refundDTOList, int loginId) throws Exception {
         int preStatus = ExchangeOrderStatus.SUCCESS.value();
         int setStatus = ExchangeOrderStatus.FAIL.value();
+        Date todayDate = new Date();
 
         for (RefundDTO item : refundDTOList) {
-            int affectedRows = exchangeOrderDao.updateExchangeOrderToRefund(item, preStatus, setStatus, loginId);
+            int affectedRows = exchangeOrderDao.updateExchangeOrderToRefund(item, preStatus, setStatus,todayDate, loginId);
             if (affectedRows <= 0) {
                 throw new Exception("System is abnormal");
             }
