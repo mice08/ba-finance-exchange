@@ -14,6 +14,7 @@ import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.FlowType;
 import com.dianping.ba.finance.exchange.api.enums.RefundFailedReason;
 import com.dianping.ba.finance.exchange.api.enums.SourceType;
+import com.dianping.ba.finance.exchange.biz.annotation.Retry;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
@@ -249,9 +250,10 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     public boolean updateExchangeOrderToRefund(List<RefundDTO> refundDTOList, int loginId) throws Exception {
         int preStatus = ExchangeOrderStatus.SUCCESS.value();
         int setStatus = ExchangeOrderStatus.FAIL.value();
+        Date todayDate = new Date();
 
         for (RefundDTO item : refundDTOList) {
-            int affectedRows = exchangeOrderDao.updateExchangeOrderToRefund(item, preStatus, setStatus, loginId);
+            int affectedRows = exchangeOrderDao.updateExchangeOrderToRefund(item, preStatus, setStatus,todayDate, loginId);
             if (affectedRows <= 0) {
                 throw new Exception("System is abnormal");
             }
