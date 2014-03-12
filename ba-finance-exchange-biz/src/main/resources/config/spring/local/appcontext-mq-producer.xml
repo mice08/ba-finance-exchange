@@ -23,7 +23,7 @@
     <bean id="destination" class="com.dianping.swallow.common.message.Destination"
           factory-method="topic">
           <constructor-arg>
-            <value>${ba-finance-exchange-service.orderStatus.notice.topic.name}</value>
+            <value>${ba-finance-exchange-service.order.payresult.notice.topic.name}</value>
           </constructor-arg>
     </bean>
     <!--生产者的配置类 ProducerConfig -->
