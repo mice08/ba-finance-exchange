@@ -6,7 +6,7 @@
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
     <!-- 引用该bean时，类型为java.util.concurrent.ThreadPoolExecutor，而不是class中的ThreadPoolExecutorFactoryBean-->
-    <bean id="threadPoolService" class="org.springframework.scheduling.concurrent.ThreadPoolExecutorFactoryBean">
+    <bean id="threadPoolExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolExecutorFactoryBean">
         <property name="corePoolSize" value="${ba-finance-exchange-service.concurrent.coreSize}" />
         <property name="maxPoolSize" value="${ba-finance-exchange-service.concurrent.maxSize}" />
         <property name="keepAliveSeconds" value="${ba-finance-exchange-service.concurrent.keepAliveSeconds}" />
