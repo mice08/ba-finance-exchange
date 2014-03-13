@@ -14,6 +14,7 @@
     <bean id="exchangeOrderService" class="com.dianping.ba.finance.exchange.biz.impl.ExchangeOrderServiceObject">
         <property name="exchangeOrderDao" ref="exchangeOrderDao"/>
         <property name="exchangeOrderStatusChangeNotify" ref="exchangeOrderStatusChangeNotify"/>
+        <property name="threadPoolExecutor" ref="threadPooExecutor"/>
     </bean>
 
     <bean id="shopFundAccountService" class="com.dianping.ba.finance.exchange.biz.impl.ShopFundAccountServiceObject">
