@@ -36,7 +36,6 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.service.monitor.ExchangeOrderServiceObject");
     private ExchangeOrderDao exchangeOrderDao;
     private ExchangeOrderStatusChangeNotify exchangeOrderStatusChangeNotify;
-    private ThreadPoolExecutor threadPoolExecutor;
 
     @Override
     public int insertExchangeOrder(ExchangeOrderData exchangeOrderData) {
@@ -58,7 +57,7 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
                 if(exchangeOrderData.getStatus() == ExchangeOrderStatus.SUCCESS.value()){
                     final ExchangeOrderDTO exchangeOrderDTO = ConvertUtils.copy(exchangeOrderData, ExchangeOrderDTO.class);
                     exchangeOrderDTO.setLoginId(loginId);
-                    asyncSendMessage(exchangeOrderDTO);
+                    exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
                 }
             }
             return affectedRows;
@@ -181,16 +180,6 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
         return summaryDTOList;
     }
 
-    private void asyncSendMessage(final ExchangeOrderDTO exchangeOrderDTO){
-        threadPoolExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
-            }
-        });
-
-    }
-
     private void sendMessage(int loginId, List<ExchangeOrderData> exchangeOrderDataList) throws Exception {
         for (ExchangeOrderData data : exchangeOrderDataList) {
             ExchangeOrderDTO exchangeOrderDTO = ConvertUtils.copy(data, ExchangeOrderDTO.class);
@@ -256,10 +245,6 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
     public void setExchangeOrderStatusChangeNotify(ExchangeOrderStatusChangeNotify exchangeOrderStatusChangeNotify) {
         this.exchangeOrderStatusChangeNotify = exchangeOrderStatusChangeNotify;
-    }
-
-    public void setThreadPoolExecutor(ThreadPoolExecutor threadPoolExecutor) {
-        this.threadPoolExecutor = threadPoolExecutor;
     }
 
 }
