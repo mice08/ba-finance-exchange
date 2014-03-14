@@ -37,7 +37,7 @@ public interface ExchangeOrderService {
      * @param loginId
      * @return 更新结果集
      */
-    GenericResult<Integer> updateExchangeOrderToSuccess(List<Integer> orderIds, int loginId);
+    int updateExchangeOrderToSuccess(List<Integer> orderIds, int loginId);
 
     /**
      * 分页获取支付订单
