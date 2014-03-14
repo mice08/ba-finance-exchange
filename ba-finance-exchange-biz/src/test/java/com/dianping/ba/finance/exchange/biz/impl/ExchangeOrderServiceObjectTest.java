@@ -35,18 +35,15 @@ public class ExchangeOrderServiceObjectTest {
     private ExchangeOrderDao exchangeOrderDaoMock;
     private ExchangeOrderStatusChangeNotify exchangeOrderStatusChangeNotifyMock;
     private ExchangeOrderServiceObject exchangeOrderServiceObjectStub;
-    private ThreadPoolExecutor threadPoolExecutorMock;
 
     @Before
     public void runBeforeTest() {
         exchangeOrderDaoMock = mock(ExchangeOrderDao.class);
         exchangeOrderStatusChangeNotifyMock = mock(ExchangeOrderStatusChangeNotify.class);
-        threadPoolExecutorMock = mock(ThreadPoolExecutor.class);
 
         exchangeOrderServiceObjectStub = new ExchangeOrderServiceObject();
         exchangeOrderServiceObjectStub.setExchangeOrderDao(exchangeOrderDaoMock);
         exchangeOrderServiceObjectStub.setExchangeOrderStatusChangeNotify(exchangeOrderStatusChangeNotifyMock);
-        exchangeOrderServiceObjectStub.setThreadPoolExecutor(threadPoolExecutorMock);
 
     }
 
