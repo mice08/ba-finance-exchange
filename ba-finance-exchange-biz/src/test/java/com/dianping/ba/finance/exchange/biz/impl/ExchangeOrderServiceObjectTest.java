@@ -1,7 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
-import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.*;
 import com.dianping.ba.finance.exchange.api.dtos.EOAndFlowIdSummaryDTO;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderSummaryDTO;
@@ -19,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
@@ -50,32 +50,29 @@ public class ExchangeOrderServiceObjectTest {
     @Test
     public void testUpdateExchangeOrderSuccess() {
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
-
+        exchangeOrderData.setStatus(ExchangeOrderStatus.SUCCESS.getExchangeOrderStatus());
+        List<ExchangeOrderData> exchangeOrderDataList = new ArrayList<ExchangeOrderData>();
+        exchangeOrderDataList.add(exchangeOrderData);
         List<Integer> orderIds = new ArrayList<Integer>();
         orderIds.add(1);
         orderIds.add(2);
         orderIds.add(3);
 
-        when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt(), anyInt(), anyInt())).thenReturn(1);
+        when(exchangeOrderDaoMock.findExchangeOrderListByOrderIdList(anyList())).thenReturn(exchangeOrderDataList);
+        when(exchangeOrderDaoMock.updateExchangeOrderDataByOrderIdList(anyList(), any(Date.class), anyInt(), anyInt(), anyInt())).thenReturn(3);
 
-        GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds, 1);
+        int actual = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds, 1);
 
-        Assert.assertEquals(3, result.getSuccessList().size());
-        Assert.assertEquals(0, result.getFailList().size());
-        List<Integer> actualIds = result.getSuccessList();
-        Assert.assertArrayEquals(orderIds.toArray(new Integer[3]), actualIds.toArray(new Integer[3]));
+        Assert.assertEquals(3, actual);
 
     }
 
     @Test
     public void testUpdateExchangeOrderFailWhenOrderIdInvalid() {
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeOrderStatus.PENDING.getExchangeOrderStatus());
-
-        ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
-        shopFundAccountFlowData.setFundAccountId(1);
+        exchangeOrderData.setStatus(ExchangeOrderStatus.SUCCESS.getExchangeOrderStatus());
+        List<ExchangeOrderData> exchangeOrderDataList = new ArrayList<ExchangeOrderData>();
+        exchangeOrderDataList.add(exchangeOrderData);
 
         List<Integer> orderIds = new ArrayList<Integer>();
         orderIds.add(-2);
@@ -83,15 +80,12 @@ public class ExchangeOrderServiceObjectTest {
         orderIds.add(2);
         orderIds.add(3);
 
-        when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt(), anyInt(), anyInt())).thenReturn(1);
+        when(exchangeOrderDaoMock.findExchangeOrderListByOrderIdList(anyList())).thenReturn(exchangeOrderDataList);
+        when(exchangeOrderDaoMock.updateExchangeOrderDataByOrderIdList(anyList(), any(Date.class), anyInt(), anyInt(), anyInt())).thenReturn(2);
 
-        GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds, 1);
+        int actual = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds, 1);
 
-        Assert.assertEquals(2, result.getFailList().size());
-
-        Assert.assertEquals(2, result.getSuccessList().size());
-        Assert.assertTrue(result.getSuccessList().get(0) > 0);
+        Assert.assertEquals(2, actual);
 
     }
 
@@ -99,67 +93,49 @@ public class ExchangeOrderServiceObjectTest {
     public void testUpdateExchangeOrderSuccessWhenExchangeTypeIsSuccess() {
         ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
         exchangeOrderData.setStatus(ExchangeOrderStatus.SUCCESS.getExchangeOrderStatus());
-
-        ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
-        shopFundAccountFlowData.setFundAccountId(1);
+        List<ExchangeOrderData> exchangeOrderDataList = new ArrayList<ExchangeOrderData>();
+        exchangeOrderDataList.add(exchangeOrderData);
 
         List<Integer> orderIds = new ArrayList<Integer>();
         orderIds.add(1);
         orderIds.add(2);
         orderIds.add(3);
 
-        when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
+        when(exchangeOrderDaoMock.updateExchangeOrderDataByOrderIdList(anyList(), any(Date.class), anyInt(), anyInt(), anyInt())).thenReturn(0);
+        when(exchangeOrderDaoMock.findExchangeOrderListByOrderIdList(anyList())).thenReturn(exchangeOrderDataList);
 
-        GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds, 1);
+        int actual = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds, 1);
 
-        Assert.assertEquals(0, result.getSuccessList().size());
-        Assert.assertEquals(3, result.getFailList().size());
-        List<Integer> actualIds = result.getFailList();
-        Assert.assertArrayEquals(orderIds.toArray(new Integer[3]), actualIds.toArray(new Integer[3]));
+        Assert.assertEquals(0, actual);
 
     }
 
     @Test
     public void testUpdateExchangeOrderFailed() {
-        ExchangeOrderData exchangeOrderData = new ExchangeOrderData();
-        exchangeOrderData.setStatus(ExchangeOrderStatus.INIT.getExchangeOrderStatus());
-
         List<Integer> orderIds = new ArrayList<Integer>();
         orderIds.add(1);
         orderIds.add(2);
         orderIds.add(3);
+        when(exchangeOrderDaoMock.updateExchangeOrderDataByOrderIdList(anyList(), any(Date.class), anyInt(), anyInt(), anyInt())).thenThrow(new RuntimeException("exception"));
 
-        when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(exchangeOrderData);
-        when(exchangeOrderDaoMock.updateExchangeOrderData(anyInt(), any(Date.class), anyInt(), anyInt(), anyInt())).thenReturn(-1);
+        int actual = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds, 1);
 
-        GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds, 1);
-
-        Assert.assertEquals(0, result.getSuccessList().size());
-        Assert.assertEquals(3, result.getFailList().size());
-        List<Integer> actualIds = result.getFailList();
-        Assert.assertArrayEquals(orderIds.toArray(new Integer[3]), actualIds.toArray(new Integer[3]));
+        Assert.assertEquals(0, actual);
 
     }
 
     @Test
     public void testUpdateExchangeOrderSuccessWhenExchangeOrderNotExist() {
-
-        ShopFundAccountFlowData shopFundAccountFlowData = new ShopFundAccountFlowData();
-        shopFundAccountFlowData.setFundAccountId(1);
-
         List<Integer> orderIds = new ArrayList<Integer>();
         orderIds.add(1);
         orderIds.add(2);
         orderIds.add(3);
 
-        when(exchangeOrderDaoMock.loadExchangeOrderByOrderId(anyInt())).thenReturn(null);
+        when(exchangeOrderDaoMock.findExchangeOrderListByOrderIdList(anyList())).thenReturn(new ArrayList<ExchangeOrderData>());
 
-        GenericResult<Integer> result = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds, 1);
+        int actual = exchangeOrderServiceObjectStub.updateExchangeOrderToSuccess(orderIds, 1);
 
-        Assert.assertEquals(0, result.getSuccessList().size());
-        Assert.assertEquals(3, result.getFailList().size());
-        List<Integer> actualIds = result.getFailList();
-        Assert.assertArrayEquals(orderIds.toArray(new Integer[3]), actualIds.toArray(new Integer[3]));
+        Assert.assertEquals(0, actual);
 
     }
 
@@ -277,7 +253,7 @@ public class ExchangeOrderServiceObjectTest {
         exchangeOrderData.setOrderAmount(BigDecimal.TEN);
         exchangeOrderDataList.add(exchangeOrderData);
 
-        when(exchangeOrderDaoMock.updateExchangeOrderToRefund(any(RefundDTO.class), anyInt(), anyInt(), anyInt())).thenReturn(1);
+        when(exchangeOrderDaoMock.updateExchangeOrderToRefund(any(RefundDTO.class), anyInt(), anyInt(),any(Date.class), anyInt())).thenReturn(1);
         when(exchangeOrderDaoMock.findExchangeOrderByBizCode(anyList())).thenReturn(exchangeOrderDataList);
         RefundResultDTO actual = exchangeOrderServiceObjectStub.refundExchangeOrder(refundDTOList, loginId);
         Assert.assertEquals(2, actual.getRefundFailedMap().size());
@@ -302,7 +278,7 @@ public class ExchangeOrderServiceObjectTest {
         exchangeOrderData.setOrderAmount(BigDecimal.TEN);
         exchangeOrderDataList.add(exchangeOrderData);
 
-        when(exchangeOrderDaoMock.updateExchangeOrderToRefund(any(RefundDTO.class), anyInt(), anyInt(), anyInt())).thenReturn(1);
+        when(exchangeOrderDaoMock.updateExchangeOrderToRefund(any(RefundDTO.class), anyInt(), anyInt(),any(Date.class), anyInt())).thenReturn(1);
         when(exchangeOrderDaoMock.findExchangeOrderByBizCode(anyList())).thenReturn(exchangeOrderDataList);
         RefundResultDTO actual = exchangeOrderServiceObjectStub.refundExchangeOrder(refundDTOList, loginId);
         Assert.assertEquals(1, actual.getRefundFailedMap().size());
@@ -350,7 +326,7 @@ public class ExchangeOrderServiceObjectTest {
         exchangeOrderData2.setOrderAmount(BigDecimal.TEN);
         exchangeOrderDataList.add(exchangeOrderData2);
 
-        when(exchangeOrderDaoMock.updateExchangeOrderToRefund(any(RefundDTO.class), anyInt(), anyInt(), anyInt())).thenReturn(1);
+        when(exchangeOrderDaoMock.updateExchangeOrderToRefund(any(RefundDTO.class), anyInt(), anyInt(),any(Date.class), anyInt())).thenReturn(1);
         when(exchangeOrderDaoMock.findExchangeOrderByBizCode(anyList())).thenReturn(exchangeOrderDataList);
         RefundResultDTO actual = exchangeOrderServiceObjectStub.refundExchangeOrder(refundDTOList, loginId);
         Assert.assertEquals(0, actual.getRefundFailedMap().size());

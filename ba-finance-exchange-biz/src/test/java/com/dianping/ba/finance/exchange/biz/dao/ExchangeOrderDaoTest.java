@@ -5,6 +5,7 @@ import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
+import com.dianping.ba.finance.exchange.biz.utils.DateUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -72,8 +74,9 @@ public class ExchangeOrderDaoTest {
         refundDTO1.setRefundReason("test");
         int preStatus = ExchangeOrderStatus.SUCCESS.value();
         int setStatus = ExchangeOrderStatus.FAIL.value();
+        Date todayDate = new Date();
         int loginId = -12000;
-        exchangeOrderDao.updateExchangeOrderToRefund(refundDTO1, preStatus, setStatus, loginId);
+        exchangeOrderDao.updateExchangeOrderToRefund(refundDTO1, preStatus, setStatus,todayDate, loginId);
     }
 
     @Test
@@ -94,6 +97,26 @@ public class ExchangeOrderDaoTest {
         searchBean.setBizCode("P11194");
         List<ExchangeOrderDisplayData> exchangeOrderDataList= exchangeOrderDao.findExchangeOrderList(searchBean);
         Assert.assertEquals(1,exchangeOrderDataList.size());
+    }
+
+    @Test
+    public void testUpdateExchangeOrderDataByOrderIdList() throws Exception{
+        List<Integer> orderIdList = new ArrayList<Integer>();
+        orderIdList.add(878701);
+        orderIdList.add(878702);
+        int actual = exchangeOrderDao.updateExchangeOrderDataByOrderIdList(orderIdList, DateUtils.removeTime(DateUtils.getTodayDate()),3,4,1);
+
+        Assert.assertEquals(2, actual);
+    }
+
+    @Test
+    public void testFindExchangeOrderListByIdList(){
+        List<Integer> orderIdList = new ArrayList<Integer>();
+        orderIdList.add(878701);
+        orderIdList.add(878702);
+        List<ExchangeOrderData> actual = exchangeOrderDao.findExchangeOrderListByOrderIdList(orderIdList);
+
+        Assert.assertEquals(2, actual.size());
     }
 
 

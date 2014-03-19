@@ -39,6 +39,19 @@ public interface ExchangeOrderDao extends GenericDao {
     int updateExchangeOrderData(@DAOParam("exchangeOrderId") int orderId, @DAOParam("orderDate") Date orderDate, @DAOParam("preStatus") int preStatus, @DAOParam("postStatus") int postStatus, @DAOParam("loginId") int loginId);
 
     /**
+     * 更新交易指令集状态和时间
+     *
+     * @param orderIdList   交易指令主键集
+     * @param orderDate    确认交易指令时间
+     * @param preStatus    更新前状态
+     * @param postStatus   更新状态
+     * @param loginId
+     * @return
+     */
+    @DAOAction(action = DAOActionType.UPDATE)
+    int updateExchangeOrderDataByOrderIdList(@DAOParam("orderIdList") List<Integer> orderIdList, @DAOParam("orderDate") Date orderDate, @DAOParam("preStatus") int preStatus, @DAOParam("postStatus") int postStatus, @DAOParam("loginId") int loginId);
+
+    /**
      * 获取对应交易指令主键的记录
      *
      * @param orderId 交易指令主键
@@ -46,6 +59,15 @@ public interface ExchangeOrderDao extends GenericDao {
      */
     @DAOAction(action = DAOActionType.LOAD)
     ExchangeOrderData loadExchangeOrderByOrderId(@DAOParam("exchangeOrderId") int orderId);
+
+    /**
+     * 获取对应交易指令主键集的记录
+     *
+     * @param orderIdList  交易指令主键集
+     * @return
+     */
+    @DAOAction(action = DAOActionType.QUERY)
+    List<ExchangeOrderData> findExchangeOrderListByOrderIdList(@DAOParam("orderIdList") List<Integer> orderIdList);
 
     /**
      * 插入交易指令
@@ -118,7 +140,7 @@ public interface ExchangeOrderDao extends GenericDao {
      * @return
      */
     @DAOAction(action = DAOActionType.UPDATE)
-    int updateExchangeOrderToRefund(@DAOParam("refundDTO") RefundDTO refundDTO, @DAOParam("preStatus") int preStatus, @DAOParam("setStatus") int setStatus, @DAOParam("loginId") int loginId);
+    int updateExchangeOrderToRefund(@DAOParam("refundDTO") RefundDTO refundDTO, @DAOParam("preStatus") int preStatus, @DAOParam("setStatus") int setStatus,@DAOParam("todayDate") Date todayDate, @DAOParam("loginId") int loginId);
 
     /**
      * 根据bizCode返回付款单
