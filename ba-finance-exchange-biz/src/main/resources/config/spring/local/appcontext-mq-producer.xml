@@ -28,7 +28,7 @@
     </bean>
     <!--生产者的配置类 ProducerConfig -->
     <bean id="producerConfig" class="com.dianping.swallow.producer.ProducerConfig">
-        <property name="mode" value="SYNC_MODE" /><!--同步模式(推荐)-->
+        <property name="mode" value="ASYNC_MODE" />
     </bean>
 
 </beans>
