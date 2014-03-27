@@ -10,10 +10,10 @@
         <result property="flowType" column="FlowType"/>
     </resultMap>
 
-    <select id="findShopFundAccountFlowData" parameterClass="map" resultClass="shopFundAccountFlowMonitorData">
+    <select id="findShopFundAccountFlowDatas" parameterClass="map" resultClass="shopFundAccountFlowMonitorData">
         SELECT af.FAFlowID AS FAFlowID,
         af.ExchangeOrderID AS ExchangeOrderID,
-        af.FlowType AS FlowType,
+        af.FlowType AS FlowType
         FROM FS_ShopFundAccountFlow af
         WHERE  af.ExchangeOrderID = #eoId#;
     </select>
