@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.api.dtos;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Date;
  * Time: 上午9:57
  * To change this template use File | Settings | File Templates.
  */
-public class EOMonitorDTO {
+public class EOMonitorDTO implements Serializable {
 
     private int exchangeOrderId;
 
