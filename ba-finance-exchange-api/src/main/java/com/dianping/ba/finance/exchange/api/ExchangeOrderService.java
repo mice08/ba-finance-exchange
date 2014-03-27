@@ -4,10 +4,7 @@ import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.GenericResult;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
-import com.dianping.ba.finance.exchange.api.dtos.EOAndFlowIdSummaryDTO;
-import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderSummaryDTO;
-import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
-import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
+import com.dianping.ba.finance.exchange.api.dtos.*;
 import com.dianping.core.type.PageModel;
 
 import java.math.BigDecimal;
@@ -105,4 +102,13 @@ public interface ExchangeOrderService {
      * @return
      */
     List<ExchangeOrderSummaryDTO> getExchangeOrderSummaryInfo(List<Integer> flowIdList) throws Exception;
+
+    /**
+     * 根据flowId获取EO
+     * @param flowIdList
+     * @return
+     * @throws Exception
+     */
+    List<EOMonitorDTO> findEOMonitorDataByFlowIdList(List<Integer> flowIdList) throws Exception;
+
 }

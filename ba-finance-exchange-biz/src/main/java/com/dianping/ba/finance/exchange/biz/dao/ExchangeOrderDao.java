@@ -5,10 +5,7 @@ import com.dianping.avatar.dao.annotation.DAOAction;
 import com.dianping.avatar.dao.annotation.DAOActionType;
 import com.dianping.avatar.dao.annotation.DAOParam;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
-import com.dianping.ba.finance.exchange.api.datas.EOAndFlowIdSummaryData;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData;
+import com.dianping.ba.finance.exchange.api.datas.*;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.core.type.PageModel;
 
@@ -168,4 +165,12 @@ public interface ExchangeOrderDao extends GenericDao {
      */
     @DAOAction(action = DAOActionType.QUERY)
     List<ExchangeOrderSummaryData> findExchangeOrderSummaryDataListByFlowIdList(@DAOParam("flowIdList") List<Integer> flowIdList);
+
+    /**
+     * 根据资金账户流水主键获取关联付款单概要信息
+     *
+     * @return
+     */
+    @DAOAction(action = DAOActionType.QUERY)
+    List<EOMonitorData> findEOMonitorDataByFlowIdList(@DAOParam("flowIdList") List<Integer> flowIdList);
 }

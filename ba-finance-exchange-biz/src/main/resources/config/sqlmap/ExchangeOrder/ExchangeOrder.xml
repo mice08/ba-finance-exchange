@@ -59,6 +59,17 @@
         <result property="bizCode" column="BizCode"/>
     </resultMap>
 
+
+    <typeAlias alias="EOMonitorData" type="com.dianping.ba.finance.exchange.api.datas.EOMonitorData"/>
+    <resultMap id="eoMonitorData" class="EOMonitorData">
+        <result property="exchangeOrderId" column="ExchangeOrderId"/>
+        <result property="bizCode" column="BizCode"/>
+        <result property="status" column="Status"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="lastUpdateDate" column="LastUpdateDate"/>
+    </resultMap>
+
+
     <insert id="insertExchangeOrder" parameterClass="map">
         <![CDATA[
         	 insert into FS_ExchangeOrder
@@ -388,5 +399,22 @@
         <iterate open="(" close=")" conjunction="," property="orderIdList">
             #orderIdList[]#
         </iterate>
+    </select>
+
+
+    <select id="findEOMonitorDataByFlowIdList" resultMap="eoMonitorData" parameterClass="map">
+        SELECT ExchangeOrderID,
+               BizCode,
+               Status,
+               AddDate,
+               LastUpdateDate
+        FROM   FS_ExchangeOrder
+        WHERE  exchangeOrderId IN (SELECT ExchangeOrderId
+                                   FROM   FS_ShopFundAccountFlow
+                                   WHERE  FAFlowID IN
+                                    <iterate open="(" close=")" conjunction="," property="flowIdList">
+                                      #flowIdList[]#
+                                    </iterate>
+                                  )
     </select>
 </sqlMap>
