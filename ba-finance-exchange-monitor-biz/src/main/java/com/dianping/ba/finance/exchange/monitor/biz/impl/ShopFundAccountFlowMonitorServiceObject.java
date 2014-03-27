@@ -18,8 +18,8 @@ public class ShopFundAccountFlowMonitorServiceObject implements ShopFundAccountF
     ShopFundAccountFlowMonitorDao shopFundAccountFlowMonitorDao;
 
     @Override
-    public List<ShopFundAccountFlowMonitorData> findPendIngAndInitExchangeOrderDatas(List<Integer> eoIdList) {
-        return shopFundAccountFlowMonitorDao.findShopFundAccountFlowDatas(eoIdList);
+    public List<ShopFundAccountFlowMonitorData> findShopFundAccountFlowData(Integer eoId) {
+        return shopFundAccountFlowMonitorDao.findShopFundAccountFlowDatas(eoId);
     }
 
     public void setShopFundAccountFlowMonitorDao(ShopFundAccountFlowMonitorDao shopFundAccountFlowMonitorDao) {

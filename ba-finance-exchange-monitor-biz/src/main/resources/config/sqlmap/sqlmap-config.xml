@@ -9,6 +9,6 @@
     <sqlMap resource="config/sqlmap/Monitor/monitor-time.xml"/>
     <sqlMap resource="config/sqlmap/Monitor/monitor-exception.xml"/>
     <sqlMap resource="config/sqlmap/Monitor/monitor-todo.xml"/>
-    <sqlMap resource="config/sqlmap/PaymentPlan/paymentplan.xml"/>
-
+    <sqlMap resource="config/sqlmap/ExchangeOrder/exchangeorder.xml"/>
+    <sqlMap resource="config/sqlmap/ShopFundAccountFlow/shopfundaccountflow.xml"/>
 </sqlMapConfig>

@@ -10,19 +10,12 @@
         <result property="flowType" column="FlowType"/>
     </resultMap>
 
-    <select id="findShopFundAccountFlowDatas" parameterClass="map" resultClass="shopFundAccountFlowMonitorData">
+    <select id="findShopFundAccountFlowData" parameterClass="map" resultClass="shopFundAccountFlowMonitorData">
         SELECT af.FAFlowID AS FAFlowID,
         af.ExchangeOrderID AS ExchangeOrderID,
         af.FlowType AS FlowType,
         FROM FS_ShopFundAccountFlow af
-        <dynamic prepend="where">
-            <isNotNull property="eoIdList" prepend="AND">
-                af.ExchangeOrderID IN
-                <iterate open="(" close=")" conjunction="," property="eoIdList">
-                    #eoIdList[]#
-                </iterate>
-            </isNotNull>
-        </dynamic>
+        WHERE  af.ExchangeOrderID = #eoId#;
     </select>
 
 </sqlMap>

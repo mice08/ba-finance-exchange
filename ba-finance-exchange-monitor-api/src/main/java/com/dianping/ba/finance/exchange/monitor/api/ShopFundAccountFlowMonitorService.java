@@ -17,5 +17,5 @@ public interface ShopFundAccountFlowMonitorService {
      * @param eoIdList
      * @return
      */
-    List<ShopFundAccountFlowMonitorData> findPendIngAndInitExchangeOrderDatas(List<Integer> eoIdList);
+    List<ShopFundAccountFlowMonitorData> findShopFundAccountFlowData(Integer eoIdList);
 }
