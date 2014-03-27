@@ -109,6 +109,6 @@ public interface ExchangeOrderService {
      * @return
      * @throws Exception
      */
-    List<EOMonitorDTO> findEOMonitorDataByFlowIdList(List<Integer> flowIdList) throws Exception;
+    List<EOMonitorDTO> findEOMonitorDataByFlowIdList(List<Integer> flowIdList) ;
 
 }

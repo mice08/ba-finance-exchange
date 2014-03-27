@@ -218,12 +218,17 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
-    public List<EOMonitorDTO> findEOMonitorDataByFlowIdList(List<Integer> flowIdList) throws Exception {
+    public List<EOMonitorDTO> findEOMonitorDataByFlowIdList(List<Integer> flowIdList) {
+        long startTime = System.currentTimeMillis();
         List<EOMonitorData> eoMonitorDataList = exchangeOrderDao.findEOMonitorDataByFlowIdList(flowIdList);
         List<EOMonitorDTO> eoMonitorDTOList = new ArrayList<EOMonitorDTO>(eoMonitorDataList.size());
-        for (EOMonitorData data : eoMonitorDataList) {
-            EOMonitorDTO dto = ConvertUtils.copy(data, EOMonitorDTO.class);
-            eoMonitorDTOList.add(dto);
+        try {
+            for (EOMonitorData data : eoMonitorDataList) {
+                EOMonitorDTO dto = ConvertUtils.copy(data, EOMonitorDTO.class);
+                eoMonitorDTOList.add(dto);
+            }
+        } catch (Exception e) {
+            LogUtils.log(monitorLogger, startTime, "findEOMonitorDataByFlowIdList", Level.ERROR, "flowIdList:" + flowIdList, e);
         }
         return eoMonitorDTOList;
     }
