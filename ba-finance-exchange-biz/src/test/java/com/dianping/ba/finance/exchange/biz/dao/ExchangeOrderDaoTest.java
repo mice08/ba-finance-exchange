@@ -1,6 +1,7 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
+import com.dianping.ba.finance.exchange.api.datas.EOMonitorData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
@@ -14,10 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -119,5 +117,11 @@ public class ExchangeOrderDaoTest {
         Assert.assertEquals(2, actual.size());
     }
 
+    @Test
+    public void testFindEOMonitorDataByFlowIdList() throws Exception {
+        List<Integer> flowIds = Arrays.asList(11143679, 11143681);
+        List<EOMonitorData> eoMonitorDatas = exchangeOrderDao.findEOMonitorDataByFlowIdList(flowIds);
+        System.out.println(eoMonitorDatas);
 
+    }
 }

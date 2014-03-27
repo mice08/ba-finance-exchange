@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="fsMonitorExceptionDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.monitor.biz.dao.FSMonitorExceptionDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="MonitorException"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="fsMonitorTimeDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.monitor.biz.dao.FSMonitorTimeDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="MonitorTime"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="fsMonitorTodoDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.monitor.biz.dao.FSMonitorTodoDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="MonitorTodo"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="paymentPlanMonitorDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.monitor.biz.dao.PaymentPlanMonitorDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="PaymentPlan"/>
+            </bean>
+        </property>
+    </bean>
+</beans>

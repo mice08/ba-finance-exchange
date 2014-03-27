@@ -1,0 +1,95 @@
+package com.dianping.ba.finance.exchange.monitor.job;
+
+import com.dianping.avatar.log.AvatarLogger;
+import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.exchange.monitor.api.FSMonitorService;
+import com.dianping.ba.finance.exchange.monitor.api.ExchangeOrderMonitorService;
+import com.dianping.ba.finance.exchange.monitor.api.datas.ExceptionData;
+import com.dianping.ba.finance.exchange.monitor.api.datas.ExchangeOrderMonitorData;
+import com.dianping.ba.finance.exchange.monitor.api.datas.TodoData;
+import com.dianping.ba.finance.exchange.monitor.api.enums.ExceptionStatus;
+import com.dianping.ba.finance.exchange.monitor.api.enums.ExceptionType;
+import com.dianping.ba.finance.exchange.monitor.api.enums.TodoStatus;
+import com.dianping.ba.finance.exchange.monitor.job.eocheck.EOCheckRule;
+import com.dianping.ba.finance.exchange.monitor.job.utils.LogUtils;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: noahshen
+ * Date: 14-3-26
+ * Time: 下午3:38
+ * To change this template use File | Settings | File Templates.
+ */
+public class ExchangeOrderDataChecker extends DataChecker {
+
+    private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.monitor.job.ExchangeOrderDataChecker");
+
+    private ExchangeOrderMonitorService exchangeOrderMonitorService;
+
+    private FSMonitorService fsMonitorService;
+
+    private List<EOCheckRule> eoCheckRuleList = new ArrayList<EOCheckRule>();
+
+    @Override
+    public boolean run() {
+        long startTime = System.currentTimeMillis();
+        try {
+            checkPaymentPlan();
+        } catch (Exception e) {
+            MONITOR_LOGGER.error(LogUtils.formatErrorLogMsg(startTime, "ExchangeOrderDataChecker.run", ""), e);
+        }
+        return false;
+    }
+
+    private void checkPaymentPlan() {
+        checkToDo();
+        checkNewData();
+    }
+
+    // default access for UT
+    void checkNewData() {
+
+    }
+
+    // default access for UT
+    void checkToDo() {
+
+    }
+
+    private void checkPaymentPlanData(ExchangeOrderMonitorData ppData, TodoData todoData) {
+
+    }
+
+    private void addException(int eoId, ExceptionType exceptionType) {
+        ExceptionData exData = new ExceptionData();
+        exData.setAddDate(new Date());
+        exData.setEoId(eoId);
+        exData.setStatus(ExceptionStatus.INIT.value());
+        exData.setExceptionType(exceptionType.value());
+        fsMonitorService.addMonitorException(exData);
+    }
+
+    private void addToDo(int eoId) {
+        TodoData toDoData = new TodoData();
+        toDoData.setEoId(eoId);
+        toDoData.setAddDate(new Date());
+        toDoData.setStatus(TodoStatus.INIT.value());
+        fsMonitorService.addTodo(toDoData);
+    }
+
+    public void setExchangeOrderMonitorService(ExchangeOrderMonitorService exchangeOrderMonitorService) {
+        this.exchangeOrderMonitorService = exchangeOrderMonitorService;
+    }
+
+    public void setFsMonitorService(FSMonitorService fsMonitorService) {
+        this.fsMonitorService = fsMonitorService;
+    }
+
+    public void setPpCheckRules(List<EOCheckRule> eoCheckRuleList) {
+        this.eoCheckRuleList = eoCheckRuleList;
+    }
+}
