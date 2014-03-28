@@ -11,7 +11,7 @@
         <result property="lastUpdateDate" column="LastUpdateDate"/>
     </resultMap>
 
-    <select id="findExchangeOrderData" parameterClass="map" resultClass="exchangeOrderMonitorData">
+    <select id="findExchangeOrderData" parameterClass="map" resultMap="exchangeOrderMonitorData">
         SELECT ExchangeOrderID,
                 Status,
                 AddDate,

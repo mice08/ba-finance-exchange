@@ -53,7 +53,7 @@ public class ExchangeOrderDataCheckerTest {
         pendIngAndInitCheck.setShopFundAccountFlowMonitorService(shopFundAccountFlowMonitorServiceMock);
         List<EOCheckRule> eoCheckBaseList = new ArrayList<EOCheckRule>();
         eoCheckBaseList.add(pendIngAndInitCheck);
-        exchangeOrderDataCheckerStub.setPpCheckRules(eoCheckBaseList);
+        exchangeOrderDataCheckerStub.setEoCheckRuleList(eoCheckBaseList);
         when(fsMonitorServiceMock.findUnhandledToDoData()).thenReturn(new ArrayList<TodoData>());
         when(fsMonitorServiceMock.getLastMonitorTime()).thenReturn(new Date());
         List<ExchangeOrderMonitorData> exchangeOrderMonitorDataList = new ArrayList<ExchangeOrderMonitorData>();
@@ -80,7 +80,7 @@ public class ExchangeOrderDataCheckerTest {
         pendIngAndInitCheck.setShopFundAccountFlowMonitorService(shopFundAccountFlowMonitorServiceMock);
         List<EOCheckRule> eoCheckBaseList = new ArrayList<EOCheckRule>();
         eoCheckBaseList.add(pendIngAndInitCheck);
-        exchangeOrderDataCheckerStub.setPpCheckRules(eoCheckBaseList);
+        exchangeOrderDataCheckerStub.setEoCheckRuleList(eoCheckBaseList);
         when(fsMonitorServiceMock.findUnhandledToDoData()).thenReturn(new ArrayList<TodoData>());
         when(fsMonitorServiceMock.getLastMonitorTime()).thenReturn(new Date());
         List<ExchangeOrderMonitorData> exchangeOrderMonitorDataList = new ArrayList<ExchangeOrderMonitorData>();
@@ -104,7 +104,7 @@ public class ExchangeOrderDataCheckerTest {
         eoSuccessFlowCheck.setShopFundAccountFlowMonitorService(shopFundAccountFlowMonitorServiceMock);
         List<EOCheckRule> eoCheckBaseList = new ArrayList<EOCheckRule>();
         eoCheckBaseList.add(eoSuccessFlowCheck);
-        exchangeOrderDataCheckerStub.setPpCheckRules(eoCheckBaseList);
+        exchangeOrderDataCheckerStub.setEoCheckRuleList(eoCheckBaseList);
         when(fsMonitorServiceMock.findUnhandledToDoData()).thenReturn(new ArrayList<TodoData>());
         when(fsMonitorServiceMock.getLastMonitorTime()).thenReturn(new Date());
         List<ExchangeOrderMonitorData> exchangeOrderMonitorDataList = new ArrayList<ExchangeOrderMonitorData>();
@@ -131,7 +131,7 @@ public class ExchangeOrderDataCheckerTest {
         eoSuccessFlowCheck.setShopFundAccountFlowMonitorService(shopFundAccountFlowMonitorServiceMock);
         List<EOCheckRule> eoCheckBaseList = new ArrayList<EOCheckRule>();
         eoCheckBaseList.add(eoSuccessFlowCheck);
-        exchangeOrderDataCheckerStub.setPpCheckRules(eoCheckBaseList);
+        exchangeOrderDataCheckerStub.setEoCheckRuleList(eoCheckBaseList);
         when(fsMonitorServiceMock.findUnhandledToDoData()).thenReturn(new ArrayList<TodoData>());
         when(fsMonitorServiceMock.getLastMonitorTime()).thenReturn(new Date());
         List<ExchangeOrderMonitorData> exchangeOrderMonitorDataList = new ArrayList<ExchangeOrderMonitorData>();
@@ -158,7 +158,7 @@ public class ExchangeOrderDataCheckerTest {
         eoSuccessFlowCheck.setShopFundAccountFlowMonitorService(shopFundAccountFlowMonitorServiceMock);
         List<EOCheckRule> eoCheckBaseList = new ArrayList<EOCheckRule>();
         eoCheckBaseList.add(eoSuccessFlowCheck);
-        exchangeOrderDataCheckerStub.setPpCheckRules(eoCheckBaseList);
+        exchangeOrderDataCheckerStub.setEoCheckRuleList(eoCheckBaseList);
         when(fsMonitorServiceMock.findUnhandledToDoData()).thenReturn(new ArrayList<TodoData>());
         when(fsMonitorServiceMock.getLastMonitorTime()).thenReturn(new Date());
         List<ExchangeOrderMonitorData> exchangeOrderMonitorDataList = new ArrayList<ExchangeOrderMonitorData>();
