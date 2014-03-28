@@ -32,7 +32,7 @@ public class CheckController {
             int batchCount = dataCheckList.size();
             final CountDownLatch doneSignal = new CountDownLatch(batchCount);
             for(final DataChecker dataCheck: dataCheckList){
-                dataCheck.setMonitorStartDate(currentMonitorTime);
+                dataCheck.setCurrentMonitorTime(currentMonitorTime);
                 executorService.execute(new Runnable() {
                     @Override
                     public void run() {

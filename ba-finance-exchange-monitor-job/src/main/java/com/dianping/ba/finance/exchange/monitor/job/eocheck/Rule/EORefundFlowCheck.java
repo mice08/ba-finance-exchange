@@ -1,7 +1,5 @@
 package com.dianping.ba.finance.exchange.monitor.job.eocheck.Rule;
 
-import com.dianping.ba.finance.exchange.api.enums.FlowType;
-import com.dianping.ba.finance.exchange.api.enums.SourceType;
 import com.dianping.ba.finance.exchange.monitor.api.ShopFundAccountFlowMonitorService;
 import com.dianping.ba.finance.exchange.monitor.api.datas.ExchangeOrderMonitorData;
 import com.dianping.ba.finance.exchange.monitor.api.datas.ShopFundAccountFlowMonitorData;
