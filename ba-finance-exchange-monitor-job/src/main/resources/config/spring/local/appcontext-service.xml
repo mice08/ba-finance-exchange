@@ -49,11 +49,11 @@
         <property name="shopFundAccountFlowMonitorService" ref="shopFundAccountFlowMonitorService"/>
     </bean>
 
-    <bean id="eoRefundFlowCheck" class="com.dianping.ba.finance.exchange.monitor.job.eocheck.rule.EOPendIngAndInitCheck">
+    <bean id="eoRefundFlowCheck" class="com.dianping.ba.finance.exchange.monitor.job.eocheck.rule.EORefundFlowCheck">
         <property name="shopFundAccountFlowMonitorService" ref="shopFundAccountFlowMonitorService"/>
     </bean>
 
-    <bean id="eoSuccessFlowCheck" class="com.dianping.ba.finance.exchange.monitor.job.eocheck.rule.EOPendIngAndInitCheck">
+    <bean id="eoSuccessFlowCheck" class="com.dianping.ba.finance.exchange.monitor.job.eocheck.rule.EOSuccessFlowCheck">
         <property name="shopFundAccountFlowMonitorService" ref="shopFundAccountFlowMonitorService"/>
     </bean>
 
