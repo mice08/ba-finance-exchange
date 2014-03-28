@@ -17,16 +17,21 @@
         <property name="smsService" ref="smsService"/>
     </bean>
 
-    <bean id="scheduler" class="com.dianping.ba.finance.exchange.monitor.job.Scheduler">
+    <bean id="checkController" class="com.dianping.ba.finance.exchange.monitor.job.CheckController">
         <property name="executorService" ref="executorService"/>
         <property name="fsMonitorService" ref="fsMonitorService"/>
         <property name="monitorMailService" ref="monitorMailService"/>
         <property name="monitorSmsService" ref="monitorSmsService"/>
         <property name="dataCheckList">
             <list>
-                <ref bean="paymentPlanDataChecker"/>
+                <ref bean="exchangeOrderDataChecker"/>
             </list>
         </property>
+    </bean>
+
+    <bean id="exchangeOrderDataChecker" class="com.dianping.ba.finance.exchange.monitor.job.ExchangeOrderDataChecker">
+        <property name="exchangeOrderMonitorService" ref="exchangeOrderMonitorService"/>
+        <property name="fsMonitorService" ref="fsMonitorService"/>
     </bean>
 
 

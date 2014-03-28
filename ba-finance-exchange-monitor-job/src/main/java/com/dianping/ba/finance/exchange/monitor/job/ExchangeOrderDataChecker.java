@@ -29,9 +29,7 @@ public class ExchangeOrderDataChecker extends DataChecker {
     private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.monitor.job.ExchangeOrderDataChecker");
 
     private ExchangeOrderMonitorService exchangeOrderMonitorService;
-
     private FSMonitorService fsMonitorService;
-
     private List<EOCheckRule> eoCheckRuleList = new ArrayList<EOCheckRule>();
 
     @Override

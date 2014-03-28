@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.monitor.job;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.exchange.monitor.api.FSMonitorService;
 import com.dianping.ba.finance.exchange.monitor.job.service.MonitorMailService;
 import com.dianping.ba.finance.exchange.monitor.job.service.MonitorSmsService;
 import com.dianping.ba.finance.exchange.monitor.job.utils.LogUtils;
@@ -14,12 +15,12 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 
-public class Scheduler {
+public class CheckController {
     private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.monitor.job.CheckController");
 
     private List<DataChecker> dataCheckList;
     private ThreadPoolExecutor executorService;
-//    private PCMonitorService pcMonitorService;
+    private FSMonitorService fsMonitorService;
     private MonitorMailService monitorMailService;
     private MonitorSmsService monitorSmsService;
 
@@ -52,7 +53,7 @@ public class Scheduler {
                 monitorLogger.info("End monitoring....");
                 Thread.sleep(TimeUnit.SECONDS.toMillis(100));
             } catch (InterruptedException e) {
-                monitorLogger.error(LogUtils.formatErrorLogMsg(startTime, "Scheduler.execute", ""), e);
+                monitorLogger.error(LogUtils.formatErrorLogMsg(startTime, "CheckController.execute", ""), e);
             }
         }
     }
@@ -105,16 +106,16 @@ public class Scheduler {
         this.executorService = executorService;
     }
 
-//    public void setPcMonitorService(PCMonitorService pcMonitorService) {
-//        this.pcMonitorService = pcMonitorService;
-//    }
-
     public void setMonitorSmsService(MonitorSmsService monitorSmsService) {
         this.monitorSmsService = monitorSmsService;
     }
 
     public void setMonitorMailService(MonitorMailService monitorMailService) {
         this.monitorMailService = monitorMailService;
+    }
+
+    public void setFsMonitorService(FSMonitorService fsMonitorService) {
+        this.fsMonitorService = fsMonitorService;
     }
 
 
