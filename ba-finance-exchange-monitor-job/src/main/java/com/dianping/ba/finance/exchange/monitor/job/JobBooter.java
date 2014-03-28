@@ -32,8 +32,8 @@ public class JobBooter {
 		path[0] = "classpath*:/config/spring/local/appcontext-*.xml";
 		path[1] = "classpath*:/config/spring/common/appcontext-*.xml";
         ApplicationContext appContext = new ClassPathXmlApplicationContext(path);
-        Scheduler s = (Scheduler) appContext.getBean("scheduler");
-        s.execute();
+        CheckController controller = (CheckController) appContext.getBean("checkController");
+        controller.execute();
 	}
 
 

@@ -10,7 +10,7 @@ import com.dianping.ba.finance.exchange.monitor.api.enums.ExceptionType;
  * To change this template use File | Settings | File Templates.
  */
 public class EOCheckResult {
-    private boolean valided;
+    private boolean valid;
 
     private boolean timeout;
 
@@ -19,12 +19,12 @@ public class EOCheckResult {
     public EOCheckResult() {
     }
 
-    public boolean isValided() {
-        return valided;
+    public boolean isValid() {
+        return valid;
     }
 
-    public void setValided(boolean valided) {
-        this.valided = valided;
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
     public boolean isTimeout() {

@@ -51,12 +51,12 @@ public class FSMonitorServiceObject implements FSMonitorService {
     }
 
     @Override
-    public List<TodoData> findUnhandldedToDoDatas() {
+    public List<TodoData> findUnhandledToDoData() {
         return fsMonitorTodoDao.findToDoDatas(TodoStatus.INIT.value());
     }
 
     @Override
-    public List<ExceptionData> findUnhandledExceptionDatas() {
+    public List<ExceptionData> findUnhandledExceptionData() {
         return fsMonitorExceptionDao.findExceptions(ExceptionStatus.INIT.value());  //To change body of implemented methods use File | Settings | File Templates.
     }
 

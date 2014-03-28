@@ -29,11 +29,20 @@
         </property>
     </bean>
 
-    <bean id="paymentPlanMonitorDao" parent="parentDao">
-        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.monitor.biz.dao.PaymentPlanMonitorDao"/>
+    <bean id="exchangeOrderMonitorDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.monitor.biz.dao.ExchangeOrderMonitorDao"/>
         <property name="target">
             <bean parent="fsMain.daoRealizeTarget">
-                <constructor-arg value="PaymentPlan"/>
+                <constructor-arg value="ExchangeOrder"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="shopFundAccountFlowMonitorDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.monitor.biz.dao.ShopFundAccountFlowMonitorDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="ShopFundAccountFlow"/>
             </bean>
         </property>
     </bean>

@@ -41,13 +41,13 @@ public interface FSMonitorService {
      * 获取未处理的todo
      * @return
      */
-    public List<TodoData> findUnhandldedToDoDatas();
+    public List<TodoData> findUnhandledToDoData();
 
     /**
      * 获取未处理的异常记录
      * @return
      */
-    public List<ExceptionData> findUnhandledExceptionDatas();
+    public List<ExceptionData> findUnhandledExceptionData();
 
     /**
      * 更新异常记录为已处理

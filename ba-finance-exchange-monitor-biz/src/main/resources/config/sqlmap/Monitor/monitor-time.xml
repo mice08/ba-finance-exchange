@@ -18,7 +18,7 @@
 
     <select id="loadLastMonitorTime" parameterClass="map" resultMap="monitorTimeData">
         SELECT MonitorID,
-               MonitorTime
+                MonitorTime
           FROM FS_MonitorTime
          WHERE MonitorID = (SELECT MAX(MonitorID) FROM FS_MonitorTime)
     </select>
