@@ -23,6 +23,11 @@ public interface ExchangeOrderMonitorService {
      */
     List<ExchangeOrderMonitorData> findExchangeOrderData(Date startDate, Date endDate);
 
+    /**
+     *  按付款单Id获取付款单信息
+     * @param eoId
+     * @return
+     */
     ExchangeOrderMonitorData loadExchangeOrderData(int eoId);
 
 }
