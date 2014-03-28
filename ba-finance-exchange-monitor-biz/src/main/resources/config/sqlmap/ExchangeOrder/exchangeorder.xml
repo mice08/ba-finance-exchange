@@ -17,23 +17,10 @@
                 AddDate,
                 LastUpdateDate
         FROM FS_ExchangeOrder
-        <dynamic prepend="where">
-            <isNotNull property="statusList" prepend="AND">
-                Status IN
-                <iterate open="(" close=")" conjunction="," property="statusList">
-                    #statusList[]#
-                </iterate>
-            </isNotNull>
-            <isNotNull property="endDate" prepend="AND">
-                LastUpdateDate &lt;= #endDate#
-            </isNotNull>
-            <isNotNull property="startDate" prepend="AND">
-                LastUpdateDate &gt; #startDate#
-            </isNotNull>
-        </dynamic>
+        WHERE  LastUpdateDate BETWEEN #startDate# AND #endDate#
     </select>
 
-    <select id="loadExchangeOrderData" parameterClass="map" resultClass="exchangeOrderMonitorData">
+    <select id="loadExchangeOrderData" parameterClass="map" resultMap="exchangeOrderMonitorData">
         SELECT ExchangeOrderID,
                 Status,
                 AddDate,
