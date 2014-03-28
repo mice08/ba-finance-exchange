@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ShopFundAccountFlow">
+
+    <typeAlias alias="ShopFundAccountFlowMonitorData"
+               type="com.dianping.ba.finance.exchange.monitor.api.datas.ShopFundAccountFlowMonitorData"></typeAlias>
+    <resultMap id="shopFundAccountFlowMonitorData" class="ShopFundAccountFlowMonitorData">
+        <result property="flowId" column="FAFlowID"/>
+        <result property="eoId" column="ExchangeOrderID"/>
+        <result property="flowType" column="FlowType"/>
+        <result property="sourceType" column="SourceType"/>
+    </resultMap>
+
+
+    <select id="findShopFundAccountFlowData" parameterClass="map" resultClass="shopFundAccountFlowMonitorData">
+        SELECT FAFlowID,
+                ExchangeOrderID,
+                FlowType,
+                SourceType
+        FROM FS_ShopFundAccountFlow
+        WHERE ExchangeOrderID = #eoId#;
+    </select>
+
+</sqlMap>

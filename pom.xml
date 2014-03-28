@@ -16,6 +16,9 @@
         <module>ba-finance-exchange-api</module>
         <module>ba-finance-exchange-biz</module>
         <module>ba-finance-exchange-service</module>
+        <module>ba-finance-exchange-monitor-api</module>
+        <module>ba-finance-exchange-monitor-biz</module>
+        <module>ba-finance-exchange-monitor-job</module>
     </modules>
     <description>com.dianping.ba.finance</description>
     <organization>

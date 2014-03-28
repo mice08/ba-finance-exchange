@@ -2,10 +2,7 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.*;
-import com.dianping.ba.finance.exchange.api.dtos.EOAndFlowIdSummaryDTO;
-import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderSummaryDTO;
-import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
-import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
+import com.dianping.ba.finance.exchange.api.dtos.*;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
@@ -16,6 +13,7 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -375,5 +373,22 @@ public class ExchangeOrderServiceObjectTest {
 
         Assert.assertNotNull(actual);
         Assert.assertEquals(0, actual.size());
+    }
+
+    @Test
+    public void testFindEOMonitorDataByFlowIdList() throws Exception {
+        int eoId = 123;
+        String bizCode = "P123";
+        List<EOMonitorData> eoMonitorDataList = new ArrayList<EOMonitorData>();
+        EOMonitorData data = new EOMonitorData();
+        data.setExchangeOrderId(eoId);
+        data.setBizCode(bizCode);
+        eoMonitorDataList.add(data);
+        when(exchangeOrderDaoMock.findEOMonitorDataByFlowIdList(anyList())).thenReturn(eoMonitorDataList);
+
+        List<EOMonitorDTO> eoMonitorDTOList = exchangeOrderServiceObjectStub.findEOMonitorDataByFlowIdList(Arrays.asList(123));
+        Assert.assertFalse(eoMonitorDTOList.isEmpty());
+        Assert.assertEquals(eoId, eoMonitorDTOList.get(0).getExchangeOrderId());
+        Assert.assertEquals(bizCode, eoMonitorDTOList.get(0).getBizCode());
     }
 }
