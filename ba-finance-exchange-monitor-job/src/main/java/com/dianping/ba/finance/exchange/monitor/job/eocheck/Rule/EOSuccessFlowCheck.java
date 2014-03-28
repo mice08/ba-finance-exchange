@@ -22,8 +22,8 @@ import java.util.List;
  */
 public class EOSuccessFlowCheck extends EOCheckBase {
 
-    private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.monitor.job.eocheck.Rule.EOSuccessFlowCheck");
-    ShopFundAccountFlowMonitorService shopFundAccountFlowMonitorService;
+    private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.monitor.job.eocheck.Rule.EOSuccessFlowCheck");
+    private ShopFundAccountFlowMonitorService shopFundAccountFlowMonitorService;
 
     @Override
     public boolean filter(ExchangeOrderMonitorData exchangeOrderMonitorData) {
@@ -35,11 +35,11 @@ public class EOSuccessFlowCheck extends EOCheckBase {
         // EO状态为支付成功，需要在规定的时间间隔（如5min）存在一条对应的负向Flow。
         List<ShopFundAccountFlowMonitorData> flowDataList = shopFundAccountFlowMonitorService.findShopFundAccountFlowData(exchangeOrderMonitorData.getEoId());
         if (CollectionUtils.isEmpty(flowDataList)) {
-            MONITOR_LOGGER.error(String.format("ExchangeOrderMonitorData=%s, exceptionType=%s", exchangeOrderMonitorData, ExceptionType.EO_INITANDPENDING_WITH_NO_FLOW));
+            monitorLogger.error(String.format("ExchangeOrderMonitorData=%s, exceptionType=%s", exchangeOrderMonitorData, ExceptionType.EO_INITANDPENDING_WITH_NO_FLOW));
             return createResult(false, checkIfTimeout(exchangeOrderMonitorData.getLastUpdateDate()), ExceptionType.EO_SUCCESS_WITH_NO_MINUSFLOW);
         } else {
             if (flowDataList.size() > 1) {
-                MONITOR_LOGGER.error(String.format("ExchangeOrderMonitorData=%s, exceptionType=%s", exchangeOrderMonitorData, ExceptionType.EO_INITANDPENDING_WITH_MORE_FLOW));
+                monitorLogger.error(String.format("ExchangeOrderMonitorData=%s, exceptionType=%s", exchangeOrderMonitorData, ExceptionType.EO_INITANDPENDING_WITH_MORE_FLOW));
                 return createResult(false, checkIfTimeout(exchangeOrderMonitorData.getLastUpdateDate()), ExceptionType.EO_SUCCESS_WITH_MORE_MINUSFLOW);
             }
         }

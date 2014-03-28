@@ -31,7 +31,7 @@ public abstract class EOCheckBase implements EOCheckRule {
 
     protected EOCheckResult createResult(boolean valided, boolean timeout, ExceptionType exceptionType) {
         EOCheckResult result = new EOCheckResult();
-        result.setValided(valided);
+        result.setValid(valided);
         result.setTimeout(timeout);
         result.setExceptionType(exceptionType);
         return result;

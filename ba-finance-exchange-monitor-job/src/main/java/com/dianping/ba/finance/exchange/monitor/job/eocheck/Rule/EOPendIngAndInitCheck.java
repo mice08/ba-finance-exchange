@@ -22,8 +22,8 @@ import java.util.List;
  */
 public class EOPendIngAndInitCheck extends EOCheckBase {
 
-    private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.monitor.job.eocheck.Rule.EOPendIngAndInitCheck");
-    ShopFundAccountFlowMonitorService shopFundAccountFlowMonitorService;
+    private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.monitor.job.eocheck.Rule.EOPendIngAndInitCheck");
+    private ShopFundAccountFlowMonitorService shopFundAccountFlowMonitorService;
 
     @Override
     public boolean filter(ExchangeOrderMonitorData exchangeOrderMonitorData) {
@@ -35,11 +35,11 @@ public class EOPendIngAndInitCheck extends EOCheckBase {
     public EOCheckResult check(ExchangeOrderMonitorData exchangeOrderMonitorData) {
         List<ShopFundAccountFlowMonitorData> flowDataList = shopFundAccountFlowMonitorService.findShopFundAccountFlowData(exchangeOrderMonitorData.getEoId());
         if (CollectionUtils.isEmpty(flowDataList)) {
-            MONITOR_LOGGER.error(String.format("ExchangeOrderMonitorData=%s, exceptionType=%s", exchangeOrderMonitorData, ExceptionType.EO_INITANDPENDING_WITH_NO_FLOW));
+            monitorLogger.error(String.format("ExchangeOrderMonitorData=%s, exceptionType=%s", exchangeOrderMonitorData, ExceptionType.EO_INITANDPENDING_WITH_NO_FLOW));
             return createResult(false, true, ExceptionType.EO_INITANDPENDING_WITH_NO_FLOW);
         } else {
             if (flowDataList.size() > 1) {
-                MONITOR_LOGGER.error(String.format("ExchangeOrderMonitorData=%s, exceptionType=%s", exchangeOrderMonitorData, ExceptionType.EO_INITANDPENDING_WITH_MORE_FLOW));
+                monitorLogger.error(String.format("ExchangeOrderMonitorData=%s, exceptionType=%s", exchangeOrderMonitorData, ExceptionType.EO_INITANDPENDING_WITH_MORE_FLOW));
                 return createResult(false, true, ExceptionType.EO_INITANDPENDING_WITH_MORE_FLOW);
             }
         }
