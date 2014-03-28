@@ -3,13 +3,15 @@ package com.dianping.ba.finance.exchange.monitor.job;
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.monitor.api.FSMonitorService;
+import com.dianping.ba.finance.exchange.monitor.api.datas.ExceptionData;
+import com.dianping.ba.finance.exchange.monitor.api.enums.ExceptionType;
 import com.dianping.ba.finance.exchange.monitor.job.service.MonitorMailService;
 import com.dianping.ba.finance.exchange.monitor.job.service.MonitorSmsService;
+import com.dianping.ba.finance.exchange.monitor.job.utils.ConstantUtils;
 import com.dianping.ba.finance.exchange.monitor.job.utils.LogUtils;
+import org.apache.commons.collections.CollectionUtils;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -48,55 +50,48 @@ public class CheckController {
             }
             try {
                 doneSignal.await();
-//                pcMonitorService.recordCurrentMonitorTime(currentMonitorTime);
-//                notifyException();
+                fsMonitorService.addMonitorTime(currentMonitorTime);
+                notifyException();
                 monitorLogger.info("End monitoring....");
-                Thread.sleep(TimeUnit.SECONDS.toMillis(100));
+                Thread.sleep(TimeUnit.MINUTES.toMillis(ConstantUtils.jobIntervalMinutes));
             } catch (InterruptedException e) {
                 monitorLogger.error(LogUtils.formatErrorLogMsg(startTime, "CheckController.execute", ""), e);
             }
         }
     }
 
-//    private void notifyException(){
-//        List<Integer> handledExceptionList = new ArrayList<Integer>();
-//        List<MonitorExceptionData> exceptionUnHandledList = pcMonitorService.findMonitorExceptionUnHandled();
-//        if(CollectionUtils.isEmpty(exceptionUnHandledList)){
-//            return;
-//        }
-//        Map<MonitorExceptionReason, String> exceptionReasonMap = new HashMap<MonitorExceptionReason, String>();
-//        for(MonitorExceptionData exceptionData: exceptionUnHandledList){
-//            MonitorExceptionReason reasonType = MonitorExceptionReason.valueOf(exceptionData.getExceptionType());
-//            int exceptionId = 0;
-//            if(exceptionData.getBpId() > 0){
-//                exceptionId = exceptionData.getBpId();
-//            }else if(exceptionData.getVoucherId() > 0){
-//                exceptionId = exceptionData.getVoucherId();
-//            }else if(exceptionData.getApId() > 0){
-//                exceptionId = exceptionData.getApId();
-//            }
-//            generateExceptionInfo(reasonType,exceptionReasonMap,exceptionId);
-//            handledExceptionList.add(exceptionData.getExceptionId());
-//        }
-//        String mailInfo = "结算单错误详情：\n";
-//        for(Map.Entry<MonitorExceptionReason, String> entry: exceptionReasonMap.entrySet()){
-//            mailInfo += String.format( "%s，错误的ID为%s\n", entry.getKey().toString(), entry.getValue());
-//        }
-//        String smsInfo = "结算异常，详情请见邮件！";
-//        monitorSmsService.sendSms(smsInfo);
-//        monitorMailService.sendMail(mailInfo);
-//        pcMonitorService.changeMonitorExceptionToHandled(handledExceptionList);
-//    }
-//
-//    private void generateExceptionInfo(MonitorExceptionReason reasonType, Map<MonitorExceptionReason, String> exceptionReasonMap,int exceptionId ){
-//        String idStr = "";
-//        if(exceptionReasonMap.containsKey(reasonType)){
-//            idStr = exceptionReasonMap.get(reasonType) + "," + exceptionId;
-//        }else {
-//            idStr = String.valueOf(exceptionId);
-//        }
-//        exceptionReasonMap.put(reasonType, idStr);
-//    }
+    private void notifyException(){
+        List<Integer> handledExceptionList = new ArrayList<Integer>();
+        List<ExceptionData> exceptionUnHandledList = fsMonitorService.findUnhandledExceptionData();
+        if(CollectionUtils.isEmpty(exceptionUnHandledList)){
+            return;
+        }
+        Map<ExceptionType, String> exceptionReasonMap = new HashMap<ExceptionType, String>();
+        for(ExceptionData exceptionData: exceptionUnHandledList){
+            ExceptionType reasonType = ExceptionType.valueOf(exceptionData.getExceptionType());
+            int exceptionId = exceptionData.getEoId();
+            generateExceptionInfo(reasonType,exceptionReasonMap,exceptionId);
+            handledExceptionList.add(exceptionData.getExceptionId());
+        }
+        String mailInfo = "付款单错误详情：\n";
+        for(Map.Entry<ExceptionType, String> entry: exceptionReasonMap.entrySet()){
+            mailInfo += String.format( "%s，错误的ID为%s\n", entry.getKey().toString(), entry.getValue());
+        }
+        String smsInfo = "付款单异常，详情请见邮件！";
+        monitorSmsService.sendSms(smsInfo);
+        monitorMailService.sendMail(mailInfo);
+        fsMonitorService.updateExceptionToHandled(handledExceptionList);
+    }
+
+    private void generateExceptionInfo(ExceptionType reasonType, Map<ExceptionType, String> exceptionReasonMap,int exceptionId ){
+        String idStr = "";
+        if(exceptionReasonMap.containsKey(reasonType)){
+            idStr = exceptionReasonMap.get(reasonType) + "," + exceptionId;
+        }else {
+            idStr = String.valueOf(exceptionId);
+        }
+        exceptionReasonMap.put(reasonType, idStr);
+    }
 
     public void setDataCheckList(List<DataChecker> dataCheckList) {
         this.dataCheckList = dataCheckList;

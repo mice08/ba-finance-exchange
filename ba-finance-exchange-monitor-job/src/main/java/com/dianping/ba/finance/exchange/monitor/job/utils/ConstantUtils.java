@@ -14,5 +14,6 @@ public class ConstantUtils {
     public static String monitorMobileNo = PropertiesLoaderSupportUtils.getProperty("ba-finance-exchange-monitor-job.MonitorMobileNo");
     public static int refundTimeout = PropertiesLoaderSupportUtils.getIntProperty("ba-finance-exchange-monitor-job.RefundTimeout",5);
     public static int paySuccessTimeout = PropertiesLoaderSupportUtils.getIntProperty("ba-finance-exchange-monitor-job.paySuccessTimeout",5);
+    public static int jobIntervalMinutes = PropertiesLoaderSupportUtils.getIntProperty("ba-finance-exchange-monitor-job.jobIntervalMinutes",5);
 
 }
