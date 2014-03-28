@@ -107,7 +107,7 @@ public class FSMonitorServiceObjectTest {
         todoDatas.add(todoDate);
 
         when(fsMonitorTodoDaoMock.findToDoDatas(anyInt())).thenReturn(todoDatas);
-        List<TodoData> todoDataResults = fsMonitorServiceObjectStub.findUnhandldedToDoDatas();
+        List<TodoData> todoDataResults = fsMonitorServiceObjectStub.findUnhandledToDoData();
         Assert.assertNotNull(todoDataResults);
         Assert.assertEquals(ppId, todoDataResults.get(0).getEoId());
     }
@@ -124,7 +124,7 @@ public class FSMonitorServiceObjectTest {
         exDatas.add(exData);
 
         when(fsMonitorExceptionDaoMock.findExceptions(anyInt())).thenReturn(exDatas);
-        List<ExceptionData> results = fsMonitorServiceObjectStub.findUnhandledExceptionDatas();
+        List<ExceptionData> results = fsMonitorServiceObjectStub.findUnhandledExceptionData();
         Assert.assertNotNull(results);
         Assert.assertEquals(ppId, results.get(0).getEoId());
     }

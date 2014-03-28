@@ -16,26 +16,11 @@ import java.util.List;
 public interface ExchangeOrderMonitorService {
 
     /**
-     * 获取更新日期为时间范围内且状态为初始或者支付中的付款单
+     * 获取更新日期为时间范围内的付款单
      * @param startDate
      * @param endDate
      * @return
      */
-    List<ExchangeOrderMonitorData> findPendIngAndInitExchangeOrderDatas(Date startDate, Date endDate);
+    List<ExchangeOrderMonitorData> findExchangeOrderData(Date startDate, Date endDate);
 
-    /**
-     * 获取更新日期为时间范围内且状态为初始或者支付中的付款单
-     * @param startDate
-     * @param endDate
-     * @return
-     */
-    List<ExchangeOrderMonitorData> findSuccessExchangeOrderDatas(Date startDate, Date endDate);
-
-    /**
-     * 获取更新日期为时间范围内且状态为初始或者支付中的付款单
-     * @param startDate
-     * @param endDate
-     * @return
-     */
-    List<ExchangeOrderMonitorData> findPayFailExchangeOrderDatas(Date startDate, Date endDate);
 }

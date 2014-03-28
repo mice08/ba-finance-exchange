@@ -19,11 +19,7 @@ import java.util.List;
 public interface ExchangeOrderMonitorDao extends GenericDao {
 
     @DAOAction(action = DAOActionType.QUERY)
-    public List<ExchangeOrderMonitorData> findExchangeOrderDatas(
-            @DAOParam("startDate") Date startDate,
-            @DAOParam("endDate") Date endDate,
-            @DAOParam("statusList") List<Integer> statusList
-    );
+    public List<ExchangeOrderMonitorData> findExchangeOrderData( @DAOParam("startDate") Date startDate,@DAOParam("endDate") Date endDate);
 
 
 }

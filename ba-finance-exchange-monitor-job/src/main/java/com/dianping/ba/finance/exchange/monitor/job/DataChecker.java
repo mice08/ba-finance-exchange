@@ -4,14 +4,15 @@ import java.util.Date;
 
 public abstract class DataChecker {
 
-    private Date monitorStartDate;
 
-    public Date getMonitorStartDate() {
-        return monitorStartDate;
+    private Date currentMonitorTime;
+
+    public void setCurrentMonitorTime(Date currentMonitorTime) {
+        this.currentMonitorTime = currentMonitorTime;
     }
 
-    public void setMonitorStartDate(Date monitorStartDate) {
-        this.monitorStartDate = monitorStartDate;
+    public Date getCurrentMonitorTime() {
+        return currentMonitorTime;
     }
 
     abstract public boolean run();
