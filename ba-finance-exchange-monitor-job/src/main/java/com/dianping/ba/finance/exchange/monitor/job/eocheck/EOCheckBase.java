@@ -1,6 +1,7 @@
 package com.dianping.ba.finance.exchange.monitor.job.eocheck;
 
 import com.dianping.ba.finance.exchange.monitor.api.enums.ExceptionType;
+import com.dianping.ba.finance.exchange.monitor.job.utils.ConstantUtils;
 import com.dianping.ba.finance.exchange.monitor.job.utils.DateUtils;
 
 import java.util.Date;
@@ -17,6 +18,7 @@ public abstract class EOCheckBase implements EOCheckRule {
     private long timeout;
 
     protected boolean checkIfTimeout(Date date) {
+        timeout = ConstantUtils.refundTimeout;
         long diff = DateUtils.timeDifference(date, new Date(), TimeUnit.MINUTES);
         return diff > timeout;
     }

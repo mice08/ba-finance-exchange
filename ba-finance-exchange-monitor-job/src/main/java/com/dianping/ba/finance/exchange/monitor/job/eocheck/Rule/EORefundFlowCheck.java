@@ -30,7 +30,6 @@ public class EORefundFlowCheck extends EOCheckBase {
 
     @Override
     public EOCheckResult check(ExchangeOrderMonitorData exchangeOrderMonitorData) {
-        setTimeout(ConstantUtils.refundTimeout);
         int eoId = exchangeOrderMonitorData.getEoId();
         List<ShopFundAccountFlowMonitorData> shopFundAccountFlowMonitorDataList = shopFundAccountFlowMonitorService.findShopFundAccountFlowData(eoId);
         if(CollectionUtils.isEmpty(shopFundAccountFlowMonitorDataList)){
