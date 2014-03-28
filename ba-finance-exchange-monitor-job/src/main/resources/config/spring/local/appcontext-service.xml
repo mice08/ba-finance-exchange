@@ -32,9 +32,29 @@
     <bean id="exchangeOrderDataChecker" class="com.dianping.ba.finance.exchange.monitor.job.ExchangeOrderDataChecker">
         <property name="exchangeOrderMonitorService" ref="exchangeOrderMonitorService"/>
         <property name="fsMonitorService" ref="fsMonitorService"/>
+        <property name="eoCheckRuleList" ref="eoCheckRuleList"/>
     </bean>
 
+    <bean id="eoCheckRuleList" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <ref bean="eoPendingAndInitCheck"/>
+                <ref bean="eoRefundFlowCheck"/>
+                <ref bean="eoSuccessFlowCheck"/>
+            </list>
+        </constructor-arg>
+    </bean>
 
+    <bean id="eoPendingAndInitCheck" class="com.dianping.ba.finance.exchange.monitor.job.eocheck.rule.EOPendIngAndInitCheck">
+        <property name="shopFundAccountFlowMonitorService" ref="shopFundAccountFlowMonitorService"/>
+    </bean>
 
+    <bean id="eoRefundFlowCheck" class="com.dianping.ba.finance.exchange.monitor.job.eocheck.rule.EOPendIngAndInitCheck">
+        <property name="shopFundAccountFlowMonitorService" ref="shopFundAccountFlowMonitorService"/>
+    </bean>
+
+    <bean id="eoSuccessFlowCheck" class="com.dianping.ba.finance.exchange.monitor.job.eocheck.rule.EOPendIngAndInitCheck">
+        <property name="shopFundAccountFlowMonitorService" ref="shopFundAccountFlowMonitorService"/>
+    </bean>
 
 </beans>

@@ -117,7 +117,10 @@ public class ExchangeOrderDataChecker extends DataChecker {
         this.fsMonitorService = fsMonitorService;
     }
 
-    public void setPpCheckRules(List<EOCheckRule> eoCheckRuleList) {
+    public void setEoCheckRuleList(List<EOCheckRule> eoCheckRuleList) {
         this.eoCheckRuleList = eoCheckRuleList;
     }
+
+
+
 }

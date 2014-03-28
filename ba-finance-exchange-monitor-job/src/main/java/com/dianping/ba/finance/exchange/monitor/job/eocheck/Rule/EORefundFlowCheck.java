@@ -1,4 +1,4 @@
-package com.dianping.ba.finance.exchange.monitor.job.eocheck.Rule;
+package com.dianping.ba.finance.exchange.monitor.job.eocheck.rule;
 
 import com.dianping.ba.finance.exchange.monitor.api.ShopFundAccountFlowMonitorService;
 import com.dianping.ba.finance.exchange.monitor.api.datas.ExchangeOrderMonitorData;
