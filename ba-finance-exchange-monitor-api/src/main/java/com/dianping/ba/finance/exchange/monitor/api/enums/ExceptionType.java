@@ -11,7 +11,7 @@ public enum ExceptionType {
 
     EO_SUCCESS_WITHOUT_OUT_FLOW(3),
 
-    EO_SUCCESS_WITH_MORE_FLOW(4),
+    EO_SUCCESS_WITH_WRONG_FLOW_COUNT(4),
 
     EO_REFUND_WITHOUT_FLOW(5),
 
@@ -32,7 +32,7 @@ public enum ExceptionType {
             case 3:
                 return EO_SUCCESS_WITHOUT_OUT_FLOW;
             case 4:
-                return EO_SUCCESS_WITH_MORE_FLOW;
+                return EO_SUCCESS_WITH_WRONG_FLOW_COUNT;
             case 5:
                 return EO_REFUND_WITHOUT_FLOW;
             case 6:
@@ -51,7 +51,7 @@ public enum ExceptionType {
             case 3:
                 return "付款单状态为支付成功，无负向资金账户流水";
             case 4:
-                return "付款单状态为支付成功，有多条资金账户流水";
+                return "付款单状态为支付成功，对应资金账户流水数量不对";
             case 5:
                 return "付款单状态为退票，无对应资金账户流水";
             case 6:
