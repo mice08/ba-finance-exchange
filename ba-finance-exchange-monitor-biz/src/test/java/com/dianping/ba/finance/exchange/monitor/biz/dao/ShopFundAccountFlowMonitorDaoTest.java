@@ -29,7 +29,7 @@ public class ShopFundAccountFlowMonitorDaoTest {
     @Test
     public void findShopFundAccountFlowDatasTest()
     {
-        List<ShopFundAccountFlowMonitorData> actual= shopFundAccountFlowMonitorDao.findShopFundAccountFlowDatas(910701);
+        List<ShopFundAccountFlowMonitorData> actual= shopFundAccountFlowMonitorDao.findShopFundAccountFlowData(910701);
         System.out.println(actual.size());
     }
 

@@ -11,6 +11,15 @@ public class ShopFundAccountFlowMonitorData {
     private int flowId;
     private int eoId;
     private int flowType;
+    private int sourceType;
+
+    public int getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(int sourceType) {
+        this.sourceType = sourceType;
+    }
 
     public int getFlowId() {
         return flowId;

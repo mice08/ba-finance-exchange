@@ -14,8 +14,8 @@ import java.util.List;
 public interface ShopFundAccountFlowMonitorService {
     /**
      * 根据eoid获取对应的流水记录
-     * @param eoIdList
+     * @param eoId
      * @return
      */
-    List<ShopFundAccountFlowMonitorData> findShopFundAccountFlowData(Integer eoIdList);
+    List<ShopFundAccountFlowMonitorData> findShopFundAccountFlowData(int eoId);
 }

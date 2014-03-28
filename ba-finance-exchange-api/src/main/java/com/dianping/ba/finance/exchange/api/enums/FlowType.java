@@ -5,8 +5,6 @@ package com.dianping.ba.finance.exchange.api.enums;
  * @author junjie.mao
  *
  */
-
-//TODO: refactor to uppercase
 public enum FlowType {
 
 	/**

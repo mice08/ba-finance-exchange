@@ -18,7 +18,5 @@ import java.util.List;
 public interface ShopFundAccountFlowMonitorDao extends GenericDao {
 
     @DAOAction(action = DAOActionType.QUERY)
-    public List<ShopFundAccountFlowMonitorData> findShopFundAccountFlowDatas(
-            @DAOParam("eoId") Integer eoId
-    );
+    public List<ShopFundAccountFlowMonitorData> findShopFundAccountFlowData(@DAOParam("eoId") int eoId);
 }

@@ -1,7 +1,5 @@
 package com.dianping.ba.finance.exchange.monitor.job.eocheck.Rule;
 
-import com.dianping.avatar.log.AvatarLogger;
-import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.monitor.api.ShopFundAccountFlowMonitorService;
 import com.dianping.ba.finance.exchange.monitor.api.datas.ExchangeOrderMonitorData;
 import com.dianping.ba.finance.exchange.monitor.api.datas.ShopFundAccountFlowMonitorData;
@@ -22,7 +20,6 @@ import java.util.List;
  */
 public class EOPendIngAndInitCheck extends EOCheckBase {
 
-    private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.monitor.job.eocheck.Rule.EOPendIngAndInitCheck");
     private ShopFundAccountFlowMonitorService shopFundAccountFlowMonitorService;
 
     @Override
@@ -35,13 +32,9 @@ public class EOPendIngAndInitCheck extends EOCheckBase {
     public EOCheckResult check(ExchangeOrderMonitorData exchangeOrderMonitorData) {
         List<ShopFundAccountFlowMonitorData> flowDataList = shopFundAccountFlowMonitorService.findShopFundAccountFlowData(exchangeOrderMonitorData.getEoId());
         if (CollectionUtils.isEmpty(flowDataList)) {
-            monitorLogger.error(String.format("ExchangeOrderMonitorData=%s, exceptionType=%s", exchangeOrderMonitorData, ExceptionType.EO_INITANDPENDING_WITH_NO_FLOW));
-            return createResult(false, true, ExceptionType.EO_INITANDPENDING_WITH_NO_FLOW);
-        } else {
-            if (flowDataList.size() > 1) {
-                monitorLogger.error(String.format("ExchangeOrderMonitorData=%s, exceptionType=%s", exchangeOrderMonitorData, ExceptionType.EO_INITANDPENDING_WITH_MORE_FLOW));
-                return createResult(false, true, ExceptionType.EO_INITANDPENDING_WITH_MORE_FLOW);
-            }
+            return createResult(false, true, ExceptionType.EO_INIT_PENDING_WITHOUT_FLOW);
+        } else if (flowDataList.size() > 1) {
+            return createResult(false, true, ExceptionType.EO_INIT_PENDING_WITH_MORE_FLOW);
         }
         return createValidResult();
     }

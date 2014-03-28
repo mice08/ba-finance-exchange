@@ -42,7 +42,7 @@ public class EOPendIngAndInitCheckTest {
         exchangeOrderMonitorData.setStatus(ExchangeOrderStatus.PENDING.value());
         when(shopFundAccountFlowMonitorService.findShopFundAccountFlowData(anyInt())).thenReturn(null);
         EOCheckResult actual = eoPendIngAndInitCheckStub.check(exchangeOrderMonitorData);
-        Assert.assertTrue(actual.getExceptionType()== ExceptionType.EO_INITANDPENDING_WITH_NO_FLOW);
+        Assert.assertTrue(actual.getExceptionType()== ExceptionType.EO_INIT_PENDING_WITHOUT_FLOW);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class EOPendIngAndInitCheckTest {
         when(shopFundAccountFlowMonitorService.findShopFundAccountFlowData(anyInt())).thenReturn(shopFundAccountFlowMonitorDataList);
         EOCheckResult actual = eoPendIngAndInitCheckStub.check(exchangeOrderMonitorData);
 
-        Assert.assertTrue(actual.getExceptionType()== ExceptionType.EO_INITANDPENDING_WITH_MORE_FLOW);
+        Assert.assertTrue(actual.getExceptionType()== ExceptionType.EO_INIT_PENDING_WITH_MORE_FLOW);
     }
 
     @Test

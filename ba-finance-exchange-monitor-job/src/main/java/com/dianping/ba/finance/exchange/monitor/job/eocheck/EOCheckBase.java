@@ -16,8 +16,8 @@ import java.util.concurrent.TimeUnit;
 public abstract class EOCheckBase implements EOCheckRule {
     private long timeout;
 
-    protected boolean checkIfTimeout(Date d) {
-        long diff = DateUtils.timeDifference(d, new Date(), TimeUnit.MINUTES);
+    protected boolean checkIfTimeout(Date date) {
+        long diff = DateUtils.timeDifference(date, new Date(), TimeUnit.MINUTES);
         return diff > timeout;
     }
 
@@ -26,12 +26,12 @@ public abstract class EOCheckBase implements EOCheckRule {
     }
 
     protected EOCheckResult createValidResult() {
-        return createResult(true ,false, null);
+        return createResult(true ,false, ExceptionType.DEFAULT);
     }
 
-    protected EOCheckResult createResult(boolean valided, boolean timeout, ExceptionType exceptionType) {
+    protected EOCheckResult createResult(boolean valid, boolean timeout, ExceptionType exceptionType) {
         EOCheckResult result = new EOCheckResult();
-        result.setValid(valided);
+        result.setValid(valid);
         result.setTimeout(timeout);
         result.setExceptionType(exceptionType);
         return result;

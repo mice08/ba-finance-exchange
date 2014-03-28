@@ -15,11 +15,11 @@ import java.util.List;
  */
 public class ShopFundAccountFlowMonitorServiceObject implements ShopFundAccountFlowMonitorService {
 
-    ShopFundAccountFlowMonitorDao shopFundAccountFlowMonitorDao;
+    private ShopFundAccountFlowMonitorDao shopFundAccountFlowMonitorDao;
 
     @Override
-    public List<ShopFundAccountFlowMonitorData> findShopFundAccountFlowData(Integer eoId) {
-        return shopFundAccountFlowMonitorDao.findShopFundAccountFlowDatas(eoId);
+    public List<ShopFundAccountFlowMonitorData> findShopFundAccountFlowData(int eoId) {
+        return shopFundAccountFlowMonitorDao.findShopFundAccountFlowData(eoId);
     }
 
     public void setShopFundAccountFlowMonitorDao(ShopFundAccountFlowMonitorDao shopFundAccountFlowMonitorDao) {

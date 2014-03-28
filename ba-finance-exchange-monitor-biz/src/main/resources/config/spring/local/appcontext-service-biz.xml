@@ -4,18 +4,17 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
 
-    <bean id="exchangeOrderMonitorServiceObject"
-          class="com.dianping.ba.finance.exchange.monitor.biz.impl.ExchangeOrderMonitorServiceObject">
+    <bean id="exchangeOrderMonitorService" class="com.dianping.ba.finance.exchange.monitor.biz.impl.ExchangeOrderMonitorServiceObject">
         <property name="exchangeOrderMonitorDao" ref="exchangeOrderMonitorDao"/>
     </bean>
-    <bean id="fsMonitorServiceObject"
-          class="com.dianping.ba.finance.exchange.monitor.biz.impl.FSMonitorServiceObject">
+
+    <bean id="fsMonitorService" class="com.dianping.ba.finance.exchange.monitor.biz.impl.FSMonitorServiceObject">
         <property name="fsMonitorTimeDao" ref="fsMonitorTimeDao"/>
         <property name="fsMonitorTodoDao" ref="fsMonitorTodoDao"/>
         <property name="fsMonitorExceptionDao" ref="fsMonitorExceptionDao"/>
     </bean>
-    <bean id="shopFundAccountFlowMonitorServiceObject"
-          class="com.dianping.ba.finance.exchange.monitor.biz.impl.ShopFundAccountFlowMonitorServiceObject">
+
+    <bean id="shopFundAccountFlowMonitorService" class="com.dianping.ba.finance.exchange.monitor.biz.impl.ShopFundAccountFlowMonitorServiceObject">
         <property name="shopFundAccountFlowMonitorDao" ref="shopFundAccountFlowMonitorDao"/>
     </bean>
 </beans>
