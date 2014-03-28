@@ -7,6 +7,7 @@ import com.dianping.ba.finance.exchange.monitor.api.enums.ExceptionType;
 import com.dianping.ba.finance.exchange.monitor.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.monitor.job.eocheck.EOCheckBase;
 import com.dianping.ba.finance.exchange.monitor.job.eocheck.EOCheckResult;
+import com.dianping.ba.finance.exchange.monitor.job.utils.ConstantUtils;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class EOSuccessFlowCheck extends EOCheckBase {
 
     @Override
     public EOCheckResult check(ExchangeOrderMonitorData exchangeOrderMonitorData) {
+        setTimeout(ConstantUtils.paySuccessTimeout);
         List<ShopFundAccountFlowMonitorData> flowDataList = shopFundAccountFlowMonitorService.findShopFundAccountFlowData(exchangeOrderMonitorData.getEoId());
         if (CollectionUtils.isEmpty(flowDataList)) {
             return createResult(false, checkIfTimeout(exchangeOrderMonitorData.getLastUpdateDate()), ExceptionType.EO_SUCCESS_WITHOUT_OUT_FLOW);

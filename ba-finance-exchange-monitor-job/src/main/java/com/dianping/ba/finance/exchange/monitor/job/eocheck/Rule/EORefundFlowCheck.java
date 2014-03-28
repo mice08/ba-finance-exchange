@@ -7,6 +7,7 @@ import com.dianping.ba.finance.exchange.monitor.api.enums.ExceptionType;
 import com.dianping.ba.finance.exchange.monitor.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.monitor.job.eocheck.EOCheckBase;
 import com.dianping.ba.finance.exchange.monitor.job.eocheck.EOCheckResult;
+import com.dianping.ba.finance.exchange.monitor.job.utils.ConstantUtils;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class EORefundFlowCheck extends EOCheckBase {
 
     @Override
     public EOCheckResult check(ExchangeOrderMonitorData exchangeOrderMonitorData) {
+        setTimeout(ConstantUtils.refundTimeout);
         int eoId = exchangeOrderMonitorData.getEoId();
         List<ShopFundAccountFlowMonitorData> shopFundAccountFlowMonitorDataList = shopFundAccountFlowMonitorService.findShopFundAccountFlowData(eoId);
         if(CollectionUtils.isEmpty(shopFundAccountFlowMonitorDataList)){
@@ -36,27 +38,6 @@ public class EORefundFlowCheck extends EOCheckBase {
         }else if(shopFundAccountFlowMonitorDataList.size() != 4){
             return createResult(false, checkIfTimeout(exchangeOrderMonitorData.getLastUpdateDate()), ExceptionType.EO_REFUND_WITH_WRONG_FLOW_COUNT);
         }
-//        boolean hasPPInFlow = false;
-//        boolean hasPPOutFlow = false;
-//        boolean hasEOInFlow = false;
-//        boolean hasEOOutFlow = false;
-//        for(ShopFundAccountFlowMonitorData flowMonitorData: shopFundAccountFlowMonitorDataList){
-//            int flowType = flowMonitorData.getFlowType();
-//            int sourceType = flowMonitorData.getSourceType();
-//            if(flowType == FlowType.IN.value() && sourceType == SourceType.PaymentPlan.value()){
-//                hasEOInFlow = true;
-//            }else if(flowType == FlowType.IN.value() && sourceType == SourceType.ExchangeOrder.value()){
-//                hasEOInFlow = true;
-//            }else if(flowType == FlowType.OUT.value() && sourceType == SourceType.PaymentPlan.value()){
-//                hasPPOutFlow = true;
-//            }else if(flowType == FlowType.OUT.value() && sourceType == SourceType.ExchangeOrder.value()){
-//                hasEOOutFlow = true;
-//            }
-//        }
-//        if(!hasPPInFlow){
-//            return createResult(false, checkIfTimeout(exchangeOrderMonitorData.getLastUpdateDate()), ExceptionType.EO_REFUND_WITHOUT_PP_IN_FLOW);
-//        }
-
         return createValidResult();
     }
 
