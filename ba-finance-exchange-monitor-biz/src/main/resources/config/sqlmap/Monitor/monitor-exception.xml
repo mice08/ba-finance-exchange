@@ -12,7 +12,7 @@
 
     <insert id="insertMonitorException" parameterClass="map">
         INSERT INTO FS_MonitorException
-        (EOID,
+        (EoId,
         ExceptionType,
         AddDate,
         Status)
@@ -26,7 +26,7 @@
         </selectKey>
     </insert>
 
-    <select id="findExceptions" resultClass="exceptionData">
+    <select id="findExceptions" resultMap="exceptionData" parameterClass="map">
         SELECT ExceptionID,
                EOID,
                ExceptionType,
@@ -41,8 +41,8 @@
         SET Status = #setStatus#
         WHERE Status = #preStatus#
         AND ExceptionID IN
-            <iterate open="(" close=")" conjunction="," property="exceptionIdList">
-              #exceptionIdList[]#
-            </iterate>
+        <iterate open="(" close=")" conjunction="," property="exceptionIdList">
+            #exceptionIdList[]#
+        </iterate>
     </update>
 </sqlMap>

@@ -1,51 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
-<sqlMap namespace="PaymentPlan">
+<sqlMap namespace="ExchangeOrder">
 
-    <typeAlias alias="PaymentPlanMonitorData" type="com.dianping.ba.finance.exchange.monitor.api.datas.ExchangeOrderMonitorData"></typeAlias>
-    <resultMap id="paymentPlanMonitorData" class="PaymentPlanMonitorData">
-        <result property="eoId" column="PPID"/>
+    <typeAlias alias="ExchangeOrderMonitorData"
+               type="com.dianping.ba.finance.exchange.monitor.api.datas.ExchangeOrderMonitorData"></typeAlias>
+    <resultMap id="exchangeOrderMonitorData" class="ExchangeOrderMonitorData">
+        <result property="eoId" column="ExchangeOrderID"/>
         <result property="addDate" column="AddDate"/>
         <result property="status" column="Status"/>
         <result property="lastUpdateDate" column="LastUpdateDate"/>
     </resultMap>
 
-
-    <select id="findPaymentPlanDatas" parameterClass="map" resultClass="paymentPlanMonitorData">
-        SELECT pp.PPID           AS PPID,
-               pp.Status         AS Status,
-               pp.AddDate        AS AddDate,
-               pp.LastUpdateDate AS LastUpdateDate
-        FROM   FS_PaymentPlan pp
-        <dynamic prepend="WHERE">
+    <select id="findExchangeOrderDatas" parameterClass="map" resultClass="exchangeOrderMonitorData">
+        SELECT eo.ExchangeOrderID AS ExchangeOrderID,
+        eo.Status AS Status,
+        eo.AddDate AS AddDate,
+        eo.LastUpdateDate AS LastUpdateDate
+        FROM FS_ExchangeOrder eo
+        <dynamic prepend="where">
+            <isNotNull property="statusList" prepend="AND">
+                eo.Status IN
+                <iterate open="(" close=")" conjunction="," property="statusList">
+                    #statusList[]#
+                </iterate>
+            </isNotNull>
             <isNotNull property="endDate" prepend="AND">
-                pp.LastUpdateDate &lt;= #endDate#
+                eo.LastUpdateDate &lt;= #endDate#
             </isNotNull>
             <isNotNull property="startDate" prepend="AND">
-                pp.LastUpdateDate > #startDate#
+                eo.LastUpdateDate > #startDate#
             </isNotNull>
         </dynamic>
     </select>
 
-    <select id="loadPaymentPlanData" parameterClass="map" resultClass="paymentPlanMonitorData">
-        SELECT pp.PPID           AS PPID,
-               pp.Status         AS Status,
-               pp.AddDate        AS AddDate,
-               pp.LastUpdateDate AS LastUpdateDate
-        FROM   FS_PaymentPlan pp
-        WHERE  pp.PPID = #eoId#;
-    </select>
-
-
-    <select id="ppCountInRelation" parameterClass="map" resultClass="java.lang.Integer">
-        SELECT count(1)
-        FROM   FS_BalanceRelation br
-        WHERE  br.PPID = #eoId#;
-    </select>
-
-    <select id="findFlowIds" parameterClass="map" resultClass="java.lang.Integer">
-        SELECT br.FAFlowID AS flowId
-        FROM   FS_BalanceRelation br
-        WHERE  br.PPID = #eoId#;
-    </select>
 </sqlMap>

@@ -16,9 +16,14 @@ import java.util.List;
  * Time: 下午3:10
  * To change this template use File | Settings | File Templates.
  */
-public interface PaymentPlanMonitorDao  extends GenericDao {
+public interface ExchangeOrderMonitorDao extends GenericDao {
 
-
+    @DAOAction(action = DAOActionType.QUERY)
+    public List<ExchangeOrderMonitorData> findExchangeOrderDatas(
+            @DAOParam("startDate") Date startDate,
+            @DAOParam("endDate") Date endDate,
+            @DAOParam("statusList") List<Integer> statusList
+    );
 
 
 }
