@@ -38,7 +38,7 @@ public class ExchangeOrderMonitorDaoTest {
 
     @Test
     public void testLoadExchangeOrderData(){
-        ExchangeOrderMonitorData actual = exchangeOrderMonitorDao.loadExchangeOrderData(910700);
+        ExchangeOrderMonitorData actual = exchangeOrderMonitorDao.loadExchangeOrderData(910715);
         System.out.println(actual.getEoId());
     }
 }

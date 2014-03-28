@@ -82,7 +82,7 @@ public class ExchangeOrderDataChecker extends DataChecker {
             if (result.isTimeout()) {
                 addException(eoData.getEoId(), result.getExceptionType());
                 if (todoData != null) {
-                    fsMonitorService.updateExceptionToHandled(Arrays.asList(todoData.getTodoId()));
+                    fsMonitorService.updateTodoToHandled(Arrays.asList(todoData.getTodoId()));
                 }
             } else {
                 if (todoData == null) {
