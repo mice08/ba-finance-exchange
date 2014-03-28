@@ -23,4 +23,6 @@ public interface ExchangeOrderMonitorService {
      */
     List<ExchangeOrderMonitorData> findExchangeOrderData(Date startDate, Date endDate);
 
+    ExchangeOrderMonitorData loadExchangeOrderData(int eoId);
+
 }

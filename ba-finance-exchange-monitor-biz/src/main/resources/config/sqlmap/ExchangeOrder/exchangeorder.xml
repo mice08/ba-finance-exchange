@@ -11,26 +11,35 @@
         <result property="lastUpdateDate" column="LastUpdateDate"/>
     </resultMap>
 
-    <select id="findExchangeOrderDatas" parameterClass="map" resultClass="exchangeOrderMonitorData">
-        SELECT eo.ExchangeOrderID AS ExchangeOrderID,
-        eo.Status AS Status,
-        eo.AddDate AS AddDate,
-        eo.LastUpdateDate AS LastUpdateDate
-        FROM FS_ExchangeOrder eo
+    <select id="findExchangeOrderData" parameterClass="map" resultClass="exchangeOrderMonitorData">
+        SELECT ExchangeOrderID,
+                Status,
+                AddDate,
+                LastUpdateDate
+        FROM FS_ExchangeOrder
         <dynamic prepend="where">
             <isNotNull property="statusList" prepend="AND">
-                eo.Status IN
+                Status IN
                 <iterate open="(" close=")" conjunction="," property="statusList">
                     #statusList[]#
                 </iterate>
             </isNotNull>
             <isNotNull property="endDate" prepend="AND">
-                eo.LastUpdateDate &lt;= #endDate#
+                LastUpdateDate &lt;= #endDate#
             </isNotNull>
             <isNotNull property="startDate" prepend="AND">
-                eo.LastUpdateDate > #startDate#
+                LastUpdateDate &gt; #startDate#
             </isNotNull>
         </dynamic>
+    </select>
+
+    <select id="loadExchangeOrderData" parameterClass="map" resultClass="exchangeOrderMonitorData">
+        SELECT ExchangeOrderID,
+                Status,
+                AddDate,
+                LastUpdateDate
+        FROM FS_ExchangeOrder
+        WHERE ExchangeOrderID = #eoId#
     </select>
 
 </sqlMap>

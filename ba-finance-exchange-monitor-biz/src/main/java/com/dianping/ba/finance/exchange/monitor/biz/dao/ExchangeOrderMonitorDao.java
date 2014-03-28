@@ -21,5 +21,8 @@ public interface ExchangeOrderMonitorDao extends GenericDao {
     @DAOAction(action = DAOActionType.QUERY)
     public List<ExchangeOrderMonitorData> findExchangeOrderData( @DAOParam("startDate") Date startDate,@DAOParam("endDate") Date endDate);
 
+    @DAOAction(action = DAOActionType.LOAD)
+    public ExchangeOrderMonitorData loadExchangeOrderData(@DAOParam("eoId") int eoId);
+
 
 }

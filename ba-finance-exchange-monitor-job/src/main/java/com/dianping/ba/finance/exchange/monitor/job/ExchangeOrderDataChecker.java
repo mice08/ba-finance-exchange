@@ -38,24 +38,24 @@ public class ExchangeOrderDataChecker extends DataChecker {
     public boolean run() {
         long startTime = System.currentTimeMillis();
         try {
-            checkPaymentPlan();
+            checkExchangeOrder();
         } catch (Exception e) {
             monitorLogger.error(LogUtils.formatErrorLogMsg(startTime, "ExchangeOrderDataChecker.run", ""), e);
         }
         return false;
     }
 
-    private void checkPaymentPlan() {
-        checkToDo();
+    private void checkExchangeOrder() {
+        checkToDoData();
         checkNewData();
     }
 
-    private void checkToDo() {
-//        List<MonitorTodoData> todoList = fsMonitorService.findMonitorTodoByAP();
-//        for (MonitorTodoData todoData : todoList) {
-//            AccountPayableData vData = pcAccountPayableService.loadAccountPayableData(todoData.getApId());
-//            checkAccountPayableData(vData, todoData);
-//        }
+    private void checkToDoData() {
+        List<TodoData> todoList = fsMonitorService.findUnhandledToDoData();
+        for (TodoData todoData : todoList) {
+            ExchangeOrderMonitorData eoData = exchangeOrderMonitorService.loadExchangeOrderData(todoData.getEoId());
+            checkExchangeOrderData(eoData, todoData);
+        }
     }
 
     private void checkNewData() {

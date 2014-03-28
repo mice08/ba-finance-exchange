@@ -25,6 +25,11 @@ public class ExchangeOrderMonitorServiceObject implements ExchangeOrderMonitorSe
         return exchangeOrderMonitorDao.findExchangeOrderData(startDate, endDate);
     }
 
+    @Override
+    public ExchangeOrderMonitorData loadExchangeOrderData(int eoId) {
+        return exchangeOrderMonitorDao.loadExchangeOrderData(eoId);
+    }
+
 
     public void setExchangeOrderMonitorDao(ExchangeOrderMonitorDao exchangeOrderMonitorDao) {
         this.exchangeOrderMonitorDao = exchangeOrderMonitorDao;
