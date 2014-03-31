@@ -13,7 +13,7 @@
 		<property name="password" value="${ba-finance-exchange-service.fsexchange.jdbc.password}" />
 		<property name="driverClass" value="${ba-finance-exchange-service.fsexchange.jdbc.driverClassName}" />
 		<property name="minPoolSize" value="${ba-finance-exchange-service.fsexchange.c3p0.minSize}" />
-		<property name="maxPoolSize" value="${ba-finance-exchange-biz.c3p0.maxSize}" />
+		<property name="maxPoolSize" value="${ba-finance-exchange-service.fsexchange.c3p0.maxSize}" />
 		<property name="initialPoolSize" value="${ba-finance-exchange-service.fsexchange.c3p0.maxSize}" />
 		<property name="maxIdleTime" value="1800" />
 		<property name="idleConnectionTestPeriod" value="60" />
