@@ -24,6 +24,7 @@ public class MonitorMailService {
             }
 
             HashMap<String, String> contentMap = new HashMap<String, String>();
+            contentMap.put("title", "付款单异常");
             contentMap.put("content", mailContent);
             monitorLogger.info("Start email, content:" + mailContent);
 
