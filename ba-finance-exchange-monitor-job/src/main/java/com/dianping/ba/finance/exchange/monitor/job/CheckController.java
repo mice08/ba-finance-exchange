@@ -27,36 +27,33 @@ public class CheckController {
     private MonitorSmsService monitorSmsService;
 
     public void execute() {
-        while(true) {
-            monitorLogger.info("Start to monitor....");
-            Date currentMonitorTime = Calendar.getInstance().getTime();
-            long startTime = System.currentTimeMillis();
-            int batchCount = dataCheckList.size();
-            final CountDownLatch doneSignal = new CountDownLatch(batchCount);
-            for(final DataChecker dataCheck: dataCheckList){
-                dataCheck.setCurrentMonitorTime(currentMonitorTime);
-                executorService.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            monitorLogger.info(dataCheck.getClass() + " start checking....");
-                            dataCheck.run();
-                            monitorLogger.info(dataCheck.getClass() + " end checking....");
-                        } finally {
-                            doneSignal.countDown();
-                        }
+        monitorLogger.info("Start to monitor....");
+        Date currentMonitorTime = Calendar.getInstance().getTime();
+        long startTime = System.currentTimeMillis();
+        int batchCount = dataCheckList.size();
+        final CountDownLatch doneSignal = new CountDownLatch(batchCount);
+        for(final DataChecker dataCheck: dataCheckList){
+            dataCheck.setCurrentMonitorTime(currentMonitorTime);
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        monitorLogger.info(dataCheck.getClass() + " start checking....");
+                        dataCheck.run();
+                        monitorLogger.info(dataCheck.getClass() + " end checking....");
+                    } finally {
+                        doneSignal.countDown();
                     }
-                });
-            }
-            try {
-                doneSignal.await();
-                fsMonitorService.addMonitorTime(currentMonitorTime);
-                notifyException();
-                monitorLogger.info("End monitoring....");
-                Thread.sleep(TimeUnit.MINUTES.toMillis(ConstantUtils.jobIntervalMinutes));
-            } catch (InterruptedException e) {
-                monitorLogger.error(LogUtils.formatErrorLogMsg(startTime, "CheckController.execute", ""), e);
-            }
+                }
+            });
+        }
+        try {
+            doneSignal.await();
+            fsMonitorService.addMonitorTime(currentMonitorTime);
+            notifyException();
+            monitorLogger.info("End monitoring....");
+        } catch (InterruptedException e) {
+            monitorLogger.error(LogUtils.formatErrorLogMsg(startTime, "CheckController.execute", ""), e);
         }
     }
 
