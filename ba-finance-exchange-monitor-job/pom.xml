@@ -61,7 +61,7 @@
                 <version>2.2-beta-5</version>
                 <configuration>
                     <appendAssemblyId>false</appendAssemblyId>
-                    <finalName>${artifactId}-${version}</finalName>
+                    <finalName>${artifactId}-${env}-${version}</finalName>
                     <descriptors>
                         <descriptor>assembly.xml</descriptor>
                     </descriptors>
