@@ -18,11 +18,13 @@ public class JobBooter {
 		try{
             monitorLogger.info("============job start===============");
 			startSpring();
-            monitorLogger.info("============job end without exception===============");
-		}catch (Exception e){
-            monitorLogger.error(LogUtils.formatErrorLogMsg(startTime, "StartBooter", ""), e);
-		}
-	}
+            monitorLogger.info("============job end===============");
+		} catch (Exception e){
+            monitorLogger.error(LogUtils.formatErrorLogMsg(startTime, "JobBooter", ""), e);
+		} finally {
+            System.exit(0);
+        }
+    }
 
 	/**
 	 * 启动spring容器
