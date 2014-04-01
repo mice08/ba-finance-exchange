@@ -4,10 +4,7 @@ import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ExchangeOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
-import com.dianping.ba.finance.exchange.api.datas.EOAndFlowIdSummaryData;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData;
+import com.dianping.ba.finance.exchange.api.datas.*;
 import com.dianping.ba.finance.exchange.api.dtos.*;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.FlowType;
@@ -22,7 +19,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Created with IntelliJ IDEA.
@@ -219,6 +215,22 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
 
     private List<ExchangeOrderData> findExchangeOrderDataByRefundId(List<String> bizCodeList) {
         return exchangeOrderDao.findExchangeOrderByBizCode(bizCodeList);
+    }
+
+    @Override
+    public List<EOMonitorDTO> findEOMonitorDataByFlowIdList(List<Integer> flowIdList) {
+        long startTime = System.currentTimeMillis();
+        List<EOMonitorData> eoMonitorDataList = exchangeOrderDao.findEOMonitorDataByFlowIdList(flowIdList);
+        List<EOMonitorDTO> eoMonitorDTOList = new ArrayList<EOMonitorDTO>(eoMonitorDataList.size());
+        try {
+            for (EOMonitorData data : eoMonitorDataList) {
+                EOMonitorDTO dto = ConvertUtils.copy(data, EOMonitorDTO.class);
+                eoMonitorDTOList.add(dto);
+            }
+        } catch (Exception e) {
+            LogUtils.log(monitorLogger, startTime, "findEOMonitorDataByFlowIdList", Level.ERROR, "flowIdList:" + flowIdList, e);
+        }
+        return eoMonitorDTOList;
     }
 
     public boolean updateExchangeOrderToRefund(List<RefundDTO> refundDTOList, int loginId) throws Exception {
