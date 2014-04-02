@@ -3,7 +3,7 @@ package com.dianping.ba.finance.exchange.monitor.job.service;
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.monitor.job.utils.ConstantUtils;
-import com.dianping.ba.finance.exchange.monitor.job.utils.LogUtils;
+import com.dianping.finance.common.util.LogUtils;
 import com.dianping.sms.biz.SMSService;
 import org.apache.commons.lang.ArrayUtils;
 

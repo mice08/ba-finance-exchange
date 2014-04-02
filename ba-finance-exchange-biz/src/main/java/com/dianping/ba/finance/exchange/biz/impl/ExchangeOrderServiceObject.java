@@ -14,6 +14,10 @@ import com.dianping.ba.finance.exchange.biz.dao.ExchangeOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ExchangeOrderStatusChangeNotify;
 import com.dianping.ba.finance.exchange.biz.utils.*;
 import com.dianping.core.type.PageModel;
+import com.dianping.finance.common.util.ConvertUtils;
+import com.dianping.finance.common.util.JsonUtils;
+import com.dianping.finance.common.util.ListUtils;
+import com.dianping.finance.common.util.LogUtils;
 import org.apache.log4j.Level;
 import org.springframework.util.CollectionUtils;
 
@@ -40,28 +44,28 @@ public class ExchangeOrderServiceObject implements ExchangeOrderService {
     }
 
     @Override
-    public int updateExchangeOrderToSuccess(List<Integer> orderIds, int loginId) {
-        long startTime = System.currentTimeMillis();
-        Date orderDate = getCurrentTime();
-        try {
-            int affectedRows = exchangeOrderDao.updateExchangeOrderDataByOrderIdList(orderIds, orderDate, ExchangeOrderStatus.PENDING.value(), ExchangeOrderStatus.SUCCESS.value(), loginId);
-            if (affectedRows != orderIds.size()) {
-                LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess.updateExchangeOrderDataByOrderIdList", Level.ERROR, "orderIds:" + ListUtils.convertIntegerListToString(orderIds) + ",affectedRows not equal orderIds size,affectedRows:" + affectedRows);
-            }
-            List<ExchangeOrderData> exchangeOrderDataList = exchangeOrderDao.findExchangeOrderListByOrderIdList(orderIds);
-            for(ExchangeOrderData exchangeOrderData: exchangeOrderDataList){
-                if(exchangeOrderData.getStatus() == ExchangeOrderStatus.SUCCESS.value()){
-                    final ExchangeOrderDTO exchangeOrderDTO = ConvertUtils.copy(exchangeOrderData, ExchangeOrderDTO.class);
-                    exchangeOrderDTO.setLoginId(loginId);
-                    exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
-                }
-            }
-            return affectedRows;
-        } catch (Exception ex) {
-            LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", Level.ERROR, "orderIds:" + ListUtils.convertIntegerListToString(orderIds), ex);
-            return 0;
-        }
-    }
+	public int updateExchangeOrderToSuccess(List<Integer> orderIds, int loginId) {
+		long startTime = System.currentTimeMillis();
+		Date orderDate = getCurrentTime();
+		try {
+			int affectedRows = exchangeOrderDao.updateExchangeOrderDataByOrderIdList(orderIds, orderDate, ExchangeOrderStatus.PENDING.value(), ExchangeOrderStatus.SUCCESS.value(), loginId);
+			if (affectedRows != orderIds.size()) {
+				LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess.updateExchangeOrderDataByOrderIdList", Level.ERROR, "orderIds:" + orderIds + ",affectedRows not equal orderIds size,affectedRows:" + affectedRows);
+			}
+			List<ExchangeOrderData> exchangeOrderDataList = exchangeOrderDao.findExchangeOrderListByOrderIdList(orderIds);
+			for (ExchangeOrderData exchangeOrderData : exchangeOrderDataList) {
+				if (exchangeOrderData.getStatus() == ExchangeOrderStatus.SUCCESS.value()) {
+					final ExchangeOrderDTO exchangeOrderDTO = ConvertUtils.copy(exchangeOrderData, ExchangeOrderDTO.class);
+					exchangeOrderDTO.setLoginId(loginId);
+					exchangeOrderStatusChangeNotify.exchangeOrderStatusChangeNotify(exchangeOrderDTO);
+				}
+			}
+			return affectedRows;
+		} catch (Exception ex) {
+			LogUtils.log(monitorLogger, startTime, "updateExchangeOrderToSuccess", Level.ERROR, "orderIds:" + orderIds, ex);
+			return 0;
+		}
+	}
 
     @Override
     public PageModel paginateExchangeOrderList(ExchangeOrderSearchBean searchBean, int page, int pageSize) {

@@ -2,7 +2,7 @@ package com.dianping.ba.finance.exchange.monitor.job.eocheck;
 
 import com.dianping.ba.finance.exchange.monitor.api.enums.ExceptionType;
 import com.dianping.ba.finance.exchange.monitor.job.utils.ConstantUtils;
-import com.dianping.ba.finance.exchange.monitor.job.utils.DateUtils;
+import com.dianping.finance.common.util.DateUtils;
 
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
