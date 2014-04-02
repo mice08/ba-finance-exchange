@@ -7,14 +7,12 @@ import com.dianping.ba.finance.exchange.monitor.api.datas.ExceptionData;
 import com.dianping.ba.finance.exchange.monitor.api.enums.ExceptionType;
 import com.dianping.ba.finance.exchange.monitor.job.service.MonitorMailService;
 import com.dianping.ba.finance.exchange.monitor.job.service.MonitorSmsService;
-import com.dianping.ba.finance.exchange.monitor.job.utils.ConstantUtils;
-import com.dianping.ba.finance.exchange.monitor.job.utils.LogUtils;
+import com.dianping.finance.common.util.LogUtils;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 
 public class CheckController {

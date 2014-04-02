@@ -1,6 +1,8 @@
 package com.dianping.ba.finance.exchange.biz.utils;
 
-import java.text.SimpleDateFormat;
+import com.dianping.finance.common.util.DateUtils;
+
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -13,17 +15,23 @@ import java.util.Date;
  */
 public class BizUtils {
 
-    /**
-     * 创建sequence
-     * @param clientNo 客户no
-     * @param bizId   id
-     * @return
-     */
-    public static String createSequence(String clientNo, String bizId) {
-        Date today=Calendar.getInstance().getTime();
-        String todayHour = DateUtils.getFormatDateString(today,"yyyyMMddHH");
-        return clientNo + "|" + bizId+"|"+todayHour;
-    }
+	/**
+	 * 创建sequence
+	 *
+	 * @param clientNo 客户no
+	 * @param bizId    id
+	 * @return
+	 */
+	public static String createSequence(String clientNo, String bizId) {
+		Date today = Calendar.getInstance().getTime();
+		String todayHour;
+		try {
+			todayHour = DateUtils.format("yyyyMMddHH", today);
+		} catch (ParseException e) {
+			todayHour ="";
+		}
+		return clientNo + "|" + bizId + "|" + todayHour;
+	}
 
 
 }

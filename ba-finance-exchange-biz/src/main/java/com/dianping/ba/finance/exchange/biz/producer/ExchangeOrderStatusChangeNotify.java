@@ -3,9 +3,8 @@ package com.dianping.ba.finance.exchange.biz.producer;
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.dtos.ExchangeOrderDTO;
-import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
-import com.dianping.ba.finance.exchange.biz.utils.JsonUtils;
-import com.dianping.ba.finance.exchange.biz.utils.LogUtils;
+import com.dianping.finance.common.util.JsonUtils;
+import com.dianping.finance.common.util.LogUtils;
 import com.dianping.swallow.producer.Producer;
 import org.apache.log4j.Level;
 
@@ -32,7 +31,7 @@ public class ExchangeOrderStatusChangeNotify {
             monitorLogger.info("ExchangeOrderStatusChangeNotify invoked!!!");
         } catch (Exception ex) {
             LogUtils.log(monitorLogger, startTime, "exchangeOrderStatusChangeNotify", Level.ERROR, "ExchangeOrderId=" + exchangeOrderDTO.getExchangeOrderId() + "&OrderStatus=" +
-                    exchangeOrderDTO.getStatus() + "&message=" + message, ex);
+					exchangeOrderDTO.getStatus() + "&message=" + message, ex);
         }
     }
 

@@ -1,6 +1,6 @@
 package com.dianping.ba.finance.exchange.monitor.job.utils;
 
-import com.dianping.combiz.spring.util.PropertiesLoaderSupportUtils;
+import com.dianping.finance.common.util.LionConfigUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,9 +10,8 @@ import com.dianping.combiz.spring.util.PropertiesLoaderSupportUtils;
  * To change this template use File | Settings | File Templates.
  */
 public class ConstantUtils {
-    public static String monitorMailAddress = PropertiesLoaderSupportUtils.getProperty("ba-finance-exchange-monitor-job.MonitorMailAddress");
-    public static String monitorMobileNo = PropertiesLoaderSupportUtils.getProperty("ba-finance-exchange-monitor-job.MonitorMobileNo");
-    public static int refundTimeout = PropertiesLoaderSupportUtils.getIntProperty("ba-finance-exchange-monitor-job.RefundTimeout",5);
-    public static int paySuccessTimeout = PropertiesLoaderSupportUtils.getIntProperty("ba-finance-exchange-monitor-job.paySuccessTimeout",5);
-
+	public static String monitorMailAddress = LionConfigUtils.getProperty("ba-finance-exchange-monitor-job.MonitorMailAddress");
+	public static String monitorMobileNo = LionConfigUtils.getProperty("ba-finance-exchange-monitor-job.MonitorMobileNo");
+	public static int refundTimeout = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-monitor-job.RefundTimeout", "5"));
+	public static int paySuccessTimeout = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-monitor-job.paySuccessTimeout", "5"));
 }

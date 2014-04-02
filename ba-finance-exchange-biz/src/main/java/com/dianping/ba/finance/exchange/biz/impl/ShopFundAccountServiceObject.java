@@ -16,9 +16,9 @@ import com.dianping.ba.finance.exchange.api.datas.ShopFundAccountData;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountDao;
 import com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountFlowDao;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
-import com.dianping.ba.finance.exchange.biz.utils.ConvertUtils;
-import com.dianping.ba.finance.exchange.biz.utils.JsonUtils;
-import com.dianping.ba.finance.exchange.biz.utils.LogUtils;
+import com.dianping.finance.common.util.ConvertUtils;
+import com.dianping.finance.common.util.JsonUtils;
+import com.dianping.finance.common.util.LogUtils;
 import org.apache.log4j.Level;
 
 import java.math.BigDecimal;
@@ -73,7 +73,7 @@ public class ShopFundAccountServiceObject implements ShopFundAccountService {
                 return false;
             //exchangeorder out
             ShopFundAccountFlowData originExchangeOutFlow = shopFundAccountFlowDao.loadShopFundAccountFlow(exchangeOrderDTO.getExchangeOrderId(),FlowType.OUT.value(), SourceType.ExchangeOrder.value());
-            ShopFundAccountFlowData addExchangeInFlow = ConvertUtils.copy(originExchangeOutFlow,ShopFundAccountFlowData.class);
+            ShopFundAccountFlowData addExchangeInFlow = ConvertUtils.copy(originExchangeOutFlow, ShopFundAccountFlowData.class);
             addExchangeInFlow.setSequence(createSequenceForRefund(originExchangeOutFlow.getSequence()));
             addExchangeInFlow.setFlowType(FlowType.IN.value());
             addExchangeInFlow.setAddLoginId(exchangeOrderDTO.getLoginId());
