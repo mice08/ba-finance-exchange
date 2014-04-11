@@ -1,6 +1,7 @@
 package com.dianping.ba.finance.exchange.monitor.job.service;
 
 import com.dianping.sms.biz.SMSService;
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,6 +28,7 @@ public class MonitorSmsServiceTest {
         HashMap<String, String> contentMap = new HashMap<String, String>();
         contentMap.put("content", "");
         when(smsServiceMock.send(813, "", contentMap)).thenReturn(1);
-        monitorSmsServiceStub.sendSms("");
+		boolean actual = monitorSmsServiceStub.sendSms("");
+		Assert.assertTrue(actual);
     }
 }

@@ -1,6 +1,7 @@
 package com.dianping.ba.finance.exchange.monitor.job.service;
 
 import com.dianping.mailremote.remote.MailService;
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,11 +24,12 @@ public class MonitorMailServiceTest {
     }
 
     @Test
-    public void sendMail() throws ParseException {
+    public void sendMail(){
         HashMap<String, String> contentMap = new HashMap<String, String>();
         contentMap.put("content", "");
         when(mailServiceMock.send(1400, "", contentMap)).thenReturn(true);
-        monitorMailServiceStub.sendMail("");
-    }
+        boolean actual = monitorMailServiceStub.sendMail("");
+		Assert.assertTrue(actual);
+	}
 
 }

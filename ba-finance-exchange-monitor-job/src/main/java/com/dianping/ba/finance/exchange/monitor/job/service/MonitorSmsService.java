@@ -15,14 +15,10 @@ public class MonitorSmsService {
 
     private SMSService smsService;
 
-    public void sendSms(String smsContent) {
+    public boolean sendSms(String smsContent) {
         Long startTime = System.currentTimeMillis();
         try {
             String[] mobileNoArray = ConstantUtils.monitorMobileNo.split(",");
-            if (ArrayUtils.isEmpty(mobileNoArray)) {
-                return;
-            }
-
             HashMap<String, String> contentMap = new HashMap<String, String>();
             contentMap.put("content", smsContent);
             monitorLogger.info("Start sms, content:" + smsContent);
@@ -32,7 +28,9 @@ public class MonitorSmsService {
             }
         } catch (Exception ex) {
             monitorLogger.error(LogUtils.formatErrorLogMsg(startTime, "MonitorSmsService.sendSms", "mobileNo=" + ConstantUtils.monitorMobileNo + "&smsContent=" + smsContent));
-        }
+        	return false;
+		}
+		return true;
     }
 
     public void setSmsService(SMSService smsService) {
