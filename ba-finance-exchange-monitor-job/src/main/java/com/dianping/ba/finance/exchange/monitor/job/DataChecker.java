@@ -4,17 +4,16 @@ import java.util.Date;
 
 public abstract class DataChecker {
 
+	private Date currentMonitorTime;
 
-    private Date currentMonitorTime;
+	public void setCurrentMonitorTime(Date currentMonitorTime) {
+		this.currentMonitorTime = currentMonitorTime;
+	}
 
-    public void setCurrentMonitorTime(Date currentMonitorTime) {
-        this.currentMonitorTime = currentMonitorTime;
-    }
+	public Date getCurrentMonitorTime() {
+		return currentMonitorTime;
+	}
 
-    public Date getCurrentMonitorTime() {
-        return currentMonitorTime;
-    }
-
-    abstract public boolean run();
+	abstract public boolean run();
 
 }
