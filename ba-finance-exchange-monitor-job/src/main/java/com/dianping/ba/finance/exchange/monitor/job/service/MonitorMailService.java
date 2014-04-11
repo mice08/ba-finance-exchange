@@ -15,14 +15,10 @@ public class MonitorMailService {
 
     private MailService mailService;
 
-    public void sendMail(String mailContent) {
+    public boolean sendMail(String mailContent) {
         Long startTime = System.currentTimeMillis();
         try {
             String[] mailAddressArray = ConstantUtils.monitorMailAddress.split(",");
-            if (ArrayUtils.isEmpty(mailAddressArray)) {
-                return;
-            }
-
             HashMap<String, String> contentMap = new HashMap<String, String>();
             contentMap.put("title", "付款单异常");
             contentMap.put("content", mailContent);
@@ -34,7 +30,9 @@ public class MonitorMailService {
             }
         } catch (Exception ex) {
             monitorLogger.error(LogUtils.formatErrorLogMsg(startTime, "MonitorMailService.sendMail", "mailAddress=" + ConstantUtils.monitorMailAddress + "&mailContent=" + mailContent));
-        }
+        	return false;
+		}
+		return true;
     }
 
     public void setMailService(MailService mailService) {
