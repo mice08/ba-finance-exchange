@@ -21,6 +21,7 @@ public class ExchangeOrderSearchBean implements Serializable {
     private int status;
     private int orderType;
     private String bizCode;
+    private int businessType;
 
     public int getOrderType() {
         return orderType;
@@ -68,5 +69,13 @@ public class ExchangeOrderSearchBean implements Serializable {
 
     public void setBizCode(String bizCode) {
         this.bizCode = bizCode;
+    }
+
+    public int getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(int businessType) {
+        this.businessType = businessType;
     }
 }
