@@ -6,6 +6,7 @@ import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
+import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.util.DateUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -123,5 +124,13 @@ public class ExchangeOrderDaoTest {
         List<EOMonitorData> eoMonitorDatas = exchangeOrderDao.findEOMonitorDataByFlowIdList(flowIds);
         System.out.println(eoMonitorDatas);
 
+    }
+
+    @Test
+    public void testPaginateExchangeOrderList() throws Exception {
+        ExchangeOrderSearchBean searchBean = new ExchangeOrderSearchBean();
+        searchBean.setBusinessType(4);
+        PageModel model = exchangeOrderDao.paginateExchangeOrderList(searchBean, 1, 10);
+        System.out.println(model);
     }
 }

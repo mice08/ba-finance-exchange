@@ -177,6 +177,9 @@
             <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
                 eo.OrderType = #searchBean.orderType#
             </isGreaterThan>
+            <isGreaterThan property="searchBean.businessType" prepend="and" compareValue="0">
+                BusinessType = #searchBean.businessType#
+            </isGreaterThan>
         </dynamic>
         ORDER BY
         eo.AddDate DESC,
