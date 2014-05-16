@@ -178,7 +178,7 @@
                 eo.OrderType = #searchBean.orderType#
             </isGreaterThan>
             <isGreaterThan property="searchBean.businessType" prepend="and" compareValue="0">
-                BusinessType = #searchBean.businessType#
+                sa.BusinessType = #searchBean.businessType#
             </isGreaterThan>
         </dynamic>
         ORDER BY
@@ -213,6 +213,9 @@
             <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
                 eo.OrderType = #searchBean.orderType#
             </isGreaterThan>
+            <isGreaterThan property="searchBean.businessType" prepend="and" compareValue="0">
+                sa.BusinessType = #searchBean.businessType#
+            </isGreaterThan>
         </dynamic>
         ORDER BY
         eo.AddDate DESC,
@@ -223,8 +226,13 @@
     <select id="findExchangeOrderTotalAmount" resultClass="java.math.BigDecimal" parameterClass="map">
         SELECT
         IFNULL(SUM(eo.OrderAmount), 0) AS totalAmount
-        FROM
-        FS_ExchangeOrder eo
+        FROM FS_ExchangeOrder eo
+            LEFT JOIN FS_ShopFundAccountFlow flow
+            ON ( eo.ExchangeOrderID = flow.ExchangeOrderID
+            AND flow.FlowType = 1
+            AND flow.SourceType = 1 )
+            LEFT JOIN FS_ShopFundAccount sa
+            ON ( flow.FAID = sa.FAID )
         <dynamic prepend="WHERE">
             <isNotEmpty property="searchBean.bizCode" prepend="and">
                 eo.BizCode = #searchBean.bizCode#
@@ -240,6 +248,9 @@
             </isGreaterThan>
             <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
                 eo.OrderType = #searchBean.orderType#
+            </isGreaterThan>
+            <isGreaterThan property="searchBean.businessType" prepend="and" compareValue="0">
+                sa.BusinessType = #searchBean.businessType#
             </isGreaterThan>
         </dynamic>
     </select>
