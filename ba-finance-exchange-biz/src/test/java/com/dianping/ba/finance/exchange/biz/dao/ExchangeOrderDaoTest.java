@@ -130,6 +130,7 @@ public class ExchangeOrderDaoTest {
     public void testPaginateExchangeOrderList() throws Exception {
         ExchangeOrderSearchBean searchBean = new ExchangeOrderSearchBean();
         searchBean.setBusinessType(2);
+        searchBean.setShopId(8045677);
         PageModel model = exchangeOrderDao.paginateExchangeOrderList(searchBean, 1, 10);
         System.out.println(model);
     }
@@ -137,7 +138,8 @@ public class ExchangeOrderDaoTest {
     @Test
     public void testFindExchangeOrderTotalAmount() throws Exception {
         ExchangeOrderSearchBean searchBean = new ExchangeOrderSearchBean();
-        searchBean.setBusinessType(4);
+        searchBean.setBusinessType(2);
+        searchBean.setShopId(8045677);
         BigDecimal total = exchangeOrderDao.findExchangeOrderTotalAmount(searchBean);
         System.out.println(total);
     }

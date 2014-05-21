@@ -180,6 +180,9 @@
             <isGreaterThan property="searchBean.businessType" prepend="and" compareValue="0">
                 sa.BusinessType = #searchBean.businessType#
             </isGreaterThan>
+            <isGreaterThan property="searchBean.shopId" prepend="and" compareValue="0">
+                sa.ShopId = #searchBean.shopId#
+            </isGreaterThan>
         </dynamic>
         ORDER BY
         eo.AddDate DESC,
@@ -216,6 +219,9 @@
             <isGreaterThan property="searchBean.businessType" prepend="and" compareValue="0">
                 sa.BusinessType = #searchBean.businessType#
             </isGreaterThan>
+            <isGreaterThan property="searchBean.shopId" prepend="and" compareValue="0">
+                sa.ShopId = #searchBean.shopId#
+            </isGreaterThan>
         </dynamic>
         ORDER BY
         eo.AddDate DESC,
@@ -251,6 +257,9 @@
             </isGreaterThan>
             <isGreaterThan property="searchBean.businessType" prepend="and" compareValue="0">
                 sa.BusinessType = #searchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="searchBean.shopId" prepend="and" compareValue="0">
+                sa.ShopId = #searchBean.shopId#
             </isGreaterThan>
         </dynamic>
     </select>
@@ -310,6 +319,9 @@
             <isGreaterThan property="searchBean.businessType" prepend="and" compareValue="0">
                 sa.BusinessType = #searchBean.businessType#
             </isGreaterThan>
+            <isGreaterThan property="searchBean.shopId" prepend="and" compareValue="0">
+                sa.ShopId = #searchBean.shopId#
+            </isGreaterThan>
         </dynamic>
         ORDER BY
         eo.AddDate DESC,
@@ -342,6 +354,12 @@
             </isGreaterThan>
             <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
                 eo.OrderType = #searchBean.orderType#
+            </isGreaterThan>
+            <isGreaterThan property="searchBean.businessType" prepend="and" compareValue="0">
+                sa.BusinessType = #searchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="searchBean.shopId" prepend="and" compareValue="0">
+                sa.ShopId = #searchBean.shopId#
             </isGreaterThan>
         </dynamic>
         ORDER BY
