@@ -1,11 +1,11 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
 import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
-import com.dianping.ba.finance.exchange.api.datas.EOMonitorData;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderData;
-import com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData;
+import com.dianping.ba.finance.exchange.api.datas.*;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
+import com.dianping.ba.finance.exchange.api.enums.FlowType;
+import com.dianping.ba.finance.exchange.api.enums.SourceType;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.util.DateUtils;
 import org.junit.Assert;
@@ -142,5 +142,19 @@ public class ExchangeOrderDaoTest {
         searchBean.setShopId(8045677);
         BigDecimal total = exchangeOrderDao.findExchangeOrderTotalAmount(searchBean);
         System.out.println(total);
+    }
+
+    @Test
+    public void testLoadExchangeOrderAndPositiveFlow() throws Exception {
+        EOAndFlowIdSummaryData data = exchangeOrderDao.loadExchangeOrderAndPositiveFlow(910707,
+                                                            FlowType.IN.value(),
+                                                            SourceType.PaymentPlan.value());
+        System.out.println(data);
+    }
+
+    @Test
+    public void testFindExchangeOrderSummaryDataListByFlowIdList() throws Exception {
+        List<ExchangeOrderSummaryData> dataList = exchangeOrderDao.findExchangeOrderSummaryDataListByFlowIdList(Arrays.asList(11143720));
+        System.out.println(dataList);
     }
 }
