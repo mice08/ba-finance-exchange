@@ -25,6 +25,8 @@ public class EOAndFlowIdSummaryDTO implements Serializable {
 
     private int flowId;
 
+    private int businessType;
+
     public EOAndFlowIdSummaryDTO() {
     }
 
@@ -66,5 +68,25 @@ public class EOAndFlowIdSummaryDTO implements Serializable {
 
     public void setFlowId(int flowId) {
         this.flowId = flowId;
+    }
+
+    public int getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(int businessType) {
+        this.businessType = businessType;
+    }
+
+    @Override
+    public String toString() {
+        return "EOAndFlowIdSummaryDTO{" +
+                "bizCode='" + bizCode + '\'' +
+                ", orderAmount=" + orderAmount +
+                ", status=" + status +
+                ", addDate=" + addDate +
+                ", flowId=" + flowId +
+                ", businessType=" + businessType +
+                '}';
     }
 }

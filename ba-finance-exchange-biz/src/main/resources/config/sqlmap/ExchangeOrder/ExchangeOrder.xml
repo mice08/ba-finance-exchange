@@ -49,6 +49,7 @@
         <result property="status" column="Status"/>
         <result property="addDate" column="AddDate"/>
         <result property="flowId" column="FlowId"/>
+        <result property="businessType" column="BusinessType"/>
     </resultMap>
 
     <typeAlias alias="ExchangeOrderSummaryData" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData"/>
@@ -57,6 +58,7 @@
         <result property="status" column="Status"/>
         <result property="addDate" column="AddDate"/>
         <result property="bizCode" column="BizCode"/>
+        <result property="businessType" column="BusinessType"/>
     </resultMap>
 
 
@@ -387,28 +389,35 @@
                eo.OrderAmount,
                eo.Status,
                eo.AddDate,
-               IFNULL(flow.FAFlowID, 0) AS FlowId
+               IFNULL(flow.FAFlowID, 0) AS FlowId,
+               sa.BusinessType
         FROM   FS_ExchangeOrder eo
                LEFT JOIN FS_ShopFundAccountFlow flow
                       ON ( eo.ExchangeOrderID = flow.ExchangeOrderID
                            AND flow.FlowType = #flowType#
                            AND flow.SourceType = #sourceType# )
+               LEFT JOIN FS_ShopFundAccount sa
+                      ON ( sa.FAID = flow.FAID)
         WHERE  eo.ExchangeOrderID = #exchangeOrderId#
         ORDER  BY eo.AddDate DESC,
                   eo.ExchangeOrderID ASC
     </select>
 
     <select id="findExchangeOrderSummaryDataListByFlowIdList" resultMap="exchangeOrderSummaryData" parameterClass="map">
-        SELECT OrderAmount,Status,AddDate,BizCode
-        FROM FS_ExchangeOrder
-        WHERE exchangeOrderId IN
-        (SELECT ExchangeOrderId
-        FROM FS_ShopFundAccountFlow
-        WHERE FAFlowID IN
+        SELECT eo.OrderAmount,
+               eo.Status,
+               eo.AddDate,
+               eo.BizCode,
+               sa.BusinessType
+        FROM FS_ExchangeOrder eo,
+             FS_ShopFundAccountFlow flow
+        LEFT JOIN FS_ShopFundAccount sa
+             ON ( flow.FAID = sa.FAID )
+        WHERE flow.ExchangeOrderID = eo.ExchangeOrderId
+          AND flow.FAFlowID IN
         <iterate open="(" close=")" conjunction="," property="flowIdList">
             #flowIdList[]#
         </iterate>
-        )
     </select>
 
     <update id="updateExchangeOrderDataByOrderIdList" parameterClass="map">

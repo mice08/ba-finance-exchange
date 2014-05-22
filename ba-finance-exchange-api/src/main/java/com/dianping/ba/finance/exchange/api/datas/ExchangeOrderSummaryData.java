@@ -1,6 +1,5 @@
 package com.dianping.ba.finance.exchange.api.datas;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -17,6 +16,7 @@ public class ExchangeOrderSummaryData {
     private BigDecimal orderAmount;
     private int status;
     private Date addDate;
+    private int businessType;
 
     public String getBizCode() {
         return bizCode;
@@ -50,4 +50,22 @@ public class ExchangeOrderSummaryData {
         this.addDate = addDate;
     }
 
+    public int getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(int businessType) {
+        this.businessType = businessType;
+    }
+
+    @Override
+    public String toString() {
+        return "ExchangeOrderSummaryData{" +
+                "bizCode='" + bizCode + '\'' +
+                ", orderAmount=" + orderAmount +
+                ", status=" + status +
+                ", addDate=" + addDate +
+                ", businessType=" + businessType +
+                '}';
+    }
 }
