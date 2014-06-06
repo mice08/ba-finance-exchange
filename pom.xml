@@ -17,6 +17,7 @@
         <module>ba-finance-exchange-biz</module>
         <module>ba-finance-exchange-service</module>
         <module>ba-finance-exchange-mq</module>
+        <module>ba-finance-exchange-web</module>
         <module>ba-finance-exchange-monitor-api</module>
         <module>ba-finance-exchange-monitor-biz</module>
         <module>ba-finance-exchange-monitor-job</module>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<decorators defaultdir="/WEB-INF/pages/common">
+    <!-- Any urls that are excluded will never be decorated by Sitemesh -->
+    <excludes>
+        <!-- index.jsp used for F5 check -->
+        <pattern>/Heartbeat.html</pattern>
+        <pattern>/index.jsp</pattern>
+        <pattern>/styles/*</pattern>
+        <pattern>/scripts/*</pattern>
+        <pattern>/images/*</pattern>
+        <pattern>/dojo/*</pattern>
+        <pattern>/struts/*</pattern>
+        <pattern>/errorHandlerServlet.xfc</pattern>
+        <pattern>/slide/*</pattern>
+        <pattern>/ajax/*</pattern>
+        <pattern>/account/*</pattern>
+        <pattern>/dpd.jsp</pattern>
+        <pattern>/caiwu/relation/getRelationHtml</pattern>
+    </excludes>
+
+    <decorator name="centralized">
+        <pattern>*</pattern>
+    </decorator>
+
+</decorators>
