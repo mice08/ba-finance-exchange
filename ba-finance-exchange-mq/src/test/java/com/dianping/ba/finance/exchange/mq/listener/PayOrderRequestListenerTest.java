@@ -30,15 +30,16 @@ public class PayOrderRequestListenerTest {
     @Test
     public void testOnMessage() throws Exception {
         String content = "{ \n" +
-                "\"bizId\":\"WD65465465465465465464\",\n" +
-                "\"customerId\":123,\n" +
-                "\"shopId\":500001,\n" +
-                "\"bankId\":4567,\n" +
-                "\"planAmount\":1000.00,\n" +
-                "\"planDate\":1401862698,\n" +
+                "\"paySequence\":\"P|123\",\n" +
+                "\"payAmount\":456,\n" +
+                "\"bankAccountNo\":\"622612341234\",\n" +
+                "\"bankAccountName\":\"张三\",\n" +
+                "\"bankName\":\"中国银行\",\n" +
+                "\"bankProvince\":\"上海\",\n" +
+                "\"bankCity\":\"上海\",\n" +
                 "\"requestDate\":1401862698,\n" +
                 "\"businessType\": 1,\n" +
-                "\"token\":\"52666AFEEEAA5457BC9F273866D273AEAEBC9462\"\n" +
+                "\"memo\":\"我要付款\"\n" +
                 "}\n";
         SwallowMessage message = new SwallowMessage();
         message.setContent(content);
@@ -50,15 +51,16 @@ public class PayOrderRequestListenerTest {
         doThrow(new RuntimeException()).when(payOrderRequestHandleServiceMock).handlePayOrderRequest(any(PayOrderRequestDTO.class));
 
         String content = "{ \n" +
-                "\"bizId\":\"WD65465465465465465464\",\n" +
-                "\"customerId\":123,\n" +
-                "\"shopId\":500001,\n" +
-                "\"bankId\":4567,\n" +
-                "\"planAmount\":1000.00,\n" +
-                "\"planDate\":1401862698,\n" +
+                "\"paySequence\":\"P|123\",\n" +
+                "\"payAmount\":456,\n" +
+                "\"bankAccountNo\":\"622612341234\",\n" +
+                "\"bankAccountName\":\"张三\",\n" +
+                "\"bankName\":\"中国银行\",\n" +
+                "\"bankProvince\":\"上海\",\n" +
+                "\"bankCity\":\"上海\",\n" +
                 "\"requestDate\":1401862698,\n" +
                 "\"businessType\": 1,\n" +
-                "\"token\":\"52666AFEEEAA5457BC9F273866D273AEAEBC9462\"\n" +
+                "\"memo\":\"我要付款\"\n" +
                 "}\n";
         SwallowMessage message = new SwallowMessage();
         message.setContent(content);
