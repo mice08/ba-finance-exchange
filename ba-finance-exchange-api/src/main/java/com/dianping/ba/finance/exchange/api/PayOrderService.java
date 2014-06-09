@@ -12,5 +12,5 @@ public interface PayOrderService {
      * 生成付款单
      * @param payOrderData
      */
-    int createPayPlan(PayOrderData payOrderData);
+    int createPayOrder(PayOrderData payOrderData);
 }

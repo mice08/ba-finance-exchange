@@ -68,7 +68,7 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
 
         // 创建付款计划
         PayOrderData payOrderData = buildPayOrderData(payOrderRequestDTO);
-        int result = payOrderService.createPayPlan(payOrderData);
+        int result = payOrderService.createPayOrder(payOrderData);
         if (result == -1) {
             payOrderResultBean.setStatus(PayResultStatus.REQUEST_FAIL);
             payOrderResultBean.setMemo("付款单生成异常");

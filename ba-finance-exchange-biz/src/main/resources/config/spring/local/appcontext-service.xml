@@ -28,4 +28,8 @@
         <property name="timeout" value="${ba-finance-exchange-service.payrequest.timeout}"/>
         <property name="executorService" ref="executorService"/>
     </bean>
+
+    <bean id="payOrderService" class="com.dianping.ba.finance.exchange.biz.impl.PayOrderServiceObject">
+        <property name="payOrderDao" ref="payOrderDao"/>
+    </bean>
 </beans>
