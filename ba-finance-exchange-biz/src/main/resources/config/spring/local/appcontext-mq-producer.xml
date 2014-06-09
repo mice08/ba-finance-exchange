@@ -31,4 +31,17 @@
         <property name="mode" value="ASYNC_MODE" />
     </bean>
 
+    <bean id="payOrderProducer" class="com.dianping.finance.common.swallow.SwallowProducer">
+        <property name="swallowClientWrapperMap">
+            <map>
+                <entry key="EX_FS_PAY_RESULT" value-ref="exFSPayResultClient"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="exFSPayResultClient" init-method="init"
+          class="com.dianping.finance.common.swallow.SwallowClientWrapper">
+        <property name="topic" value="${ba-finance-exchange-service.ex.fs.pay.result.notice.topic.name}"/>
+        <property name="mode" value="ASYNC_MODE"/>
+    </bean>
 </beans>

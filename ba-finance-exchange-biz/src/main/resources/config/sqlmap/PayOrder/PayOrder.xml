@@ -4,7 +4,7 @@
 
     <typeAlias alias="PayOrderData" type="com.dianping.ba.finance.exchange.api.datas.PayOrderData"/>
     <resultMap id="payOrderData" class="PayOrderData">
-        <result property="poID" column="POID"/>
+        <result property="poId" column="POID"/>
         <result property="payAmount" column="PayAmount"/>
         <result property="paidDate" column="PaidDate"/>
         <result property="paySequence" column="PaySequence"/>
@@ -19,8 +19,8 @@
         <result property="addType" column="AddType"/>
         <result property="updateTime" column="UpdateTime"/>
         <result property="memo" column="Memo"/>
-        <result property="addLoginID" column="AddLoginID"/>
-        <result property="updateLoginID" column="UpdateLoginID"/>
+        <result property="addLoginId" column="AddLoginID"/>
+        <result property="updateLoginId" column="UpdateLoginID"/>
     </resultMap>
 
     <insert id="insertPayOrder" parameterClass="map">
@@ -56,8 +56,8 @@
 			#payOrderData.addType#,
 			NOW(),
 			#payOrderData.memo#,
-			#payOrderData.addLoginID#,
-			#payOrderData.updateLoginID#
+			#payOrderData.addLoginId#,
+			#payOrderData.updateLoginId#
 			);
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="poId">
