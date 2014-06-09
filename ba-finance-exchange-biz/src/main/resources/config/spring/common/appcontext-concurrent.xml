@@ -6,10 +6,10 @@
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
     <bean id="executorService" class="org.springframework.scheduling.concurrent.ThreadPoolExecutorFactoryBean">
-        <property name="corePoolSize" value="${ba-finance-exchange-serivce.concurrent.coreSize}" />
-        <property name="maxPoolSize" value="${ba-finance-exchange-serivce.concurrent.maxSize}" />
-        <property name="keepAliveSeconds" value="${ba-finance-exchange-serivce.concurrent.keepAliveSeconds}" />
-        <property name="queueCapacity" value="${ba-finance-exchange-serivce.concurrent.queueCapacity}" />
+        <property name="corePoolSize" value="${ba-finance-exchange-service.concurrent.coreSize}" />
+        <property name="maxPoolSize" value="${ba-finance-exchange-service.concurrent.maxSize}" />
+        <property name="keepAliveSeconds" value="${ba-finance-exchange-service.concurrent.keepAliveSeconds}" />
+        <property name="queueCapacity" value="${ba-finance-exchange-service.concurrent.queueCapacity}" />
         <property name="rejectedExecutionHandler" ref="callerRunsPolicy" />
     </bean>
 

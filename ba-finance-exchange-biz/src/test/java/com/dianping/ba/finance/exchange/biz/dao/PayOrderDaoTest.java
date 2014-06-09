@@ -41,7 +41,7 @@ public class PayOrderDaoTest {
         payOrderData.setUpdateLoginId(-1);
         payOrderData.setUpdateTime(Calendar.getInstance().getTime());
         payOrderData.setBankAccountName("1111");
-        payOrderData.setPaySequence("1");
+        payOrderData.setPaySequence("P|1");
         payOrderData.setPayAmount(BigDecimal.ONE);
 
         payOrderDao.insertPayOrder(payOrderData);
