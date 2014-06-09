@@ -11,9 +11,9 @@
 	http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
 
     <aop:aspectj-autoproxy />
+    <bean id="logAdvice" class="com.dianping.finance.common.aop.aspect.LogAdvice">
+        <property name="logPrefix" value="com.dianping.ba.finance.exchange.service.monitor"/>
+    </bean>
 
-    <!--<bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator" />-->
-
-    <!--<bean id="logAspect" class="com.dianping.ba.finance.exchange.biz.aspect.LogAspect"></bean>-->
-    <!--<bean id="retryAspect" class="com.dianping.ba.finance.exchange.biz.aspect.RetryAspect"></bean>-->
+    <bean id="returnDefaultAdvice" class="com.dianping.finance.common.aop.aspect.ReturnDefaultAdvice"/>
 </beans>
