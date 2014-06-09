@@ -22,4 +22,10 @@
         <property name="exchangeOrderService" ref="exchangeOrderService"/>
     </bean>
 
+    <bean id="payRequestHandleService" class="com.dianping.ba.finance.exchange.biz.impl.PayOrderRequestHandleServiceObject">
+        <property name="payOrderService" ref="payOrderService"/>
+        <property name="payOrderProducer" ref="payOrderProducer"/>
+        <property name="timeout" value="${ba-finance-exchange-service.payrequest.timeout}"/>
+        <property name="executorService" ref="executorService"/>
+    </bean>
 </beans>
