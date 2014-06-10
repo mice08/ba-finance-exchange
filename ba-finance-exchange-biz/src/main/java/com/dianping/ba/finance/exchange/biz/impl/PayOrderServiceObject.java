@@ -22,8 +22,9 @@ public class PayOrderServiceObject implements PayOrderService {
     @Override
     public int createPayOrder(PayOrderData payOrderData){
         try {
-            int ppID = payOrderDao.insertPayOrder(payOrderData);
-            return ppID;
+            int poId = payOrderDao.insertPayOrder(payOrderData);
+            payOrderData.setPoId(poId);
+            return poId;
         } catch (Exception e) {// 直接插入，如果主键冲突会抛异常
             MONITOR_LOGGER.error(String.format("severity=[1] PayOrderServiceObject.createPayOrder error! payOrderData=%s", payOrderData), e);
             return -1;
