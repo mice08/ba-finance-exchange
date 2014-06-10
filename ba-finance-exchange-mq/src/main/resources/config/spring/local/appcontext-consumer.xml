@@ -9,10 +9,12 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-    <!--付款请求的监听器-->
+
+    <!--付款计划请求的监听器-->
     <bean id="payOrderRequestListener" init-method="init" class="com.dianping.ba.finance.exchange.mq.listener.PayOrderRequestListener">
-        <property name="topic" value="${ba-finance-settle-mq.ts.fs.pay.result.notice.topic.name}"/>
-        <property name="consumerId" value="${ba-finance-settle-mq.consumerid}"/>
+        <property name="payOrderRequestHandleService" ref="payOrderRequestHandleService"/>
+        <property name="topic" value="${ba-finance-exchange-mq.fs.ex.pay.result.notice.topic.name}"/>
+        <property name="consumerId" value="${ba-finance-exchange-mq.consumerid}"/>
         <property name="consumerCount" value="3"/>
     </bean>
 </beans>
