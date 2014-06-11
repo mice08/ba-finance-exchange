@@ -36,7 +36,7 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
 
     private ExecutorService executorService;
 
-    public static final String EXCHNAGE_PAY_RESULT_EVENT_KEY = "EX_FS_PAY_RESULT";
+    public static final String EXCHANGE_PAY_RESULT_EVENT_KEY = "EX_FS_PAY_RESULT";
 
     @Log(logBefore = true, logAfter = true, severity = 1)
     @ReturnDefault
@@ -98,7 +98,7 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
 
     private void payResultNotify(PayOrderResultBean payOrderResultBean) {
         PayResultNotifyDTO payResultNotifyDTO = buildPayResultNotifyDTO(payOrderResultBean);
-        SwallowEventBean eventBean = new SwallowEventBean(EXCHNAGE_PAY_RESULT_EVENT_KEY, payResultNotifyDTO);
+        SwallowEventBean eventBean = new SwallowEventBean(EXCHANGE_PAY_RESULT_EVENT_KEY, payResultNotifyDTO);
         payOrderProducer.fireSwallowEvent(eventBean);
     }
 
