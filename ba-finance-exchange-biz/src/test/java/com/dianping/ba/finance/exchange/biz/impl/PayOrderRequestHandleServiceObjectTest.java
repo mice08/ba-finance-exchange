@@ -71,7 +71,7 @@ public class PayOrderRequestHandleServiceObjectTest {
         notifyDTO.setMemo("fail");
         notifyDTO.setStatus(PayResultStatus.REQUEST_FAIL.value());
         swallowEventBean.setObject(notifyDTO);
-        verify(payOrderProducerMock, times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+        verify(payOrderProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
 
     }
 
@@ -88,7 +88,6 @@ public class PayOrderRequestHandleServiceObjectTest {
         when(payOrderServiceMock.createPayOrder(any(PayOrderData.class))).thenReturn(-1);
         payOrderRequestHandleServiceObjectStub.handlePayOrderRequest(payOrderRequestDTO);
 
-        Thread.sleep(1000);
 
         SwallowEventBean swallowEventBean = new SwallowEventBean();
         swallowEventBean.setEventKey("EX_FS_PAY_RESULT");
@@ -99,7 +98,7 @@ public class PayOrderRequestHandleServiceObjectTest {
         notifyDTO.setMemo(PayResultStatus.REQUEST_FAIL.toString());
         notifyDTO.setStatus(PayResultStatus.REQUEST_FAIL.value());
         swallowEventBean.setObject(notifyDTO);
-        verify(payOrderProducerMock, times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+        verify(payOrderProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
 
     }
 
@@ -116,8 +115,6 @@ public class PayOrderRequestHandleServiceObjectTest {
         when(payOrderServiceMock.createPayOrder(any(PayOrderData.class))).thenReturn(-1);
         payOrderRequestHandleServiceObjectStub.handlePayOrderRequest(payOrderRequestDTO);
 
-        Thread.sleep(1000);
-
         SwallowEventBean swallowEventBean = new SwallowEventBean();
         swallowEventBean.setEventKey("EX_FS_PAY_RESULT");
         PayResultNotifyDTO notifyDTO = new PayResultNotifyDTO();
@@ -127,7 +124,7 @@ public class PayOrderRequestHandleServiceObjectTest {
         notifyDTO.setMemo(PayResultStatus.REQUEST_FAIL.toString());
         notifyDTO.setStatus(PayResultStatus.REQUEST_FAIL.value());
         swallowEventBean.setObject(notifyDTO);
-        verify(payOrderProducerMock, times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+        verify(payOrderProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
 
     }
 
@@ -144,8 +141,6 @@ public class PayOrderRequestHandleServiceObjectTest {
         when(payOrderServiceMock.createPayOrder(any(PayOrderData.class))).thenReturn(-1);
         payOrderRequestHandleServiceObjectStub.handlePayOrderRequest(payOrderRequestDTO);
 
-        Thread.sleep(1000);
-
         SwallowEventBean swallowEventBean = new SwallowEventBean();
         swallowEventBean.setEventKey("EX_FS_PAY_RESULT");
         PayResultNotifyDTO notifyDTO = new PayResultNotifyDTO();
@@ -155,7 +150,8 @@ public class PayOrderRequestHandleServiceObjectTest {
         notifyDTO.setMemo(PayResultStatus.REQUEST_FAIL.toString());
         notifyDTO.setStatus(PayResultStatus.REQUEST_FAIL.value());
         swallowEventBean.setObject(notifyDTO);
-        verify(payOrderProducerMock, times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+        verify(payOrderProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+
 
     }
 }
