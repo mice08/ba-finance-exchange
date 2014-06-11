@@ -3,11 +3,15 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
+import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.biz.dao.PayOrderDao;
+import com.dianping.core.type.PageModel;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
+
+import java.math.BigDecimal;
 
 /**
  * 处理付款单的Service类
@@ -38,6 +42,18 @@ public class PayOrderServiceObject implements PayOrderService {
             }
         } while(times > 0);
         return -1;
+    }
+
+    @Log(logBefore = true, logAfter = true)
+    @Override
+    public PageModel paginatePayOrderList(PayOrderSearchBean payOrderSearchBean, int page, int pageSize) {
+        return payOrderDao.paginatePayOrderList(payOrderSearchBean,page,pageSize);
+    }
+
+    @Log(logBefore = true, logAfter = true)
+    @Override
+    public BigDecimal findPayOrderTotalAmount(PayOrderSearchBean payOrderSearchBean) {
+        return payOrderDao.findPayOrderTotalAmountByCondition(payOrderSearchBean);
     }
 
     public void setPayOrderDao(PayOrderDao payOrderDao) {
