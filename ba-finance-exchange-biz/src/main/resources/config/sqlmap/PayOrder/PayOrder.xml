@@ -111,11 +111,13 @@
 
     <select id="paginatePayOrderList" resultMap="payOrderData" parameterClass="map">
         SELECT
+        POID,
         PayAmount,
         PaySequence,
         CustomerBankId,
         BankAccountNo,
         BankAccountName,
+        PaidDate,
         BankBranchName,
         BankName,
         BankProvince,
@@ -137,10 +139,10 @@
             <isNotEmpty property="searchBean.payCode" prepend="and">
                 PayCode = #searchBean.payCode#
             </isNotEmpty>
-            <isNotNull property="searchBean.beginDate" prepend="and">
+            <isNotNull property="searchBean.beginTime" prepend="and">
                 AddTime &gt;= #searchBean.beginTime#
             </isNotNull>
-            <isNotNull property="searchBean.endDate" prepend="and">
+            <isNotNull property="searchBean.endTime" prepend="and">
                 AddTime &lt;= #searchBean.endTime#
             </isNotNull>
             <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
@@ -164,11 +166,11 @@
             <isNotEmpty property="searchBean.payCode" prepend="and">
                 PayCode = #searchBean.payCode#
             </isNotEmpty>
-            <isNotNull property="searchBean.beginDate" prepend="and">
-                AddTime &gt;= #searchBean.beginDate#
+            <isNotNull property="searchBean.beginTime" prepend="and">
+                AddTime &gt;= #searchBean.beginTime#
             </isNotNull>
-            <isNotNull property="searchBean.endDate" prepend="and">
-                AddTime &lt;= #searchBean.endDate#
+            <isNotNull property="searchBean.endTime" prepend="and">
+                AddTime &lt;= #searchBean.endTime#
             </isNotNull>
             <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
                 Status = #searchBean.status#
@@ -180,7 +182,7 @@
     </select>
 
 
-    <select id="findExchangeOrderTotalAmount" resultClass="java.math.BigDecimal" parameterClass="map">
+    <select id="findPayOrderTotalAmountByCondition" resultClass="java.math.BigDecimal" parameterClass="map">
         SELECT
         IFNULL(SUM(PayAmount), 0) AS totalAmount
         FROM
@@ -189,11 +191,11 @@
             <isNotEmpty property="searchBean.payCode" prepend="and">
                 PayCode = #searchBean.payCode#
             </isNotEmpty>
-            <isNotNull property="searchBean.beginDate" prepend="and">
-                AddTime &gt;= #searchBean.beginDate#
+            <isNotNull property="searchBean.beginTime" prepend="and">
+                AddTime &gt;= #searchBean.beginTime#
             </isNotNull>
-            <isNotNull property="searchBean.endDate" prepend="and">
-                AddTime &lt;= #searchBean.endDate#
+            <isNotNull property="searchBean.endTime" prepend="and">
+                AddTime &lt;= #searchBean.endTime#
             </isNotNull>
             <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
                 Status = #searchBean.status#
