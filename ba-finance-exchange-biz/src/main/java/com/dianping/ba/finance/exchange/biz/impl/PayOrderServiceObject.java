@@ -8,6 +8,8 @@ import com.dianping.ba.finance.exchange.biz.dao.PayOrderDao;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 
+import java.util.List;
+
 /**
  * 处理付款单的Service类
  */
@@ -31,6 +33,19 @@ public class PayOrderServiceObject implements PayOrderService {
         }
     }
 
+    @Log(logBefore = true, logAfter = true)
+    @ReturnDefault
+    @Override
+    public int updatePayOrderToPaySuccess(List<Integer> poIds, int loginId){
+          return 1;
+    }
+
+    @Log(logBefore = true, logAfter = true)
+    @ReturnDefault
+    @Override
+    public int updatePayOrderToPaying(List<Integer> poIds, int loginId){
+        return 1;
+    }
     public void setPayOrderDao(PayOrderDao payOrderDao) {
         this.payOrderDao = payOrderDao;
     }
