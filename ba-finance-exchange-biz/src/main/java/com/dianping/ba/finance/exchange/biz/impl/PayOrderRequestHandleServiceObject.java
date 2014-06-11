@@ -59,6 +59,7 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
         PayOrderResultBean payOrderResultBean = new PayOrderResultBean();
         payOrderResultBean.setPaySequence(payOrderRequestDTO.getPaySequence());
         payOrderResultBean.setPaidAmount(BigDecimal.ZERO);
+        payOrderResultBean.setLoginId(payOrderRequestDTO.getLoginId());
 
         // 校验该付款请求
         if (!checkRequest(payOrderRequestDTO, payOrderResultBean)) {
@@ -136,9 +137,9 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
         //1系统
         payOrderData.setAddType(1);
         payOrderData.setAddTime(DateUtils.getCurrentTime());
-        payOrderData.setAddLoginId(0);
+        payOrderData.setAddLoginId(payOrderRequestDTO.getLoginId());
         payOrderData.setUpdateTime(DateUtils.getCurrentTime());
-        payOrderData.setUpdateLoginId(0);
+        payOrderData.setUpdateLoginId(payOrderRequestDTO.getLoginId());
         return payOrderData;
     }
 
@@ -150,6 +151,7 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
             memoSb.append("-").append(payOrderResultBean.getMemo());
         }
         payResultNotifyDTO.setMemo(memoSb.toString());
+        payResultNotifyDTO.setLoginId(payOrderResultBean.getLoginId());
         payResultNotifyDTO.setPoId(payOrderResultBean.getPoId());
         payResultNotifyDTO.setPaidAmount(BigDecimal.ZERO);
         payResultNotifyDTO.setStatus(payOrderResultBean.getStatus().value());

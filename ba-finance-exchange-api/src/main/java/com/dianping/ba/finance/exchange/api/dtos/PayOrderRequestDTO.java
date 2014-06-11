@@ -15,6 +15,8 @@ public class PayOrderRequestDTO implements Serializable {
 
     private BigDecimal payAmount;
 
+    private int loginId;
+
     private Date requestDate;
 
     private int businessType;
@@ -53,6 +55,14 @@ public class PayOrderRequestDTO implements Serializable {
 
     public void setPayAmount(BigDecimal payAmount) {
         this.payAmount = payAmount;
+    }
+
+    public int getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(int loginId) {
+        this.loginId = loginId;
     }
 
     public Date getRequestDate() {
