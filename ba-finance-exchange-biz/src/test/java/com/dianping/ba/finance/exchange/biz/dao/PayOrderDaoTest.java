@@ -1,5 +1,7 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
+import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
+import com.dianping.core.type.PageModel;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import org.junit.Test;
@@ -77,4 +79,20 @@ public class PayOrderDaoTest {
         poIds.add(2044);
         payOrderDao.findPayOrderListByPoIdList(poIds);
     }
+
+    public void testPaginatePayOrderList(){
+        PayOrderSearchBean payOrderSearchBean=new PayOrderSearchBean();
+        payOrderSearchBean.setBusinessType(1);
+        PageModel pageModel=payOrderDao.paginatePayOrderList(payOrderSearchBean,1,20);
+        junit.framework.Assert.assertNotNull(pageModel);
+    }
+
+    @Test
+    public void testFindPayOrderTotalAmountByCondition(){
+        PayOrderSearchBean payOrderSearchBean=new PayOrderSearchBean();
+        payOrderSearchBean.setBusinessType(1);
+        BigDecimal amount=payOrderDao.findPayOrderTotalAmountByCondition(payOrderSearchBean);
+        junit.framework.Assert.assertTrue(amount.compareTo(BigDecimal.ZERO)>=0);
+    }
+
 }
