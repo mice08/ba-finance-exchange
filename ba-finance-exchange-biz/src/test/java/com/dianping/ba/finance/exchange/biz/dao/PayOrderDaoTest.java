@@ -1,15 +1,8 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
-import com.dianping.ba.finance.exchange.api.beans.ExchangeOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
-import com.dianping.ba.finance.exchange.api.datas.*;
-import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
-import com.dianping.ba.finance.exchange.api.enums.ExchangeOrderStatus;
-import com.dianping.ba.finance.exchange.api.enums.FlowType;
-import com.dianping.ba.finance.exchange.api.enums.SourceType;
 import com.dianping.core.type.PageModel;
-import com.dianping.finance.common.util.DateUtils;
-import org.junit.Assert;
+import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Calendar;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,6 +36,8 @@ public class PayOrderDaoTest {
         payOrderData.setUpdateTime(Calendar.getInstance().getTime());
         payOrderData.setBankAccountName("1111");
         payOrderData.setPaySequence("P|1");
+        payOrderData.setPayCode("paycode");
+        payOrderData.setCustomerId(12387);
         payOrderData.setPayAmount(BigDecimal.ONE);
         payOrderData.setCustomerBankId(8787);
         payOrderData.setBankAccountName("accountName");

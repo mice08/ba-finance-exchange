@@ -28,7 +28,9 @@
         	 INSERT INTO FC_PayOrder
 			(PayAmount,
 			PaySequence,
-			CustomerBankId,
+			PayCode,
+			CustomerID,
+			CustomerBankID,
 			BankAccountNo,
 			BankAccountName,
 			BankBranchName,
@@ -49,6 +51,8 @@
 			VALUES
 			(#payOrderData.payAmount#,
 			#payOrderData.paySequence#,
+			#payOrderData.payCode#,
+			#payOrderData.customerId#,
 			#payOrderData.customerBankId#,
 			#payOrderData.bankAccountNo#,
 			#payOrderData.bankAccountName#,

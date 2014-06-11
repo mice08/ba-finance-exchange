@@ -7,6 +7,7 @@ import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.biz.dao.PayOrderDao;
 import com.dianping.core.type.PageModel;
+import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 
@@ -19,20 +20,28 @@ public class PayOrderServiceObject implements PayOrderService {
 
     private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.biz.monitor.PayOrderServiceObject");
 
+    private static final int DUPLICATE_RETRY_TIMES = 5;
+
     private PayOrderDao payOrderDao;
 
     @Log(logBefore = true, logAfter = true)
     @ReturnDefault
     @Override
-    public int createPayOrder(PayOrderData payOrderData){
-        try {
-            int poId = payOrderDao.insertPayOrder(payOrderData);
-            payOrderData.setPoId(poId);
-            return poId;
-        } catch (Exception e) {// 直接插入，如果主键冲突会抛异常
-            MONITOR_LOGGER.error(String.format("severity=[1] PayOrderServiceObject.createPayOrder error! payOrderData=%s", payOrderData), e);
-            return -1;
-        }
+    public int createPayOrder(PayOrderData payOrderData) {
+        int times = DUPLICATE_RETRY_TIMES;
+        do {
+            try {
+                // 主键冲突，重新生成PayCode再插入
+                payOrderData.setPayCode(BizUtils.generatePayCode());
+                int poId = payOrderDao.insertPayOrder(payOrderData);
+                payOrderData.setPoId(poId);
+                return poId;
+            } catch (Exception e) {
+                MONITOR_LOGGER.error(String.format("severity=[1] PayOrderServiceObject.createPayOrder error! payOrderData=%s", payOrderData), e);
+                times--;
+            }
+        } while(times > 0);
+        return -1;
     }
 
     @Log(logBefore = true, logAfter = true)
