@@ -1,13 +1,14 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.ba.finance.exchange.api.PayOrderService;
+import com.dianping.ba.finance.exchange.api.beans.PayOrderResultBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.dtos.PayOrderRequestDTO;
 import com.dianping.ba.finance.exchange.api.dtos.PayResultNotifyDTO;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.PayResultStatus;
+import com.dianping.ba.finance.exchange.biz.producer.PayOrderResultNotify;
 import com.dianping.finance.common.swallow.SwallowEventBean;
-import com.dianping.finance.common.swallow.SwallowProducer;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +28,7 @@ public class PayOrderRequestHandleServiceObjectTest {
 
     private PayOrderService payOrderServiceMock;
 
-    private SwallowProducer payOrderProducerMock;
+    private PayOrderResultNotify payOrderResultNotifyMock;
 
     private ExecutorService executorServiceMock;
 
@@ -41,8 +42,8 @@ public class PayOrderRequestHandleServiceObjectTest {
         payOrderServiceMock = mock(PayOrderService.class);
         payOrderRequestHandleServiceObjectStub.setPayOrderService(payOrderServiceMock);
 
-        payOrderProducerMock = mock(SwallowProducer.class);
-        payOrderRequestHandleServiceObjectStub.setPayOrderProducer(payOrderProducerMock);
+        payOrderResultNotifyMock = mock(PayOrderResultNotify.class);
+        payOrderRequestHandleServiceObjectStub.setPayOrderResultNotify(payOrderResultNotifyMock);
 
         executorServiceMock = Executors.newSingleThreadExecutor();
         payOrderRequestHandleServiceObjectStub.setExecutorService(executorServiceMock);
@@ -71,7 +72,7 @@ public class PayOrderRequestHandleServiceObjectTest {
         notifyDTO.setMemo("fail");
         notifyDTO.setStatus(PayResultStatus.REQUEST_FAIL.value());
         swallowEventBean.setObject(notifyDTO);
-        verify(payOrderProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+        verify(payOrderResultNotifyMock, timeout(5000).times(1)).payResultNotify(any(PayOrderResultBean.class));
 
     }
 
@@ -98,7 +99,7 @@ public class PayOrderRequestHandleServiceObjectTest {
         notifyDTO.setMemo(PayResultStatus.REQUEST_FAIL.toString());
         notifyDTO.setStatus(PayResultStatus.REQUEST_FAIL.value());
         swallowEventBean.setObject(notifyDTO);
-        verify(payOrderProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+        verify(payOrderResultNotifyMock, timeout(5000).times(1)).payResultNotify(any(PayOrderResultBean.class));
 
     }
 
@@ -124,7 +125,7 @@ public class PayOrderRequestHandleServiceObjectTest {
         notifyDTO.setMemo(PayResultStatus.REQUEST_FAIL.toString());
         notifyDTO.setStatus(PayResultStatus.REQUEST_FAIL.value());
         swallowEventBean.setObject(notifyDTO);
-        verify(payOrderProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+        verify(payOrderResultNotifyMock, timeout(5000).times(1)).payResultNotify(any(PayOrderResultBean.class));
 
     }
 
@@ -150,8 +151,7 @@ public class PayOrderRequestHandleServiceObjectTest {
         notifyDTO.setMemo(PayResultStatus.REQUEST_FAIL.toString());
         notifyDTO.setStatus(PayResultStatus.REQUEST_FAIL.value());
         swallowEventBean.setObject(notifyDTO);
-        verify(payOrderProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
-
+        verify(payOrderResultNotifyMock, timeout(5000).times(1)).payResultNotify(any(PayOrderResultBean.class));
 
     }
 }

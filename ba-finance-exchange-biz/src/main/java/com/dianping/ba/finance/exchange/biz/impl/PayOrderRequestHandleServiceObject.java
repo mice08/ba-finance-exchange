@@ -7,15 +7,12 @@ import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderResultBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.dtos.PayOrderRequestDTO;
-import com.dianping.ba.finance.exchange.api.dtos.PayResultNotifyDTO;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.PayResultStatus;
+import com.dianping.ba.finance.exchange.biz.producer.PayOrderResultNotify;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
-import com.dianping.finance.common.swallow.SwallowEventBean;
-import com.dianping.finance.common.swallow.SwallowProducer;
 import com.dianping.finance.common.util.DateUtils;
-import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -32,11 +29,9 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
 
     private PayOrderService payOrderService;
 
-    private SwallowProducer payOrderProducer;
+    private PayOrderResultNotify payOrderResultNotify;
 
     private ExecutorService executorService;
-
-    public static final String EXCHANGE_PAY_RESULT_EVENT_KEY = "EX_FS_PAY_RESULT";
 
     @Log(logBefore = true, logAfter = true, severity = 1)
     @ReturnDefault
@@ -59,10 +54,11 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
         PayOrderResultBean payOrderResultBean = new PayOrderResultBean();
         payOrderResultBean.setPaySequence(payOrderRequestDTO.getPaySequence());
         payOrderResultBean.setPaidAmount(BigDecimal.ZERO);
+        payOrderResultBean.setLoginId(payOrderRequestDTO.getLoginId());
 
         // 校验该付款请求
         if (!checkRequest(payOrderRequestDTO, payOrderResultBean)) {
-            payResultNotify(payOrderResultBean);
+            payOrderResultNotify.payResultNotify(payOrderResultBean);
             return;
         }
 
@@ -76,7 +72,7 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
             payOrderResultBean.setPoId(payOrderData.getPoId());
             payOrderResultBean.setStatus(PayResultStatus.PAY_ORDER_GENERATED);
         }
-        payResultNotify(payOrderResultBean);
+        payOrderResultNotify.payResultNotify(payOrderResultBean);
     }
 
     private boolean checkRequest(PayOrderRequestDTO payOrderRequestDTO, PayOrderResultBean payOrderResultBean) {
@@ -94,12 +90,6 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
             return false;
         }
         return true;
-    }
-
-    private void payResultNotify(PayOrderResultBean payOrderResultBean) {
-        PayResultNotifyDTO payResultNotifyDTO = buildPayResultNotifyDTO(payOrderResultBean);
-        SwallowEventBean eventBean = new SwallowEventBean(EXCHANGE_PAY_RESULT_EVENT_KEY, payResultNotifyDTO);
-        payOrderProducer.fireSwallowEvent(eventBean);
     }
 
     private boolean checkTimeout(PayOrderRequestDTO payOrderRequestDTO) {
@@ -123,6 +113,7 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
         payOrderData.setBusinessType(payOrderRequestDTO.getBusinessType());
         payOrderData.setPayAmount(payOrderRequestDTO.getPayAmount());
         payOrderData.setStatus(PayOrderStatus.INIT.value());
+        payOrderData.setCustomerId(payOrderRequestDTO.getCustomerId());
 
         payOrderData.setCustomerBankId(payOrderRequestDTO.getCustomerBankId());
         payOrderData.setBankFullBranchName(payOrderRequestDTO.getBankFullBranchName());
@@ -136,27 +127,10 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
         //1系统
         payOrderData.setAddType(1);
         payOrderData.setAddTime(DateUtils.getCurrentTime());
-        payOrderData.setAddLoginId(0);
+        payOrderData.setAddLoginId(payOrderRequestDTO.getLoginId());
         payOrderData.setUpdateTime(DateUtils.getCurrentTime());
-        payOrderData.setUpdateLoginId(0);
+        payOrderData.setUpdateLoginId(payOrderRequestDTO.getLoginId());
         return payOrderData;
-    }
-
-    private PayResultNotifyDTO buildPayResultNotifyDTO(PayOrderResultBean payOrderResultBean) {
-        PayResultNotifyDTO payResultNotifyDTO = new PayResultNotifyDTO();
-        payResultNotifyDTO.setPaySequence(payOrderResultBean.getPaySequence());
-        StringBuilder memoSb = new StringBuilder(payOrderResultBean.getStatus().toString());
-        if (StringUtils.isNotBlank(payOrderResultBean.getMemo())) {
-            memoSb.append("-").append(payOrderResultBean.getMemo());
-        }
-        payResultNotifyDTO.setMemo(memoSb.toString());
-        payResultNotifyDTO.setPoId(payOrderResultBean.getPoId());
-        payResultNotifyDTO.setPaidAmount(BigDecimal.ZERO);
-        payResultNotifyDTO.setStatus(payOrderResultBean.getStatus().value());
-        if (payOrderResultBean.getStatus() == PayResultStatus.PAY_SUCCESS){
-            payResultNotifyDTO.setPaidAmount(payOrderResultBean.getPaidAmount());
-        }
-        return payResultNotifyDTO;
     }
 
     public void setTimeout(long timeout) {
@@ -167,11 +141,11 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
         this.payOrderService = payOrderService;
     }
 
-    public void setPayOrderProducer(SwallowProducer payOrderProducer) {
-        this.payOrderProducer = payOrderProducer;
-    }
-
     public void setExecutorService(ExecutorService executorService) {
         this.executorService = executorService;
+    }
+
+    public void setPayOrderResultNotify(PayOrderResultNotify payOrderResultNotify) {
+        this.payOrderResultNotify = payOrderResultNotify;
     }
 }

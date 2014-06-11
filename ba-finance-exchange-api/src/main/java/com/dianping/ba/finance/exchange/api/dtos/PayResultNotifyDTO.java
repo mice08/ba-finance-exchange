@@ -17,6 +17,7 @@ public class PayResultNotifyDTO implements Serializable {
     private String paySequence;
     private int status;
     private int poId;
+    private int loginId;
     private BigDecimal paidAmount;
     private String memo;
 
@@ -42,6 +43,14 @@ public class PayResultNotifyDTO implements Serializable {
 
     public void setPoId(int poId) {
         this.poId = poId;
+    }
+
+    public int getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(int loginId) {
+        this.loginId = loginId;
     }
 
     public BigDecimal getPaidAmount() {

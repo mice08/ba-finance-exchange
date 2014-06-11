@@ -13,7 +13,11 @@ public class PayOrderRequestDTO implements Serializable {
 
     private String paySequence;
 
+    private int customerId;
+
     private BigDecimal payAmount;
+
+    private int loginId;
 
     private Date requestDate;
 
@@ -53,6 +57,14 @@ public class PayOrderRequestDTO implements Serializable {
 
     public void setPayAmount(BigDecimal payAmount) {
         this.payAmount = payAmount;
+    }
+
+    public int getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(int loginId) {
+        this.loginId = loginId;
     }
 
     public Date getRequestDate() {
@@ -151,10 +163,19 @@ public class PayOrderRequestDTO implements Serializable {
         this.bankCode = bankCode;
     }
 
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
     @Override
     public String toString() {
         return "PayOrderRequestDTO{" +
                 "paySequence='" + paySequence + '\'' +
+                ", customerId=" + customerId +
                 ", payAmount=" + payAmount +
                 ", requestDate=" + requestDate +
                 ", businessType=" + businessType +
