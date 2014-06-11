@@ -6,7 +6,11 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.Matchers.any;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -37,5 +41,39 @@ public class PayOrderServiceObjectTest {
         when(payOrderDaoMock.insertPayOrder(any(PayOrderData.class))).thenThrow(new RuntimeException("test"));
         poId = payOrderServiceObjectStub.createPayOrder(payOrderData);
         Assert.assertEquals(-1, poId);
+    }
+
+    @Test
+    public void testUpdatePayOrderToPaying() {
+        List<Integer> poIds = new ArrayList<Integer>();
+        poIds.add(1);
+        poIds.add(2);
+        poIds.add(3);
+
+        when(payOrderDaoMock.updatePayOrders(anyListOf(Integer.class), anyInt(), anyInt(), any(Date.class),anyInt())).thenReturn(3);
+
+        int actual = payOrderServiceObjectStub.updatePayOrderToPaying(poIds, -1);
+        Assert.assertEquals(3, actual);
+
+        when(payOrderDaoMock.updatePayOrders(anyListOf(Integer.class), anyInt(), anyInt(), any(Date.class),anyInt())).thenThrow(new RuntimeException("test"));
+        actual = payOrderServiceObjectStub.updatePayOrderToPaying(poIds, -1);
+        Assert.assertEquals(-1, actual);
+    }
+
+    @Test
+    public void testUpdatePayOrderToPaySuccess() {
+        List<Integer> poIds = new ArrayList<Integer>();
+        poIds.add(1);
+        poIds.add(2);
+        poIds.add(3);
+
+        when(payOrderDaoMock.updatePayOrders(anyListOf(Integer.class), anyInt(), anyInt(), any(Date.class),anyInt())).thenReturn(3);
+
+        int actual = payOrderServiceObjectStub.updatePayOrderToPaySuccess(poIds, -1);
+        Assert.assertEquals(3, actual);
+
+        when(payOrderDaoMock.updatePayOrders(anyListOf(Integer.class), anyInt(), anyInt(), any(Date.class),anyInt())).thenThrow(new RuntimeException("test"));
+        actual = payOrderServiceObjectStub.updatePayOrderToPaySuccess(poIds, -1);
+        Assert.assertEquals(-1, actual);
     }
 }

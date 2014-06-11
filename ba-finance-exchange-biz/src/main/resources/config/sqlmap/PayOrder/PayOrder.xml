@@ -75,4 +75,20 @@
         </selectKey>
     </insert>
 
+    <update id="updatePayOrders" parameterClass="map">
+        UPDATE FC_PayOrder
+        SET Status = #setStatus#,
+        <isNotNull property="paidDate">
+            PaidDate= #paidDate#,
+        </isNotNull>
+        UpdateTime = now(),
+        UpdateLoginID = #loginId#
+        WHERE Status = #whereStatus#
+        <isNotEmpty prepend="and" property="poIds">
+            POID IN
+            <iterate open="(" close=")" conjunction="," property="poIds">
+                #poIds[]#
+            </iterate>
+        </isNotEmpty>
+    </update>
 </sqlMap>
