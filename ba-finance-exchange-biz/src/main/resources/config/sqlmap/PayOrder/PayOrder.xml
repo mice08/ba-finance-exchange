@@ -79,6 +79,36 @@
         </selectKey>
     </insert>
 
+    <update id="updatePayOrders" parameterClass="map">
+        UPDATE FC_PayOrder
+        SET Status = #setStatus#,
+        <isNotNull property="paidDate">
+            PaidDate= #paidDate#,
+        </isNotNull>
+        UpdateTime = now(),
+        UpdateLoginID = #loginId#
+        WHERE Status = #whereStatus#
+        <isNotEmpty prepend="and" property="poIds">
+            POID IN
+            <iterate open="(" close=")" conjunction="," property="poIds">
+                #poIds[]#
+            </iterate>
+        </isNotEmpty>
+    </update>
+
+    <select id="findPayOrderListByPoIdList" resultMap="payOrderData" parameterClass="map">
+        SELECT POID, PayAmount, PaidDate, PaySequence, PayCode,
+        CustomerID, CustomerBankID, BankAccountNo, BankAccountName,
+        BankBranchName, BankName, BankProvince, BankCity, BankFullBranchName,
+        BankCode, BusinessType, Status, AddType,
+        AddTime, AddLoginID, UpdateTime, UpdateLoginID, Memo
+        FROM FC_PayOrder
+        WHERE POID IN
+        <iterate open="(" close=")" conjunction="," property="poIds">
+            #poIds[]#
+        </iterate>
+    </select>
+
     <select id="paginatePayOrderList" resultMap="payOrderData" parameterClass="map">
         SELECT
         PayAmount,
