@@ -34,4 +34,11 @@ public interface PayOrderDao extends GenericDao {
     @DAOAction(action = DAOActionType.UPDATE)
     int updatePayOrders(@DAOParam("poIds")List<Integer> poIds,@DAOParam("whereStatus") int whereStatus,@DAOParam("setStatus") int setStatus,@DAOParam("paidDate") Date paidDate,@DAOParam("loginId") int loginId);
 
+    /**
+     * 根据主键列表查询PayOrder集合
+     * @param poIds 主键
+     * @return
+     */
+    @DAOAction(action = DAOActionType.QUERY)
+    List<PayOrderData> findPayOrderListByPoIdList(@DAOParam("poIds")List<Integer> poIds);
 }

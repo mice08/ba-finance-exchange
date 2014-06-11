@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.biz.dao.PayOrderDao;
+import com.dianping.ba.finance.exchange.biz.producer.PayOrderResultNotify;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,12 +19,15 @@ import static org.mockito.Mockito.when;
 public class PayOrderServiceObjectTest {
     private PayOrderServiceObject payOrderServiceObjectStub;
     private PayOrderDao payOrderDaoMock;
+    private PayOrderResultNotify payOrderResultNotifyMock;
 
     @Before
     public void before() {
         payOrderDaoMock = mock(PayOrderDao.class);
+        payOrderResultNotifyMock=mock(PayOrderResultNotify.class);
         payOrderServiceObjectStub = new PayOrderServiceObject();
         payOrderServiceObjectStub.setPayOrderDao(payOrderDaoMock);
+        payOrderServiceObjectStub.setPayOrderResultNotify(payOrderResultNotifyMock);
     }
 
     @Test
