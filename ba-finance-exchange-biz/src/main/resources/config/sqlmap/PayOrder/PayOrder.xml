@@ -99,7 +99,9 @@
     <select id="findPayOrderListByPoIdList" resultMap="payOrderData" parameterClass="map">
         SELECT POID, PayAmount, PaidDate, PaySequence, PayCode,
         CustomerID, CustomerBankID, BankAccountNo, BankAccountName,
-        BankBranchName, BankName, BankProvince, BankCity, BankFullBranchName, BankCode, BusinessType, Status, AddType, AddTime, AddLoginID, UpdateTime, UpdateLoginID, Memo
+        BankBranchName, BankName, BankProvince, BankCity, BankFullBranchName,
+        BankCode, BusinessType, Status, AddType,
+        AddTime, AddLoginID, UpdateTime, UpdateLoginID, Memo
         FROM FC_PayOrder
         WHERE POID IN
         <iterate open="(" close=")" conjunction="," property="poIds">

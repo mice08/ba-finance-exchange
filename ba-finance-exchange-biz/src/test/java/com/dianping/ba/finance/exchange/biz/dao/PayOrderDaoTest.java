@@ -69,4 +69,12 @@ public class PayOrderDaoTest {
         setStatus = PayOrderStatus.PAY_SUCCESS.value();
         payOrderDao.updatePayOrders(poIds,whereStatus,setStatus,new Date(),-1);
     }
+
+    @Test
+    public void testFindPayOrderListByPoIdList() {
+        List<Integer> poIds =new ArrayList<Integer>();
+        poIds.add(2049);
+        poIds.add(2044);
+        payOrderDao.findPayOrderListByPoIdList(poIds);
+    }
 }

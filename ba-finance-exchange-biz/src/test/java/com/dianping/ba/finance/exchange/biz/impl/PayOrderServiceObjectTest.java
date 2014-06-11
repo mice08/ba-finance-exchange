@@ -1,6 +1,7 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.biz.dao.PayOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.PayOrderResultNotify;
 import junit.framework.Assert;
@@ -11,11 +12,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.*;
 
 
@@ -84,6 +83,12 @@ public class PayOrderServiceObjectTest {
         poIds.add(3);
 
         when(payOrderDaoMock.updatePayOrders(anyListOf(Integer.class), anyInt(), anyInt(), any(Date.class),anyInt())).thenReturn(3);
+
+        List<PayOrderData> payOrderDataList = new ArrayList<PayOrderData>();
+        PayOrderData payOrderData=new PayOrderData();
+        payOrderData.setStatus(PayOrderStatus.PAY_SUCCESS.value());
+        payOrderDataList.add(payOrderData);
+        when(payOrderDaoMock.findPayOrderListByPoIdList(anyListOf(Integer.class))).thenReturn(payOrderDataList);
 
         int actual = payOrderServiceObjectStub.updatePayOrderToPaySuccess(poIds, -1);
         Assert.assertEquals(3, actual);

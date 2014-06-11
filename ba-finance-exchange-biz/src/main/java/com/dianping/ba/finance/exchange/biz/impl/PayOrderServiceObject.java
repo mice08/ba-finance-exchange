@@ -71,7 +71,7 @@ public class PayOrderServiceObject implements PayOrderService {
     }
 
     private void payOrderResultNotify(List<Integer> poIds, int loginId) {
-        List<PayOrderData> payOrderDataList = payOrderDao.findPayOrderListBypoIdList(poIds);
+        List<PayOrderData> payOrderDataList = payOrderDao.findPayOrderListByPoIdList(poIds);
         for (PayOrderData payOrderData : payOrderDataList) {
             if (payOrderData.getStatus() == PayOrderStatus.PAY_SUCCESS.value()) {
                 PayOrderResultBean payOrderResultBean = new PayOrderResultBean();

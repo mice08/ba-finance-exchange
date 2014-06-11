@@ -40,5 +40,5 @@ public interface PayOrderDao extends GenericDao {
      * @return
      */
     @DAOAction(action = DAOActionType.QUERY)
-    List<PayOrderData> findPayOrderListByPoIdList(@DAOParam("poIds")List<Integer> poIds);
+    List<PayOrderData> findPayOrderListByPoIdList(@DAOParam("poIds") List<Integer> poIds);
 }
