@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Calendar;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,6 +40,8 @@ public class PayOrderDaoTest {
         payOrderData.setUpdateTime(Calendar.getInstance().getTime());
         payOrderData.setBankAccountName("1111");
         payOrderData.setPaySequence("P|1");
+        payOrderData.setPayCode("paycode");
+        payOrderData.setCustomerId(12387);
         payOrderData.setPayAmount(BigDecimal.ONE);
         payOrderData.setCustomerBankId(8787);
         payOrderData.setBankAccountName("accountName");

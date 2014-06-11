@@ -3,9 +3,6 @@ package com.dianping.ba.finance.exchange.biz.utils;
 import junit.framework.Assert;
 import org.junit.Test;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
 /**
  * Description：BizUtils对应测试类
  * User: liufeng.ren
@@ -20,4 +17,10 @@ public class BizUtilsTest {
         Assert.assertEquals("PP|0001", actual.substring(0,7));     //ignore 当日
     }
 
+    @Test
+    public void testGeneratePayCode() throws Exception {
+        String payCode = BizUtils.generatePayCode();
+        System.out.println(payCode);
+        Assert.assertNotNull(payCode);
+    }
 }

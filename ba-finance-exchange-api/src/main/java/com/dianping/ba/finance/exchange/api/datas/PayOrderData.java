@@ -46,6 +46,10 @@ public class PayOrderData implements Serializable {
 
     private String paySequence;
 
+    private String payCode;
+
+    private int customerId;
+
     private int customerBankId;
 
     private String bankAccountNo;
@@ -242,6 +246,22 @@ public class PayOrderData implements Serializable {
         this.bankCode = bankCode;
     }
 
+    public String getPayCode() {
+        return payCode;
+    }
+
+    public void setPayCode(String payCode) {
+        this.payCode = payCode;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
     @Override
     public String toString() {
         return "PayOrderData{" +
@@ -254,6 +274,8 @@ public class PayOrderData implements Serializable {
                 ", updateTime=" + updateTime +
                 ", memo='" + memo + '\'' +
                 ", paySequence='" + paySequence + '\'' +
+                ", payCode='" + payCode + '\'' +
+                ", customerId=" + customerId +
                 ", customerBankId=" + customerBankId +
                 ", bankAccountNo='" + bankAccountNo + '\'' +
                 ", bankAccountName='" + bankAccountName + '\'' +
