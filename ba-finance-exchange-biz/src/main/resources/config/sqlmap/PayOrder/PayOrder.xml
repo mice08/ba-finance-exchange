@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="PayOrder">
+
+    <typeAlias alias="PayOrderData" type="com.dianping.ba.finance.exchange.api.datas.PayOrderData"/>
+    <resultMap id="payOrderData" class="PayOrderData">
+        <result property="poId" column="POID"/>
+        <result property="payAmount" column="PayAmount"/>
+        <result property="paidDate" column="PaidDate"/>
+        <result property="paySequence" column="PaySequence"/>
+        <result property="businessType" column="BusinessType"/>
+        <result property="bankAccountNo" column="BankAccountNo"/>
+        <result property="bankAccountName" column="BankAccountName"/>
+        <result property="bankName" column="BankName"/>
+        <result property="bankProvince" column="BankProvince"/>
+        <result property="bankCity" column="BankCity"/>
+        <result property="status" column="Status"/>
+        <result property="addTime" column="AddTime"/>
+        <result property="addType" column="AddType"/>
+        <result property="updateTime" column="UpdateTime"/>
+        <result property="memo" column="Memo"/>
+        <result property="addLoginId" column="AddLoginID"/>
+        <result property="updateLoginId" column="UpdateLoginID"/>
+    </resultMap>
+
+    <insert id="insertPayOrder" parameterClass="map">
+        <![CDATA[
+        	 INSERT INTO FC_PayOrder
+			(PayAmount,
+			PaySequence,
+			PayCode,
+			CustomerID,
+			CustomerBankID,
+			BankAccountNo,
+			BankAccountName,
+			BankBranchName,
+			BankName,
+			BankProvince,
+			BankCity,
+			BankFullBranchName,
+			BankCode,
+			BusinessType,
+			Status,
+			AddTime,
+			AddType,
+			UpdateTime,
+			Memo,
+			AddLoginID,
+			UpdateLoginID
+			)
+			VALUES
+			(#payOrderData.payAmount#,
+			#payOrderData.paySequence#,
+			#payOrderData.payCode#,
+			#payOrderData.customerId#,
+			#payOrderData.customerBankId#,
+			#payOrderData.bankAccountNo#,
+			#payOrderData.bankAccountName#,
+			#payOrderData.bankBranchName#,
+			#payOrderData.bankName#,
+			#payOrderData.bankProvince#,
+			#payOrderData.bankCity#,
+			#payOrderData.bankFullBranchName#,
+			#payOrderData.bankCode#,
+			#payOrderData.businessType#,
+			#payOrderData.status#,
+			NOW(),
+			#payOrderData.addType#,
+			NOW(),
+			#payOrderData.memo#,
+			#payOrderData.addLoginId#,
+			#payOrderData.updateLoginId#
+			);
+ 		]]>
+        <selectKey resultClass="java.lang.Integer" keyProperty="poId">
+            <![CDATA[
+			SELECT @@IDENTITY AS id
+		]]>
+        </selectKey>
+    </insert>
+
+</sqlMap>
