@@ -1,11 +1,12 @@
 package com.dianping.ba.finance.exchange.api.beans;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Eric on 2014/6/11.
  */
-public class PayOrderSearchBean {
+public class PayOrderSearchBean implements Serializable {
 
     private int businessType;
     private Date beginTime;
