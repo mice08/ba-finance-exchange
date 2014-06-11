@@ -22,18 +22,7 @@ public class PayOrderData implements Serializable {
      * 业务类型 1团购2：预定3：结婚4：储值卡
      */
     private int businessType;
-    /**
-     * bankAccountNo
-     */
-    private String bankAccountNo;
-    /**
-     * BankAccountName
-     */
-    private String bankAccountName;
-    /**
-     * BankName
-     */
-    private String bankName;
+
     /**
      * 交易状态；1初始；2导出支付中; 3成功；4失败
      */
@@ -55,11 +44,25 @@ public class PayOrderData implements Serializable {
      */
     private String memo;
 
-    private String bankCity;
+    private String paySequence;
+
+    private int customerBankId;
+
+    private String bankAccountNo;
+
+    private String bankAccountName;
+
+    private String bankName;
 
     private String bankProvince;
 
-    private String paySequence;
+    private String bankCity;
+
+    private String bankBranchName;
+    // 人行支付行全称
+    private String bankFullBranchName;
+    //联行号
+    private String bankCode;
 
     private int addLoginId;
 
@@ -204,5 +207,65 @@ public class PayOrderData implements Serializable {
 
     public void setAddType(int addType) {
         this.addType = addType;
+    }
+
+
+    public int getCustomerBankId() {
+        return customerBankId;
+    }
+
+    public void setCustomerBankId(int customerBankId) {
+        this.customerBankId = customerBankId;
+    }
+
+    public String getBankBranchName() {
+        return bankBranchName;
+    }
+
+    public void setBankBranchName(String bankBranchName) {
+        this.bankBranchName = bankBranchName;
+    }
+
+    public String getBankFullBranchName() {
+        return bankFullBranchName;
+    }
+
+    public void setBankFullBranchName(String bankFullBranchName) {
+        this.bankFullBranchName = bankFullBranchName;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
+    }
+
+    @Override
+    public String toString() {
+        return "PayOrderData{" +
+                "poId=" + poId +
+                ", payAmount=" + payAmount +
+                ", businessType=" + businessType +
+                ", status=" + status +
+                ", addTime=" + addTime +
+                ", paidDate=" + paidDate +
+                ", updateTime=" + updateTime +
+                ", memo='" + memo + '\'' +
+                ", paySequence='" + paySequence + '\'' +
+                ", customerBankId=" + customerBankId +
+                ", bankAccountNo='" + bankAccountNo + '\'' +
+                ", bankAccountName='" + bankAccountName + '\'' +
+                ", bankName='" + bankName + '\'' +
+                ", bankProvince='" + bankProvince + '\'' +
+                ", bankCity='" + bankCity + '\'' +
+                ", bankBranchName='" + bankBranchName + '\'' +
+                ", bankFullBranchName='" + bankFullBranchName + '\'' +
+                ", bankCode='" + bankCode + '\'' +
+                ", addLoginId=" + addLoginId +
+                ", updateLoginId=" + updateLoginId +
+                ", addType=" + addType +
+                '}';
     }
 }

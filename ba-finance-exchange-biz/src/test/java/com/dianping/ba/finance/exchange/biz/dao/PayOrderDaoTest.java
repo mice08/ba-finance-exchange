@@ -43,6 +43,15 @@ public class PayOrderDaoTest {
         payOrderData.setBankAccountName("1111");
         payOrderData.setPaySequence("P|1");
         payOrderData.setPayAmount(BigDecimal.ONE);
+        payOrderData.setCustomerBankId(8787);
+        payOrderData.setBankAccountName("accountName");
+        payOrderData.setBankAccountNo("No123");
+        payOrderData.setBankBranchName("branchName");
+        payOrderData.setBankCity("city");
+        payOrderData.setBankCode("code");
+        payOrderData.setBankFullBranchName("fullBranchName");
+        payOrderData.setBankProvince("province");
+        payOrderData.setBankName("bankName");
 
         payOrderDao.insertPayOrder(payOrderData);
     }

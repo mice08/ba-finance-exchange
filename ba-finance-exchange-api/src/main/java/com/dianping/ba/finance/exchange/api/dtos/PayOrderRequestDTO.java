@@ -19,6 +19,8 @@ public class PayOrderRequestDTO implements Serializable {
 
     private int businessType;
 
+    private int customerBankId;
+
     private String bankAccountNo;
 
     private String bankAccountName;
@@ -28,6 +30,12 @@ public class PayOrderRequestDTO implements Serializable {
     private String bankProvince;
 
     private String bankCity;
+
+    private String bankBranchName;
+    // 人行支付行全称
+    private String bankFullBranchName;
+    //联行号
+    private String bankCode;
 
     private String memo;
 
@@ -109,5 +117,57 @@ public class PayOrderRequestDTO implements Serializable {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public int getCustomerBankId() {
+        return customerBankId;
+    }
+
+    public void setCustomerBankId(int customerBankId) {
+        this.customerBankId = customerBankId;
+    }
+
+    public String getBankBranchName() {
+        return bankBranchName;
+    }
+
+    public void setBankBranchName(String bankBranchName) {
+        this.bankBranchName = bankBranchName;
+    }
+
+    public String getBankFullBranchName() {
+        return bankFullBranchName;
+    }
+
+    public void setBankFullBranchName(String bankFullBranchName) {
+        this.bankFullBranchName = bankFullBranchName;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
+    }
+
+    @Override
+    public String toString() {
+        return "PayOrderRequestDTO{" +
+                "paySequence='" + paySequence + '\'' +
+                ", payAmount=" + payAmount +
+                ", requestDate=" + requestDate +
+                ", businessType=" + businessType +
+                ", customerBankId=" + customerBankId +
+                ", bankAccountNo='" + bankAccountNo + '\'' +
+                ", bankAccountName='" + bankAccountName + '\'' +
+                ", bankName='" + bankName + '\'' +
+                ", bankProvince='" + bankProvince + '\'' +
+                ", bankCity='" + bankCity + '\'' +
+                ", bankBranchName='" + bankBranchName + '\'' +
+                ", bankFullBranchName='" + bankFullBranchName + '\'' +
+                ", bankCode='" + bankCode + '\'' +
+                ", memo='" + memo + '\'' +
+                '}';
     }
 }

@@ -122,12 +122,17 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
         payOrderData.setPaySequence(payOrderRequestDTO.getPaySequence());
         payOrderData.setBusinessType(payOrderRequestDTO.getBusinessType());
         payOrderData.setPayAmount(payOrderRequestDTO.getPayAmount());
+        payOrderData.setStatus(PayOrderStatus.INIT.value());
+
+        payOrderData.setCustomerBankId(payOrderRequestDTO.getCustomerBankId());
+        payOrderData.setBankFullBranchName(payOrderRequestDTO.getBankFullBranchName());
         payOrderData.setBankAccountName(payOrderRequestDTO.getBankAccountName());
         payOrderData.setBankProvince(payOrderRequestDTO.getBankProvince());
         payOrderData.setBankCity(payOrderRequestDTO.getBankCity());
         payOrderData.setBankAccountNo(payOrderRequestDTO.getBankAccountNo());
         payOrderData.setBankName(payOrderRequestDTO.getBankName());
-        payOrderData.setStatus(PayOrderStatus.INIT.value());
+        payOrderData.setBankCode(payOrderRequestDTO.getBankCode());
+        payOrderData.setBankBranchName(payOrderRequestDTO.getBankBranchName());
         //1系统
         payOrderData.setAddType(1);
         payOrderData.setAddTime(DateUtils.getCurrentTime());
