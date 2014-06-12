@@ -42,7 +42,7 @@
                         <label class="control-label">付款单号</label>
 
                         <div class="controls">
-                            <input type="text" id="paySequence" name="paySequence" class="form_value">
+                            <input type="text" id="paySequence" name="payCode" class="form_value">
                         </div>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                             </select>
 
                             <div class="input-append">
-                                <input type="text" id="addbegindate" datatype="date" name="addBeginDate"
+                                <input type="text" id="addbegindate" datatype="date" name="addBeginTime"
                                        class="input-small form_value">
                                             <span class="add-on">
                                                 <i class="icon-calendar">
@@ -70,7 +70,7 @@
                             至
                             <div class="input-append">
                                 <input type="text" id="addenddate" validate="ge[addbegindate]" datatype="date"
-                                       name="addEndDate" error_msg="ge[addbegindate]:起始日期大于结束日期"
+                                       name="addEndTime" error_msg="ge[addbegindate]:起始日期大于结束日期"
                                        class="input-small form_value">
                                             <span class="add-on">
                                                 <i class="icon-calendar">

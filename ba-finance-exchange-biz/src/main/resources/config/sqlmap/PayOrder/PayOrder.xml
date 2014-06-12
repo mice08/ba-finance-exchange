@@ -21,6 +21,7 @@
         <result property="memo" column="Memo"/>
         <result property="addLoginId" column="AddLoginID"/>
         <result property="updateLoginId" column="UpdateLoginID"/>
+        <result property="payCode" column="PayCode"/>
     </resultMap>
 
     <insert id="insertPayOrder" parameterClass="map">
@@ -132,7 +133,8 @@
         Memo,
         AddLoginID,
         UpdateLoginID,
-        CustomerID
+        CustomerID,
+        PayCode
         FROM
         FC_PayOrder
         <dynamic prepend="WHERE">
