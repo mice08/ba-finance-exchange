@@ -62,7 +62,7 @@ public class ImportRefundAjaxAction extends AjaxBaseAction {
                 return SUCCESS;
             }
             StringBuilder sb = new StringBuilder();
-            if (!checkRefundList(refundDTOList, sb)) {
+            if (!isRefundInfoValid(refundDTOList, sb)) {
                 excelInvalidMsg = sb.toString();
                 code = SUCCESS_CODE;
                 return SUCCESS;
@@ -78,13 +78,13 @@ public class ImportRefundAjaxAction extends AjaxBaseAction {
         }
     }
 
-    private boolean checkRefundList(List<RefundDTO> refundDTOList, StringBuilder sb) {
+    private boolean isRefundInfoValid(List<RefundDTO> refundDTOList, StringBuilder sb) {
         // TODO PayCode 格式未定，暂不校验Id格式
-        return checkDuplicateRefundId(refundDTOList, sb);
+        return !hasDuplicateRefundId(refundDTOList, sb);
     }
 
 
-    private boolean checkDuplicateRefundId(List<RefundDTO> refundDTOList, StringBuilder sb) {
+    private boolean hasDuplicateRefundId(List<RefundDTO> refundDTOList, StringBuilder sb) {
         Set<String> idSet = Sets.newHashSet();
         Set<String> duplicateSet = Sets.newHashSet();
         for (RefundDTO refundDTO : refundDTOList) {
@@ -99,7 +99,7 @@ public class ImportRefundAjaxAction extends AjaxBaseAction {
             invalidRefundMap.put("duplicateIds", duplicateSet.toString());
             sb.append("重复的ID号").append(duplicateSet);
         }
-        return duplicateSet.isEmpty();
+        return !duplicateSet.isEmpty();
     }
 
 

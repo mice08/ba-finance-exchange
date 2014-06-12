@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
+import com.dianping.ba.finance.exchange.api.beans.POUpdateInfoBean;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.core.type.PageModel;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
@@ -59,15 +60,16 @@ public class PayOrderDaoTest {
     @Test
     public void testUpdatePayOrders() {
         List<Integer> poIds =new ArrayList<Integer>();
-        poIds.add(2049);
-        poIds.add(2044);
-        int whereStatus = PayOrderStatus.INIT.value();
-        int setStatus = PayOrderStatus.EXPORT_PAYING.value();
-        payOrderDao.updatePayOrders(poIds,whereStatus,setStatus,null,-1);
-
-        whereStatus = PayOrderStatus.EXPORT_PAYING.value();
-        setStatus = PayOrderStatus.PAY_SUCCESS.value();
-        payOrderDao.updatePayOrders(poIds,whereStatus,setStatus,new Date(),-1);
+        poIds.add(3121);
+        poIds.add(3116);
+        POUpdateInfoBean poUpdateInfoBean = new POUpdateInfoBean();
+        poUpdateInfoBean.setPoIdList(poIds);
+        poUpdateInfoBean.setLoginId(878787);
+        poUpdateInfoBean.setPaidDate(new Date());
+        poUpdateInfoBean.setPreStatus(PayOrderStatus.PAY_SUCCESS.value());
+        poUpdateInfoBean.setUpdateStatus(PayOrderStatus.REFUND.value());
+        poUpdateInfoBean.setMemo("refund87");
+        payOrderDao.updatePayOrders(poUpdateInfoBean);
     }
 
     @Test

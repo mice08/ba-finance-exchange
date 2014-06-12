@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
+import com.dianping.ba.finance.exchange.api.beans.POUpdateInfoBean;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderResultBean;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
@@ -17,12 +18,12 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.*;
 
 public class PayOrderServiceObjectTest {
@@ -72,12 +73,12 @@ public class PayOrderServiceObjectTest {
         poIds.add(2);
         poIds.add(3);
 
-        when(payOrderDaoMock.updatePayOrders(anyListOf(Integer.class), anyInt(), anyInt(), any(Date.class),anyInt())).thenReturn(3);
+        when(payOrderDaoMock.updatePayOrders(any(POUpdateInfoBean.class))).thenReturn(3);
 
         int actual = payOrderServiceObjectStub.updatePayOrderToPaying(poIds, -1);
         Assert.assertEquals(3, actual);
 
-        when(payOrderDaoMock.updatePayOrders(anyListOf(Integer.class), anyInt(), anyInt(), any(Date.class),anyInt())).thenThrow(new RuntimeException("test"));
+        when(payOrderDaoMock.updatePayOrders(any(POUpdateInfoBean.class))).thenThrow(new RuntimeException("test"));
         actual = payOrderServiceObjectStub.updatePayOrderToPaying(poIds, -1);
         Assert.assertEquals(-1, actual);
     }
@@ -89,7 +90,7 @@ public class PayOrderServiceObjectTest {
         poIds.add(2);
         poIds.add(3);
 
-        when(payOrderDaoMock.updatePayOrders(anyListOf(Integer.class), anyInt(), anyInt(), any(Date.class),anyInt())).thenReturn(3);
+        when(payOrderDaoMock.updatePayOrders(any(POUpdateInfoBean.class))).thenReturn(3);
 
         List<PayOrderData> payOrderDataList = new ArrayList<PayOrderData>();
         PayOrderData payOrderData=new PayOrderData();
@@ -100,7 +101,7 @@ public class PayOrderServiceObjectTest {
         int actual = payOrderServiceObjectStub.updatePayOrderToPaySuccess(poIds, -1);
         Assert.assertEquals(3, actual);
 
-        when(payOrderDaoMock.updatePayOrders(anyListOf(Integer.class), anyInt(), anyInt(), any(Date.class),anyInt())).thenThrow(new RuntimeException("test"));
+        when(payOrderDaoMock.updatePayOrders(any(POUpdateInfoBean.class))).thenThrow(new RuntimeException("test"));
         actual = payOrderServiceObjectStub.updatePayOrderToPaySuccess(poIds, -1);
         Assert.assertEquals(-1, actual);
     }
@@ -124,7 +125,7 @@ public class PayOrderServiceObjectTest {
     public void testRefundPayOrderEmptyRefundList() throws Exception {
         payOrderServiceObjectStub.refundPayOrder(null, 1);
         verify(payOrderDaoMock, never()).findPayOrderListByPayCode(anyList());
-        verify(payOrderDaoMock, never()).updatePayOrders(anyList(), anyInt(), anyInt(), any(Date.class), anyInt());
+        verify(payOrderDaoMock, never()).updatePayOrders(any(POUpdateInfoBean.class));
         verify(payOrderResultNotifyMock, never()).payResultNotify(any(PayOrderResultBean.class));
     }
 
@@ -141,7 +142,7 @@ public class PayOrderServiceObjectTest {
         Assert.assertEquals(RefundFailedReason.INFO_EMPTY, resultDTO.getRefundFailedMap().get("PayCode"));
 
         verify(payOrderDaoMock, times(1)).findPayOrderListByPayCode(anyList());
-        verify(payOrderDaoMock, never()).updatePayOrders(anyList(), anyInt(), anyInt(), any(Date.class), anyInt());
+        verify(payOrderDaoMock, never()).updatePayOrders(any(POUpdateInfoBean.class));
         verify(payOrderResultNotifyMock, never()).payResultNotify(any(PayOrderResultBean.class));
     }
 
@@ -162,7 +163,7 @@ public class PayOrderServiceObjectTest {
         Assert.assertEquals(RefundFailedReason.STATUS_ERROR, resultDTO.getRefundFailedMap().get("PayCode"));
 
         verify(payOrderDaoMock, times(1)).findPayOrderListByPayCode(anyList());
-        verify(payOrderDaoMock, never()).updatePayOrders(anyList(), anyInt(), anyInt(), any(Date.class), anyInt());
+        verify(payOrderDaoMock, never()).updatePayOrders(any(POUpdateInfoBean.class));
         verify(payOrderResultNotifyMock, never()).payResultNotify(any(PayOrderResultBean.class));
     }
 
@@ -183,7 +184,7 @@ public class PayOrderServiceObjectTest {
         Assert.assertFalse(resultDTO.containFailedResult());
         Assert.assertEquals(0, resultDTO.getRefundTotalAmount().compareTo(BigDecimal.TEN));
         verify(payOrderDaoMock, times(1)).findPayOrderListByPayCode(anyList());
-        verify(payOrderDaoMock, times(1)).updatePayOrders(anyList(), anyInt(), anyInt(), any(Date.class), anyInt());
+        verify(payOrderDaoMock, times(1)).updatePayOrders(any(POUpdateInfoBean.class));
         verify(payOrderResultNotifyMock, times(1)).payResultNotify(any(PayOrderResultBean.class));
     }
 }

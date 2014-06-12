@@ -14,7 +14,7 @@ public enum PayOrderStatus {
      */
     INIT(1),
     /**
-     * 2-导出支付中
+     * 2-支付中
      */
     EXPORT_PAYING(2),
     /**
@@ -53,7 +53,7 @@ public enum PayOrderStatus {
             case 1:
                 return "初始";
             case 2:
-                return "导出支付中";
+                return "支付中";
             case 3:
                 return "支付成功";
             case 4:

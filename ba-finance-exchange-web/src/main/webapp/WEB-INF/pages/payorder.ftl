@@ -9,6 +9,45 @@
 </head>
 
 <body>
+<div id="import-refund" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-header section-title">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 id="myModalLabel">导入退票</h4>
+    </div>
+    <div class="modal-body">
+        <label class="import-label">导入文件：</label>
+        <div class="uploader">
+            <input id="import-file" class="import-file" name="refundFile" type="file" size="31">
+
+            <div class="input-append">
+                <input type="text" name="upload-file" data-bind="value: filename" placeholder="这里是文件名">
+                <button class="btn btn-default btn-fs-default btn-fs-sm" type="button">选择文件</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default btn-fs-default btn-fs-xs" data-dismiss="modal" aria-hidden="true">取消</button>
+        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-import">确定</button>
+    </div>
+</div>
+<div id="refund-result" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="refundResultLabel"
+     aria-hidden="true">
+    <div class="modal-header section-title">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 id="refundResultLabel">导入退票结果</h4>
+    </div>
+    <div class="modal-body">
+        <div class="failed-result"></div>
+        <div class="success-result"></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-result" data-dismiss="modal"
+                aria-hidden="true">确定
+        </button>
+    </div>
+</div>
+
 <div id="relation-result" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-header section-title">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -121,6 +160,13 @@
                 <div class="alert alert-info" id="result-info">
                     <span class="number-char recordCount">0</span> 条符合条件的结果，总金额
                     <span class="number-char totalAmount">0</span> 元
+
+                    <a id="btn-import" href="#import-refund" role="button"
+                       class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
+                       data-toggle="modal">
+                        <span class="glyphicon glyphicon-open"></span>
+                        导入退票
+                    </a>
                 </div>
             </div>
             <div class="tb-wrapper">
