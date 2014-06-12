@@ -14,7 +14,7 @@ public enum PayOrderStatus {
      */
     INIT(1),
     /**
-     * 2-导出支付中
+     * 2-支付中
      */
     EXPORT_PAYING(2),
     /**
@@ -24,7 +24,7 @@ public enum PayOrderStatus {
     /**
      * 4-退票
      */
-    SEND_BACK(4);
+    REFUND(4);
 
     private int payOrderStatus;
 
@@ -41,7 +41,7 @@ public enum PayOrderStatus {
             case 3:
                 return PAY_SUCCESS;
             case 4:
-                return SEND_BACK;
+                return REFUND;
             default:
                 return DEFAULT;
         }
@@ -53,7 +53,7 @@ public enum PayOrderStatus {
             case 1:
                 return "初始";
             case 2:
-                return "导出支付中";
+                return "支付中";
             case 3:
                 return "支付成功";
             case 4:

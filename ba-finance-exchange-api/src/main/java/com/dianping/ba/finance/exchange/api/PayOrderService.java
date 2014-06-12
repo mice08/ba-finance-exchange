@@ -3,10 +3,11 @@ package com.dianping.ba.finance.exchange.api;
 
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
+import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
 import com.dianping.core.type.PageModel;
 
 import java.math.BigDecimal;
-
 import java.util.List;
 
 /**
@@ -19,6 +20,14 @@ public interface PayOrderService {
      * @param payOrderData
      */
     int createPayOrder(PayOrderData payOrderData);
+
+    /**
+     * 退票
+     * @param refundDTOList
+     * @param loginId
+     * @return
+     */
+    RefundResultDTO refundPayOrder(List<RefundDTO> refundDTOList, int loginId);
 
     /**
      * 导出支付更新状态
@@ -52,5 +61,4 @@ public interface PayOrderService {
      * @return
      */
     public BigDecimal findPayOrderTotalAmount(PayOrderSearchBean payOrderSearchBean);
-
 }

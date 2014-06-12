@@ -17,7 +17,7 @@ public class OptionConstant {
             put(PayOrderStatus.INIT.value(), "初始");
             put(PayOrderStatus.EXPORT_PAYING.value(), "支付中");
             put(PayOrderStatus.PAY_SUCCESS.value(), "支付成功");
-            put(PayOrderStatus.SEND_BACK.value(),"退票");
+            put(PayOrderStatus.REFUND.value(),"退票");
         }
     };
 

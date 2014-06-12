@@ -74,4 +74,5 @@ public abstract class WebBaseAction extends AvatarAction implements Preparable {
     }
 
     abstract protected String webExecute() throws Exception;
+
 }
