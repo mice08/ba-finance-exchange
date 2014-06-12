@@ -171,23 +171,18 @@
         <td class="fs tb-item id number-char">{{= record.payCode}}</td>
         <td class="fs tb-item id number-char">{{= record.customerName}}</td>
         <td class="fs tb-item id number-char">{{= record.payAmount}}</td>
+        <td class="fs tb-item add-date">{{= record.addTime}}</td>
         <td class="fs tb-item bank-account">
-                                <a href="javascript:void(0);" class="lookup-bank-info" data-toggle="popover"
-                                   data-placement="top"
-                                   data-content="<tr><th style='text-align:left; min-width:60px;'>开户名：</th><td style='text-align:left'>{{= record.bankAccountName}}&#10;</td></tr>
-                                               <tr><th style='text-align:left; min-width:60px;'>开户行：</th><td style='text-align:left'>{{= record.bankName}}&#10;</td></tr>
-                                               <tr><th style='text-align:left; min-width:60px;'>帐号：</th>><td style='text-align:left'>{{= record.bankAccountNo}}</td></tr>"
-                                   title="" data-original-title="银行帐号信息" data-html="true" data-animation="true"
-                                   data-trigger="click">查看</a>
+                                <a href="javascript:void(0);" data-toggle="popover" data-placement="top" bankAccountName="{{= record.bankAccountName}}" bankAccountNo="{{= record.bankAccountNo}}" bankName="{{= record.bankFullBranchName}}" class="bank-show"  rel="popover">查看</a>
                             </td>
-             <td class="fs tb-item add-date">{{= record.addTime}}</td>
-             {{if record.status==支付成功}}
+
+             {{if record.queryStatus==0||record.queryStatus==3}}
         <td class="fs tb-item amount number-char">{{= record.paidTime}}</td>
         {{/if}}
-        {{if record.status==退票}}
+        {{if record.queryStatus==0||record.queryStatus==4}}
         <td class="fs tb-item amount number-char">{{= record.updateTime}}</td>
         {{/if}}
-        <td class="fs tb-item plan-date number-char">{{= record.status}}</td>
+        <td class="fs tb-item plan-date number-char">{{= record.statusDesc}}</td>
         <td class="fs tb-item status">{{= record.memo}}</td>
     </tr>
     {{/each}}
