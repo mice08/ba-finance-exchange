@@ -162,6 +162,7 @@
                     <span class="number-char totalAmount">0</span> 元
 
                     <a id="btn-import" href="#import-refund" role="button"
+                       style="display: none"
                        class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
                        data-toggle="modal">
                         <span class="glyphicon glyphicon-open"></span>
