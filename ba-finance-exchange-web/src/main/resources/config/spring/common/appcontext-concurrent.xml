@@ -13,7 +13,7 @@
         <property name="corePoolSize" value="${ba-finance-exchange-web.concurrent.coreSize}"/>
         <property name="maxPoolSize" value="${ba-finance-exchange-web.concurrent.maxSize}"/>
         <property name="keepAliveSeconds" value="${ba-finance-exchange-web.concurrent.keepAliveSeconds}"/>
-        <property name="queueCapacity" value="${ba-finance-settle-exchange.concurrent.queueCapacity}"/>
+        <property name="queueCapacity" value="${ba-finance-exchange-web.concurrent.queueCapacity}"/>
         <property name="rejectedExecutionHandler" ref="callerRunsPolicy"/>
     </bean>
 </beans>
