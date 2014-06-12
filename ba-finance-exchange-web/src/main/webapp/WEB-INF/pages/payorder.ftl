@@ -18,11 +18,11 @@
     <div class="modal-body">
         <label class="import-label">导入文件：</label>
         <div class="uploader">
-            <input id="import-file" class="import-file" name="refundFile" type="file" size="31">
+            <input id="import-file" class="import-file" style="display: none" name="refundFile" type="file" size="31">
 
             <div class="input-append">
                 <input type="text" name="upload-file" data-bind="value: filename" placeholder="这里是文件名">
-                <button class="btn btn-default btn-fs-default btn-fs-sm" type="button">选择文件</button>
+                <button id="chooseFile" class="btn btn-default btn-fs-default btn-fs-sm" type="button">选择文件</button>
             </div>
         </div>
     </div>
