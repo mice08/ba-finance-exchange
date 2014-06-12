@@ -16,9 +16,12 @@ public class PayOrderBean {
     private String bankAccountNo;
     private String bankAccountName;
     private String bankFullBranchName;
-    private String status;
+    private int status;
+    private String statusDesc;
+    private String updateTime;
     private String memo;
     private String paidDate;
+    private int queryStatus;
 
     public String getPayCode() {
         return payCode;
@@ -84,11 +87,11 @@ public class PayOrderBean {
         this.bankFullBranchName = bankFullBranchName;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -106,5 +109,29 @@ public class PayOrderBean {
 
     public void setPaidDate(String paidDate) {
         this.paidDate = paidDate;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getStatusDesc() {
+        return statusDesc;
+    }
+
+    public void setStatusDesc(String statusDesc) {
+        this.statusDesc = statusDesc;
+    }
+
+    public int getQueryStatus() {
+        return queryStatus;
+    }
+
+    public void setQueryStatus(int queryStatus) {
+        this.queryStatus = queryStatus;
     }
 }
