@@ -4,10 +4,15 @@ import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
+import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
 import com.dianping.ba.finance.exchange.biz.dao.PayOrderDao;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * 处理付款单的Service类
@@ -38,6 +43,19 @@ public class PayOrderServiceObject implements PayOrderService {
             }
         } while(times > 0);
         return -1;
+    }
+
+    @Log(severity = 1, logBefore = true, logAfter = true)
+    @ReturnDefault
+    @Override
+    public RefundResultDTO refundPayOrder(List<RefundDTO> refundDTOList, int loginId) {
+        RefundResultDTO refundResultDTO = new RefundResultDTO();
+        if (CollectionUtils.isEmpty(refundDTOList)) {
+            return refundResultDTO;
+        }
+        // TODO
+
+        return refundResultDTO;
     }
 
     public void setPayOrderDao(PayOrderDao payOrderDao) {
