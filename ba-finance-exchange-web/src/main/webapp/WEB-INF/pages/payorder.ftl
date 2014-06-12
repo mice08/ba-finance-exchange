@@ -121,6 +121,12 @@
                 <div class="alert alert-info" id="result-info">
                     <span class="number-char recordCount">0</span> 条符合条件的结果，总金额
                     <span class="number-char totalAmount">0</span> 元
+                    {{if status == 1 || status == 2>}}
+                    &nbsp;&nbsp;
+                    <a id="btn-export" class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
+                       href="###">
+                        <span class="glyphicon glyphicon-save"></span>导出支付</a>
+                    {{/if}}
                 </div>
             </div>
             <div class="tb-wrapper">
