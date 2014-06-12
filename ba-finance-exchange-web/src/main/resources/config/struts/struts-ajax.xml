@@ -29,9 +29,16 @@
                 method="submitPaySuccess">
             <result type="json"></result>
         </action>
+
         <action name="orderexport"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.PayOrderAjaxAction"
                 method="payOrderExportForPay">
+            <result type="json"></result>
+        </action>
+
+        <action name="importRefund"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ImportRefundAjaxAction"
+                method="importRefund">
             <result type="json"></result>
         </action>
     </package>

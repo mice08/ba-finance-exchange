@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.biz.producer;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderResultBean;
 import com.dianping.ba.finance.exchange.api.dtos.PayResultNotifyDTO;
 import com.dianping.ba.finance.exchange.api.enums.PayResultStatus;
+import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.swallow.SwallowEventBean;
 import com.dianping.finance.common.swallow.SwallowProducer;
 import org.apache.commons.lang.StringUtils;
@@ -17,10 +18,12 @@ import java.math.BigDecimal;
  * To change this template use File | Settings | File Templates.
  */
 public class PayOrderResultNotify {
+
     private SwallowProducer payOrderProducer;
 
     public static final String EXCHANGE_PAY_RESULT_EVENT_KEY = "EX_FS_PAY_RESULT";
 
+    @Log(severity = 1, logBefore = true, logAfter = true)
     public void payResultNotify(PayOrderResultBean payOrderResultBean) {
         PayResultNotifyDTO payResultNotifyDTO = buildPayResultNotifyDTO(payOrderResultBean);
         SwallowEventBean eventBean = new SwallowEventBean(EXCHANGE_PAY_RESULT_EVENT_KEY, payResultNotifyDTO);

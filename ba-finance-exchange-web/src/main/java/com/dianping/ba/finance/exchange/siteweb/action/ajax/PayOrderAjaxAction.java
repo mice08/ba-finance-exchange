@@ -32,7 +32,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     /**
      * 记录需要监控的业务日志
      */
-    private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.settle.web.monitor.PayPlanAjaxActon");
+    private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.web.monitor.PayOrderAjaxAction");
     //查询结果，付款计划列表
     private PageModel payOrderModel = new PageModel();
     //第几页
@@ -165,22 +165,22 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         return payOrderSearchBean;
     }
 
-    private List<PayOrderBean> buildPayOrderBeans(List<PayOrderData> payOrderDataList){
-        List<PayOrderBean> payOrderBeans=new ArrayList<PayOrderBean>();
-        if (payOrderDataList==null){
+    private List<PayOrderBean> buildPayOrderBeans(List<PayOrderData> payOrderDataList) {
+        List<PayOrderBean> payOrderBeans = new ArrayList<PayOrderBean>();
+        if (payOrderDataList == null) {
             return payOrderBeans;
         }
-        for (PayOrderData payOrderData:payOrderDataList){
+        for (PayOrderData payOrderData : payOrderDataList) {
             payOrderBeans.add(convertPODataToPOBean(payOrderData));
         }
         return payOrderBeans;
     }
 
-    private PayOrderBean convertPODataToPOBean(PayOrderData payOrderData){
-        PayOrderBean payOrderBean=new PayOrderBean();
+    private PayOrderBean convertPODataToPOBean(PayOrderData payOrderData) {
+        PayOrderBean payOrderBean = new PayOrderBean();
         payOrderBean.setPayCode(payOrderData.getPayCode());
         payOrderBean.setAddTime(DateUtil.formatDateToString(payOrderData.getAddTime(), "yyyy-MM-dd"));
-        if (payOrderData.getStatus()==PayOrderStatus.SEND_BACK.value()) {
+        if (payOrderData.getStatus() == PayOrderStatus.REFUND.value()) {
             payOrderBean.setSendBackTime(DateUtil.formatDateToString(payOrderData.getUpdateTime(), "yyyy-MM-dd"));
         }
         payOrderBean.setBankAccountName(payOrderData.getBankAccountName());

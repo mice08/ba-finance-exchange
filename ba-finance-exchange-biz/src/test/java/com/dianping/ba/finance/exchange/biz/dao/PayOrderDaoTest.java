@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
+import com.dianping.ba.finance.exchange.api.beans.POUpdateInfoBean;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
@@ -12,10 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -61,15 +59,16 @@ public class PayOrderDaoTest {
     @Test
     public void testUpdatePayOrders() {
         List<Integer> poIds =new ArrayList<Integer>();
-        poIds.add(2049);
-        poIds.add(2044);
-        int whereStatus = PayOrderStatus.INIT.value();
-        int setStatus = PayOrderStatus.EXPORT_PAYING.value();
-        payOrderDao.updatePayOrders(poIds,whereStatus,setStatus,null,-1);
-
-        whereStatus = PayOrderStatus.EXPORT_PAYING.value();
-        setStatus = PayOrderStatus.PAY_SUCCESS.value();
-        payOrderDao.updatePayOrders(poIds,whereStatus,setStatus,new Date(),-1);
+        poIds.add(3121);
+        poIds.add(3116);
+        POUpdateInfoBean poUpdateInfoBean = new POUpdateInfoBean();
+        poUpdateInfoBean.setPoIdList(poIds);
+        poUpdateInfoBean.setLoginId(878787);
+        poUpdateInfoBean.setPaidDate(new Date());
+        poUpdateInfoBean.setPreStatus(PayOrderStatus.PAY_SUCCESS.value());
+        poUpdateInfoBean.setUpdateStatus(PayOrderStatus.REFUND.value());
+        poUpdateInfoBean.setMemo("refund87");
+        payOrderDao.updatePayOrders(poUpdateInfoBean);
     }
 
     @Test
@@ -81,19 +80,26 @@ public class PayOrderDaoTest {
     }
 
 	@Test
-    public void testPaginatePayOrderList(){
-        PayOrderSearchBean payOrderSearchBean=new PayOrderSearchBean();
+    public void testPaginatePayOrderList() {
+        PayOrderSearchBean payOrderSearchBean = new PayOrderSearchBean();
         payOrderSearchBean.setBusinessType(1);
-        PageModel pageModel=payOrderDao.paginatePayOrderList(payOrderSearchBean,1,20);
+        PageModel pageModel = payOrderDao.paginatePayOrderList(payOrderSearchBean, 1, 20);
         Assert.assertNotNull(pageModel);
     }
 
     @Test
-    public void testFindPayOrderTotalAmountByCondition(){
-        PayOrderSearchBean payOrderSearchBean=new PayOrderSearchBean();
+    public void testFindPayOrderTotalAmountByCondition() {
+        PayOrderSearchBean payOrderSearchBean = new PayOrderSearchBean();
         payOrderSearchBean.setBusinessType(1);
-        BigDecimal amount=payOrderDao.findPayOrderTotalAmountByCondition(payOrderSearchBean);
-        Assert.assertTrue(amount.compareTo(BigDecimal.ZERO)>=0);
+        BigDecimal amount = payOrderDao.findPayOrderTotalAmountByCondition(payOrderSearchBean);
+        Assert.assertTrue(amount.compareTo(BigDecimal.ZERO) >= 0);
+    }
+
+    @Test
+    public void testFindPayOrderListByPayCode() throws Exception {
+        List<String> payCodeList = Arrays.asList("MWYFUQBM", "CYCSNBWQ");
+        List<PayOrderData> payOrderDataList = payOrderDao.findPayOrderListByPayCode(payCodeList);
+        Assert.assertNotNull(payOrderDataList);
     }
 
 	@Test
