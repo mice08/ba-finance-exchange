@@ -225,6 +225,12 @@ public class PayOrderServiceObject implements PayOrderService {
         return payOrderDao.paginatePayOrderList(payOrderSearchBean,page,pageSize);
     }
 
+	@Log(logBefore = true, logAfter = true)
+	@Override
+	public List<PayOrderData> findPayOrderList(PayOrderSearchBean payOrderSearchBean) {
+		return payOrderDao.findPayOrderList(payOrderSearchBean);
+	}
+
     @Log(logBefore = true, logAfter = true)
     @Override
     public BigDecimal findPayOrderTotalAmount(PayOrderSearchBean payOrderSearchBean) {

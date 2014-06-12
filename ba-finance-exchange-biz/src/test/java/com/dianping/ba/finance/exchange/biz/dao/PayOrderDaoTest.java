@@ -2,10 +2,10 @@ package com.dianping.ba.finance.exchange.biz.dao;
 
 import com.dianping.ba.finance.exchange.api.beans.POUpdateInfoBean;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
-import com.dianping.core.type.PageModel;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
-import junit.framework.Assert;
+import com.dianping.core.type.PageModel;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.Calendar;
 
 
 /**
@@ -80,6 +79,7 @@ public class PayOrderDaoTest {
         payOrderDao.findPayOrderListByPoIdList(poIds);
     }
 
+	@Test
     public void testPaginatePayOrderList() {
         PayOrderSearchBean payOrderSearchBean = new PayOrderSearchBean();
         payOrderSearchBean.setBusinessType(1);
@@ -101,4 +101,12 @@ public class PayOrderDaoTest {
         List<PayOrderData> payOrderDataList = payOrderDao.findPayOrderListByPayCode(payCodeList);
         Assert.assertNotNull(payOrderDataList);
     }
+
+	@Test
+	public void testFindPayOrderList() {
+		PayOrderSearchBean payOrderSearchBean = new PayOrderSearchBean();
+		payOrderSearchBean.setBusinessType(1);
+		List<PayOrderData> actual = payOrderDao.findPayOrderList(payOrderSearchBean);
+		Assert.assertNotNull(actual);
+	}
 }

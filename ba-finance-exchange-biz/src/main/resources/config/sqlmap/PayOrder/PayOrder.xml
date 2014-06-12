@@ -5,6 +5,7 @@
     <typeAlias alias="PayOrderData" type="com.dianping.ba.finance.exchange.api.datas.PayOrderData"/>
     <resultMap id="payOrderData" class="PayOrderData">
         <result property="poId" column="POID"/>
+        <result property="customerId" column="CustomerID"/>
         <result property="payAmount" column="PayAmount"/>
         <result property="paidDate" column="PaidDate"/>
         <result property="paySequence" column="PaySequence"/>
@@ -25,9 +26,6 @@
         <result property="addType" column="AddType"/>
         <result property="updateTime" column="UpdateTime"/>
         <result property="memo" column="Memo"/>
-        <result property="addLoginId" column="AddLoginID"/>
-        <result property="updateLoginId" column="UpdateLoginID"/>
-        <result property="payCode" column="PayCode"/>
     </resultMap>
 
     <insert id="insertPayOrder" parameterClass="map">
@@ -129,8 +127,7 @@
         AddType,
         UpdateTime,
         Memo,
-        AddLoginID,
-        UpdateLoginID
+        CustomerID
         FROM FC_PayOrder
         WHERE POID IN
         <iterate open="(" close=")" conjunction="," property="poIds">
@@ -160,11 +157,7 @@
         AddTime,
         AddType,
         UpdateTime,
-        Memo,
-        AddLoginID,
-        UpdateLoginID,
-        CustomerID,
-        PayCode
+        Memo
         FROM
         FC_PayOrder
         <dynamic prepend="WHERE">
@@ -213,7 +206,6 @@
         </dynamic>
     </select>
 
-
     <select id="findPayOrderTotalAmountByCondition" resultClass="java.math.BigDecimal" parameterClass="map">
         SELECT
         IFNULL(SUM(PayAmount), 0) AS totalAmount
@@ -238,18 +230,17 @@
         </dynamic>
     </select>
 
-
-    <select id="findPayOrderListByPayCode" resultMap="payOrderData" parameterClass="map">
+    <select id="findPayOrderList" resultMap="payOrderData" parameterClass="map">
         SELECT
         POID,
         PayAmount,
-        PaidDate,
         PaySequence,
         PayCode,
         CustomerID,
-        CustomerBankID,
+        CustomerBankId,
         BankAccountNo,
         BankAccountName,
+        PaidDate,
         BankBranchName,
         BankName,
         BankProvince,
@@ -258,13 +249,55 @@
         BankCode,
         BusinessType,
         Status,
-        AddType,
         AddTime,
-        AddLoginID,
+        AddType,
         UpdateTime,
-        UpdateLoginID,
         Memo
         FROM FC_PayOrder
+        <dynamic prepend="WHERE">
+            <isNotEmpty property="searchBean.payCode" prepend="and">
+                PayCode = #searchBean.payCode#
+            </isNotEmpty>
+            <isNotNull property="searchBean.beginTime" prepend="and">
+                AddTime &gt;= #searchBean.beginTime#
+            </isNotNull>
+            <isNotNull property="searchBean.endTime" prepend="and">
+                AddTime &lt;= #searchBean.endTime#
+            </isNotNull>
+            <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
+                Status = #searchBean.status#
+            </isGreaterThan>
+            <isGreaterThan property="searchBean.businessType" prepend="and" compareValue="0">
+                BusinessType = #searchBean.businessType#
+            </isGreaterThan>
+        </dynamic>
+    </select>
+
+    <select id="findPayOrderListByPayCode" resultMap="payOrderData" parameterClass="map">
+        SELECT
+        POID,
+        PayAmount,
+        PaySequence,
+        PayCode,
+        CustomerID,
+        CustomerBankId,
+        BankAccountNo,
+        BankAccountName,
+        PaidDate,
+        BankBranchName,
+        BankName,
+        BankProvince,
+        BankCity,
+        BankFullBranchName,
+        BankCode,
+        BusinessType,
+        Status,
+        AddTime,
+        AddType,
+        UpdateTime,
+        Memo
+        FROM
+        FC_PayOrder
         WHERE PayCode IN
         <iterate open="(" close=")" conjunction="," property="payCodeList">
             #payCodeList[]#
