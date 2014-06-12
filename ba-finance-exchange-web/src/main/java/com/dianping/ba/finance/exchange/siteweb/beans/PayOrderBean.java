@@ -18,7 +18,7 @@ public class PayOrderBean {
     private String bankFullBranchName;
     private int status;
     private String statusDesc;
-    private String updateTime;
+    private String sendBackTime;
     private String memo;
     private String paidDate;
     private int queryStatus;
@@ -111,14 +111,6 @@ public class PayOrderBean {
         this.paidDate = paidDate;
     }
 
-    public String getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
-    }
-
     public String getStatusDesc() {
         return statusDesc;
     }
@@ -133,5 +125,13 @@ public class PayOrderBean {
 
     public void setQueryStatus(int queryStatus) {
         this.queryStatus = queryStatus;
+    }
+
+    public String getSendBackTime() {
+        return sendBackTime;
+    }
+
+    public void setSendBackTime(String sendBackTime) {
+        this.sendBackTime = sendBackTime;
     }
 }

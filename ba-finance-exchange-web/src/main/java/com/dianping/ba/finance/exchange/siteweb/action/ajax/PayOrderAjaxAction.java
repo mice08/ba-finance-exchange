@@ -56,6 +56,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     @Override
     protected void jsonExecute() throws Exception {
+        int loginID=getLoginId();
         if (businessType == BusinessType.DEFAULT.value()) {
             totalAmount = BigDecimal.ZERO;
             return;
@@ -100,7 +101,9 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         PayOrderBean payOrderBean=new PayOrderBean();
         payOrderBean.setPayCode(payOrderData.getPayCode());
         payOrderBean.setAddTime(DateUtil.formatDateToString(payOrderData.getAddTime(), "yyyy-MM-dd"));
-        payOrderBean.setUpdateTime(DateUtil.formatDateToString(payOrderData.getUpdateTime(), "yyyy-MM-dd"));
+        if (payOrderData.getStatus()==PayOrderStatus.SEND_BACK.value()) {
+            payOrderBean.setSendBackTime(DateUtil.formatDateToString(payOrderData.getUpdateTime(), "yyyy-MM-dd"));
+        }
         payOrderBean.setBankAccountName(payOrderData.getBankAccountName());
         payOrderBean.setBankAccountNo(payOrderData.getBankAccountNo());
         payOrderBean.setBankFullBranchName(payOrderData.getBankFullBranchName());
