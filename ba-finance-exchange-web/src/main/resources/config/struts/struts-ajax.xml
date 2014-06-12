@@ -24,6 +24,12 @@
             <result type="json"></result>
         </action>
 
+        <action name="importRefund"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ImportRefundAjaxAction"
+                method="importRefund">
+            <result type="json"></result>
+        </action>
+
     </package>
 
 </struts>

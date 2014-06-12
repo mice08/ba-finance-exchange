@@ -96,11 +96,11 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         return payOrderBeans;
     }
 
-    private PayOrderBean convertPODataToPOBean(PayOrderData payOrderData){
-        PayOrderBean payOrderBean=new PayOrderBean();
+    private PayOrderBean convertPODataToPOBean(PayOrderData payOrderData) {
+        PayOrderBean payOrderBean = new PayOrderBean();
         payOrderBean.setPayCode(payOrderData.getPayCode());
         payOrderBean.setAddTime(DateUtil.formatDateToString(payOrderData.getAddTime(), "yyyy-MM-dd"));
-        if (payOrderData.getStatus()==PayOrderStatus.SEND_BACK.value()) {
+        if (payOrderData.getStatus() == PayOrderStatus.REFUND.value()) {
             payOrderBean.setSendBackTime(DateUtil.formatDateToString(payOrderData.getUpdateTime(), "yyyy-MM-dd"));
         }
         payOrderBean.setBankAccountName(payOrderData.getBankAccountName());

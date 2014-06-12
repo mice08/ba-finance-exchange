@@ -14,6 +14,7 @@ public class RefundResultDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Map<String, RefundFailedReason> refundFailedMap;
+    private int successCount;
     private BigDecimal refundTotalAmount;
 
     public RefundResultDTO() {
@@ -37,6 +38,14 @@ public class RefundResultDTO implements Serializable {
         this.refundTotalAmount = refundTotalAmount;
     }
 
+    public int getSuccessCount() {
+        return successCount;
+    }
+
+    public void setSuccessCount(int successCount) {
+        this.successCount = successCount;
+    }
+
     public void addRefundAmount(BigDecimal refundAmount) {
         refundTotalAmount = refundTotalAmount.add(refundAmount);
     }
@@ -45,9 +54,10 @@ public class RefundResultDTO implements Serializable {
         refundFailedMap.put(refundId, reason);
     }
 
-    public void mergeFromOtherResult(RefundResultDTO refundResultDTO) {
-        this.refundFailedMap.putAll(refundResultDTO.getRefundFailedMap());
-        this.refundTotalAmount = refundTotalAmount.add(refundResultDTO.getRefundTotalAmount());
+    public void mergeFromOtherResult(RefundResultDTO otherRefundResultDTO) {
+        this.refundFailedMap.putAll(otherRefundResultDTO.getRefundFailedMap());
+        this.refundTotalAmount = refundTotalAmount.add(otherRefundResultDTO.getRefundTotalAmount());
+        this.successCount += otherRefundResultDTO.successCount;
     }
 
     public boolean containFailedResult() {
@@ -58,6 +68,7 @@ public class RefundResultDTO implements Serializable {
     public String toString() {
         return "RefundResultDTO{" +
                 "refundFailedMap=" + refundFailedMap +
+                ", successCount=" + successCount +
                 ", refundTotalAmount=" + refundTotalAmount +
                 '}';
     }

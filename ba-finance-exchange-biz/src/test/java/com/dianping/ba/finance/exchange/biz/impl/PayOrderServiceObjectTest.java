@@ -183,6 +183,7 @@ public class PayOrderServiceObjectTest {
 
         Assert.assertFalse(resultDTO.containFailedResult());
         Assert.assertEquals(0, resultDTO.getRefundTotalAmount().compareTo(BigDecimal.TEN));
+        Assert.assertEquals(1, resultDTO.getSuccessCount());
         verify(payOrderDaoMock, times(1)).findPayOrderListByPayCode(anyList());
         verify(payOrderDaoMock, times(1)).updatePayOrders(any(POUpdateInfoBean.class));
         verify(payOrderResultNotifyMock, times(1)).payResultNotify(any(PayOrderResultBean.class));

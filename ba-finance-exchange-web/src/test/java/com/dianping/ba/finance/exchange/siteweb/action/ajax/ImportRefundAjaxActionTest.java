@@ -31,7 +31,12 @@ public class ImportRefundAjaxActionTest {
 
     @Before
     public void runBeforeTest() {
-        importRefundAjaxActionStub = new ImportRefundAjaxAction();
+        importRefundAjaxActionStub = new ImportRefundAjaxAction() {
+            @Override
+            public int getLoginId() {
+                return -1;
+            }
+        };
 
         payOrderServiceMock = mock(PayOrderService.class);
         importRefundAjaxActionStub.setPayOrderService(payOrderServiceMock);

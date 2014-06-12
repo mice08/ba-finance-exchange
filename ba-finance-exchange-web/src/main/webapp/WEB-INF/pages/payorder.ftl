@@ -38,8 +38,8 @@
         <h4 id="refundResultLabel">导入退票结果</h4>
     </div>
     <div class="modal-body">
-        <div class="failed-result"></div>
         <div class="success-result"></div>
+        <div class="failed-result"></div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-result" data-dismiss="modal"

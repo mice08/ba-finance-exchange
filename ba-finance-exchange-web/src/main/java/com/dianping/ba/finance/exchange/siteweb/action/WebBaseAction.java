@@ -75,15 +75,4 @@ public abstract class WebBaseAction extends AvatarAction implements Preparable {
 
     abstract protected String webExecute() throws Exception;
 
-
-    /**
-     * 获取LoginID
-     *
-     * @return
-     */
-    public int getLoginId() {
-        int loginId = 0;
-        // TODO mock loginId
-        return loginId;
-    }
 }

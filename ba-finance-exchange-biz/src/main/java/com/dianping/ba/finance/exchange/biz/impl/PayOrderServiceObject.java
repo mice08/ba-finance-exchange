@@ -79,8 +79,10 @@ public class PayOrderServiceObject implements PayOrderService {
         }
         // 修改状态为退票
         updateToRefund(filteredPOList, loginId);
+        // 计算结果
         BigDecimal refundAmount = calRefundAmount(filteredPOList);
         refundResultDTO.addRefundAmount(refundAmount);
+        refundResultDTO.setSuccessCount(filteredPOList.size());
 
         // 发送退票通知
         notifyRefund(filteredPOList, loginId);

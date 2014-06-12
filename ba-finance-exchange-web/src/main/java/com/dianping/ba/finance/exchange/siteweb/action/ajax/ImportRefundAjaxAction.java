@@ -18,7 +18,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -130,14 +129,13 @@ public class ImportRefundAjaxAction extends AjaxBaseAction {
         }
 
         RefundResultDTO allRefundResultDTO = mergeToOne(refundResultDTOList);
-        generateResultMessage(allRefundResultDTO, refundDTOList);
+        generateResultMessage(allRefundResultDTO);
     }
 
-    private void generateResultMessage(RefundResultDTO allRefundResultDTO, List<RefundDTO> refundDTOList) {
+    private void generateResultMessage(RefundResultDTO allRefundResultDTO) {
         if (!allRefundResultDTO.containFailedResult()) {
-            BigDecimal refundTotalAmount = allRefundResultDTO.getRefundTotalAmount();
-            msg.put("successCount", refundDTOList.size());
-            msg.put("refundTotalAmount", refundTotalAmount);
+            msg.put("successCount", allRefundResultDTO.getSuccessCount());
+            msg.put("refundTotalAmount", allRefundResultDTO.getRefundTotalAmount());
             return;
         }
 
