@@ -8,16 +8,21 @@ import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderBean;
+import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
+import com.dianping.finance.common.util.ExcelUtils;
+import jxl.biff.DisplayFormat;
+import jxl.write.NumberFormats;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.struts2.ServletActionContext;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Eric on 2014/6/11.
@@ -70,7 +75,83 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         }
     }
 
-    private PayOrderSearchBean buildPayOrderSearchBean() throws ParseException {
+	public String payOrderExportForPay() throws Exception {
+		int loginId = 1;
+		try {
+			PayOrderSearchBean searchBean = buildPayOrderSearchBean();
+			List<PayOrderData> dataList = payOrderService.findPayOrderList(searchBean);
+			List<PayOrderExportBean> beanList = buildPayOrderExportBeanList(dataList);
+			updatePayOrderStatus(beanList, loginId);
+			exportPayOrders(beanList);
+			return null;
+		} catch (Exception e) {
+			MONITOR_LOGGER.error("severity=[1] PayOrderAjaxAction.payOrderExportForPay", e);
+			return ERROR;
+		}
+	}
+
+	private void updatePayOrderStatus(List<PayOrderExportBean> beanList, int loginId){
+		if(!CollectionUtils.isEmpty(beanList)){
+			List<Integer> orderIds = new ArrayList<Integer>();
+			for (PayOrderExportBean bean : beanList){
+				orderIds.add(bean.getOrderId());
+			}
+			payOrderService.updatePayOrderToPaying(orderIds,loginId);
+		}
+	}
+
+	private void exportPayOrders(List<PayOrderExportBean> beanList) throws UnsupportedEncodingException {
+		HttpServletResponse response = getHttpServletResponse();
+		ExcelUtils excel = initialExcel();
+		excel.createExcelAndDownload(response, "付款单", beanList);
+	}
+
+	protected HttpServletResponse getHttpServletResponse() {
+		return ServletActionContext.getResponse();
+	}
+
+	private ExcelUtils initialExcel() {
+		String propertyNames = "bizCode,debitSideId,bankAccountNo,bankAccountName,bankName,bankProvince,bankCity,debitSideEmail,currency," +
+				"payerBranchBank,settleType,payerAccountNo,expectedDate,expectedTime,use,orderAmount,debitSideBankNo,debitSideBankName,businessSummary";
+		String[] property = propertyNames.split(",");
+		String columnNameStr = "业务参考号,收款人编号,收款人帐号,收款人名称,收方开户支行,收款人所在省,收款人所在市,收方邮件地址,币种," +
+				"付款分行,结算方式,付方帐号,期望日,期望时间,用途,金额,收方联行号,收方银行,业务摘要";
+		String[] column = columnNameStr.split(",");
+		DisplayFormat[] formats = new DisplayFormat[]{
+				NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,
+				NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,
+				NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,
+				NumberFormats.FLOAT,NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT};
+		return new ExcelUtils(column, property, formats, new Hashtable());
+	}
+
+	private List<PayOrderExportBean> buildPayOrderExportBeanList(List<PayOrderData> payOrderDataList) {
+		if (CollectionUtils.isEmpty(payOrderDataList)) {
+			return Collections.emptyList();
+		}
+		List orderExportBeanList = new ArrayList<PayOrderExportBean>();
+		for (PayOrderData order : payOrderDataList){
+			if (orderCanExport(order)){
+				PayOrderExportBean exportBean = buildPayOrderExportBean(order);
+				orderExportBeanList.add(exportBean);
+			}
+		}
+
+		return orderExportBeanList;
+	}
+
+	private boolean orderCanExport(PayOrderData order) {
+		List<Integer> statusAllowedExport = Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.EXPORT_PAYING.value());
+		return order.getPayAmount().compareTo(BigDecimal.ZERO) > 0 && statusAllowedExport.contains(order.getStatus());
+	}
+
+	private PayOrderExportBean buildPayOrderExportBean(PayOrderData order) {
+		PayOrderExportBean exportBean = new PayOrderExportBean();
+		exportBean.setOrderId(order.getPoId());
+		return exportBean;
+	}
+
+	private PayOrderSearchBean buildPayOrderSearchBean() throws ParseException {
 
         PayOrderSearchBean payOrderSearchBean=new PayOrderSearchBean();
         Date beginTime = DateUtil.isValidDate(addBeginTime) ? DateUtil.formatDate(addBeginTime, false) : null;

@@ -9,6 +9,8 @@ import com.dianping.core.type.PageModel;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,12 +18,6 @@ import java.util.List;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyListOf;
-import java.math.BigDecimal;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.*;
 
 public class PayOrderServiceObjectTest {
@@ -104,6 +100,7 @@ public class PayOrderServiceObjectTest {
         Assert.assertEquals(-1, actual);
     }
 
+	@Test
     public void testPaginatePayOrderList(){
         when(payOrderDaoMock.paginatePayOrderList(any(PayOrderSearchBean.class),anyInt(),anyInt())).thenReturn(new PageModel());
         PageModel pageModel=payOrderServiceObjectStub.paginatePayOrderList(new PayOrderSearchBean(),1,1);
@@ -117,4 +114,10 @@ public class PayOrderServiceObjectTest {
         Assert.assertEquals(amount.compareTo(BigDecimal.ONE),0);
     }
 
+	@Test
+	public void testFindPayOrderList() {
+		when(payOrderDaoMock.findPayOrderList(any(PayOrderSearchBean.class))).thenReturn(new ArrayList<PayOrderData>());
+		List<PayOrderData> payOrderList = payOrderServiceObjectStub.findPayOrderList(new PayOrderSearchBean());
+		Assert.assertNotNull(payOrderList);
+	}
 }

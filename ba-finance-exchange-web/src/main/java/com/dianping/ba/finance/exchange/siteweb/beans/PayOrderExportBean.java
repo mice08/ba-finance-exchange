@@ -1,4 +1,4 @@
-package com.dianping.ba.finance.exchange.siteweb;
+package com.dianping.ba.finance.exchange.siteweb.beans;
 
 import java.math.BigDecimal;
 
@@ -81,4 +81,12 @@ public class PayOrderExportBean {
 	private String debitSideBankName = "";
 	//业务摘要，默认‘大众点评网储值卡’,以后团购迁移过来后会改掉
 	private String businessSummary = "大众点评网储值卡";
+
+	public int getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
 }

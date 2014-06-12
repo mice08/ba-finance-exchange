@@ -36,7 +36,7 @@ public interface PayOrderService {
      */
     int updatePayOrderToPaySuccess(List<Integer> poIds, int loginId);
 
-     /* 根据查询条件返回付款单列表
+     /** 根据查询条件返回付款单列表
      *
      * @param payOrderSearchBean
      * @param page
@@ -44,6 +44,14 @@ public interface PayOrderService {
      * @return
      */
     PageModel paginatePayOrderList(PayOrderSearchBean payOrderSearchBean, int page, int pageSize);
+
+	/**
+	 * 根据查询条件返回付款单列表
+	 *
+	 * @param payOrderSearchBean
+	 * @return
+	 */
+	List<PayOrderData> findPayOrderList(PayOrderSearchBean payOrderSearchBean);
 
     /**
      * 根据搜索条件计算付款单总金额
