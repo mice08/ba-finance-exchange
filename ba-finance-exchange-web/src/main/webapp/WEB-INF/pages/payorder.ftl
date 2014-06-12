@@ -42,7 +42,7 @@
                         <label class="control-label">付款单号</label>
 
                         <div class="controls">
-                            <input type="text" id="paySequence" name="payCode" class="form_value">
+                            <input type="text" id="paysequence" name="payCode" class="form_value">
                         </div>
                     </div>
                 </div>
@@ -121,12 +121,14 @@
                 <div class="alert alert-info" id="result-info">
                     <span class="number-char recordCount">0</span> 条符合条件的结果，总金额
                     <span class="number-char totalAmount">0</span> 元
-                    {{if status == 1 || status == 2>}}
                     &nbsp;&nbsp;
-                    <a id="btn-export" class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
-                       href="###">
+                    <a id="order-export" class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
+                       href="###" style="display: none">
                         <span class="glyphicon glyphicon-save"></span>导出支付</a>
-                    {{/if}}
+                    &nbsp;&nbsp;
+                    <a id="pay-success" class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton" href="#"
+                       style="display: none">
+                        <span class="glyphicon glyphicon-ok"></span>确认支付</a>
                 </div>
             </div>
             <div class="tb-wrapper">
@@ -172,7 +174,7 @@
     <tr>
     {{/if}}
         <td >
-              <input type="checkbox" id="{{= record.ppId}}" class="selected-payment">
+              <input type="checkbox" po-id="{{= record.poId}}" class="selected-payorder">
         </td>
         <td class="fs tb-item id number-char">{{= record.payCode}}</td>
         <td class="fs tb-item id number-char">{{= record.customerName}}</td>

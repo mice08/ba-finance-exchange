@@ -9,7 +9,9 @@ import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.finance.common.util.ListUtils;
 import com.dianping.finance.common.util.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,11 +20,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
 /**
- * Created with IntelliJ IDEA.
- * User: huajiao.zou
- * Date: 13-12-16
- * Time: 上午11:02
- * To change this template use File | Settings | File Templates.
+ * 确认支付
  */
 public class PaySuccessAjaxAction extends PayOrderAjaxAction {
 
@@ -31,7 +29,7 @@ public class PaySuccessAjaxAction extends PayOrderAjaxAction {
 	 */
 	private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.web.monitor.PaySuccessAjaxAction");
 
-	private String orderIds;
+	private String poIds;
 
 	private Map<String, Object> msg = new HashMap<String, Object>();
 
@@ -43,12 +41,9 @@ public class PaySuccessAjaxAction extends PayOrderAjaxAction {
 
 	private ExecutorService executorService;
 
-	private int loginId;
-
 	public String submitPaySuccess() {
-		loginId = GetLoginId();
 		try {
-			List<Integer> orderIdList = StringUtils.splitStringToList(orderIds, ",");
+			List<Integer> orderIdList = getSubmitOrderIdList();
 			doPaySuccess(orderIdList);
 			msg.put(msgKey, "<br>本次提交条数：" + orderIdList.size());
 			code = SUCCESS_CODE;
@@ -60,38 +55,32 @@ public class PaySuccessAjaxAction extends PayOrderAjaxAction {
 		return SUCCESS;
 	}
 
-	public String submitPaySuccessBySearchCondition() {
-		loginId = GetLoginId();
-		try {
+	private List<Integer> getSubmitOrderIdList() throws ParseException {
+		List<Integer> orderIdList = StringUtils.splitStringToList(poIds, ",");
+		if (CollectionUtils.isEmpty(orderIdList)){
 			PayOrderSearchBean searchBean = buildPayOrderSearchBean();
 			List<PayOrderData> orderList = payOrderService.findPayOrderList(searchBean);
-			List<Integer> orderIdList = getSubmitOrderIdList(orderList);
-			doPaySuccess(orderIdList);
-			msg.put(msgKey, "<br>本次提交条数：" + orderIdList.size());
-			code = SUCCESS_CODE;
-		} catch (Exception e) {
-			msg.put(msgKey, "系统异常，请稍候再试");
-			MONITOR_LOGGER.error("PaySuccessAjaxAction.submitPaySuccessBySearchCondition", e);
-			code = ERROR_CODE;
+			orderIdList = getSubmitOrderIdList(orderList);
 		}
-		return SUCCESS;
+		return orderIdList;
 	}
 
 	private List<Integer> getSubmitOrderIdList(List<PayOrderData> orderList) {
 		List<Integer> orderIdList = new ArrayList<Integer>();
-		for (PayOrderData order : orderList){
+		for (PayOrderData order : orderList) {
 
-		if (order.getStatus() == PayOrderStatus.EXPORT_PAYING.value())
-			orderIdList.add(order.getPoId());
+			if (order.getStatus() == PayOrderStatus.EXPORT_PAYING.value())
+				orderIdList.add(order.getPoId());
 		}
 		return orderIdList;
 	}
 
 	private int doPaySuccess(List<Integer> orderIdList) {
 		int successCount = 0;
-		int groupSize = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-web.paySuccess.batchCount","1000"));
+		int groupSize = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-web.paySuccess.batchCount", "1000"));
 		List<List<Integer>> orderListGroupList = ListUtils.generateListGroup(orderIdList, groupSize);
 		final CountDownLatch doneSignal = new CountDownLatch(orderListGroupList.size());
+		final int loginId = getLoginId();
 
 		for (List<Integer> orderList : orderListGroupList) {
 			final List<Integer> processList = new ArrayList<Integer>(orderList);
@@ -131,12 +120,8 @@ public class PaySuccessAjaxAction extends PayOrderAjaxAction {
 		this.payOrderService = payOrderService;
 	}
 
-	private int GetLoginId() {
-		return 0;
-	}
-
-	public void setOrderIds(String orderIds) {
-		this.orderIds = orderIds;
+	public void setPoIds(String poIds) {
+		this.poIds = poIds;
 	}
 
 	public void setExecutorService(ExecutorService executorService) {

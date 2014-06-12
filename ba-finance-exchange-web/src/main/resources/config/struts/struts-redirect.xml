@@ -10,9 +10,7 @@
             <result name="success" type="freemarker">/WEB-INF/pages/payorder.ftl</result>
         </action>
 
-        <action name="orderexport" class="com.dianping.ba.finance.exchange.siteweb.action.PayOrderAjaxAction" method="payOrderExportForPay">
-        <result type="json"></result>
-        </action>
+
     </package>
 
 </struts>

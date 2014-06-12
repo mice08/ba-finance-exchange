@@ -76,12 +76,11 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     }
 
 	public String payOrderExportForPay() throws Exception {
-		int loginId = 1;
 		try {
 			PayOrderSearchBean searchBean = buildPayOrderSearchBean();
 			List<PayOrderData> dataList = payOrderService.findPayOrderList(searchBean);
 			List<PayOrderExportBean> beanList = buildPayOrderExportBeanList(dataList);
-			updatePayOrderStatus(beanList, loginId);
+			updatePayOrderStatus(beanList, getLoginId());
 			exportPayOrders(beanList);
 			return null;
 		} catch (Exception e) {
