@@ -24,12 +24,17 @@
 
     <bean id="payOrderRequestHandleService" class="com.dianping.ba.finance.exchange.biz.impl.PayOrderRequestHandleServiceObject">
         <property name="payOrderService" ref="payOrderService"/>
-        <property name="payOrderProducer" ref="payOrderProducer"/>
+        <property name="payOrderResultNotify" ref="payOrderResultNotify"/>
         <property name="timeout" value="${ba-finance-exchange-service.payrequest.timeout}"/>
         <property name="executorService" ref="executorService"/>
     </bean>
 
+    <bean id="payOrderResultNotify" class="com.dianping.ba.finance.exchange.biz.producer.PayOrderResultNotify">
+        <property name="payOrderProducer" ref="payOrderProducer"/>
+    </bean>
+
     <bean id="payOrderService" class="com.dianping.ba.finance.exchange.biz.impl.PayOrderServiceObject">
         <property name="payOrderDao" ref="payOrderDao"/>
+        <property name="payOrderResultNotify" ref="payOrderResultNotify"/>
     </bean>
 </beans>
