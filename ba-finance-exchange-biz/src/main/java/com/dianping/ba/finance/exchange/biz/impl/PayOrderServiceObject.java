@@ -10,6 +10,7 @@ import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.PayResultStatus;
+import com.dianping.ba.finance.exchange.api.enums.RefundFailedReason;
 import com.dianping.ba.finance.exchange.biz.dao.PayOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.PayOrderResultNotify;
 import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
@@ -17,11 +18,15 @@ import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 import com.dianping.finance.common.util.DateUtils;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 处理付款单的Service类
@@ -64,9 +69,92 @@ public class PayOrderServiceObject implements PayOrderService {
         if (CollectionUtils.isEmpty(refundDTOList)) {
             return refundResultDTO;
         }
-        // TODO
+        // 获取PO实体
+        List<String> payCodeList = buildPayCodeList(refundDTOList);
+        List<PayOrderData> payOrderDataList = payOrderDao.findPayOrderListByPayCode(payCodeList);
+        Map<String, PayOrderData> toRefundPayCodePOMap = buildPayCodePOMap(payOrderDataList);
+        // 过滤查询不到的及状态不为支付成功的PO
+        filterInvalidedPayOrder(refundResultDTO, refundDTOList, toRefundPayCodePOMap);
 
+        if (toRefundPayCodePOMap.isEmpty()) {
+            return refundResultDTO;
+        }
+        // 修改状态为退票
+        List<Integer> poIdList = buildPOIDList(toRefundPayCodePOMap);
+        payOrderDao.updatePayOrders(poIdList, PayOrderStatus.PAY_SUCCESS.value(), PayOrderStatus.REFUND.value(), null, loginId);
+        BigDecimal refundAmount = calRefundAmount(toRefundPayCodePOMap);
+        refundResultDTO.addRefundAmount(refundAmount);
+
+        // 发送退票通知
+        notifyRefund(Lists.newLinkedList(toRefundPayCodePOMap.values()), loginId);
         return refundResultDTO;
+    }
+
+    private void notifyRefund(List<PayOrderData> payOrderDataList, int loginId) {
+        for (PayOrderData payOrderData : payOrderDataList) {
+            PayOrderResultBean payOrderResultBean = new PayOrderResultBean();
+            payOrderResultBean.setLoginId(loginId);
+            payOrderResultBean.setPoId(payOrderData.getPoId());
+            payOrderResultBean.setPaidAmount(payOrderData.getPayAmount());
+            payOrderResultBean.setPaySequence(payOrderData.getPaySequence());
+            payOrderResultBean.setStatus(PayResultStatus.PAY_REFUND);
+            payOrderResultNotify.payResultNotify(payOrderResultBean);
+        }
+    }
+
+    private BigDecimal calRefundAmount(Map<String, PayOrderData> toRefundPayCodePOMap) {
+        BigDecimal amount = new BigDecimal(0);
+        for (PayOrderData poData : toRefundPayCodePOMap.values()) {
+            BigDecimal payAmount = poData.getPayAmount();
+            if (payAmount == null) {
+                payAmount = BigDecimal.ZERO;
+            }
+            amount = amount.add(payAmount);
+        }
+        return amount;
+    }
+
+    private List<Integer> buildPOIDList(Map<String, PayOrderData> toRefundPayCodePOMap) {
+        List<Integer> poIdList = Lists.newLinkedList();
+        for (PayOrderData poData : toRefundPayCodePOMap.values()) {
+            poIdList.add(poData.getPoId());
+        }
+        return poIdList;
+    }
+
+    private void filterInvalidedPayOrder(RefundResultDTO refundResultDTO, List<RefundDTO> refundDTOList, Map<String, PayOrderData> payCodePOMap) {
+        for (RefundDTO refundDTO : refundDTOList) {
+            String payCode = refundDTO.getRefundId();
+            PayOrderData poData = payCodePOMap.get(payCode);
+            if (poData == null) {
+                refundResultDTO.addFailedRefund(payCode, RefundFailedReason.INFO_EMPTY);
+                continue;
+            }
+            int status = poData.getStatus();
+            if (status != PayOrderStatus.PAY_SUCCESS.value()) {
+                refundResultDTO.addFailedRefund(payCode, RefundFailedReason.STATUS_ERROR);
+                payCodePOMap.remove(payCode);
+            }
+        }
+    }
+
+    private Map<String, PayOrderData> buildPayCodePOMap(List<PayOrderData> payOrderDataList) {
+        if (CollectionUtils.isEmpty(payOrderDataList)) {
+            return Collections.emptyMap();
+        }
+        Map<String, PayOrderData> payCodePOMap = Maps.newHashMap();
+        for (PayOrderData poData : payOrderDataList) {
+            payCodePOMap.put(poData.getPayCode(), poData);
+        }
+        return payCodePOMap;
+    }
+
+    private List<String> buildPayCodeList(List<RefundDTO> refundDTOList) {
+        List<String> payCodeList = Lists.newLinkedList();
+        for (RefundDTO refundDTO : refundDTOList) {
+            payCodeList.add(refundDTO.getRefundId());
+        }
+        return payCodeList;
     }
 
     @Log(logBefore = true, logAfter = true)

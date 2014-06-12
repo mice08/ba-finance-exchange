@@ -65,4 +65,13 @@ public interface PayOrderDao extends GenericDao {
     @DAOAction(action = DAOActionType.LOAD)
     BigDecimal findPayOrderTotalAmountByCondition(@DAOParam("payOrderSearchBean") PayOrderSearchBean payOrderSearchBean);
 
+    /**
+     * 根据PayCode查询PayOrder集合
+     *
+     * @param payCodeList
+     * @return
+     */
+    @DAOAction(action = DAOActionType.QUERY)
+    List<PayOrderData> findPayOrderListByPayCode(@DAOParam("payCodeList") List<String> payCodeList);
+
 }

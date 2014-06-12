@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
 import com.dianping.ba.finance.exchange.api.enums.RefundFailedReason;
@@ -49,9 +50,11 @@ public class ImportRefundAjaxAction extends AjaxBaseAction {
 
     private ExecutorService executorService;
 
+    private PayOrderService payOrderService;
+
     public String importRefund() throws Exception {
         int loginId = getLoginId();
-        try{
+        try {
             List<RefundDTO> refundDTOList = readExcel();
             if (CollectionUtils.isEmpty(refundDTOList)) {
                 excelInvalidMsg = INVALID_REFUND_FILE_MSG;
@@ -68,7 +71,7 @@ public class ImportRefundAjaxAction extends AjaxBaseAction {
             code = SUCCESS_CODE;
             return SUCCESS;
         } catch(Exception e) {
-            MONITOR_LOGGER.error(String.format("severity=[1] ImportRefundAjaxAction.importRefund error! refundFilePath=%", refundFile.getCanonicalPath()), e);
+            MONITOR_LOGGER.error(String.format("severity=[1] ImportRefundAjaxAction.importRefund error! refundFilePath=%s", refundFile.getCanonicalPath()), e);
             excelInvalidMsg = INVALID_REFUND_FILE_MSG;
             code = ERROR_CODE;
             return SUCCESS;
@@ -93,13 +96,14 @@ public class ImportRefundAjaxAction extends AjaxBaseAction {
             idSet.add(refundId);
         }
         if (!duplicateSet.isEmpty()) {
+            invalidRefundMap.put("duplicateIds", duplicateSet.toString());
             sb.append("重复的ID号").append(duplicateSet);
         }
         return duplicateSet.isEmpty();
     }
 
 
-    private void handleRefundList(List<RefundDTO> refundDTOList, int loginId) {
+    private void handleRefundList(List<RefundDTO> refundDTOList, final int loginId) {
         int groupSize = Integer.valueOf(LionConfigUtils.getProperty("ba-finance-exchange-web.refund.group.size", "1000"));
         List<List<RefundDTO>> refundDTOGroupList = ListUtils.generateListGroup(refundDTOList, groupSize);
         // 使用同步的LinkedList，CopyOnWrite更耗内存
@@ -110,8 +114,7 @@ public class ImportRefundAjaxAction extends AjaxBaseAction {
                 @Override
                 public void run() {
                     try {
-                        // TODO send refundSegmentList to service
-                        RefundResultDTO refundResultDTO = null;
+                        RefundResultDTO refundResultDTO = payOrderService.refundPayOrder(refundSegmentList, loginId);
                         refundResultDTOList.add(refundResultDTO);
                     } finally {
                         doneSignal.countDown();
@@ -268,5 +271,9 @@ public class ImportRefundAjaxAction extends AjaxBaseAction {
 
     public void setExecutorService(ExecutorService executorService) {
         this.executorService = executorService;
+    }
+
+    public void setPayOrderService(PayOrderService payOrderService) {
+        this.payOrderService = payOrderService;
     }
 }

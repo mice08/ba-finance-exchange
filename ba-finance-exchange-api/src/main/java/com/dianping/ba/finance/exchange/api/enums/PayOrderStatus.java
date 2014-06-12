@@ -24,7 +24,7 @@ public enum PayOrderStatus {
     /**
      * 4-退票
      */
-    SEND_BACK(4);
+    REFUND(4);
 
     private int payOrderStatus;
 
@@ -41,7 +41,7 @@ public enum PayOrderStatus {
             case 3:
                 return PAY_SUCCESS;
             case 4:
-                return SEND_BACK;
+                return REFUND;
             default:
                 return DEFAULT;
         }
