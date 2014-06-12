@@ -47,6 +47,7 @@ public class PaySuccessAjaxAction extends PayOrderAjaxAction {
 			List<Integer> orderIdList = getSubmitOrderIdList();
 			doPaySuccess(orderIdList);
 			msg.put(msgKey, "<br>本次提交条数：" + orderIdList.size());
+			msg.put("count", orderIdList.size());
 			code = SUCCESS_CODE;
 		} catch (Exception e) {
 			msg.put(msgKey, "系统异常，请稍候再试");
