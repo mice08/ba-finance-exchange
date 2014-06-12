@@ -110,6 +110,7 @@ public class PayOrderServiceObject implements PayOrderService {
             payOrderResultBean.setPaidAmount(payOrderData.getPayAmount());
             payOrderResultBean.setPaySequence(payOrderData.getPaySequence());
             payOrderResultBean.setStatus(PayResultStatus.PAY_REFUND);
+            payOrderResultBean.setMemo(payOrderData.getMemo());
             payOrderResultNotify.payResultNotify(payOrderResultBean);
         }
     }
