@@ -151,7 +151,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 		return exportBean;
 	}
 
-	private PayOrderSearchBean buildPayOrderSearchBean() throws ParseException {
+	public PayOrderSearchBean buildPayOrderSearchBean() throws ParseException {
 
         PayOrderSearchBean payOrderSearchBean=new PayOrderSearchBean();
         Date beginTime = DateUtil.isValidDate(addBeginTime) ? DateUtil.formatDate(addBeginTime, false) : null;
