@@ -169,6 +169,7 @@
                        style="display: none">
                         <span class="glyphicon glyphicon-ok"></span>确认支付</a>
                     <a id="btn-import" href="#import-refund" role="button"
+                       style="display: none"
                        class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
                        data-toggle="modal">
                         <span class="glyphicon glyphicon-open"></span>
