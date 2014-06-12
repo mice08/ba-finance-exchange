@@ -81,7 +81,7 @@
                         <label class="control-label">付款单号</label>
 
                         <div class="controls">
-                            <input type="text" id="paysequence" name="payCode" class="form_value">
+                            <input type="text" id="paycode" name="payCode" class="form_value">
                         </div>
                     </div>
                 </div>
