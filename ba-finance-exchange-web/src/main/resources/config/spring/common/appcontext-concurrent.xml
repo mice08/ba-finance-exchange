@@ -5,6 +5,15 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-    <!-- 引用该bean时，类型为java.util.concurrent.ThreadPoolExecutor，而不是class中的ThreadPoolExecutorFactoryBean-->
 
+    <bean id="callerRunsPolicy" class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy">
+    </bean>
+
+    <bean id="executorService" class="org.springframework.scheduling.concurrent.ThreadPoolExecutorFactoryBean">
+        <property name="corePoolSize" value="${ba-finance-exchange-web.concurrent.coreSize}"/>
+        <property name="maxPoolSize" value="${ba-finance-exchange-web.concurrent.maxSize}"/>
+        <property name="keepAliveSeconds" value="${ba-finance-exchange-web.concurrent.keepAliveSeconds}"/>
+        <property name="queueCapacity" value="${ba-finance-settle-exchange.concurrent.queueCapacity}"/>
+        <property name="rejectedExecutionHandler" ref="callerRunsPolicy"/>
+    </bean>
 </beans>
