@@ -9,6 +9,7 @@
 </head>
 
 <body>
+<#include "/WEB-INF/pages/common/tips.ftl">
 <div id="import-refund" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-header section-title">
@@ -200,7 +201,7 @@
 
                 </table>
             </div>
-        <#include "/WEB-INF/pages/common/tips.ftl">
+
         <#include "/WEB-INF/pages/common/paging.ftl">
 
         </div>
