@@ -1,6 +1,9 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
+import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
+import com.dianping.core.type.PageModel;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +11,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Calendar;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -48,6 +56,43 @@ public class PayOrderDaoTest {
         payOrderData.setBankName("bankName");
 
         payOrderDao.insertPayOrder(payOrderData);
+    }
+
+    @Test
+    public void testUpdatePayOrders() {
+        List<Integer> poIds =new ArrayList<Integer>();
+        poIds.add(2049);
+        poIds.add(2044);
+        int whereStatus = PayOrderStatus.INIT.value();
+        int setStatus = PayOrderStatus.EXPORT_PAYING.value();
+        payOrderDao.updatePayOrders(poIds,whereStatus,setStatus,null,-1);
+
+        whereStatus = PayOrderStatus.EXPORT_PAYING.value();
+        setStatus = PayOrderStatus.PAY_SUCCESS.value();
+        payOrderDao.updatePayOrders(poIds,whereStatus,setStatus,new Date(),-1);
+    }
+
+    @Test
+    public void testFindPayOrderListByPoIdList() {
+        List<Integer> poIds =new ArrayList<Integer>();
+        poIds.add(2049);
+        poIds.add(2044);
+        payOrderDao.findPayOrderListByPoIdList(poIds);
+    }
+
+    public void testPaginatePayOrderList(){
+        PayOrderSearchBean payOrderSearchBean=new PayOrderSearchBean();
+        payOrderSearchBean.setBusinessType(1);
+        PageModel pageModel=payOrderDao.paginatePayOrderList(payOrderSearchBean,1,20);
+        junit.framework.Assert.assertNotNull(pageModel);
+    }
+
+    @Test
+    public void testFindPayOrderTotalAmountByCondition(){
+        PayOrderSearchBean payOrderSearchBean=new PayOrderSearchBean();
+        payOrderSearchBean.setBusinessType(1);
+        BigDecimal amount=payOrderDao.findPayOrderTotalAmountByCondition(payOrderSearchBean);
+        junit.framework.Assert.assertTrue(amount.compareTo(BigDecimal.ZERO)>=0);
     }
 
 }
