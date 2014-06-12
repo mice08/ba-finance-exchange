@@ -9,6 +9,7 @@ import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.finance.common.util.ListUtils;
 import com.dianping.finance.common.util.StringUtils;
+import jodd.util.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.text.ParseException;
@@ -56,7 +57,7 @@ public class PaySuccessAjaxAction extends PayOrderAjaxAction {
 	}
 
 	private List<Integer> getSubmitOrderIdList() throws ParseException {
-		List<Integer> orderIdList = StringUtils.splitStringToList(poIds, ",");
+		List<Integer> orderIdList = StringUtil.isBlank(poIds)? new ArrayList<Integer>() : StringUtils.splitStringToList(poIds, ",");
 		if (CollectionUtils.isEmpty(orderIdList)){
 			PayOrderSearchBean searchBean = buildPayOrderSearchBean();
 			List<PayOrderData> orderList = payOrderService.findPayOrderList(searchBean);
