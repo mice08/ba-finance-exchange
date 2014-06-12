@@ -100,6 +100,9 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         PayOrderBean payOrderBean=new PayOrderBean();
         payOrderBean.setPayCode(payOrderData.getPayCode());
         payOrderBean.setAddTime(DateUtil.formatDateToString(payOrderData.getAddTime(), "yyyy-MM-dd"));
+        if (payOrderData.getStatus()==PayOrderStatus.SEND_BACK.value()) {
+            payOrderBean.setSendBackTime(DateUtil.formatDateToString(payOrderData.getUpdateTime(), "yyyy-MM-dd"));
+        }
         payOrderBean.setBankAccountName(payOrderData.getBankAccountName());
         payOrderBean.setBankAccountNo(payOrderData.getBankAccountNo());
         payOrderBean.setBankFullBranchName(payOrderData.getBankFullBranchName());
@@ -108,7 +111,9 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         payOrderBean.setPaidDate(DateUtil.formatDateToString(payOrderData.getPaidDate(), "yyyy-MM-dd"));
         payOrderBean.setPayAmount(payOrderData.getPayAmount());
         payOrderBean.setPoId(payOrderData.getPoId());
-        payOrderBean.setStatus(PayOrderStatus.valueOf(payOrderData.getStatus()).toString());
+        payOrderBean.setStatusDesc(PayOrderStatus.valueOf(payOrderData.getStatus()).toString());
+        payOrderBean.setStatus(payOrderData.getStatus());
+        payOrderBean.setQueryStatus(status);
         return payOrderBean;
     }
 

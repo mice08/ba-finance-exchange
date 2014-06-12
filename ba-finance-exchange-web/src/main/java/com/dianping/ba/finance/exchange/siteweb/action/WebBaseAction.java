@@ -65,6 +65,14 @@ public abstract class WebBaseAction extends AvatarAction implements Preparable {
         return result;
     }
 
+    public int getLoginId(){
+        String assertion = ServletActionContext.getRequest().getRemoteUser();
+        if(assertion!=null){
+            return Integer.parseInt(assertion.split("\\|")[1]);
+        }
+        return 0;
+    }
+
     abstract protected String webExecute() throws Exception;
 
 

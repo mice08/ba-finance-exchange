@@ -81,7 +81,7 @@
                         <label class="control-label">付款单号</label>
 
                         <div class="controls">
-                            <input type="text" id="paySequence" name="paySequence" class="form_value">
+                            <input type="text" id="paySequence" name="payCode" class="form_value">
                         </div>
                     </div>
                 </div>
@@ -99,7 +99,7 @@
                             </select>
 
                             <div class="input-append">
-                                <input type="text" id="addbegindate" datatype="date" name="addBeginDate"
+                                <input type="text" id="addbegindate" datatype="date" name="addBeginTime"
                                        class="input-small form_value">
                                             <span class="add-on">
                                                 <i class="icon-calendar">
@@ -109,7 +109,7 @@
                             至
                             <div class="input-append">
                                 <input type="text" id="addenddate" validate="ge[addbegindate]" datatype="date"
-                                       name="addEndDate" error_msg="ge[addbegindate]:起始日期大于结束日期"
+                                       name="addEndTime" error_msg="ge[addbegindate]:起始日期大于结束日期"
                                        class="input-small form_value">
                                             <span class="add-on">
                                                 <i class="icon-calendar">
@@ -217,23 +217,18 @@
         <td class="fs tb-item id number-char">{{= record.payCode}}</td>
         <td class="fs tb-item id number-char">{{= record.customerName}}</td>
         <td class="fs tb-item id number-char">{{= record.payAmount}}</td>
+        <td class="fs tb-item add-date">{{= record.addTime}}</td>
         <td class="fs tb-item bank-account">
-                                <a href="javascript:void(0);" class="lookup-bank-info" data-toggle="popover"
-                                   data-placement="top"
-                                   data-content="<tr><th style='text-align:left; min-width:60px;'>开户名：</th><td style='text-align:left'>{{= record.bankAccountName}}&#10;</td></tr>
-                                               <tr><th style='text-align:left; min-width:60px;'>开户行：</th><td style='text-align:left'>{{= record.bankName}}&#10;</td></tr>
-                                               <tr><th style='text-align:left; min-width:60px;'>帐号：</th>><td style='text-align:left'>{{= record.bankAccountNo}}</td></tr>"
-                                   title="" data-original-title="银行帐号信息" data-html="true" data-animation="true"
-                                   data-trigger="click">查看</a>
+                                <a href="javascript:void(0);" data-toggle="popover" data-placement="top" bankAccountName="{{= record.bankAccountName}}" bankAccountNo="{{= record.bankAccountNo}}" bankName="{{= record.bankFullBranchName}}" class="bank-show"  rel="popover">查看</a>
                             </td>
-             <td class="fs tb-item add-date">{{= record.addTime}}</td>
-             {{if record.status==支付成功}}
-        <td class="fs tb-item amount number-char">{{= record.paidTime}}</td>
+
+             {{if record.queryStatus==0||record.queryStatus==3}}
+        <td class="fs tb-item amount number-char">{{= record.paidDate}}</td>
         {{/if}}
-        {{if record.status==退票}}
-        <td class="fs tb-item amount number-char">{{= record.updateTime}}</td>
+        {{if record.queryStatus==0||record.queryStatus==4}}
+        <td class="fs tb-item amount number-char">{{= record.sendBackTime}}</td>
         {{/if}}
-        <td class="fs tb-item plan-date number-char">{{= record.status}}</td>
+        <td class="fs tb-item plan-date number-char">{{= record.statusDesc}}</td>
         <td class="fs tb-item status">{{= record.memo}}</td>
     </tr>
     {{/each}}
