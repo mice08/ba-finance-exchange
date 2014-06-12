@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Time: 下午4:24
  * To change this template use File | Settings | File Templates.
  */
-public class RefundDTO implements Serializable{
+public class RefundDTO implements Serializable {
 
    private static final long serialVersionUID = 1L;
     private String refundId;
@@ -29,5 +29,13 @@ public class RefundDTO implements Serializable{
 
     public void setRefundReason(String refundReason) {
         this.refundReason = refundReason;
+    }
+
+    @Override
+    public String toString() {
+        return "RefundDTO{" +
+                "refundId='" + refundId + '\'' +
+                ", refundReason='" + refundReason + '\'' +
+                '}';
     }
 }

@@ -7,6 +7,7 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.Preparable;
 import org.apache.struts2.ServletActionContext;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 
@@ -65,5 +66,22 @@ public abstract class WebBaseAction extends AvatarAction implements Preparable {
         return result;
     }
 
+    public int getLoginId(){
+        try {
+            HttpServletRequest request = ServletActionContext.getRequest();
+            if (request == null) {
+                return 0;
+            }
+            String assertion = request.getRemoteUser();
+            if (assertion != null) {
+                return Integer.parseInt(assertion.split("\\|")[1]);
+            }
+        } catch (Exception e) {
+            monitorLogger.error(String.format("severity=[1] getLoginId error!"), e);
+        }
+        return 0;
+    }
+
     abstract protected String webExecute() throws Exception;
+
 }
