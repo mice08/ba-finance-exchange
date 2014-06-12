@@ -177,10 +177,10 @@
                             </td>
 
              {{if record.queryStatus==0||record.queryStatus==3}}
-        <td class="fs tb-item amount number-char">{{= record.paidTime}}</td>
+        <td class="fs tb-item amount number-char">{{= record.paidDate}}</td>
         {{/if}}
         {{if record.queryStatus==0||record.queryStatus==4}}
-        <td class="fs tb-item amount number-char">{{= record.updateTime}}</td>
+        <td class="fs tb-item amount number-char">{{= record.sendBackTime}}</td>
         {{/if}}
         <td class="fs tb-item plan-date number-char">{{= record.statusDesc}}</td>
         <td class="fs tb-item status">{{= record.memo}}</td>
