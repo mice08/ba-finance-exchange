@@ -9,6 +9,7 @@
 </head>
 
 <body>
+<#include "/WEB-INF/pages/common/tips.ftl">
 <div id="import-refund" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-header section-title">
@@ -81,7 +82,7 @@
                         <label class="control-label">付款单号</label>
 
                         <div class="controls">
-                            <input type="text" id="paysequence" name="payCode" class="form_value">
+                            <input type="text" id="paycode" name="payCode" class="form_value">
                         </div>
                     </div>
                 </div>
@@ -200,7 +201,7 @@
 
                 </table>
             </div>
-        <#include "/WEB-INF/pages/common/tips.ftl">
+
         <#include "/WEB-INF/pages/common/paging.ftl">
 
         </div>
