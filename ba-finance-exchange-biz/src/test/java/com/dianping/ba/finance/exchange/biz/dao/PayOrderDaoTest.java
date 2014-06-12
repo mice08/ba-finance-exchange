@@ -106,7 +106,9 @@ public class PayOrderDaoTest {
 	public void testFindPayOrderList() {
 		PayOrderSearchBean payOrderSearchBean = new PayOrderSearchBean();
 		payOrderSearchBean.setBusinessType(1);
+		payOrderSearchBean.setStatus(1);
 		List<PayOrderData> actual = payOrderDao.findPayOrderList(payOrderSearchBean);
 		Assert.assertNotNull(actual);
+		System.out.print(actual.size());
 	}
 }

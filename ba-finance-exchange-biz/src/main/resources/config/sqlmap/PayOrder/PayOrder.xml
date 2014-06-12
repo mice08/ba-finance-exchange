@@ -255,20 +255,20 @@
         Memo
         FROM FC_PayOrder
         <dynamic prepend="WHERE">
-            <isNotEmpty property="searchBean.payCode" prepend="and">
-                PayCode = #searchBean.payCode#
+            <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
+                PayCode = #payOrderSearchBean.payCode#
             </isNotEmpty>
-            <isNotNull property="searchBean.beginTime" prepend="and">
-                AddTime &gt;= #searchBean.beginTime#
+            <isNotNull property="payOrderSearchBean.beginTime" prepend="and">
+                AddTime &gt;= #payOrderSearchBean.beginTime#
             </isNotNull>
-            <isNotNull property="searchBean.endTime" prepend="and">
-                AddTime &lt;= #searchBean.endTime#
+            <isNotNull property="payOrderSearchBean.endTime" prepend="and">
+                AddTime &lt;= #payOrderSearchBean.endTime#
             </isNotNull>
-            <isGreaterThan property="searchBean.status" compareValue="0" prepend="and">
-                Status = #searchBean.status#
+            <isGreaterThan property="payOrderSearchBean.status" compareValue="0" prepend="and">
+                Status = #payOrderSearchBean.status#
             </isGreaterThan>
-            <isGreaterThan property="searchBean.businessType" prepend="and" compareValue="0">
-                BusinessType = #searchBean.businessType#
+            <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
+                BusinessType = #payOrderSearchBean.businessType#
             </isGreaterThan>
         </dynamic>
     </select>
