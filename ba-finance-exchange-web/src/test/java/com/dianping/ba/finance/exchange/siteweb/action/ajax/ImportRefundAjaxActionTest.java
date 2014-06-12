@@ -117,6 +117,7 @@ public class ImportRefundAjaxActionTest {
         String path = getClass().getResource("error.xls").getPath();
         importRefundAjaxActionStub.setRefundFile(new File(path));
         RefundResultDTO refundResultDTO = new RefundResultDTO();
+        refundResultDTO.setSuccessCount(1);
         refundResultDTO.setRefundTotalAmount(BigDecimal.TEN);
         when(payOrderServiceMock.refundPayOrder(anyList(), anyInt())).thenReturn(refundResultDTO);
 
@@ -134,6 +135,7 @@ public class ImportRefundAjaxActionTest {
         String path = getClass().getResource("excelWithEmptyRow.xls").getPath();
         importRefundAjaxActionStub.setRefundFile(new File(path));
         RefundResultDTO refundResultDTO = new RefundResultDTO();
+        refundResultDTO.setSuccessCount(1);
         refundResultDTO.setRefundTotalAmount(BigDecimal.TEN);
         when(payOrderServiceMock.refundPayOrder(anyList(), anyInt())).thenReturn(refundResultDTO);
 
@@ -152,6 +154,7 @@ public class ImportRefundAjaxActionTest {
         String path = getClass().getResource("columnHasTab.xls").getPath();
         importRefundAjaxActionStub.setRefundFile(new File(path));
         RefundResultDTO refundResultDTO = new RefundResultDTO();
+        refundResultDTO.setSuccessCount(1);
         refundResultDTO.setRefundTotalAmount(BigDecimal.TEN);
         when(payOrderServiceMock.refundPayOrder(anyList(), anyInt())).thenReturn(refundResultDTO);
 
