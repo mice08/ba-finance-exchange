@@ -23,7 +23,6 @@ import java.util.List;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.*;
 
 public class PayOrderServiceObjectTest {
@@ -106,6 +105,7 @@ public class PayOrderServiceObjectTest {
         Assert.assertEquals(-1, actual);
     }
 
+
     @Test
     public void testPaginatePayOrderList() {
         when(payOrderDaoMock.paginatePayOrderList(any(PayOrderSearchBean.class), anyInt(), anyInt())).thenReturn(new PageModel());
@@ -120,6 +120,12 @@ public class PayOrderServiceObjectTest {
         Assert.assertEquals(amount.compareTo(BigDecimal.ONE), 0);
     }
 
+	@Test
+	public void testFindPayOrderList() {
+		when(payOrderDaoMock.findPayOrderList(any(PayOrderSearchBean.class))).thenReturn(new ArrayList<PayOrderData>());
+		List<PayOrderData> payOrderList = payOrderServiceObjectStub.findPayOrderList(new PayOrderSearchBean());
+		Assert.assertNotNull(payOrderList);
+	}
 
     @Test
     public void testRefundPayOrderEmptyRefundList() throws Exception {
