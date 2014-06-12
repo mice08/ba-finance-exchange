@@ -61,7 +61,6 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     @Override
     protected void jsonExecute() throws Exception {
-        int loginID=getLoginId();
         if (businessType == BusinessType.DEFAULT.value()) {
             totalAmount = BigDecimal.ZERO;
             return;
