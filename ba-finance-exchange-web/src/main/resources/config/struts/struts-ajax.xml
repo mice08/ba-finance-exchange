@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="ajax" namespace="/caiwu/ajax" extends="default">
+    <package name="ajax" namespace="/exchange/ajax" extends="default">
 
         <action name="payorderlist"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.PayOrderAjaxAction">
