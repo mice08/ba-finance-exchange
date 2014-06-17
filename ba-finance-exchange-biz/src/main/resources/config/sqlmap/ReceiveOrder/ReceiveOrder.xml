@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ReceiveOrder">
+
+    <typeAlias alias="ReceiveOrderData" type="com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData"/>
+    <resultMap id="receiveOrderData" class="ReceiveOrderData">
+        <result property="roId" column="ROID"/>
+        <result property="customerId" column="CustomerID"/>
+        <result property="shopId" column="ShopID"/>
+        <result property="businessType" column="BusinessType"/>
+        <result property="receiveAmount" column="ReceiveAmount"/>
+        <result property="receiveTime" column="ReceiveTime"/>
+        <result property="payTime" column="PayTime"/>
+        <result property="bankReceiveTime" column="BankReceiveTime"/>
+        <result property="payChannel" column="PayChannel"/>
+        <result property="receiveType" column="ReceiveType"/>
+        <result property="bizContent" column="BizContent"/>
+        <result property="tradeNo" column="TradeNo"/>
+        <result property="bankID" column="BankID"/>
+        <result property="addTime" column="AddTime"/>
+        <result property="addLoginId" column="AddLoginID"/>
+        <result property="updateTime" column="UpdateTime"/>
+        <result property="updateLoginId" column="UpdateLoginID"/>
+        <result property="memo" column="Memo"/>
+    </resultMap>
+
+    <insert id="insertReceiveOrderData" parameterClass="map">
+        <![CDATA[
+            INSERT INTO FC_ReceiveOrder
+                        (CustomerID,
+                         ShopID,
+                         BusinessType,
+                         ReceiveAmount,
+                         ReceiveTime,
+                         PayTime,
+                         BankReceiveTime,
+                         PayChannel,
+                         ReceiveType,
+                         BizContent,
+                         TradeNo,
+                         BankID,
+                         AddTime,
+                         AddLoginID,
+                         UpdateTime,
+                         UpdateLoginID,
+                         Memo)
+            VALUES      (#receiveOrderData.customerId#,
+                         #receiveOrderData.shopId#,
+                         #receiveOrderData.businessType#,
+                         #receiveOrderData.receiveAmount#,
+                         #receiveOrderData.receiveTime#,
+                         #receiveOrderData.payTime#,
+                         #receiveOrderData.bankReceiveTime#,
+                         #receiveOrderData.payChannel#,
+                         #receiveOrderData.receiveType#,
+                         #receiveOrderData.bizContent#,
+                         #receiveOrderData.tradeNo#,
+                         #receiveOrderData.bankID#,
+                         #receiveOrderData.addTime#,
+                         #receiveOrderData.addLoginId#,
+                         #receiveOrderData.updateTime#,
+                         #receiveOrderData.updateLoginId#,
+                         #receiveOrderData.memo#)
+
+ 		]]>
+        <selectKey resultClass="java.lang.Integer" keyProperty="roId">
+            <![CDATA[
+			SELECT @@IDENTITY AS id
+		]]>
+        </selectKey>
+    </insert>
+
+
+</sqlMap>
