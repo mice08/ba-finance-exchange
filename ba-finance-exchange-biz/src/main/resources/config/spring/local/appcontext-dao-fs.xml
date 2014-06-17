@@ -42,4 +42,13 @@
         </property>
     </bean>
 
+    <bean id="receiveOrderDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderDao" />
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="ReceiveOrder" />
+            </bean>
+        </property>
+    </bean>
+
 </beans>

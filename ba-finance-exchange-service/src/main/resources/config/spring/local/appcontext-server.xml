@@ -17,6 +17,7 @@
                 <entry key="http://service.dianping.com/baFinanceExchangeService/payOrderService_1.0.0" value-ref="payOrderService"/>
                 <entry key="http://service.dianping.com/baFinanceExchangeService/shopFundAccountService_1.0.0" value-ref="shopFundAccountService"/>
                 <entry key="http://service.dianping.com/baFinanceExchangeService/payOrderRequestHandleService_1.0.0" value-ref="payOrderRequestHandleService"/>
+                <entry key="http://service.dianping.com/baFinanceExchangeService/receiveOrderService_1.0.0" value-ref="receiveOrderService"/>
             </map>
         </property>
     </bean>
