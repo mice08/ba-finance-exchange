@@ -13,4 +13,6 @@ public interface ReceiveOrderService {
      * @param receiveOrderData
      */
     int createReceiveOrder(ReceiveOrderData receiveOrderData);
+
+
 }
