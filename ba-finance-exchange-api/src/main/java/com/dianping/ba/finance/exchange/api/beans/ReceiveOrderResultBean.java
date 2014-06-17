@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.api.beans;
 
+import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
 
@@ -21,6 +22,7 @@ public class ReceiveOrderResultBean implements Serializable {
     private int roId;
     private int customerId;
     private int shopId;
+    private BusinessType businessType;
     private int loginId;
     private BigDecimal receiveAmount;
     /**
@@ -57,6 +59,14 @@ public class ReceiveOrderResultBean implements Serializable {
 
     public void setRoId(int roId) {
         this.roId = roId;
+    }
+
+    public BusinessType getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(BusinessType businessType) {
+        this.businessType = businessType;
     }
 
     public int getCustomerId() {
@@ -169,6 +179,7 @@ public class ReceiveOrderResultBean implements Serializable {
                 "roId=" + roId +
                 ", customerId=" + customerId +
                 ", shopId=" + shopId +
+                ", businessType=" + businessType +
                 ", loginId=" + loginId +
                 ", receiveAmount=" + receiveAmount +
                 ", receiveTime=" + receiveTime +
