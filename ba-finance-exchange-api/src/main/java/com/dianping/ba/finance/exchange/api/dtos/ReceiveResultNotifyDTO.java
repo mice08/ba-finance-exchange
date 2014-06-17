@@ -15,7 +15,7 @@ public class ReceiveResultNotifyDTO implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
-    private int roId;
+    private String bizId;
     private int customerId;
     private int shopId;
     private BigDecimal receiveAmount;
@@ -47,12 +47,12 @@ public class ReceiveResultNotifyDTO implements Serializable {
     private String tradeNo;
     private String memo;
 
-    public int getRoId() {
-        return roId;
+    public String getBizId() {
+        return bizId;
     }
 
-    public void setRoId(int roId) {
-        this.roId = roId;
+    public void setBizId(String bizId) {
+        this.bizId = bizId;
     }
 
     public int getCustomerId() {
@@ -153,8 +153,8 @@ public class ReceiveResultNotifyDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "ReceiveOrderResultBean{" +
-                "roId=" + roId +
+        return "ReceiveResultNotifyDTO{" +
+                "bizId='" + bizId + '\'' +
                 ", customerId=" + customerId +
                 ", shopId=" + shopId +
                 ", receiveAmount=" + receiveAmount +
