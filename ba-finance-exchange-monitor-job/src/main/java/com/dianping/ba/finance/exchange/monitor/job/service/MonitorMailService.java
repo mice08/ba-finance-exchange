@@ -3,7 +3,7 @@ package com.dianping.ba.finance.exchange.monitor.job.service;
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.monitor.job.utils.ConstantUtils;
-import com.dianping.ba.finance.exchange.monitor.job.utils.LogUtils;
+import com.dianping.finance.common.util.LogUtils;
 import com.dianping.mailremote.remote.MailService;
 import org.apache.commons.lang.ArrayUtils;
 
@@ -15,14 +15,10 @@ public class MonitorMailService {
 
     private MailService mailService;
 
-    public void sendMail(String mailContent) {
+    public boolean sendMail(String mailContent) {
         Long startTime = System.currentTimeMillis();
         try {
             String[] mailAddressArray = ConstantUtils.monitorMailAddress.split(",");
-            if (ArrayUtils.isEmpty(mailAddressArray)) {
-                return;
-            }
-
             HashMap<String, String> contentMap = new HashMap<String, String>();
             contentMap.put("title", "付款单异常");
             contentMap.put("content", mailContent);
@@ -34,7 +30,9 @@ public class MonitorMailService {
             }
         } catch (Exception ex) {
             monitorLogger.error(LogUtils.formatErrorLogMsg(startTime, "MonitorMailService.sendMail", "mailAddress=" + ConstantUtils.monitorMailAddress + "&mailContent=" + mailContent));
-        }
+        	return false;
+		}
+		return true;
     }
 
     public void setMailService(MailService mailService) {

@@ -12,7 +12,7 @@ import com.dianping.ba.finance.exchange.monitor.api.enums.ExceptionType;
 import com.dianping.ba.finance.exchange.monitor.api.enums.TodoStatus;
 import com.dianping.ba.finance.exchange.monitor.job.eocheck.EOCheckResult;
 import com.dianping.ba.finance.exchange.monitor.job.eocheck.EOCheckRule;
-import com.dianping.ba.finance.exchange.monitor.job.utils.LogUtils;
+import com.dianping.finance.common.util.LogUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

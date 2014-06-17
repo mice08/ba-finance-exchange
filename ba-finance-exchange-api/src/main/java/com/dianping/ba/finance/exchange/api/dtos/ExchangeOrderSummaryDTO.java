@@ -18,6 +18,8 @@ public class ExchangeOrderSummaryDTO implements Serializable {
     private BigDecimal orderAmount;
     private int status;
     private Date addDate;
+    private int businessType;
+
 
     public String getBizCode() {
         return bizCode;
@@ -51,4 +53,22 @@ public class ExchangeOrderSummaryDTO implements Serializable {
         this.addDate = addDate;
     }
 
+    public int getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(int businessType) {
+        this.businessType = businessType;
+    }
+
+    @Override
+    public String toString() {
+        return "ExchangeOrderSummaryDTO{" +
+                "bizCode='" + bizCode + '\'' +
+                ", orderAmount=" + orderAmount +
+                ", status=" + status +
+                ", addDate=" + addDate +
+                ", businessType=" + businessType +
+                '}';
+    }
 }

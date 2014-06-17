@@ -1,0 +1,6 @@
+<tags>
+    <set name="应付管理">
+        <link name="付款单查询" url="http://${ba-finance-exchange-web.Domain}/caiwu/exchangeorder/orderlist"/>
+    </set>
+
+</tags>
