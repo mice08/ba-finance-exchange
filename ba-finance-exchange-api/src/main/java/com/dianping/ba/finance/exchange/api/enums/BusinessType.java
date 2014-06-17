@@ -25,7 +25,12 @@ public enum BusinessType {
     /**
      * 储值卡
      */
-    PREPAID_CARD(4);
+    PREPAID_CARD(4),
+
+    /**
+     * 本地广告
+     */
+    ADVERTISEMENT(5);
 
     private int businessType;
 
@@ -44,6 +49,8 @@ public enum BusinessType {
                 return "结婚亲子";
             case 4:
                 return "储值卡" ;
+            case 5:
+                return "本地广告" ;
             default:
                 return "默认";
         }
@@ -59,6 +66,8 @@ public enum BusinessType {
                 return WEDDING;
             case 4:
                 return PREPAID_CARD;
+            case 5:
+                return ADVERTISEMENT;
             default:
                 return DEFAULT;
         }
