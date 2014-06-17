@@ -40,6 +40,7 @@
 
     <bean id="receiveOrderService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveOrderServiceObject">
         <property name="receiveOrderDao" ref="receiveOrderDao"/>
+        <property name="receiveOrderResultNotify" ref="receiveOrderResultNotify"/>
     </bean>
 
     <bean id="receiveBankService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveBankServiceObject">
