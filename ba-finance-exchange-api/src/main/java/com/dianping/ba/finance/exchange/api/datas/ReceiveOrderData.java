@@ -34,6 +34,8 @@ public class ReceiveOrderData {
 
     private int bankID;
 
+    private int status;
+
     private Date addTime;
 
     private int addLoginId;
@@ -151,6 +153,14 @@ public class ReceiveOrderData {
         this.bankID = bankID;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public Date getAddTime() {
         return addTime;
     }
@@ -207,6 +217,7 @@ public class ReceiveOrderData {
                 ", bizContent='" + bizContent + '\'' +
                 ", tradeNo='" + tradeNo + '\'' +
                 ", bankID=" + bankID +
+                ", status=" + status +
                 ", addTime=" + addTime +
                 ", addLoginId=" + addLoginId +
                 ", updateTime=" + updateTime +

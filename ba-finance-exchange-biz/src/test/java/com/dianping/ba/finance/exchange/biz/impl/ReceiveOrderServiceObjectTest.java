@@ -19,6 +19,7 @@ public class ReceiveOrderServiceObjectTest {
     @Before
     public void setUp() throws Exception {
         receiveOrderServiceObjectStub = new ReceiveOrderServiceObject();
+
         receiveOrderDaoMock = mock(ReceiveOrderDao.class);
         receiveOrderServiceObjectStub.setReceiveOrderDao(receiveOrderDaoMock);
     }
@@ -33,6 +34,6 @@ public class ReceiveOrderServiceObjectTest {
         int roId = receiveOrderServiceObjectStub.createReceiveOrder(roData);
         Assert.assertEquals(87, roId);
         Assert.assertEquals(87, roData.getRoId());
-
     }
+
 }

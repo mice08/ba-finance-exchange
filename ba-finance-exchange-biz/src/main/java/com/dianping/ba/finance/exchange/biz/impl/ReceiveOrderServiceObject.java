@@ -6,6 +6,8 @@ import com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderDao;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 
+import java.util.Date;
+
 /**
  * Created by noahshen on 14-6-17.
  */
@@ -17,6 +19,8 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
     @ReturnDefault
     @Override
     public int createReceiveOrder(ReceiveOrderData receiveOrderData) {
+        receiveOrderData.setAddTime(new Date());
+        receiveOrderData.setUpdateTime(new Date());
         int roId = receiveOrderDao.insertReceiveOrderData(receiveOrderData);
         receiveOrderData.setRoId(roId);
         return roId;
@@ -25,4 +29,5 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
     public void setReceiveOrderDao(ReceiveOrderDao receiveOrderDao) {
         this.receiveOrderDao = receiveOrderDao;
     }
+
 }

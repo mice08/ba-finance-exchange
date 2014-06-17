@@ -8,56 +8,61 @@ public enum ReceiveOrderPayChannel {
     /**
      * 默认
      */
-    DEFAULT(0),
+    DEFAULT(0, "错误"),
     /**
      * 现金
      */
-    CASH(1),
+    CASH(1, "现金"),
     /**
      * 支票
      */
-    CHECK(2),
+    CHECK(2, "支票"),
     /**
      * 电汇
      */
-    TELEGRAPHIC_TRANSFER(3),
+    TELEGRAPHIC_TRANSFER(3, "电汇"),
     /**
      * 贷记凭证
      */
-    CREDIT_VOUCHER(4),
+    CREDIT_VOUCHER(4, "贷记凭证"),
     /**
      * POS机
      */
-    POS_MACHINE(5),
+    POS_MACHINE(5, "POS机"),
     /**
      * 在线充值
      */
-    ONLINE_RECHARGE(6);
+    ONLINE_RECHARGE(6, "在线充值");
 
-    private int receiveOrderPayChannel;
+    private int channel;
 
-    private ReceiveOrderPayChannel(int receiveOrderPayChannel) {
-        this.setReceiveOrderPayChannel(receiveOrderPayChannel);
+    private String description;
+
+
+    private ReceiveOrderPayChannel(int channel, String description) {
+        this.channel = channel;
+        this.description = description;
+    }
+
+    public int getChannel() {
+        return channel;
+    }
+
+    public void setChannel(int channel) {
+        this.channel = channel;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public String toString() {
-        switch (receiveOrderPayChannel) {
-            case 1:
-                return "现金";
-            case 2:
-                return "支票";
-            case 3:
-                return "电汇";
-            case 4:
-                return "贷记凭证";
-            case 5:
-                return "POS机";
-            case 6:
-                return "在线充值";
-            default:
-                return "错误";
-        }
+        return this.description;
     }
 
     public static ReceiveOrderPayChannel valueOf(int value){
@@ -80,14 +85,6 @@ public enum ReceiveOrderPayChannel {
     }
 
     public int value(){
-        return receiveOrderPayChannel;
-    }
-
-    public int getReceiveOrderPayChannel() {
-        return receiveOrderPayChannel;
-    }
-
-    public void setReceiveOrderPayChannel(int receiveOrderPayChannel) {
-        this.receiveOrderPayChannel = receiveOrderPayChannel;
+        return channel;
     }
 }

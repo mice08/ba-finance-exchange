@@ -16,7 +16,6 @@ import java.util.Date;
         "classpath*:/config/spring/common/appcontext-*.xml",
         "classpath*:/config/spring/local/appcontext-*.xml"
 })
-
 public class ReceiveOrderDaoTest {
 
     @Autowired
@@ -43,6 +42,7 @@ public class ReceiveOrderDaoTest {
         receiveOrderData.setTradeNo("tradeNo");
         receiveOrderData.setUpdateLoginId(7);
         receiveOrderData.setUpdateTime(new Date());
+        receiveOrderData.setStatus(7);
         int roId = receiveOrderDao.insertReceiveOrderData(receiveOrderData);
         Assert.assertTrue(roId > 1);
     }

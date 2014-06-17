@@ -35,6 +35,37 @@
                 method="importRefund">
             <result type="json"></result>
         </action>
+
+        <action name="addReceiveOrderManually"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction"
+                method="createReceiveOrderManually">
+            <result type="json"></result>
+        </action>
+
+
+        <action name="loadReceiveBankOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveBankOption">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadReceiveOrderPayChannelOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveOrderPayChannelOption">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadReceiveTypeOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveTypeOption">
+            <result type="json"></result>
+        </action>
+
+        <action name="findCustomerNameSuggestion"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.CustomerAjaxAction"
+                method="findCustomerNameSuggestion">
+            <result type="json"></result>
+        </action>
     </package>
 
 </struts>

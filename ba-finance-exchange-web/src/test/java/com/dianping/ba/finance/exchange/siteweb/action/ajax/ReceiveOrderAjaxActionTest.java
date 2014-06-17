@@ -1,0 +1,125 @@
+package com.dianping.ba.finance.exchange.siteweb.action.ajax;
+
+import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
+import com.dianping.ba.finance.exchange.api.enums.BusinessType;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
+import com.opensymphony.xwork2.Action;
+import junit.framework.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.math.BigDecimal;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+public class ReceiveOrderAjaxActionTest {
+
+    private ReceiveOrderAjaxAction receiveOrderAjaxActionStub;
+
+    private ReceiveOrderService receiveOrderServiceMock;
+
+    @Before
+    public void setUp() throws Exception {
+        receiveOrderAjaxActionStub = new ReceiveOrderAjaxAction();
+
+        receiveOrderServiceMock = mock(ReceiveOrderService.class);
+        receiveOrderAjaxActionStub.setReceiveOrderService(receiveOrderServiceMock);
+    }
+
+    @Test
+    public void testCreateReceiveOrderManuallyCustomerIdZero() throws Exception {
+        receiveOrderAjaxActionStub.setCustomerId(0);
+        String result = receiveOrderAjaxActionStub.createReceiveOrderManually();
+        Assert.assertEquals(Action.SUCCESS, result);
+        Assert.assertEquals(AjaxBaseAction.ERROR_CODE, receiveOrderAjaxActionStub.getCode());
+    }
+
+    @Test
+    public void testCreateReceiveOrderManuallyBusinessTypeInvalid() throws Exception {
+        receiveOrderAjaxActionStub.setCustomerId(123);
+        receiveOrderAjaxActionStub.setBusinessType(BusinessType.DEFAULT.value());
+        String result = receiveOrderAjaxActionStub.createReceiveOrderManually();
+        Assert.assertEquals(Action.SUCCESS, result);
+        Assert.assertEquals(AjaxBaseAction.ERROR_CODE, receiveOrderAjaxActionStub.getCode());
+    }
+
+    @Test
+    public void testCreateReceiveOrderManuallyReceiveAmountInvalid() throws Exception {
+        receiveOrderAjaxActionStub.setCustomerId(123);
+        receiveOrderAjaxActionStub.setBusinessType(BusinessType.ADVERTISEMENT.value());
+        receiveOrderAjaxActionStub.setReceiveAmount(BigDecimal.ZERO);
+        String result = receiveOrderAjaxActionStub.createReceiveOrderManually();
+        Assert.assertEquals(Action.SUCCESS, result);
+        Assert.assertEquals(AjaxBaseAction.ERROR_CODE, receiveOrderAjaxActionStub.getCode());
+    }
+
+    @Test
+    public void testCreateReceiveOrderManuallyDateInvalid() throws Exception {
+        receiveOrderAjaxActionStub.setCustomerId(123);
+        receiveOrderAjaxActionStub.setBusinessType(BusinessType.ADVERTISEMENT.value());
+        receiveOrderAjaxActionStub.setReceiveAmount(BigDecimal.TEN);
+        receiveOrderAjaxActionStub.setBankReceiveTime("123Invalid");
+        String result = receiveOrderAjaxActionStub.createReceiveOrderManually();
+        Assert.assertEquals(Action.SUCCESS, result);
+        Assert.assertEquals(AjaxBaseAction.ERROR_CODE, receiveOrderAjaxActionStub.getCode());
+    }
+
+    @Test
+    public void testCreateReceiveOrderManuallyPayChannelInvalid() throws Exception {
+        receiveOrderAjaxActionStub.setCustomerId(123);
+        receiveOrderAjaxActionStub.setBusinessType(BusinessType.ADVERTISEMENT.value());
+        receiveOrderAjaxActionStub.setReceiveAmount(BigDecimal.TEN);
+        receiveOrderAjaxActionStub.setBankReceiveTime("2014-06-17");
+        receiveOrderAjaxActionStub.setPayChannel(ReceiveOrderPayChannel.DEFAULT.value());
+        String result = receiveOrderAjaxActionStub.createReceiveOrderManually();
+        Assert.assertEquals(Action.SUCCESS, result);
+        Assert.assertEquals(AjaxBaseAction.ERROR_CODE, receiveOrderAjaxActionStub.getCode());
+    }
+
+    @Test
+    public void testCreateReceiveOrderManuallyReceiveTypeInvalid() throws Exception {
+        receiveOrderAjaxActionStub.setCustomerId(123);
+        receiveOrderAjaxActionStub.setBusinessType(BusinessType.ADVERTISEMENT.value());
+        receiveOrderAjaxActionStub.setReceiveAmount(BigDecimal.TEN);
+        receiveOrderAjaxActionStub.setBankReceiveTime("2014-06-17");
+        receiveOrderAjaxActionStub.setPayChannel(ReceiveOrderPayChannel.POS_MACHINE.value());
+        receiveOrderAjaxActionStub.setReceiveType(ReceiveType.DEFAULT.value());
+        String result = receiveOrderAjaxActionStub.createReceiveOrderManually();
+        Assert.assertEquals(Action.SUCCESS, result);
+        Assert.assertEquals(AjaxBaseAction.ERROR_CODE, receiveOrderAjaxActionStub.getCode());
+    }
+
+    @Test
+    public void testCreateReceiveOrderManuallyBizContentInvalid() throws Exception {
+        receiveOrderAjaxActionStub.setCustomerId(123);
+        receiveOrderAjaxActionStub.setBusinessType(BusinessType.ADVERTISEMENT.value());
+        receiveOrderAjaxActionStub.setReceiveAmount(BigDecimal.TEN);
+        receiveOrderAjaxActionStub.setBankReceiveTime("2014-06-17");
+        receiveOrderAjaxActionStub.setPayChannel(ReceiveOrderPayChannel.POS_MACHINE.value());
+        receiveOrderAjaxActionStub.setReceiveType(ReceiveType.AD_FEE.value());
+        receiveOrderAjaxActionStub.setBizContent(null);
+        String result = receiveOrderAjaxActionStub.createReceiveOrderManually();
+        Assert.assertEquals(Action.SUCCESS, result);
+        Assert.assertEquals(AjaxBaseAction.ERROR_CODE, receiveOrderAjaxActionStub.getCode());
+    }
+
+    @Test
+    public void testCreateReceiveOrderManuallySuccess() throws Exception {
+        receiveOrderAjaxActionStub.setCustomerId(123);
+        receiveOrderAjaxActionStub.setBusinessType(BusinessType.ADVERTISEMENT.value());
+        receiveOrderAjaxActionStub.setReceiveAmount(BigDecimal.TEN);
+        receiveOrderAjaxActionStub.setBankReceiveTime("2014-06-17");
+        receiveOrderAjaxActionStub.setPayChannel(ReceiveOrderPayChannel.POS_MACHINE.value());
+        receiveOrderAjaxActionStub.setReceiveType(ReceiveType.AD_FEE.value());
+        receiveOrderAjaxActionStub.setBizContent("fadsf123123");
+        String result = receiveOrderAjaxActionStub.createReceiveOrderManually();
+        Assert.assertEquals(Action.SUCCESS, result);
+        Assert.assertEquals(AjaxBaseAction.SUCCESS_CODE, receiveOrderAjaxActionStub.getCode());
+        verify(receiveOrderServiceMock, times(1)).createReceiveOrder(any(ReceiveOrderData.class));
+    }
+}
