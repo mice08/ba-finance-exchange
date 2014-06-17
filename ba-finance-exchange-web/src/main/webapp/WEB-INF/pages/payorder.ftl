@@ -196,7 +196,7 @@
                     </thead>
 
                     <tbody id="payorder_list" namespace="payOrderModel" page_size="20"
-                           table_url="/caiwu/ajax/payorderlist">
+                           table_url="/exchange/ajax/payorderlist">
                     </tbody>
 
                 </table>
