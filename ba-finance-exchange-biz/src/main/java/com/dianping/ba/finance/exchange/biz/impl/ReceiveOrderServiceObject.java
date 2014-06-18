@@ -66,12 +66,15 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         return receiveOrderResultBean;
     }
 
-
+    @Log(severity = 1, logAfter = true)
+    @ReturnDefault
     @Override
     public PageModel paginateReceiveOrderList(ReceiveOrderSearchBean receiveOrderSearchBean, int page, int max) {
         return receiveOrderDao.paginateReceiveOrderList(receiveOrderSearchBean, page, max);
     }
 
+    @Log(severity = 1, logAfter = true)
+    @ReturnDefault
     @Override
     public BigDecimal loadReceiveOrderTotalAmountByCondition(ReceiveOrderSearchBean receiveOrderSearchBean) {
         return receiveOrderDao.loadReceiveOrderTotalAmountByCondition(receiveOrderSearchBean);
