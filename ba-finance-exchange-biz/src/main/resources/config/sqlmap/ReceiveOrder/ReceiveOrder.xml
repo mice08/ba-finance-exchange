@@ -17,6 +17,7 @@
         <result property="bizContent" column="BizContent"/>
         <result property="tradeNo" column="TradeNo"/>
         <result property="bankID" column="BankID"/>
+        <result property="status" column="Status"/>
         <result property="addTime" column="AddTime"/>
         <result property="addLoginId" column="AddLoginID"/>
         <result property="updateTime" column="UpdateTime"/>
