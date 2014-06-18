@@ -5,6 +5,11 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
+    <package name="receiveorder" namespace="/exchange/receiveorder" extends="default">
+        <action name="orderlist" class="com.dianping.ba.finance.exchange.siteweb.action.RedirectAction">
+            <result name="success" type="freemarker">/WEB-INF/pages/receiveorder.ftl</result>
+        </action>
+    </package>
     <package name="payorder" namespace="/exchange/payorder" extends="default">
         <action name="orderlist" class="com.dianping.ba.finance.exchange.siteweb.action.RedirectAction">
             <result name="success" type="freemarker">/WEB-INF/pages/payorder.ftl</result>

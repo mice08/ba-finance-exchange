@@ -29,6 +29,9 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
     public int createReceiveOrder(ReceiveOrderData receiveOrderData) {
         receiveOrderData.setAddTime(new Date());
         receiveOrderData.setUpdateTime(new Date());
+        if (ReceiveOrderStatus.CONFIRMED.value() == receiveOrderData.getStatus()) {
+            receiveOrderData.setReceiveTime(new Date());
+        }
         int roId = receiveOrderDao.insertReceiveOrderData(receiveOrderData);
         receiveOrderData.setRoId(roId);
 

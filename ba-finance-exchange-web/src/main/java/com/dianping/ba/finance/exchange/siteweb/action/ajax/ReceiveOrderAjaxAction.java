@@ -105,7 +105,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
             sb.append("请正确填写收款金额");
             return false;
         }
-        if (!DateUtil.isValidDate(bankReceiveTime)) {
+        if (bankReceiveTime!=null && !DateUtil.isValidDate(bankReceiveTime)) {
             sb.append("请填写正确的收款日期");
             return false;
         }
