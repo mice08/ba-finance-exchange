@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 import com.dianping.ba.finance.exchange.api.ReceiveBankService;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveBankData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
+import com.dianping.ba.finance.exchange.api.enums.CompanyIDName;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
 import com.dianping.ba.finance.exchange.siteweb.constants.OptionConstant;
@@ -98,7 +99,10 @@ public class LoadOptionAction extends AjaxBaseAction {
 
         for (ReceiveBankData receiveBankData : receiveBankDataList) {
             if (receiveBankData.getBusinessType() == businessType) {
-                option.put(receiveBankData.getBankId(), receiveBankData.getBankName());
+                CompanyIDName companyIDName = CompanyIDName.valueOf(receiveBankData.getCompanyId());
+                if (companyIDName != null) {
+                    option.put(receiveBankData.getBankId(), companyIDName.getCompanyName());
+                }
             }
         }
         if (option.size() == 2) {
