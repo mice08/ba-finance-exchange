@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ReceiveBank">
+
+    <typeAlias alias="ReceiveBankData" type="com.dianping.ba.finance.exchange.api.datas.ReceiveBankData"/>
+    <resultMap id="receiveBankData" class="ReceiveBankData">
+        <result property="bankId" column="BankID"/>
+        <result property="bankName" column="BankName"/>
+        <result property="addTime" column="AddTime"/>
+        <result property="companyId" column="CompanyID"/>
+        <result property="businessType" column="BusinessType"/>
+    </resultMap>
+
+    <select id="findAllReceiveBank" resultMap="receiveBankData" parameterClass="map">
+        SELECT rb.BankId,
+               rb.BankName,
+               rb.AddTime,
+               rb.CompanyID,
+               rb.BusinessType
+        FROM   FC_ReceiveBank rb
+    </select>
+
+</sqlMap>
