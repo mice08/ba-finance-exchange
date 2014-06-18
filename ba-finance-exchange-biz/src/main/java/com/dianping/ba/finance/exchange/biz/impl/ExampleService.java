@@ -24,6 +24,11 @@ public class ExampleService {
         return exchangeOrderDao.findExchangeOrderListByOrderIdList(orderIdList);
     }
 
+    public int max(int a, int b) {
+        return Math.max(a, b);
+    }
+
+
 
     public void setExchangeOrderDao(ExchangeOrderDao exchangeOrderDao) {
         this.exchangeOrderDao = exchangeOrderDao;
