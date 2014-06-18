@@ -24,7 +24,7 @@
                 <div class="control-group span6">
                     <label class="control-label">客户ID</label>
                     <div class="controls">
-                        <input type="text" id="customerId" name="customerId" class="form_value"  validate="+ n">
+                        <input type="text" id="customerId" name="customerId" class="form_value"  validate="+ n[0,11]">
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                     <div class="controls">
                         <div class="input-prepend">
                             <span class="add-on">$</span>
-                        <input type="text" id="receiveAmount" name="receiveAmount" class="span12 form_value"  validate="gt[0] + f[0,2]" error_msg="gt[0]:金额必须大于0 f[0,2]:小数位数不能大于2">
+                        <input type="text" id="receiveAmount" name="receiveAmount" class="span12 form_value"  validate="gt[0] + f[0,2]" error_msg="gt[0]:金额必须大于0 f[0,2]:金额格式不正确，必须为数值且整数位数不大于10位，小数位数不大于2位">
 
                         </div>
                         </div>
