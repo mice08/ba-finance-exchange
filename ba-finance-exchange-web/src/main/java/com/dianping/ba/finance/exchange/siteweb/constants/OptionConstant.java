@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.siteweb.constants;
 
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,14 @@ public class OptionConstant {
             put(PayOrderStatus.EXPORT_PAYING.value(), "支付中");
             put(PayOrderStatus.PAY_SUCCESS.value(), "支付成功");
             put(PayOrderStatus.REFUND.value(), "退票");
+        }
+    };
+
+    public final static Map<Integer, String> ROSTATUS_OPTION = new HashMap<Integer, String>() {
+        {
+            put(ReceiveOrderStatus.DEFAULT.value(), "全部");
+            put(ReceiveOrderStatus.UNCONFIRMED.value(), ReceiveOrderStatus.UNCONFIRMED.toString());
+            put(ReceiveOrderStatus.CONFIRMED.value(), ReceiveOrderStatus.CONFIRMED.toString());
         }
     };
 

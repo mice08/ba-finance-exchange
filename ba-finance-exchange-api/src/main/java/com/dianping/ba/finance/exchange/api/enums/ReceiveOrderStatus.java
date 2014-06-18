@@ -9,19 +9,15 @@ public enum ReceiveOrderStatus {
 	 * 0-默认错误
 	 */
 	DEFAULT(0, "错误"),
-	/**
-     * 1-初始
-     */
-    INIT(1, "初始"),
 
 	/**
-     * 2-待确认
+     * 1-待确认
      */
-    UNCONFIRMED(2, "待确认"),
+    UNCONFIRMED(1, "待确认"),
 	/**
-     * 3-已确认
+     * 2-已确认
      */
-    CONFIRMED(3, "已确认");
+    CONFIRMED(2, "已确认");
 
     private int status;
 
