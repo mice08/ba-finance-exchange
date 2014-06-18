@@ -95,7 +95,7 @@
             ro.Memo
        FROM FC_ReceiveOrder ro
         <dynamic prepend="WHERE">
-            <isGreaterThan property="receiveOrderSearchBean.busincustomerIDessType" prepend="and" compareValue="0">
+            <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #receiveOrderSearchBean.businessType#
             </isGreaterThan>
             <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
@@ -132,7 +132,7 @@
         SELECT COUNT(1)
         FROM FC_ReceiveOrder ro
         <dynamic prepend="WHERE">
-            <isGreaterThan property="receiveOrderSearchBean.busincustomerIDessType" prepend="and" compareValue="0">
+            <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #receiveOrderSearchBean.businessType#
             </isGreaterThan>
             <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
@@ -169,7 +169,7 @@
         SELECT IFNULL(SUM(ReceiveAmount), 0) AS totalAmount
           FROM FC_ReceiveOrder
         <dynamic prepend="WHERE">
-            <isGreaterThan property="receiveOrderSearchBean.busincustomerIDessType" prepend="and" compareValue="0">
+            <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #receiveOrderSearchBean.businessType#
             </isGreaterThan>
             <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">

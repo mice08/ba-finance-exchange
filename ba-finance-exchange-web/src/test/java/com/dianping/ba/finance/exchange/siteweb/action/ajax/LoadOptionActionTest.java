@@ -94,7 +94,7 @@ public class LoadOptionActionTest {
         String result = loadOptionActionStub.loadReceiveBankOption();
         Assert.assertEquals(Action.SUCCESS, result);
         Assert.assertEquals(AjaxBaseAction.SUCCESS_CODE, loadOptionActionStub.getCode());
-        Assert.assertTrue(loadOptionActionStub.getOption().isEmpty());
+        Assert.assertEquals(1, loadOptionActionStub.getOption().size());
     }
 
     @Test
