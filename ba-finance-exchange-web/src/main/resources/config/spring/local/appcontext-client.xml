@@ -11,4 +11,20 @@
         <property name="timeout" value="5000"/>
     </bean>
 
+    <bean id="receiveBankService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName" value="http://service.dianping.com/baFinanceExchangeService/receiveBankService_1.0.0"/>
+        <property name="iface" value="com.dianping.ba.finance.exchange.api.ReceiveBankService"/>
+        <property name="serialize" value="hessian"/>
+        <property name="callMethod" value="sync"/>
+        <property name="timeout" value="5000"/>
+    </bean>
+
+    <bean id="receiveOrderService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName" value="http://service.dianping.com/baFinanceExchangeService/receiveOrderService_1.0.0"/>
+        <property name="iface" value="com.dianping.ba.finance.exchange.api.ReceiveOrderService"/>
+        <property name="serialize" value="hessian"/>
+        <property name="callMethod" value="sync"/>
+        <property name="timeout" value="5000"/>
+    </bean>
+
 </beans>

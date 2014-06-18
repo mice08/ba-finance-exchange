@@ -1,12 +1,13 @@
 package com.dianping.ba.finance.exchange.api.datas;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * Created by noahshen on 14-6-16.
  */
-public class ReceiveOrderData {
+public class ReceiveOrderData implements Serializable{
 
     private int roId;
 
