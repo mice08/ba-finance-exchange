@@ -1,13 +1,18 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderResultBean;
+import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify;
+import com.dianping.core.type.PageModel;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -46,4 +51,37 @@ public class ReceiveOrderServiceObjectTest {
         verify(receiveOrderResultNotifyMock, times(1)).receiveResultNotify(any(ReceiveOrderResultBean.class));
     }
 
+    @Test
+    public void testPaginateReceiveOrderList() throws Exception {
+        ReceiveOrderData roData = new ReceiveOrderData();
+        roData.setRoId(87871);
+        roData.setCustomerId(123);
+        roData.setShopId(123);
+        roData.setStatus(ReceiveOrderStatus.CONFIRMED.value());
+        PageModel pm = new PageModel();
+        pm.setRecords(Arrays.asList(roData));
+        when(receiveOrderDaoMock.paginateReceiveOrderList(any(ReceiveOrderSearchBean.class), anyInt(), anyInt())).thenReturn(pm);
+
+        ReceiveOrderSearchBean searchBean = new ReceiveOrderSearchBean();
+        searchBean.setCustomerId(123);
+        PageModel pmResult = receiveOrderServiceObjectStub.paginateReceiveOrderList(searchBean, 1, 20);
+        Assert.assertEquals(87871, ((ReceiveOrderData) pmResult.getRecords().get(0)).getRoId());
+    }
+
+    @Test
+    public void testLoadReceiveOrderTotalAmountByCondition() throws Exception {
+        ReceiveOrderData roData = new ReceiveOrderData();
+        roData.setRoId(87871);
+        roData.setCustomerId(123);
+        roData.setShopId(123);
+        roData.setStatus(ReceiveOrderStatus.CONFIRMED.value());
+        PageModel pm = new PageModel();
+        pm.setRecords(Arrays.asList(roData));
+        when(receiveOrderDaoMock.loadReceiveOrderTotalAmountByCondition(any(ReceiveOrderSearchBean.class))).thenReturn(BigDecimal.TEN);
+
+        ReceiveOrderSearchBean searchBean = new ReceiveOrderSearchBean();
+        searchBean.setCustomerId(123);
+        BigDecimal totalAmount = receiveOrderServiceObjectStub.loadReceiveOrderTotalAmountByCondition(searchBean);
+        Assert.assertEquals(0, BigDecimal.TEN.compareTo(totalAmount));
+    }
 }

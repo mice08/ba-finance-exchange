@@ -73,4 +73,131 @@
     </insert>
 
 
+    <select id="paginateReceiveOrderList" resultMap="receiveOrderData" parameterClass="map">
+     SELECT ro.ROID,
+            ro.CustomerID,
+            ro.ShopID,
+            ro.BusinessType,
+            ro.ReceiveAmount,
+            ro.ReceiveTime,
+            ro.PayTime,
+            ro.BankReceiveTime,
+            ro.PayChannel,
+            ro.ReceiveType,
+            ro.BizContent,
+            ro.TradeNo,
+            ro.BankID,
+            ro.Status,
+            ro.AddTime,
+            ro.AddLoginID,
+            ro.UpdateTime,
+            ro.UpdateLoginID,
+            ro.Memo
+       FROM FC_ReceiveOrder ro
+        <dynamic prepend="WHERE">
+            <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
+                BusinessType = #receiveOrderSearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
+                CustomerID = #receiveOrderSearchBean.customerId#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.receiveType" prepend="and" compareValue="0">
+                ReceiveType = #receiveOrderSearchBean.receiveType#
+            </isGreaterThan>
+            <isNotNull property="receiveOrderSearchBean.receiveTimeBegin" prepend="and">
+                ReceiveTime &gt;= #receiveOrderSearchBean.receiveTimeBegin#
+            </isNotNull>
+            <isNotNull property="receiveOrderSearchBean.receiveTimeEnd" prepend="and">
+                ReceiveTime &lt;= #receiveOrderSearchBean.receiveTimeEnd#
+            </isNotNull>
+            <isGreaterThan property="receiveOrderSearchBean.payChannel" prepend="and" compareValue="0">
+                PayChannel = #receiveOrderSearchBean.payChannel#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.status" compareValue="0" prepend="and">
+                Status = #receiveOrderSearchBean.status#
+            </isGreaterThan>
+            <isNotNull property="receiveOrderSearchBean.bankReceiveTimeBegin" prepend="and">
+                BankReceiveTime &gt;= #receiveOrderSearchBean.bankReceiveTimeBegin#
+            </isNotNull>
+            <isNotNull property="receiveOrderSearchBean.bankReceiveTimeEnd" prepend="and">
+                BankReceiveTime &lt;= #receiveOrderSearchBean.bankReceiveTimeEnd#
+            </isNotNull>
+        </dynamic>
+        ORDER BY
+        ro.AddTime DESC,
+        ro.ROID ASC
+    </select>
+
+    <select id="paginateReceiveOrderList_COUNT" resultClass="int" parameterClass="map">
+        SELECT COUNT(1)
+        FROM FC_ReceiveOrder ro
+        <dynamic prepend="WHERE">
+            <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
+                BusinessType = #receiveOrderSearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
+                CustomerID = #receiveOrderSearchBean.customerId#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.receiveType" prepend="and" compareValue="0">
+                ReceiveType = #receiveOrderSearchBean.receiveType#
+            </isGreaterThan>
+            <isNotNull property="receiveOrderSearchBean.receiveTimeBegin" prepend="and">
+                ReceiveTime &gt;= #receiveOrderSearchBean.receiveTimeBegin#
+            </isNotNull>
+            <isNotNull property="receiveOrderSearchBean.receiveTimeEnd" prepend="and">
+                ReceiveTime &lt;= #receiveOrderSearchBean.receiveTimeEnd#
+            </isNotNull>
+            <isGreaterThan property="receiveOrderSearchBean.payChannel" prepend="and" compareValue="0">
+                PayChannel = #receiveOrderSearchBean.payChannel#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.status" compareValue="0" prepend="and">
+                Status = #receiveOrderSearchBean.status#
+            </isGreaterThan>
+            <isNotNull property="receiveOrderSearchBean.bankReceiveTimeBegin" prepend="and">
+                BankReceiveTime &gt;= #receiveOrderSearchBean.bankReceiveTimeBegin#
+            </isNotNull>
+            <isNotNull property="receiveOrderSearchBean.bankReceiveTimeEnd" prepend="and">
+                BankReceiveTime &lt;= #receiveOrderSearchBean.bankReceiveTimeEnd#
+            </isNotNull>
+        </dynamic>
+        ORDER BY
+        ro.AddTime DESC,
+        ro.ROID ASC
+    </select>
+
+    <select id="loadReceiveOrderTotalAmountByCondition" resultClass="java.math.BigDecimal" parameterClass="map">
+        SELECT IFNULL(SUM(ReceiveAmount), 0) AS totalAmount
+          FROM FC_ReceiveOrder
+        <dynamic prepend="WHERE">
+            <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
+                BusinessType = #receiveOrderSearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
+                CustomerID = #receiveOrderSearchBean.customerId#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.receiveType" prepend="and" compareValue="0">
+                ReceiveType = #receiveOrderSearchBean.receiveType#
+            </isGreaterThan>
+            <isNotNull property="receiveOrderSearchBean.receiveTimeBegin" prepend="and">
+                ReceiveTime &gt;= #receiveOrderSearchBean.receiveTimeBegin#
+            </isNotNull>
+            <isNotNull property="receiveOrderSearchBean.receiveTimeEnd" prepend="and">
+                ReceiveTime &lt;= #receiveOrderSearchBean.receiveTimeEnd#
+            </isNotNull>
+            <isGreaterThan property="receiveOrderSearchBean.payChannel" prepend="and" compareValue="0">
+                PayChannel = #receiveOrderSearchBean.payChannel#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.status" compareValue="0" prepend="and">
+                Status = #receiveOrderSearchBean.status#
+            </isGreaterThan>
+            <isNotNull property="receiveOrderSearchBean.bankReceiveTimeBegin" prepend="and">
+                BankReceiveTime &gt;= #receiveOrderSearchBean.bankReceiveTimeBegin#
+            </isNotNull>
+            <isNotNull property="receiveOrderSearchBean.bankReceiveTimeEnd" prepend="and">
+                BankReceiveTime &lt;= #receiveOrderSearchBean.bankReceiveTimeEnd#
+            </isNotNull>
+        </dynamic>
+    </select>
+
+
 </sqlMap>
