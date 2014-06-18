@@ -1,6 +1,8 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
+import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
+import com.dianping.core.type.PageModel;
 import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,5 +47,17 @@ public class ReceiveOrderDaoTest {
         receiveOrderData.setStatus(7);
         int roId = receiveOrderDao.insertReceiveOrderData(receiveOrderData);
         Assert.assertTrue(roId > 1);
+    }
+
+    @Test
+    public void testPaginateReceiveOrderList() throws Exception {
+        ReceiveOrderSearchBean searchBean = new ReceiveOrderSearchBean();
+
+    }
+
+    @Test
+    public void testLoadReceiveOrderTotalAmountByCondition() throws Exception {
+
+
     }
 }
