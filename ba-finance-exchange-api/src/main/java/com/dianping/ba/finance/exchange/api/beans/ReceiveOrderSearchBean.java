@@ -9,10 +9,25 @@ import java.util.Date;
 public class ReceiveOrderSearchBean implements Serializable {
 
     private int businessType;
-    private Date beginTime;
-    private Date endTime;
+
+    private int customerId;
+
+    private int receiveType;
+
+    private Date receiveTimeBegin;
+
+    private Date receiveTimeEnd;
+
+    private int payChannel;
+
     private int status;
-    private String payCode;
+
+    private Date bankReceiveTimeBegin;
+
+    private Date bankReceiveTimeEnd;
+
+    public ReceiveOrderSearchBean() {
+    }
 
     public int getBusinessType() {
         return businessType;
@@ -20,6 +35,46 @@ public class ReceiveOrderSearchBean implements Serializable {
 
     public void setBusinessType(int businessType) {
         this.businessType = businessType;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public int getReceiveType() {
+        return receiveType;
+    }
+
+    public void setReceiveType(int receiveType) {
+        this.receiveType = receiveType;
+    }
+
+    public Date getReceiveTimeBegin() {
+        return receiveTimeBegin;
+    }
+
+    public void setReceiveTimeBegin(Date receiveTimeBegin) {
+        this.receiveTimeBegin = receiveTimeBegin;
+    }
+
+    public Date getReceiveTimeEnd() {
+        return receiveTimeEnd;
+    }
+
+    public void setReceiveTimeEnd(Date receiveTimeEnd) {
+        this.receiveTimeEnd = receiveTimeEnd;
+    }
+
+    public int getPayChannel() {
+        return payChannel;
+    }
+
+    public void setPayChannel(int payChannel) {
+        this.payChannel = payChannel;
     }
 
     public int getStatus() {
@@ -30,27 +85,34 @@ public class ReceiveOrderSearchBean implements Serializable {
         this.status = status;
     }
 
-    public String getPayCode() {
-        return payCode;
+    public Date getBankReceiveTimeBegin() {
+        return bankReceiveTimeBegin;
     }
 
-    public void setPayCode(String payCode) {
-        this.payCode = payCode;
+    public void setBankReceiveTimeBegin(Date bankReceiveTimeBegin) {
+        this.bankReceiveTimeBegin = bankReceiveTimeBegin;
     }
 
-    public Date getBeginTime() {
-        return beginTime;
+    public Date getBankReceiveTimeEnd() {
+        return bankReceiveTimeEnd;
     }
 
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
+    public void setBankReceiveTimeEnd(Date bankReceiveTimeEnd) {
+        this.bankReceiveTimeEnd = bankReceiveTimeEnd;
     }
 
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    @Override
+    public String toString() {
+        return "ReceiveOrderSearchBean{" +
+                "businessType=" + businessType +
+                ", customerId=" + customerId +
+                ", receiveType=" + receiveType +
+                ", receiveTimeBegin=" + receiveTimeBegin +
+                ", receiveTimeEnd=" + receiveTimeEnd +
+                ", payChannel=" + payChannel +
+                ", status=" + status +
+                ", bankReceiveTimeBegin=" + bankReceiveTimeBegin +
+                ", bankReceiveTimeEnd=" + bankReceiveTimeEnd +
+                '}';
     }
 }
