@@ -48,7 +48,7 @@ public class LoadOptionAction extends AjaxBaseAction {
         for (ReceiveOrderPayChannel channel : channels) {
             if (channel.getChannel() == 0) {
                 option.put(channel.getChannel(), "请选择收款方式");
-            } else {
+            } else  if (!(channel.getChannel() == ReceiveOrderPayChannel.CREDIT_VOUCHER.value())){
                 option.put(channel.getChannel(), channel.getDescription());
             }
         }
