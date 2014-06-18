@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderResultBean;
+import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
@@ -9,9 +10,11 @@ import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify;
+import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -61,6 +64,17 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         receiveOrderResultBean.setTradeNo(receiveOrderData.getTradeNo());
 
         return receiveOrderResultBean;
+    }
+
+
+    @Override
+    public PageModel paginateReceiveOrderList(ReceiveOrderSearchBean receiveOrderSearchBean, int page, int max) {
+        return receiveOrderDao.paginateReceiveOrderList(receiveOrderSearchBean, page, max);
+    }
+
+    @Override
+    public BigDecimal loadReceiveOrderTotalAmountByCondition(ReceiveOrderSearchBean receiveOrderSearchBean) {
+        return receiveOrderDao.loadReceiveOrderTotalAmountByCondition(receiveOrderSearchBean);
     }
 
     public void setReceiveOrderDao(ReceiveOrderDao receiveOrderDao) {

@@ -29,7 +29,9 @@ public interface ReceiveOrderDao extends GenericDao {
      * @return
      */
     @DAOAction(action = DAOActionType.PAGE)
-    PageModel paginateReceiveOrderList(@DAOParam("receiveOrderSearchBean") ReceiveOrderSearchBean receiveOrderSearchBean);
+    PageModel paginateReceiveOrderList(@DAOParam("receiveOrderSearchBean") ReceiveOrderSearchBean receiveOrderSearchBean,
+                                       @DAOParam("page") int page,
+                                       @DAOParam("max") int max);
 
     /**
      * 查询满足条件的收款总金额
