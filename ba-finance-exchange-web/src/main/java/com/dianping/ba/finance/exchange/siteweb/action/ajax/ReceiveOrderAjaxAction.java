@@ -4,13 +4,11 @@ import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
-import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
-import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveOrderBean;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
@@ -18,6 +16,7 @@ import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -64,7 +63,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     private int status;
 
-    private BigDecimal totalAmount;
+    private String totalAmount;
 
 
     //查询结果，付款计划列表
@@ -81,7 +80,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
     @Override
     protected void jsonExecute() {
         if (businessType == BusinessType.DEFAULT.value()) {
-            totalAmount = BigDecimal.ZERO;
+            totalAmount = new DecimalFormat("0.00").format(BigDecimal.ZERO);
             return;
         }
 
@@ -89,7 +88,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
             ReceiveOrderSearchBean receiveOrderSearchBean = buildROSearchBean();
             receiveOrderModel = receiveOrderService.paginateReceiveOrderList(receiveOrderSearchBean, page, pageSize);
             receiveOrderModel.setRecords(buildReceiveOrderBeans((List<ReceiveOrderData>) receiveOrderModel.getRecords()));
-            totalAmount=receiveOrderService.loadReceiveOrderTotalAmountByCondition(receiveOrderSearchBean);
+            totalAmount=new DecimalFormat("0.00").format(receiveOrderService.loadReceiveOrderTotalAmountByCondition(receiveOrderSearchBean));
             code=SUCCESS_CODE;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.jsonExecute error!", e);
@@ -154,7 +153,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderBean.setMemo(receiveOrderData.getMemo());
         receiveOrderBean.setPayChannel(ReceiveOrderPayChannel.valueOf(receiveOrderData.getPayChannel()).toString());
         receiveOrderBean.setPayerName("");
-        receiveOrderBean.setReceiveAmount(receiveOrderData.getReceiveAmount());
+        receiveOrderBean.setReceiveAmount(new DecimalFormat("0.00").format(receiveOrderData.getReceiveAmount()));
         receiveOrderBean.setReceiveTime(DateUtil.formatDateToString(receiveOrderData.getReceiveTime(), "yyyy-MM-dd"));
         receiveOrderBean.setReceiveType(ReceiveType.valueOf(receiveOrderData.getReceiveType()).toString());
         receiveOrderBean.setRoId(receiveOrderData.getRoId());
@@ -332,11 +331,11 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         this.status = status;
     }
 
-    public BigDecimal getTotalAmount() {
+    public String getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(BigDecimal totalAmount) {
+    public void setTotalAmount(String totalAmount) {
         this.totalAmount = totalAmount;
     }
 }

@@ -10,7 +10,7 @@ public class ReceiveOrderBean {
     private int roId;
     private String businessType;
     private String customerName;
-    private BigDecimal receiveAmount;
+    private String receiveAmount;
     private String bankReceiveTime;
     private String receiveTime;
     private String receiveType;
@@ -45,11 +45,11 @@ public class ReceiveOrderBean {
         this.customerName = customerName;
     }
 
-    public BigDecimal getReceiveAmount() {
+    public String getReceiveAmount() {
         return receiveAmount;
     }
 
-    public void setReceiveAmount(BigDecimal receiveAmount) {
+    public void setReceiveAmount(String receiveAmount) {
         this.receiveAmount = receiveAmount;
     }
 
