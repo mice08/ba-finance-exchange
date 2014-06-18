@@ -22,6 +22,8 @@ public class ReceiveOrderSearchBean implements Serializable {
 
     private int status;
 
+    private int bankId;
+
     private Date bankReceiveTimeBegin;
 
     private Date bankReceiveTimeEnd;
@@ -101,6 +103,14 @@ public class ReceiveOrderSearchBean implements Serializable {
         this.bankReceiveTimeEnd = bankReceiveTimeEnd;
     }
 
+    public int getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(int bankId) {
+        this.bankId = bankId;
+    }
+
     @Override
     public String toString() {
         return "ReceiveOrderSearchBean{" +
@@ -111,6 +121,7 @@ public class ReceiveOrderSearchBean implements Serializable {
                 ", receiveTimeEnd=" + receiveTimeEnd +
                 ", payChannel=" + payChannel +
                 ", status=" + status +
+                ", bankId=" + bankId +
                 ", bankReceiveTimeBegin=" + bankReceiveTimeBegin +
                 ", bankReceiveTimeEnd=" + bankReceiveTimeEnd +
                 '}';

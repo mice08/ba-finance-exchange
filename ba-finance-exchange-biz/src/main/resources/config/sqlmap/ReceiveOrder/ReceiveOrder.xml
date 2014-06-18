@@ -122,6 +122,9 @@
             <isNotNull property="receiveOrderSearchBean.bankReceiveTimeEnd" prepend="and">
                 BankReceiveTime &lt;= #receiveOrderSearchBean.bankReceiveTimeEnd#
             </isNotNull>
+            <isGreaterThan property="receiveOrderSearchBean.bankId" prepend="and" compareValue="0">
+                BankID = #receiveOrderSearchBean.bankId#
+            </isGreaterThan>
         </dynamic>
         ORDER BY
         ro.AddTime DESC,
@@ -159,6 +162,9 @@
             <isNotNull property="receiveOrderSearchBean.bankReceiveTimeEnd" prepend="and">
                 BankReceiveTime &lt;= #receiveOrderSearchBean.bankReceiveTimeEnd#
             </isNotNull>
+            <isGreaterThan property="receiveOrderSearchBean.bankId" prepend="and" compareValue="0">
+                BankID = #receiveOrderSearchBean.bankId#
+            </isGreaterThan>
         </dynamic>
         ORDER BY
         ro.AddTime DESC,
@@ -196,6 +202,9 @@
             <isNotNull property="receiveOrderSearchBean.bankReceiveTimeEnd" prepend="and">
                 BankReceiveTime &lt;= #receiveOrderSearchBean.bankReceiveTimeEnd#
             </isNotNull>
+            <isGreaterThan property="receiveOrderSearchBean.bankId" prepend="and" compareValue="0">
+                BankID = #receiveOrderSearchBean.bankId#
+            </isGreaterThan>
         </dynamic>
     </select>
 

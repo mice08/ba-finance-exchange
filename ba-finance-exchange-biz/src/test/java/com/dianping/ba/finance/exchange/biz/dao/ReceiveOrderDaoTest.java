@@ -82,6 +82,15 @@ public class ReceiveOrderDaoTest {
     }
 
     @Test
+    public void testPaginateReceiveOrderListBank() throws Exception {
+        ReceiveOrderSearchBean searchBean = new ReceiveOrderSearchBean();
+        searchBean.setBankId(8787);
+
+        PageModel pm = receiveOrderDao.paginateReceiveOrderList(searchBean, 1, 20);
+        Assert.assertNotNull(pm);
+    }
+
+    @Test
     public void testLoadReceiveOrderTotalAmountByCondition() throws Exception {
         ReceiveOrderSearchBean searchBean = new ReceiveOrderSearchBean();
         searchBean.setCustomerId(8787);
@@ -108,6 +117,16 @@ public class ReceiveOrderDaoTest {
         bankReceiveTimeEndCal.set(Calendar.MONTH, 05);
         bankReceiveTimeEndCal.set(Calendar.DAY_OF_MONTH, 18);
         searchBean.setBankReceiveTimeEnd(bankReceiveTimeEndCal.getTime());
+
+        BigDecimal totalAmount = receiveOrderDao.loadReceiveOrderTotalAmountByCondition(searchBean);
+        Assert.assertNotNull(totalAmount);
+
+    }
+
+    @Test
+    public void testLoadReceiveOrderTotalAmountByConditionBank() throws Exception {
+        ReceiveOrderSearchBean searchBean = new ReceiveOrderSearchBean();
+        searchBean.setBankId(8787);
 
         BigDecimal totalAmount = receiveOrderDao.loadReceiveOrderTotalAmountByCondition(searchBean);
         Assert.assertNotNull(totalAmount);
