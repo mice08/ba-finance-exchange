@@ -73,4 +73,100 @@
     </insert>
 
 
+    <select id="paginateReceiveOrderList" resultMap="receiveOrderData" parameterClass="map">
+        SELECT
+        POID,
+        PayAmount,
+        PaySequence,
+        PayCode,
+        CustomerID,
+        CustomerBankId,
+        BankAccountNo,
+        BankAccountName,
+        PaidDate,
+        BankBranchName,
+        BankName,
+        BankProvince,
+        BankCity,
+        BankFullBranchName,
+        BankCode,
+        BusinessType,
+        Status,
+        AddTime,
+        AddType,
+        UpdateTime,
+        Memo
+        FROM
+        FC_PayOrder
+        <dynamic prepend="WHERE">
+            <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
+                PayCode = #payOrderSearchBean.payCode#
+            </isNotEmpty>
+            <isNotNull property="payOrderSearchBean.beginTime" prepend="and">
+                AddTime &gt;= #payOrderSearchBean.beginTime#
+            </isNotNull>
+            <isNotNull property="payOrderSearchBean.endTime" prepend="and">
+                AddTime &lt;= #payOrderSearchBean.endTime#
+            </isNotNull>
+            <isGreaterThan property="payOrderSearchBean.status" compareValue="0" prepend="and">
+                Status = #payOrderSearchBean.status#
+            </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
+                BusinessType = #payOrderSearchBean.businessType#
+            </isGreaterThan>
+        </dynamic>
+        ORDER BY
+        AddTime DESC,
+        POID ASC
+    </select>
+
+    <select id="paginatePayOrderList_COUNT" resultClass="int" parameterClass="map">
+        SELECT
+        COUNT(1)
+        FROM
+        FC_PayOrder
+        <dynamic prepend="WHERE">
+            <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
+                PayCode = #payOrderSearchBean.payCode#
+            </isNotEmpty>
+            <isNotNull property="payOrderSearchBean.beginTime" prepend="and">
+                AddTime &gt;= #payOrderSearchBean.beginTime#
+            </isNotNull>
+            <isNotNull property="payOrderSearchBean.endTime" prepend="and">
+                AddTime &lt;= #payOrderSearchBean.endTime#
+            </isNotNull>
+            <isGreaterThan property="payOrderSearchBean.status" compareValue="0" prepend="and">
+                Status = #payOrderSearchBean.status#
+            </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
+                BusinessType = #payOrderSearchBean.businessType#
+            </isGreaterThan>
+        </dynamic>
+    </select>
+
+    <select id="findPayOrderTotalAmountByCondition" resultClass="java.math.BigDecimal" parameterClass="map">
+        SELECT
+        IFNULL(SUM(PayAmount), 0) AS totalAmount
+        FROM
+        FC_PayOrder
+        <dynamic prepend="WHERE">
+            <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
+                PayCode = #payOrderSearchBean.payCode#
+            </isNotEmpty>
+            <isNotNull property="payOrderSearchBean.beginTime" prepend="and">
+                AddTime &gt;= #payOrderSearchBean.beginTime#
+            </isNotNull>
+            <isNotNull property="payOrderSearchBean.endTime" prepend="and">
+                AddTime &lt;= #payOrderSearchBean.endTime#
+            </isNotNull>
+            <isGreaterThan property="payOrderSearchBean.status" compareValue="0" prepend="and">
+                Status = #payOrderSearchBean.status#
+            </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
+                BusinessType = #payOrderSearchBean.businessType#
+            </isGreaterThan>
+        </dynamic>
+    </select>
+
+
 </sqlMap>
