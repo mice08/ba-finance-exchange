@@ -18,9 +18,21 @@
             <result type="json"></result>
         </action>
 
+        <action name="loadROStatusOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadROStatusOption">
+            <result type="json"></result>
+        </action>
+
         <action name="loadBusinessTypeOption"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
                 method="loadBusinessTypeOption">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadProductLionOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadProductLionOption">
             <result type="json"></result>
         </action>
 
@@ -33,6 +45,60 @@
         <action name="importRefund"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ImportRefundAjaxAction"
                 method="importRefund">
+            <result type="json"></result>
+        </action>
+
+        <action name="receiveorderlist"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction">
+            <result type="json"></result>
+        </action>
+
+        <action name="addReceiveOrderManually"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction"
+                method="createReceiveOrderManually">
+            <result type="json"></result>
+        </action>
+
+
+        <action name="loadReceiveBankOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveBankOption">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadReceiveOrderPayChannelOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveOrderPayChannelOption">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadReceiveTypeOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveTypeOption">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadReceiveTypeOptionByPL"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveTypeOptionByPL">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadReceiveTypeOptionInQuery"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveTypeOptionInQuery">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadReceiveBankOptionInQuery"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveBankOptionInQuery">
+            <result type="json"></result>
+        </action>
+
+        <action name="findCustomerNameSuggestion"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.CustomerAjaxAction"
+                method="findCustomerNameSuggestion">
             <result type="json"></result>
         </action>
     </package>

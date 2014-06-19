@@ -47,7 +47,7 @@ public class PayOrderAjaxActionTest {
 
         payOrderAjaxActionStub.setBusinessType(1);
         payOrderAjaxActionStub.jsonExecute();
-        Assert.assertEquals(payOrderAjaxActionStub.getTotalAmount().compareTo(BigDecimal.ONE),0);
+        Assert.assertEquals(payOrderAjaxActionStub.getTotalAmount(),"0.00");
     }
 
 	@Test

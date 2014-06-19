@@ -12,7 +12,7 @@ public class PayOrderBean {
     private String customerName;
     private int poId;
     private String addTime;
-    private BigDecimal payAmount;
+    private String payAmount;
     private String bankAccountNo;
     private String bankAccountName;
     private String bankFullBranchName;
@@ -55,11 +55,11 @@ public class PayOrderBean {
         this.addTime = addTime;
     }
 
-    public BigDecimal getPayAmount() {
+    public String getPayAmount() {
         return payAmount;
     }
 
-    public void setPayAmount(BigDecimal payAmount) {
+    public void setPayAmount(String payAmount) {
         this.payAmount = payAmount;
     }
 

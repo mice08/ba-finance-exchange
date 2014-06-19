@@ -40,5 +40,15 @@
 
     <bean id="receiveOrderService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveOrderServiceObject">
         <property name="receiveOrderDao" ref="receiveOrderDao"/>
+        <property name="receiveOrderResultNotify" ref="receiveOrderResultNotify"/>
+    </bean>
+
+    <bean id="receiveBankService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveBankServiceObject">
+        <property name="receiveBankDao" ref="receiveBankDao"/>
+        <property name="cache" value="true"/>
+    </bean>
+
+    <bean id="receiveOrderResultNotify" class="com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify">
+        <property name="receiveOrderProducer" ref="receiveOrderProducer"/>
     </bean>
 </beans>

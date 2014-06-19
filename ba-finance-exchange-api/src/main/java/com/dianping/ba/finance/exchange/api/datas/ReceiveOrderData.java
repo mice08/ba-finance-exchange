@@ -1,12 +1,13 @@
 package com.dianping.ba.finance.exchange.api.datas;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * Created by noahshen on 14-6-16.
  */
-public class ReceiveOrderData {
+public class ReceiveOrderData implements Serializable{
 
     private int roId;
 
@@ -33,6 +34,8 @@ public class ReceiveOrderData {
     private String tradeNo;
 
     private int bankID;
+
+    private int status;
 
     private Date addTime;
 
@@ -151,6 +154,14 @@ public class ReceiveOrderData {
         this.bankID = bankID;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public Date getAddTime() {
         return addTime;
     }
@@ -207,6 +218,7 @@ public class ReceiveOrderData {
                 ", bizContent='" + bizContent + '\'' +
                 ", tradeNo='" + tradeNo + '\'' +
                 ", bankID=" + bankID +
+                ", status=" + status +
                 ", addTime=" + addTime +
                 ", addLoginId=" + addLoginId +
                 ", updateTime=" + updateTime +
