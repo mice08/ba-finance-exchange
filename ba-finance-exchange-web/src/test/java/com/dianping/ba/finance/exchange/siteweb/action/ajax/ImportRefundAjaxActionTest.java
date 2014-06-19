@@ -85,6 +85,8 @@ public class ImportRefundAjaxActionTest {
         RefundResultDTO refundResultDTO = new RefundResultDTO();
         when(payOrderServiceMock.refundPayOrder(anyList(), anyInt())).thenReturn(refundResultDTO);
 
+        importRefundAjaxActionStub.setExecutorService(null);
+        importRefundAjaxActionStub.setInvalidRefundMap(null);
         importRefundAjaxActionStub.setMsg(null);
 
         String actual = importRefundAjaxActionStub.importRefund();

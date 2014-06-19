@@ -133,10 +133,9 @@ public class ImportRefundAjaxAction extends AjaxBaseAction {
     }
 
     private void generateResultMessage(RefundResultDTO allRefundResultDTO) {
-        if (!allRefundResultDTO.containFailedResult()) {
+        if (allRefundResultDTO.getSuccessCount() > 0) {
             msg.put("successCount", allRefundResultDTO.getSuccessCount());
             msg.put("refundTotalAmount", allRefundResultDTO.getRefundTotalAmount());
-            return;
         }
 
         Map<RefundFailedReason, StringBuilder> errorInfoMap = extractErrorInfo(allRefundResultDTO);
