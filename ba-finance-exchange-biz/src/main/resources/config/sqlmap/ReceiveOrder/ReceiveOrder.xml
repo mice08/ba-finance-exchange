@@ -167,9 +167,6 @@
                 BankID = #receiveOrderSearchBean.bankId#
             </isGreaterThan>
         </dynamic>
-        ORDER BY
-        ro.AddTime DESC,
-        ro.ROID ASC
     </select>
 
     <select id="loadReceiveOrderTotalAmountByCondition" resultClass="java.math.BigDecimal" parameterClass="map">

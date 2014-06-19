@@ -56,9 +56,65 @@ public class LoadOptionActionTest {
     }
 
     @Test
+    public void testLoadReceiveTypeOptionByPL() throws Exception {
+        loadOptionActionStub.setBusinessType(1);
+        loadOptionActionStub.loadReceiveTypeOptionByPL();
+        Assert.assertFalse(loadOptionActionStub.getOption().isEmpty());
+
+        loadOptionActionStub.setBusinessType(5);
+        loadOptionActionStub.loadReceiveTypeOptionByPL();
+        Assert.assertFalse(loadOptionActionStub.getOption().isEmpty());
+
+        loadOptionActionStub.setBusinessType(0);
+        String result = loadOptionActionStub.loadReceiveTypeOptionByPL();
+        Assert.assertEquals(Action.SUCCESS, result);
+    }
+
+    @Test
+    public void testLoadReceiveTypeOptionInQuery() throws Exception {
+        loadOptionActionStub.setBusinessType(1);
+        loadOptionActionStub.loadReceiveTypeOptionInQuery();
+        Assert.assertFalse(loadOptionActionStub.getOption().isEmpty());
+
+        loadOptionActionStub.setBusinessType(5);
+        loadOptionActionStub.loadReceiveTypeOptionInQuery();
+        Assert.assertFalse(loadOptionActionStub.getOption().isEmpty());
+
+        loadOptionActionStub.setBusinessType(0);
+        String result = loadOptionActionStub.loadReceiveTypeOptionInQuery();
+        Assert.assertEquals(Action.SUCCESS, result);
+    }
+
+    @Test
     public void testLoadReceiveBankOptionInvalidBusinessType() throws Exception {
         loadOptionActionStub.setBusinessType(BusinessType.DEFAULT.value());
         String result = loadOptionActionStub.loadReceiveBankOption();
+        Assert.assertEquals(Action.SUCCESS, result);
+        Assert.assertEquals(AjaxBaseAction.ERROR_CODE, loadOptionActionStub.getCode());
+    }
+
+    @Test
+    public void testLoadReceiveBankOptionInQuery(){
+        ReceiveBankData rbData = new ReceiveBankData();
+        rbData.setAddTime(new Date());
+        rbData.setBankId(123);
+        rbData.setBankName("bankName");
+        rbData.setBusinessType(BusinessType.ADVERTISEMENT.value());
+        rbData.setCompanyId(1);
+        when(receiveBankServiceMock.findAllReceiveBank()).thenReturn(Arrays.asList(rbData));
+
+        loadOptionActionStub.setBusinessType(BusinessType.ADVERTISEMENT.value());
+        String result = loadOptionActionStub.loadReceiveBankOptionInQuery();
+        Assert.assertEquals(Action.SUCCESS, result);
+        Assert.assertEquals(AjaxBaseAction.SUCCESS_CODE, loadOptionActionStub.getCode());
+
+        loadOptionActionStub.setBusinessType(BusinessType.ADVERTISEMENT.value());
+        result = loadOptionActionStub.loadReceiveBankOptionInQuery();
+        Assert.assertEquals(Action.SUCCESS, result);
+        Assert.assertEquals(AjaxBaseAction.SUCCESS_CODE, loadOptionActionStub.getCode());
+
+        loadOptionActionStub.setBusinessType(BusinessType.DEFAULT.value());
+        result = loadOptionActionStub.loadReceiveBankOptionInQuery();
         Assert.assertEquals(Action.SUCCESS, result);
         Assert.assertEquals(AjaxBaseAction.ERROR_CODE, loadOptionActionStub.getCode());
     }
@@ -77,7 +133,7 @@ public class LoadOptionActionTest {
         String result = loadOptionActionStub.loadReceiveBankOption();
         Assert.assertEquals(Action.SUCCESS, result);
         Assert.assertEquals(AjaxBaseAction.SUCCESS_CODE, loadOptionActionStub.getCode());
-        Assert.assertEquals("汉涛", loadOptionActionStub.getOption().get(123));
+        Assert.assertEquals("错误", loadOptionActionStub.getOption().get(123));
     }
 
     @Test

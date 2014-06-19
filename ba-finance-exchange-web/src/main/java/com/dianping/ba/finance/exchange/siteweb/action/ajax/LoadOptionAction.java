@@ -95,6 +95,26 @@ public class LoadOptionAction extends AjaxBaseAction {
         return SUCCESS;
     }
 
+    public String loadReceiveTypeOptionInQuery() {
+
+        option.put(ReceiveType.DEFAULT.value(), "请选择业务类型");
+        if (businessType == BusinessType.DEFAULT.value()) {
+            code = ERROR_CODE;
+            return SUCCESS;
+        }
+        if (businessType == BusinessType.GROUP_PURCHASE.value()) {
+            option.put(ReceiveType.TG_SHELVING_FEE.value(), ReceiveType.TG_SHELVING_FEE.getDescription());
+            option.put(ReceiveType.TG_DEPOSIT.value(), ReceiveType.TG_DEPOSIT.getDescription());
+            option.put(ReceiveType.TG_SECURITY_DEPOSIT.value(), ReceiveType.TG_SECURITY_DEPOSIT.getDescription());
+            option.put(ReceiveType.TG_GUARANTEE.value(), ReceiveType.TG_GUARANTEE.getDescription());
+            option.put(ReceiveType.TG_EXTRA_FEE.value(), ReceiveType.TG_EXTRA_FEE.getDescription());
+        } else if (businessType == BusinessType.ADVERTISEMENT.value()) {
+            option.put(ReceiveType.AD_FEE.value(), ReceiveType.AD_FEE.getDescription());
+        }
+        code = SUCCESS_CODE;
+        return SUCCESS;
+    }
+
     public String loadReceiveBankOption() {
         option.put(0, "请选择收款银行账户");
         if (businessType == BusinessType.DEFAULT.value()) {
@@ -113,6 +133,26 @@ public class LoadOptionAction extends AjaxBaseAction {
         }
         if (option.size() == 2) {
             option.remove(0);
+        }
+        code = SUCCESS_CODE;
+        return SUCCESS;
+    }
+
+    public String loadReceiveBankOptionInQuery() {
+        option.put(0, "请选择收款银行账户");
+        if (businessType == BusinessType.DEFAULT.value()) {
+            code = ERROR_CODE;
+            return SUCCESS;
+        }
+        List<ReceiveBankData> receiveBankDataList = receiveBankService.findAllReceiveBank();
+
+        for (ReceiveBankData receiveBankData : receiveBankDataList) {
+            if (receiveBankData.getBusinessType() == businessType) {
+                CompanyIDName companyIDName = CompanyIDName.valueOf(receiveBankData.getCompanyId());
+                if (companyIDName != null) {
+                    option.put(receiveBankData.getBankId(), companyIDName.getCompanyName());
+                }
+            }
         }
         code = SUCCESS_CODE;
         return SUCCESS;
