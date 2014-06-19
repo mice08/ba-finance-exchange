@@ -24,4 +24,8 @@ public class PayCentreReceiveRequestServiceObject implements PayCentreReceiveReq
         payCentreReceiveRequestData.setRequestId(requestId);
         return true;
     }
+
+    public void setPayCentreReceiveRequestDao(PayCentreReceiveRequestDao payCentreReceiveRequestDao) {
+        this.payCentreReceiveRequestDao = payCentreReceiveRequestDao;
+    }
 }

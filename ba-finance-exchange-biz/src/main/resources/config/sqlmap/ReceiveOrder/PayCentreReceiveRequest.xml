@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
-<sqlMap namespace="ReceiveOrder">
+<sqlMap namespace="PayCentreReceiveRequest">
 
     <typeAlias alias="PayCentreReceiveRequestData" type="com.dianping.ba.finance.exchange.api.datas.PayCentreReceiveRequestData"/>
     <resultMap id="payCentreReceiveRequestData" class="PayCentreReceiveRequestData">
         <result property="requestId" column="RequestID"/>
         <result property="tradeNo" column="TradeNo"/>
         <result property="tradeType" column="TradeType"/>
-        <result property="bankId" column="BankId"/>
+        <result property="bankId" column="BankID"/>
         <result property="bizContent" column="BizContent"/>
         <result property="receiveDate" column="ReceiveDate"/>
         <result property="receiveAmount" column="ReceiveAmount"/>
@@ -24,7 +24,7 @@
             INSERT INTO FC_PayCentreReceiveRequest
                         (TradeNo,
                          TradeType,
-                         BankId,
+                         BankID,
                          BizContent,
                          ReceiveDate,
                          ReceiveAmount,
