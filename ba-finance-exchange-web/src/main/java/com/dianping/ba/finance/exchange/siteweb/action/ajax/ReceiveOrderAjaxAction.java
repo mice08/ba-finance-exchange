@@ -170,11 +170,11 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderSearchBean.setStatus(status);
         receiveOrderSearchBean.setBusinessType(businessType);
         receiveOrderSearchBean.setBankReceiveTimeBegin(DateUtil.isValidDate(bankReceiveTimeBegin) ? DateUtil.formatDate(bankReceiveTimeBegin, false) : null);
-        receiveOrderSearchBean.setBankReceiveTimeEnd(DateUtil.isValidDate(bankReceiveTimeEnd) ? DateUtil.formatDate(bankReceiveTimeEnd, false) : null);
+        receiveOrderSearchBean.setBankReceiveTimeEnd(DateUtil.isValidDate(bankReceiveTimeEnd) ? DateUtil.formatDate(bankReceiveTimeEnd, true) : null);
         receiveOrderSearchBean.setCustomerId(customerId);
         receiveOrderSearchBean.setPayChannel(payChannel);
         receiveOrderSearchBean.setReceiveTimeBegin(DateUtil.isValidDate(receiveTimeBegin) ? DateUtil.formatDate(receiveTimeBegin, false) : null);
-        receiveOrderSearchBean.setReceiveTimeEnd(DateUtil.isValidDate(receiveTimeEnd) ? DateUtil.formatDate(receiveTimeEnd, false) : null);
+        receiveOrderSearchBean.setReceiveTimeEnd(DateUtil.isValidDate(receiveTimeEnd) ? DateUtil.formatDate(receiveTimeEnd, true) : null);
         receiveOrderSearchBean.setReceiveType(receiveType);
         receiveOrderSearchBean.setBankId(bankId);
         return receiveOrderSearchBean;
