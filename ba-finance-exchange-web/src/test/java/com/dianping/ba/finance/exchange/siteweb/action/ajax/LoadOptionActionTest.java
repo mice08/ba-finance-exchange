@@ -126,7 +126,7 @@ public class LoadOptionActionTest {
         rbData.setBankId(123);
         rbData.setBankName("bankName");
         rbData.setBusinessType(BusinessType.ADVERTISEMENT.value());
-        rbData.setCompanyId(1);
+        rbData.setCompanyId(0);
         when(receiveBankServiceMock.findAllReceiveBank()).thenReturn(Arrays.asList(rbData));
 
         loadOptionActionStub.setBusinessType(BusinessType.ADVERTISEMENT.value());
