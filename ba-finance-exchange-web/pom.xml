@@ -21,6 +21,12 @@
             <groupId>com.dianping</groupId>
             <artifactId>ba-finance-portal-header-client</artifactId>
             <version>1.0.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.dianping</groupId>
+                    <artifactId>dp-finance-common-util</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.dianping.lion</groupId>
