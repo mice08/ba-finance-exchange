@@ -28,8 +28,6 @@ public class ExampleService {
         return Math.max(a, b);
     }
 
-
-
     public void setExchangeOrderDao(ExchangeOrderDao exchangeOrderDao) {
         this.exchangeOrderDao = exchangeOrderDao;
     }

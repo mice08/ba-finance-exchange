@@ -20,11 +20,13 @@ class ExampleServiceSpockTest extends Specification {
 
     def "Find exchangeOrder list by orderId List"() {
         given:
-        ExchangeOrderData eoData = [exchangeOrderId: 8787, bankName: "bankName"] as ExchangeOrderData;
-        exchangeOrderDaoMock.findExchangeOrderListByOrderIdList(_ as List<Integer>) >> { Arrays.asList(eoData) }
+        exchangeOrderDaoMock.findExchangeOrderListByOrderIdList(_ as List<Integer>) >> {
+            def eoData = [exchangeOrderId: 8787, bankName: "bankName"] as ExchangeOrderData;
+            [eoData]
+        }
 
         when:
-        exampleServiceStub.findExchangeOrderListByOrderIdList(Arrays.asList(87871))
+        exampleServiceStub.findExchangeOrderListByOrderIdList([87871])
 
         then:
         1 * exchangeOrderDaoMock.findExchangeOrderListByOrderIdList(_ as List<Integer>)
@@ -32,11 +34,12 @@ class ExampleServiceSpockTest extends Specification {
 
     def "Find exchangeOrder list by orderId List using where"(int orderId, int eoId) {
         given:
-        ExchangeOrderData eoData = [exchangeOrderId: 87871, bankName: "bankName"] as ExchangeOrderData;
-        exchangeOrderDaoMock.findExchangeOrderListByOrderIdList(_ as List<Integer>) >> { Arrays.asList(eoData) }
-
+        exchangeOrderDaoMock.findExchangeOrderListByOrderIdList(_ as List<Integer>) >> {
+            def eoData = [exchangeOrderId: 87871, bankName: "bankName"] as ExchangeOrderData;
+            [eoData]
+        }
         expect:
-        eoId == exampleServiceStub.findExchangeOrderListByOrderIdList(Arrays.asList(orderId)).get(0).getExchangeOrderId()
+        eoId == exampleServiceStub.findExchangeOrderListByOrderIdList([orderId])[0].exchangeOrderId
 
         where:
         orderId || eoId

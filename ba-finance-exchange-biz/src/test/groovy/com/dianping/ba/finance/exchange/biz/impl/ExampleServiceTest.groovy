@@ -43,17 +43,17 @@ class ExampleServiceTest {
 
     @Test
     void testFindExchangeOrderListByOrderIdListWithGMock() {
-        ExchangeOrderData eoData = [exchangeOrderId: 8787, bankName: "bankName" ] as ExchangeOrderData;
 
         MockFor exchangeOrderDaoMock = new MockFor(ExchangeOrderDao)
         exchangeOrderDaoMock.demand.findExchangeOrderListByOrderIdList {
-            Arrays.asList(eoData)
+            def eoData = [exchangeOrderId: 8787, bankName: "bankName"] as ExchangeOrderData;
+            [eoData]
         }
-        exampleServiceStub.setExchangeOrderDao(exchangeOrderDaoMock.proxyDelegateInstance());
+        exampleServiceStub.exchangeOrderDao = exchangeOrderDaoMock.proxyDelegateInstance();
 
-        List<ExchangeOrderData> eoDataList = exampleServiceStub.findExchangeOrderListByOrderIdList(Arrays.asList(123));
-        assert !eoDataList.isEmpty()
-        assert eoDataList.get(0).getExchangeOrderId() == 8787
+        def eoDataList = exampleServiceStub.findExchangeOrderListByOrderIdList([123]);
+        assert eoDataList
+        assert eoDataList[0].exchangeOrderId == 8787
 
     }
 }
