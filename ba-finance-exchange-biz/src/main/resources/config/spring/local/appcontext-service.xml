@@ -56,7 +56,7 @@
         <property name="payCentreReceiveRequestDao" ref="payCentreReceiveRequestDao"/>
     </bean>
 
-    <bean id="payCentreReceiveRequestHandleServiceObject" class="com.dianping.ba.finance.exchange.biz.impl.PayCentreReceiveRequestHandleServiceObject">
+    <bean id="payCentreReceiveRequestHandleService" class="com.dianping.ba.finance.exchange.biz.impl.PayCentreReceiveRequestHandleServiceObject">
         <property name="payCentreReceiveRequestService" ref="payCentreReceiveRequestService"/>
         <property name="receiveOrderService" ref="receiveOrderService"/>
         <property name="receiveOrderResultNotify" ref="receiveOrderResultNotify"/>
