@@ -84,6 +84,18 @@
             <result type="json"></result>
         </action>
 
+        <action name="loadReceiveTypeOptionInQuery"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveTypeOptionInQuery">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadReceiveBankOptionInQuery"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveBankOptionInQuery">
+            <result type="json"></result>
+        </action>
+
         <action name="findCustomerNameSuggestion"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.CustomerAjaxAction"
                 method="findCustomerNameSuggestion">

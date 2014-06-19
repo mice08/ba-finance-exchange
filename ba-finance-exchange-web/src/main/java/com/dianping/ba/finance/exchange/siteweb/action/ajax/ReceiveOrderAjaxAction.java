@@ -149,7 +149,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderBean.setBankReceiveTime(DateUtil.formatDateToString(receiveOrderData.getBankReceiveTime(), "yyyy-MM-dd"));
         receiveOrderBean.setBizContent(receiveOrderData.getBizContent());
         receiveOrderBean.setBusinessType(BusinessType.valueOf(receiveOrderData.getBusinessType()).toString());
-        receiveOrderBean.setCustomerName(receiveOrderData.getBizContent());
+        receiveOrderBean.setCustomerName(getCustomerNameById(receiveOrderData.getCustomerId()));
         receiveOrderBean.setMemo(receiveOrderData.getMemo());
         receiveOrderBean.setPayChannel(ReceiveOrderPayChannel.valueOf(receiveOrderData.getPayChannel()).toString());
         receiveOrderBean.setPayerName("");
@@ -159,6 +159,10 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderBean.setRoId(receiveOrderData.getRoId());
         receiveOrderBean.setStatus(ReceiveOrderStatus.valueOf(receiveOrderData.getStatus()).toString());
         return receiveOrderBean;
+    }
+
+    private String getCustomerNameById(int id){
+        return "";
     }
 
     private ReceiveOrderSearchBean buildROSearchBean() throws ParseException {

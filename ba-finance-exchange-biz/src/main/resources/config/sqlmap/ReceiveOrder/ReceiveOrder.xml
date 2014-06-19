@@ -99,9 +99,9 @@
             <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #receiveOrderSearchBean.businessType#
             </isGreaterThan>
-            <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
+            <isPropertyAvailable property="receiveOrderSearchBean.customerId" prepend="and">
                 CustomerID = #receiveOrderSearchBean.customerId#
-            </isGreaterThan>
+            </isPropertyAvailable>
             <isGreaterThan property="receiveOrderSearchBean.receiveType" prepend="and" compareValue="0">
                 ReceiveType = #receiveOrderSearchBean.receiveType#
             </isGreaterThan>
@@ -139,9 +139,9 @@
             <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #receiveOrderSearchBean.businessType#
             </isGreaterThan>
-            <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
+            <isPropertyAvailable property="receiveOrderSearchBean.customerId" prepend="and">
                 CustomerID = #receiveOrderSearchBean.customerId#
-            </isGreaterThan>
+            </isPropertyAvailable>
             <isGreaterThan property="receiveOrderSearchBean.receiveType" prepend="and" compareValue="0">
                 ReceiveType = #receiveOrderSearchBean.receiveType#
             </isGreaterThan>
@@ -167,9 +167,6 @@
                 BankID = #receiveOrderSearchBean.bankId#
             </isGreaterThan>
         </dynamic>
-        ORDER BY
-        ro.AddTime DESC,
-        ro.ROID ASC
     </select>
 
     <select id="loadReceiveOrderTotalAmountByCondition" resultClass="java.math.BigDecimal" parameterClass="map">
@@ -179,9 +176,9 @@
             <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #receiveOrderSearchBean.businessType#
             </isGreaterThan>
-            <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
+            <isPropertyAvailable property="receiveOrderSearchBean.customerId" prepend="and">
                 CustomerID = #receiveOrderSearchBean.customerId#
-            </isGreaterThan>
+            </isPropertyAvailable>
             <isGreaterThan property="receiveOrderSearchBean.receiveType" prepend="and" compareValue="0">
                 ReceiveType = #receiveOrderSearchBean.receiveType#
             </isGreaterThan>
