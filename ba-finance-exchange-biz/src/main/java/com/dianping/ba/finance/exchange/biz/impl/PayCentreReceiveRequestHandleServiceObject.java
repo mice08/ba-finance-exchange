@@ -12,11 +12,12 @@ import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
-import com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
+import com.dianping.finance.common.util.ConvertUtils;
 import com.dianping.finance.common.util.DateUtils;
 
+import java.math.BigDecimal;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -29,8 +30,6 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
     private ReceiveOrderService receiveOrderService;
 
     private PayCentreReceiveRequestService payCentreReceiveRequestService;
-
-    private ReceiveOrderResultNotify receiveOrderResultNotify;
 
     private ExecutorService executorService;
 
@@ -49,43 +48,62 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
         return true;
     }
 
-    private PayCentreReceiveRequestData buildPayCentreReceiveRequestData(PayCentreReceiveRequestDTO payCentreReceiveRequestDTO) {
-        PayCentreReceiveRequestData payCentreReceiveRequestData=new PayCentreReceiveRequestData();
-        payCentreReceiveRequestData.setReceiveAmount(payCentreReceiveRequestDTO.getReceiveAmount());
-        payCentreReceiveRequestData.setReceiveDate(payCentreReceiveRequestDTO.getReceiveDate());
-        payCentreReceiveRequestData.setBankId(payCentreReceiveRequestDTO.getBankId());
-        payCentreReceiveRequestData.setBizContent(payCentreReceiveRequestDTO.getBizContent());
-        payCentreReceiveRequestData.setBusinessType(payCentreReceiveRequestDTO.getBusinessType());
-        payCentreReceiveRequestData.setMemo(payCentreReceiveRequestDTO.getMemo());
-        payCentreReceiveRequestData.setOriTradeNo(payCentreReceiveRequestDTO.getOriTradeNo());
-        payCentreReceiveRequestData.setPayChannel(payCentreReceiveRequestDTO.getPayChannel());
-        payCentreReceiveRequestData.setPayMethod(payCentreReceiveRequestDTO.getPayMethod());
-        payCentreReceiveRequestData.setTradeType(payCentreReceiveRequestDTO.getTradeType());
-        payCentreReceiveRequestData.setAddTime(DateUtils.getCurrentTime());
-        return payCentreReceiveRequestData;
-    }
-
-    /**
-     * 处理支付中心收款请求
-     * @param payCentreReceiveRequestDTO
-     */
-	private void doHandle(PayCentreReceiveRequestDTO payCentreReceiveRequestDTO) {
-		if (payCentreReceiveRequestDTO.getTradeType() == 1) {
-			doHandleReceive(payCentreReceiveRequestDTO);
-		} else {
-			doHandleReverse(payCentreReceiveRequestDTO);
+	private PayCentreReceiveRequestData buildPayCentreReceiveRequestData(PayCentreReceiveRequestDTO payCentreReceiveRequestDTO) {
+		try{
+			PayCentreReceiveRequestData payCentreReceiveRequestData = ConvertUtils.copy(payCentreReceiveRequestDTO, PayCentreReceiveRequestData.class);
+			payCentreReceiveRequestData.setAddTime(DateUtils.getCurrentTime());
+			return payCentreReceiveRequestData;
+		}catch (Exception e){
+			throw new RuntimeException(e);
 		}
 	}
 
-	private void doHandleReverse(PayCentreReceiveRequestDTO payCentreReceiveRequestDTO) {
+    /**
+     * 处理支付中心收款请求
+     * @param requestDTO
+     */
+	private void doHandle(PayCentreReceiveRequestDTO requestDTO) {
+		if (requestDTO.getTradeType() == 1) {
+			doHandleReceive(requestDTO);
+		} else {
+			doHandleReverse(requestDTO);
+		}
 	}
 
-	private void doHandleReceive(PayCentreReceiveRequestDTO payCentreReceiveRequestDTO) {
-		ReceiveOrderData receiveOrderData = buildReceiveOrderData(payCentreReceiveRequestDTO);
+	/**
+	 * 处理支付中心收款请求-冲销 (可考虑将此逻辑移至ReceiveOrder)
+	 * @param requestDTO
+	 * @return
+	 */
+	private boolean doHandleReverse(PayCentreReceiveRequestDTO requestDTO) {
+		ReceiveOrderData originReceiveOrder = receiveOrderService.loadReceiveOrderByTradeNo(requestDTO.getOriTradeNo());
+		if (originReceiveOrder == null){
+			MONITOR_LOGGER.error("severity=[1] reverse not find origin receive order");
+			return false;
+		}
+
+		if (ReceiveOrderStatus.CONFIRMED.value() == originReceiveOrder.getStatus()){
+			requestDTO.setReceiveAmount(BigDecimal.ZERO.subtract(requestDTO.getReceiveAmount()));
+			ReceiveOrderData receiveOrderData = buildReceiveOrderData(requestDTO, originReceiveOrder.getReverseRoId());
+			int reverseRoId = receiveOrderService.createReceiveOrder(receiveOrderData);
+			receiveOrderService.updateReverseRoId(originReceiveOrder.getRoId(), reverseRoId);
+		}else{
+			receiveOrderService.dropReceiveOrder(originReceiveOrder.getRoId(), requestDTO.getTradeNo());
+		}
+		return true;
+	}
+
+	/**
+	 * 处理支付中心收款请求-收款
+	 * @param requestDTO
+	 * @return
+	 */
+	private void doHandleReceive(PayCentreReceiveRequestDTO requestDTO) {
+		ReceiveOrderData receiveOrderData = buildReceiveOrderData(requestDTO, 0);
 		receiveOrderService.createReceiveOrder(receiveOrderData);
 	}
 
-	private ReceiveOrderData buildReceiveOrderData(PayCentreReceiveRequestDTO requestDTO) {
+	private ReceiveOrderData buildReceiveOrderData(PayCentreReceiveRequestDTO requestDTO, int reverseRoId) {
 		ReceiveOrderData roData = new ReceiveOrderData();
 		int customerId = getAdCustomerIdByBizContent(requestDTO.getBizContent());
 		roData.setCustomerId(customerId);
@@ -98,10 +116,11 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 		roData.setBizContent(requestDTO.getBizContent());
 		roData.setBankID(requestDTO.getBankId());
 		roData.setMemo(requestDTO.getMemo());
-		int status = customerId > 0 ? ReceiveOrderStatus.CONFIRMED.value():ReceiveOrderStatus.UNCONFIRMED.value();
+		int status = (customerId > 0 || reverseRoId > 0) ? ReceiveOrderStatus.CONFIRMED.value():ReceiveOrderStatus.UNCONFIRMED.value();
 		roData.setStatus(status);
 		roData.setAddLoginId(0);
 		roData.setUpdateLoginId(0);
+		roData.setReverseRoId(reverseRoId);
 		return roData;
 	}
 
@@ -112,10 +131,6 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 
     public void setReceiveOrderService(ReceiveOrderService receiveOrderService) {
         this.receiveOrderService = receiveOrderService;
-    }
-
-    public void setReceiveOrderResultNotify(ReceiveOrderResultNotify receiveOrderResultNotify) {
-        this.receiveOrderResultNotify = receiveOrderResultNotify;
     }
 
     public void setExecutorService(ExecutorService executorService) {

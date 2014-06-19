@@ -5,6 +5,7 @@ import com.dianping.avatar.dao.annotation.DAOAction;
 import com.dianping.avatar.dao.annotation.DAOActionType;
 import com.dianping.avatar.dao.annotation.DAOParam;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
+import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.core.type.PageModel;
 
@@ -41,5 +42,19 @@ public interface ReceiveOrderDao extends GenericDao {
     @DAOAction(action = DAOActionType.LOAD)
     BigDecimal loadReceiveOrderTotalAmountByCondition(@DAOParam("receiveOrderSearchBean") ReceiveOrderSearchBean receiveOrderSearchBean);
 
+	/**
+	 * 根据TradeNo查询收款单
+	 * @param tradeNo
+	 * @return
+	 */
+	@DAOAction(action = DAOActionType.LOAD)
+	ReceiveOrderData loadReceiveOrderByTradeNo(@DAOParam("tradeNo") String tradeNo);
 
+	/**
+	 * 更新收款单
+	 * @param updateBean
+	 * @return
+	 */
+	@DAOAction(action = DAOActionType.UPDATE)
+	int updateReceiveOrderByRoId(@DAOParam("roId") int roId, @DAOParam("updateBean") ReceiveOrderUpdateBean updateBean);
 }
