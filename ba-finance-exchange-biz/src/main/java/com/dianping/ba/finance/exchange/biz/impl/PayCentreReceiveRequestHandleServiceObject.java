@@ -5,9 +5,13 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.PayCentreReceiveRequestHandleService;
 import com.dianping.ba.finance.exchange.api.PayCentreReceiveRequestService;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
-import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderResultBean;
 import com.dianping.ba.finance.exchange.api.datas.PayCentreReceiveRequestData;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.dtos.PayCentreReceiveRequestDTO;
+import com.dianping.ba.finance.exchange.api.enums.BusinessType;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
 import com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
@@ -65,11 +69,46 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
      * 处理支付中心收款请求
      * @param payCentreReceiveRequestDTO
      */
-    private void doHandle(PayCentreReceiveRequestDTO payCentreReceiveRequestDTO) {
+	private void doHandle(PayCentreReceiveRequestDTO payCentreReceiveRequestDTO) {
+		if (payCentreReceiveRequestDTO.getTradeType() == 1) {
+			doHandleReceive(payCentreReceiveRequestDTO);
+		} else {
+			doHandleReverse(payCentreReceiveRequestDTO);
+		}
+	}
 
-        ReceiveOrderResultBean receiveOrderResultBean=new ReceiveOrderResultBean();
-        receiveOrderResultNotify.receiveResultNotify(receiveOrderResultBean);
-    }
+	private void doHandleReverse(PayCentreReceiveRequestDTO payCentreReceiveRequestDTO) {
+	}
+
+	private void doHandleReceive(PayCentreReceiveRequestDTO payCentreReceiveRequestDTO) {
+		ReceiveOrderData receiveOrderData = buildReceiveOrderData(payCentreReceiveRequestDTO);
+		receiveOrderService.createReceiveOrder(receiveOrderData);
+	}
+
+	private ReceiveOrderData buildReceiveOrderData(PayCentreReceiveRequestDTO requestDTO) {
+		ReceiveOrderData roData = new ReceiveOrderData();
+		int customerId = getAdCustomerIdByBizContent(requestDTO.getBizContent());
+		roData.setCustomerId(customerId);
+		roData.setTradeNo(requestDTO.getTradeNo());
+		roData.setBusinessType(BusinessType.valueOfPayCentre(requestDTO.getBusinessType()).value());
+		roData.setReceiveAmount(requestDTO.getReceiveAmount());
+		roData.setBankReceiveTime(requestDTO.getReceiveDate());
+		roData.setPayChannel(ReceiveOrderPayChannel.valueOfPayCentre(requestDTO.getPayChannel(), requestDTO.getPayMethod()).value());
+		roData.setReceiveType(ReceiveType.AD_FEE.value());
+		roData.setBizContent(requestDTO.getBizContent());
+		roData.setBankID(requestDTO.getBankId());
+		roData.setMemo(requestDTO.getMemo());
+		int status = customerId > 0 ? ReceiveOrderStatus.CONFIRMED.value():ReceiveOrderStatus.UNCONFIRMED.value();
+		roData.setStatus(status);
+		roData.setAddLoginId(0);
+		roData.setUpdateLoginId(0);
+		return roData;
+	}
+
+	private int getAdCustomerIdByBizContent(String bizContent){
+		//Todo:替换为接口
+		return 100;
+	}
 
     public void setReceiveOrderService(ReceiveOrderService receiveOrderService) {
         this.receiveOrderService = receiveOrderService;

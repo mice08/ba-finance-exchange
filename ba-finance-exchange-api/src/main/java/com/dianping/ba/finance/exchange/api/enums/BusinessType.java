@@ -73,6 +73,23 @@ public enum BusinessType {
         }
     }
 
+	public static BusinessType valueOfPayCentre(int value){
+		switch (value){
+			case 1:
+				return GROUP_PURCHASE;
+			case 2:
+				return BOOKING;
+			case 7:
+				return WEDDING;
+			case 8:
+				return PREPAID_CARD;
+			case 6:
+				return ADVERTISEMENT;
+			default:
+				return DEFAULT;
+		}
+	}
+
     public  String toString(int businessType) {
         this.setBusinessType(businessType);
         return this.toString();
