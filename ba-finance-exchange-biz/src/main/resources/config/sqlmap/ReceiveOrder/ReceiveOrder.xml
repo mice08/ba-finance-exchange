@@ -99,9 +99,9 @@
             <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #receiveOrderSearchBean.businessType#
             </isGreaterThan>
-            <isPropertyAvailable property="receiveOrderSearchBean.customerId" prepend="and">
+            <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
                 CustomerID = #receiveOrderSearchBean.customerId#
-            </isPropertyAvailable>
+            </isGreaterThan>
             <isGreaterThan property="receiveOrderSearchBean.receiveType" prepend="and" compareValue="0">
                 ReceiveType = #receiveOrderSearchBean.receiveType#
             </isGreaterThan>
@@ -139,9 +139,9 @@
             <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #receiveOrderSearchBean.businessType#
             </isGreaterThan>
-            <isPropertyAvailable property="receiveOrderSearchBean.customerId" prepend="and">
+            <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
                 CustomerID = #receiveOrderSearchBean.customerId#
-            </isPropertyAvailable>
+            </isGreaterThan>
             <isGreaterThan property="receiveOrderSearchBean.receiveType" prepend="and" compareValue="0">
                 ReceiveType = #receiveOrderSearchBean.receiveType#
             </isGreaterThan>
@@ -176,9 +176,9 @@
             <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #receiveOrderSearchBean.businessType#
             </isGreaterThan>
-            <isPropertyAvailable property="receiveOrderSearchBean.customerId" prepend="and">
+            <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
                 CustomerID = #receiveOrderSearchBean.customerId#
-            </isPropertyAvailable>
+            </isGreaterThan>
             <isGreaterThan property="receiveOrderSearchBean.receiveType" prepend="and" compareValue="0">
                 ReceiveType = #receiveOrderSearchBean.receiveType#
             </isGreaterThan>
