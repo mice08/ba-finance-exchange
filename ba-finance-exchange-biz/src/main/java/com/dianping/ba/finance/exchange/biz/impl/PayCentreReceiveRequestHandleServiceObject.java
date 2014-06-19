@@ -3,12 +3,15 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.PayCentreReceiveRequestHandleService;
+import com.dianping.ba.finance.exchange.api.PayCentreReceiveRequestService;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderResultBean;
+import com.dianping.ba.finance.exchange.api.datas.PayCentreReceiveRequestData;
 import com.dianping.ba.finance.exchange.api.dtos.PayCentreReceiveRequestDTO;
 import com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
+import com.dianping.finance.common.util.DateUtils;
 
 import java.util.concurrent.ExecutorService;
 
@@ -21,6 +24,8 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 
     private ReceiveOrderService receiveOrderService;
 
+    private PayCentreReceiveRequestService payCentreReceiveRequestService;
+
     private ReceiveOrderResultNotify receiveOrderResultNotify;
 
     private ExecutorService executorService;
@@ -29,6 +34,8 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
     @ReturnDefault
     @Override
     public boolean handleReceiveRequest(final PayCentreReceiveRequestDTO payCentreReceiveRequestDTO) {
+        final PayCentreReceiveRequestData payCentreReceiveRequestData = buildPayCentreReceiveRequestData(payCentreReceiveRequestDTO);
+        payCentreReceiveRequestService.insertPayCentreReceiveRequest(payCentreReceiveRequestData);
         executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -36,6 +43,22 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
             }
         });
         return true;
+    }
+
+    private PayCentreReceiveRequestData buildPayCentreReceiveRequestData(PayCentreReceiveRequestDTO payCentreReceiveRequestDTO) {
+        PayCentreReceiveRequestData payCentreReceiveRequestData=new PayCentreReceiveRequestData();
+        payCentreReceiveRequestData.setReceiveAmount(payCentreReceiveRequestDTO.getReceiveAmount());
+        payCentreReceiveRequestData.setReceiveDate(payCentreReceiveRequestDTO.getReceiveDate());
+        payCentreReceiveRequestData.setBankId(payCentreReceiveRequestDTO.getBankId());
+        payCentreReceiveRequestData.setBizContent(payCentreReceiveRequestDTO.getBizContent());
+        payCentreReceiveRequestData.setBusinessType(payCentreReceiveRequestDTO.getBusinessType());
+        payCentreReceiveRequestData.setMemo(payCentreReceiveRequestDTO.getMemo());
+        payCentreReceiveRequestData.setOriTradeNo(payCentreReceiveRequestDTO.getOriTradeNo());
+        payCentreReceiveRequestData.setPayChannel(payCentreReceiveRequestDTO.getPayChannel());
+        payCentreReceiveRequestData.setPayMethod(payCentreReceiveRequestDTO.getPayMethod());
+        payCentreReceiveRequestData.setTradeType(payCentreReceiveRequestDTO.getTradeType());
+        payCentreReceiveRequestData.setAddTime(DateUtils.getCurrentTime());
+        return payCentreReceiveRequestData;
     }
 
     /**
@@ -58,5 +81,9 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 
     public void setExecutorService(ExecutorService executorService) {
         this.executorService = executorService;
+    }
+
+    public void setPayCentreReceiveRequestService(PayCentreReceiveRequestService payCentreReceiveRequestService) {
+        this.payCentreReceiveRequestService = payCentreReceiveRequestService;
     }
 }
