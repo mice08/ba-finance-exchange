@@ -33,6 +33,7 @@ public class PayCentreReceiveRequestDaoTest {
         payCentreReceiveRequestData.setBusinessType(6);
         payCentreReceiveRequestData.setReceiveAmount(BigDecimal.TEN);
         payCentreReceiveRequestData.setTradeNo("P123");
+        payCentreReceiveRequestData.setAddTime(new Date());
         int requestId = payCentreReceiveRequestDao.insertPayCentreReceiveRequest(payCentreReceiveRequestData);
         Assert.assertTrue(requestId > 1);
     }
