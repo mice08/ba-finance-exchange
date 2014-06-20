@@ -13,6 +13,7 @@ import com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
+import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -34,6 +35,10 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         receiveOrderData.setUpdateTime(new Date());
         if (ReceiveOrderStatus.CONFIRMED.value() == receiveOrderData.getStatus()) {
             receiveOrderData.setReceiveTime(new Date());
+        }
+        //手工录入财务自动生成
+        if(StringUtils.isNotBlank(receiveOrderData.getTradeNo())){
+            receiveOrderData.setTradeNo("FS-"+receiveOrderData.getReceiveTime().toString());
         }
         int roId = receiveOrderDao.insertReceiveOrderData(receiveOrderData);
         receiveOrderData.setRoId(roId);
