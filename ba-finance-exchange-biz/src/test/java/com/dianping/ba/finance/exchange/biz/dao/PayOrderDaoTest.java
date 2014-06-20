@@ -39,7 +39,7 @@ public class PayOrderDaoTest {
         payOrderData.setUpdateLoginId(-1);
         payOrderData.setUpdateTime(Calendar.getInstance().getTime());
         payOrderData.setBankAccountName("1111");
-        payOrderData.setPaySequence("P|1");
+        payOrderData.setPaySequence("P|87873");
         payOrderData.setPayCode("paycode");
         payOrderData.setCustomerId(12387);
         payOrderData.setPayAmount(BigDecimal.ONE);
@@ -53,7 +53,8 @@ public class PayOrderDaoTest {
         payOrderData.setBankProvince("province");
         payOrderData.setBankName("bankName");
 
-        payOrderDao.insertPayOrder(payOrderData);
+        int poId = payOrderDao.insertPayOrder(payOrderData);
+        Assert.assertTrue(poId > 0);
     }
 
     @Test
