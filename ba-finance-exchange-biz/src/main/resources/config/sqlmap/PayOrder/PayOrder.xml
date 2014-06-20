@@ -30,7 +30,7 @@
 
     <insert id="insertPayOrder" parameterClass="map">
         <![CDATA[
-        	 INSERT INTO FC_PayOrder
+        INSERT INTO FC_PayOrder
 			(PayAmount,
 			PaySequence,
 			PayCode,
@@ -53,10 +53,10 @@
 			AddLoginID,
 			UpdateLoginID
 			)
-			VALUES
-			(#payOrderData.payAmount#,
+			SELECT
+			#payOrderData.payAmount#,
 			#payOrderData.paySequence#,
-			#payOrderData.payCode#,
+			MAX(POID) + 1,
 			#payOrderData.customerId#,
 			#payOrderData.customerBankId#,
 			#payOrderData.bankAccountNo#,
@@ -75,7 +75,8 @@
 			#payOrderData.memo#,
 			#payOrderData.addLoginId#,
 			#payOrderData.updateLoginId#
-			);
+			FROM
+			FC_PayOrder
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="poId">
             <![CDATA[
