@@ -37,7 +37,7 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
             receiveOrderData.setReceiveTime(new Date());
         }
         //手工录入财务自动生成
-        if(StringUtils.isNotBlank(receiveOrderData.getTradeNo())){
+        if(StringUtils.isBlank(receiveOrderData.getTradeNo())){
             receiveOrderData.setTradeNo("FS-"+System.nanoTime());
         }
         int roId = receiveOrderDao.insertReceiveOrderData(receiveOrderData);
