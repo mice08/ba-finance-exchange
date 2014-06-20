@@ -7,6 +7,8 @@ import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.swallow.SwallowEventBean;
 import com.dianping.finance.common.swallow.SwallowProducer;
 
+import java.math.BigDecimal;
+
 /**
  * Created with IntelliJ IDEA.
  * User: bingqiu.yuan
@@ -34,8 +36,10 @@ public class ReceiveOrderResultNotify {
         receiveResultNotifyDTO.setBizId(String.valueOf(receiveOrderResultBean.getRoId()));
         receiveResultNotifyDTO.setCustomerId(receiveOrderResultBean.getCustomerId());
         receiveResultNotifyDTO.setShopId(receiveOrderResultBean.getShopId());
+		int type = receiveOrderResultBean.getReceiveAmount().compareTo(BigDecimal.ZERO) > 0 ? 1 : 2;
+		receiveResultNotifyDTO.setType(type);
         receiveResultNotifyDTO.setPayChannel(receiveOrderResultBean.getPayChannel().value());
-        receiveResultNotifyDTO.setReceiveAmount(receiveOrderResultBean.getReceiveAmount());
+        receiveResultNotifyDTO.setReceiveAmount(receiveOrderResultBean.getReceiveAmount().abs());
         receiveResultNotifyDTO.setReceiveType(receiveOrderResultBean.getReceiveType().value());
         receiveResultNotifyDTO.setBizContent(receiveOrderResultBean.getBizContent());
         receiveResultNotifyDTO.setPayTime(receiveOrderResultBean.getPayTime());
@@ -44,6 +48,7 @@ public class ReceiveOrderResultNotify {
         receiveResultNotifyDTO.setBankId(receiveOrderResultBean.getBankId());
         receiveResultNotifyDTO.setTradeNo(receiveOrderResultBean.getTradeNo());
         receiveResultNotifyDTO.setMemo(receiveOrderResultBean.getMemo());
+		receiveResultNotifyDTO.setOriBizId(String.valueOf(receiveOrderResultBean.getReverseRoId()));
         return receiveResultNotifyDTO;
     }
 

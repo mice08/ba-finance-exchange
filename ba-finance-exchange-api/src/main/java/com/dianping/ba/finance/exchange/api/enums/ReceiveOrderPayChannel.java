@@ -26,9 +26,9 @@ public enum ReceiveOrderPayChannel {
      */
     CREDIT_VOUCHER(4, "贷记凭证"),
     /**
-     * POS机
+     * POS机-快钱
      */
-    POS_MACHINE(5, "POS机"),
+    POS_MACHINE(5, "POS机-快钱"),
     /**
      * 在线充值
      */
@@ -84,7 +84,16 @@ public enum ReceiveOrderPayChannel {
         }
     }
 
-    public int value(){
+	public static ReceiveOrderPayChannel valueOfPayCentre(int payChannel, int payMethod) {
+		if (payChannel == 10 && payMethod == 5) {
+			return POS_MACHINE;
+		} else {
+			return DEFAULT;
+		}
+	}
+
+
+	public int value(){
         return channel;
     }
 }

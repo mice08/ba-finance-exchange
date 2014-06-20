@@ -37,5 +37,26 @@ public interface ReceiveOrderService {
      */
     BigDecimal loadReceiveOrderTotalAmountByCondition(ReceiveOrderSearchBean receiveOrderSearchBean);
 
+	/**
+	 * 根据TradeNo获取收款单
+	 * @param tradeNo
+	 * @return
+	 */
+	ReceiveOrderData loadReceiveOrderByTradeNo(String tradeNo);
 
+	/**
+	 * 直接根据roId作废收款单
+	 * @param roId
+	 * @param memo
+	 * @return
+	 */
+	boolean dropReceiveOrder(int roId, String memo);
+
+	/**
+	 * 更新收款单的冲销Id
+	 * @param originRoId
+	 * @param reverseRoId
+	 * @return
+	 */
+	boolean updateReverseRoId(int originRoId, int reverseRoId);
 }

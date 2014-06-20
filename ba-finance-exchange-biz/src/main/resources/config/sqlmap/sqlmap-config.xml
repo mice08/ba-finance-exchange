@@ -13,5 +13,6 @@
     <sqlMap resource="config/sqlmap/PayOrder/PayOrder.xml"/>
     <sqlMap resource="config/sqlmap/ReceiveOrder/ReceiveOrder.xml"/>
     <sqlMap resource="config/sqlmap/ReceiveOrder/ReceiveBank.xml"/>
+    <sqlMap resource="config/sqlmap/ReceiveOrder/PayCentreReceiveRequest.xml"/>
 
 </sqlMapConfig>

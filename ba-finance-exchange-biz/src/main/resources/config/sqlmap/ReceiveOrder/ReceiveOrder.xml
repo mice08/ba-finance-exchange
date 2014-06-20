@@ -22,6 +22,7 @@
         <result property="addLoginId" column="AddLoginID"/>
         <result property="updateTime" column="UpdateTime"/>
         <result property="updateLoginId" column="UpdateLoginID"/>
+        <result property="reverseRoId" column="ReverseROID"/>
         <result property="memo" column="Memo"/>
     </resultMap>
 
@@ -45,6 +46,7 @@
                          AddLoginID,
                          UpdateTime,
                          UpdateLoginID,
+                         ReverseROID,
                          Memo)
             VALUES      (#receiveOrderData.customerId#,
                          #receiveOrderData.shopId#,
@@ -63,6 +65,7 @@
                          #receiveOrderData.addLoginId#,
                          #receiveOrderData.updateTime#,
                          #receiveOrderData.updateLoginId#,
+                         #receiveOrderData.reverseRoId#,
                          #receiveOrderData.memo#)
 
  		]]>
@@ -72,7 +75,6 @@
 		]]>
         </selectKey>
     </insert>
-
 
     <select id="paginateReceiveOrderList" resultMap="receiveOrderData" parameterClass="map">
      SELECT ro.ROID,
@@ -93,6 +95,7 @@
             ro.AddLoginID,
             ro.UpdateTime,
             ro.UpdateLoginID,
+            ro.ReverseROID,
             ro.Memo
        FROM FC_ReceiveOrder ro
         <dynamic prepend="WHERE">
@@ -206,5 +209,49 @@
         </dynamic>
     </select>
 
+    <select id="loadReceiveOrderByTradeNo" resultMap="receiveOrderData" parameterClass="map">
+        SELECT ro.ROID,
+        ro.CustomerID,
+        ro.ShopID,
+        ro.BusinessType,
+        ro.ReceiveAmount,
+        ro.ReceiveTime,
+        ro.PayTime,
+        ro.BankReceiveTime,
+        ro.PayChannel,
+        ro.ReceiveType,
+        ro.BizContent,
+        ro.TradeNo,
+        ro.BankID,
+        ro.Status,
+        ro.AddTime,
+        ro.AddLoginID,
+        ro.UpdateTime,
+        ro.UpdateLoginID,
+        ro.ReverseROID,
+        ro.Memo
+        FROM FC_ReceiveOrder ro
+        WHERE TradeNo = #tradeNo#
+        LIMIT 1
+    </select>
+
+    <update id="updateReceiveOrderByRoId" parameterClass="map">
+        UPDATE FC_ReceiveOrder
+        SET
+        <isGreaterThan property="updateBean.status" compareValue="0">
+            Status = #updateBean.status#,
+        </isGreaterThan>
+        <isGreaterThan property="updateBean.reverseRoId" compareValue="0">
+            ReverseROID = #updateBean.reverseRoId#,
+        </isGreaterThan>
+        <isNotEmpty property="updateBean.memo">
+            Memo = #updateBean.memo#,
+        </isNotEmpty>
+        <isGreaterThan property="updateBean.updateLoginId" compareValue="0">
+            UpdateLoginID = "updateBean.updateLoginId",
+        </isGreaterThan>
+        UpdateTime = NOW()
+        WHERE ROID = #roId#
+    </update>
 
 </sqlMap>

@@ -228,6 +228,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         roData.setStatus(ReceiveOrderStatus.CONFIRMED.value());
         roData.setAddLoginId(loginId);
         roData.setUpdateLoginId(loginId);
+		roData.setReverseRoId(0);
         return roData;
     }
 
