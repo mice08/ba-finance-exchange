@@ -96,6 +96,7 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
 	@Override
 	public boolean dropReceiveOrder(int roId, String memo) {
 		ReceiveOrderUpdateBean updateBean = new ReceiveOrderUpdateBean();
+		updateBean.setStatus(ReceiveOrderStatus.INVALID.value());
 		updateBean.setMemo(memo);
 		return receiveOrderDao.updateReceiveOrderByRoId(roId, updateBean) > 0;
 	}

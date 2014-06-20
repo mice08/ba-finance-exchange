@@ -17,7 +17,11 @@ public enum ReceiveOrderStatus {
 	/**
      * 2-已确认
      */
-    CONFIRMED(2, "已确认");
+    CONFIRMED(2, "已确认"),
+	/**
+	 * 3-作废
+	 */
+	INVALID(3, "作废");
 
     private int status;
 
