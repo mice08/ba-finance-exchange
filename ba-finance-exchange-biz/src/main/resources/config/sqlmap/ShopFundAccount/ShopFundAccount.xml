@@ -14,6 +14,8 @@
         <result property="debit" column="Debit"/>
         <result property="balanceTotal" column="BalanceTotal"/>
         <result property="balanceFrozen" column="BalanceFrozen"/>
+        <result property="addLoginId" column="AddLoginID"/>
+        <result property="lastUpdateLoginId" column="LastUpdateLoginID"/>
     </resultMap>
 
     <insert id="insertShopFundAccount" parameterClass="map">
@@ -28,7 +30,8 @@
 		             BalanceTotal,
 		             BalanceFrozen,
 		             AddDate,
-		             LastUpdateDate
+		             LastUpdateDate,
+		             AddLoginID
 		             )
 			values (#shopFundAccountData.customerGlobalId#,
 			         #shopFundAccountData.companyGlobalId#,
@@ -39,7 +42,8 @@
 			         #shopFundAccountData.balanceTotal#,
 			         #shopFundAccountData.balanceFrozen#,
 			         NOW(),
-			         NOW()
+			         NOW(),
+			         #shopFundAccountData.addLoginId#
 		            );
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="fundAccountId">
@@ -50,7 +54,7 @@
     </insert>
 
     <select id="loadShopFundAccountData" resultMap="shopFundAccount" parameterClass="map">
-        SELECT FAID, CustomerGlobalID, CompanyGlobalID, ShopID, BusinessType, Credit, Debit, BalanceTotal, BalanceFrozen
+        SELECT FAID, CustomerGlobalID, CompanyGlobalID, ShopID, BusinessType, Credit, Debit, BalanceTotal, BalanceFrozen,AddLoginID,LastUpdateLoginID
         FROM FS_ShopFundAccount
         WHERE BusinessType = #shopFundAccountBean.businessType#
         AND CustomerGlobalID = #shopFundAccountBean.customerGlobalId#

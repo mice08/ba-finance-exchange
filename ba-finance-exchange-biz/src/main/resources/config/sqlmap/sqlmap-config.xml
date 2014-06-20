@@ -10,6 +10,8 @@
     <sqlMap resource="config/sqlmap/ShopFundAccount/ShopFundAccount.xml"/>
     <sqlMap resource="config/sqlmap/ShopFundAccount/ShopFundAccountFlow.xml"/>
     <sqlMap resource="config/sqlmap/ExchangeOrder/ExchangeOrder.xml"/>
-
+    <sqlMap resource="config/sqlmap/PayOrder/PayOrder.xml"/>
+    <sqlMap resource="config/sqlmap/ReceiveOrder/ReceiveOrder.xml"/>
+    <sqlMap resource="config/sqlmap/ReceiveOrder/ReceiveBank.xml"/>
 
 </sqlMapConfig>

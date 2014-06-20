@@ -18,6 +18,8 @@
         <result property="lastUpdateDate" column="LastUpdateDate"/>
         <result property="memo" column="Memo"/>
         <result property="bizCode" column="BizCode"/>
+        <result property="addLoginId" column="AddLoginID"/>
+        <result property="lastUpdateLoginId" column="LastUpdateLoginID"/>
     </resultMap>
 
     <typeAlias alias="ExchangeOrderDisplayData" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderDisplayData"/>
@@ -37,7 +39,38 @@
         <result property="addDate" column="AddDate"/>
         <result property="orderDate" column="OrderDate"/>
         <result property="bizCode" column="BizCode"/>
+        <result property="lastUpdateDate" column="LastUpdateDate"/>
     </resultMap>
+
+    <typeAlias alias="EOAndFlowIdSummaryData" type="com.dianping.ba.finance.exchange.api.datas.EOAndFlowIdSummaryData"/>
+    <resultMap id="eoAndFlowIdSummaryData" class="EOAndFlowIdSummaryData">
+        <result property="bizCode" column="BizCode"/>
+        <result property="orderAmount" column="OrderAmount"/>
+        <result property="status" column="Status"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="flowId" column="FlowId"/>
+        <result property="businessType" column="BusinessType"/>
+    </resultMap>
+
+    <typeAlias alias="ExchangeOrderSummaryData" type="com.dianping.ba.finance.exchange.api.datas.ExchangeOrderSummaryData"/>
+    <resultMap id="exchangeOrderSummaryData" class="ExchangeOrderSummaryData">
+        <result property="orderAmount" column="OrderAmount"/>
+        <result property="status" column="Status"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="bizCode" column="BizCode"/>
+        <result property="businessType" column="BusinessType"/>
+    </resultMap>
+
+
+    <typeAlias alias="EOMonitorData" type="com.dianping.ba.finance.exchange.api.datas.EOMonitorData"/>
+    <resultMap id="eoMonitorData" class="EOMonitorData">
+        <result property="exchangeOrderId" column="ExchangeOrderId"/>
+        <result property="bizCode" column="BizCode"/>
+        <result property="status" column="Status"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="lastUpdateDate" column="LastUpdateDate"/>
+    </resultMap>
+
 
     <insert id="insertExchangeOrder" parameterClass="map">
         <![CDATA[
@@ -52,7 +85,8 @@
 		             AddDate,
 		             LastUpdateDate,
 		             Memo,
-		             BizCode
+		             BizCode,
+		             AddLoginID
 		             )
 			values (#exchangeOrderData.orderAmount#,
 			         #exchangeOrderData.orderType#,
@@ -64,7 +98,8 @@
 			         NOW(),
 			         NOW(),
 			         #exchangeOrderData.memo#,
-			         #exchangeOrderData.bizCode#
+			         #exchangeOrderData.bizCode#,
+			         #exchangeOrderData.addLoginId#
 			        );
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="exchangeOrderId">
@@ -77,17 +112,26 @@
     <update id="updateExchangeOrderData" parameterClass="map">
         UPDATE FS_ExchangeOrder
         SET Status = #postStatus#,
-        <isNotEmpty property="orderDate">
-            OrderDate = #orderDate#,
-        </isNotEmpty>
+        LastUpdateLoginID = #loginId#,
+        OrderDate = #orderDate#,
         LastUpdateDate = now()
         WHERE ExchangeOrderID = #exchangeOrderId# AND Status = #preStatus#
+    </update>
+
+    <update id="updateExchangeOrderToRefund" parameterClass="hashMap">
+        UPDATE FS_ExchangeOrder
+        SET LastUpdateLoginID = #loginId#,
+        Status = #setStatus#,
+        Memo = #refundDTO.refundReason#,
+        LastUpdateDate = #todayDate#
+        WHERE BizCode = #refundDTO.refundId#
+        AND Status = #preStatus#
     </update>
 
     <select id="loadExchangeOrderByOrderId" parameterClass="map" resultMap="exchangeOrder">
         <![CDATA[
         select ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,BankProvince,
-                     BankCity,Status,OrderDate,AddDate,LastUpdateDate,Memo,BizCode
+                     BankCity,Status,OrderDate,AddDate,LastUpdateDate,Memo,BizCode,AddLoginID,LastUpdateLoginID
         from FS_ExchangeOrder
         where ExchangeOrderID = #exchangeOrderId#
         ]]>
@@ -109,12 +153,14 @@
         eo.Memo,
         eo.AddDate,
         eo.OrderDate,
-        eo.BizCode
+        eo.BizCode,
+        eo.LastUpdateDate
         FROM
         FS_ExchangeOrder eo
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
         eo.ExchangeOrderID = flow.ExchangeOrderID
         AND flow.FlowType = 1
+        AND flow.SourceType = 1
         )
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         <dynamic prepend="WHERE">
@@ -132,6 +178,12 @@
             </isGreaterThan>
             <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
                 eo.OrderType = #searchBean.orderType#
+            </isGreaterThan>
+            <isGreaterThan property="searchBean.businessType" prepend="and" compareValue="0">
+                sa.BusinessType = #searchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="searchBean.shopId" prepend="and" compareValue="0">
+                sa.ShopId = #searchBean.shopId#
             </isGreaterThan>
         </dynamic>
         ORDER BY
@@ -147,6 +199,7 @@
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
         eo.ExchangeOrderID = flow.ExchangeOrderID
         AND flow.FlowType = 1
+        AND flow.SourceType = 1
         )
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         <dynamic prepend="WHERE">
@@ -165,6 +218,12 @@
             <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
                 eo.OrderType = #searchBean.orderType#
             </isGreaterThan>
+            <isGreaterThan property="searchBean.businessType" prepend="and" compareValue="0">
+                sa.BusinessType = #searchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="searchBean.shopId" prepend="and" compareValue="0">
+                sa.ShopId = #searchBean.shopId#
+            </isGreaterThan>
         </dynamic>
         ORDER BY
         eo.AddDate DESC,
@@ -175,8 +234,13 @@
     <select id="findExchangeOrderTotalAmount" resultClass="java.math.BigDecimal" parameterClass="map">
         SELECT
         IFNULL(SUM(eo.OrderAmount), 0) AS totalAmount
-        FROM
-        FS_ExchangeOrder eo
+        FROM FS_ExchangeOrder eo
+            LEFT JOIN FS_ShopFundAccountFlow flow
+            ON ( eo.ExchangeOrderID = flow.ExchangeOrderID
+            AND flow.FlowType = 1
+            AND flow.SourceType = 1 )
+            LEFT JOIN FS_ShopFundAccount sa
+            ON ( flow.FAID = sa.FAID )
         <dynamic prepend="WHERE">
             <isNotEmpty property="searchBean.bizCode" prepend="and">
                 eo.BizCode = #searchBean.bizCode#
@@ -193,7 +257,23 @@
             <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
                 eo.OrderType = #searchBean.orderType#
             </isGreaterThan>
+            <isGreaterThan property="searchBean.businessType" prepend="and" compareValue="0">
+                sa.BusinessType = #searchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="searchBean.shopId" prepend="and" compareValue="0">
+                sa.ShopId = #searchBean.shopId#
+            </isGreaterThan>
         </dynamic>
+    </select>
+
+    <select id="findExchangeOrderByBizCode" resultMap="exchangeOrder" parameterClass="map">
+        SELECT ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,BankProvince,
+        BankCity,Status,AddDate,OrderDate,LastUpdateDate,Memo,BizCode,AddLoginID,LastUpdateLoginID
+        FROM FS_ExchangeOrder
+        WHERE BizCode IN
+        <iterate open="(" close=")" conjunction="," property="bizCodeList">
+            #bizCodeList[]#
+        </iterate>
     </select>
 
     <select id="findExchangeOrderList" resultMap="exchangeOrderDisplayData" parameterClass="map">
@@ -212,12 +292,14 @@
         eo.Memo,
         eo.AddDate,
         eo.OrderDate,
-        eo.BizCode
+        eo.BizCode,
+        eo.LastUpdateDate
         FROM
         FS_ExchangeOrder eo
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
         eo.ExchangeOrderID = flow.ExchangeOrderID
         AND flow.FlowType = 1
+        AND flow.SourceType = 1
         )
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         <dynamic prepend="WHERE">
@@ -235,6 +317,12 @@
             </isGreaterThan>
             <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
                 eo.OrderType = #searchBean.orderType#
+            </isGreaterThan>
+            <isGreaterThan property="searchBean.businessType" prepend="and" compareValue="0">
+                sa.BusinessType = #searchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="searchBean.shopId" prepend="and" compareValue="0">
+                sa.ShopId = #searchBean.shopId#
             </isGreaterThan>
         </dynamic>
         ORDER BY
@@ -250,6 +338,7 @@
         LEFT JOIN FS_ShopFundAccountFlow flow ON (
         eo.ExchangeOrderID = flow.ExchangeOrderID
         AND flow.FlowType = 1
+        AND flow.SourceType = 1
         )
         LEFT JOIN FS_ShopFundAccount sa ON flow.FAID = sa.FAID
         <dynamic prepend="WHERE">
@@ -268,6 +357,12 @@
             <isGreaterThan property="searchBean.orderType" compareValue="0" prepend="and">
                 eo.OrderType = #searchBean.orderType#
             </isGreaterThan>
+            <isGreaterThan property="searchBean.businessType" prepend="and" compareValue="0">
+                sa.BusinessType = #searchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="searchBean.shopId" prepend="and" compareValue="0">
+                sa.ShopId = #searchBean.shopId#
+            </isGreaterThan>
         </dynamic>
         ORDER BY
         eo.AddDate DESC,
@@ -277,7 +372,8 @@
     <update id="updateExchangeOrderToPending" parameterClass="map">
         UPDATE FS_ExchangeOrder
         SET Status = #setStatus#,
-        LastUpdateDate = now()
+        LastUpdateDate = now(),
+        LastUpdateLoginID = #loginId#
         WHERE Status = #whereStatus#
         <isNotEmpty prepend="and" property="orderIds">
             ExchangeOrderID IN
@@ -286,4 +382,83 @@
             </iterate>
         </isNotEmpty>
     </update>
+
+    <select id="loadExchangeOrderAndPositiveFlow" resultMap="eoAndFlowIdSummaryData" parameterClass="map">
+        SELECT
+               eo.BizCode,
+               eo.OrderAmount,
+               eo.Status,
+               eo.AddDate,
+               IFNULL(flow.FAFlowID, 0) AS FlowId,
+               sa.BusinessType
+        FROM   FS_ExchangeOrder eo
+               LEFT JOIN FS_ShopFundAccountFlow flow
+                      ON ( eo.ExchangeOrderID = flow.ExchangeOrderID
+                           AND flow.FlowType = #flowType#
+                           AND flow.SourceType = #sourceType# )
+               LEFT JOIN FS_ShopFundAccount sa
+                      ON ( sa.FAID = flow.FAID)
+        WHERE  eo.ExchangeOrderID = #exchangeOrderId#
+        ORDER  BY eo.AddDate DESC,
+                  eo.ExchangeOrderID ASC
+    </select>
+
+    <select id="findExchangeOrderSummaryDataListByFlowIdList" resultMap="exchangeOrderSummaryData" parameterClass="map">
+        SELECT eo.OrderAmount,
+               eo.Status,
+               eo.AddDate,
+               eo.BizCode,
+               sa.BusinessType
+        FROM FS_ExchangeOrder eo,
+             FS_ShopFundAccountFlow flow
+        LEFT JOIN FS_ShopFundAccount sa
+             ON ( flow.FAID = sa.FAID )
+        WHERE flow.ExchangeOrderID = eo.ExchangeOrderId
+          AND flow.FAFlowID IN
+        <iterate open="(" close=")" conjunction="," property="flowIdList">
+            #flowIdList[]#
+        </iterate>
+    </select>
+
+    <update id="updateExchangeOrderDataByOrderIdList" parameterClass="map">
+        UPDATE FS_ExchangeOrder
+        SET Status = #postStatus#,
+        OrderDate = #orderDate#,
+        LastUpdateDate = now(),
+        LastUpdateLoginID = #loginId#
+        WHERE Status = #preStatus#
+        <isNotEmpty prepend="and" property="orderIdList">
+            ExchangeOrderID IN
+            <iterate open="(" close=")" conjunction="," property="orderIdList">
+                #orderIdList[]#
+            </iterate>
+        </isNotEmpty>
+    </update>
+
+    <select id="findExchangeOrderListByOrderIdList" resultMap="exchangeOrder" parameterClass="map">
+        SELECT ExchangeOrderID,OrderAmount,OrderType,BankAccountNo,BankAccountName,BankName,BankProvince,
+                     BankCity,Status,OrderDate,AddDate,LastUpdateDate,Memo,BizCode,AddLoginID,LastUpdateLoginID
+        FROM FS_ExchangeOrder
+        WHERE ExchangeOrderID IN
+        <iterate open="(" close=")" conjunction="," property="orderIdList">
+            #orderIdList[]#
+        </iterate>
+    </select>
+
+
+    <select id="findEOMonitorDataByFlowIdList" resultMap="eoMonitorData" parameterClass="map">
+        SELECT ExchangeOrderID,
+               BizCode,
+               Status,
+               AddDate,
+               LastUpdateDate
+        FROM   FS_ExchangeOrder
+        WHERE  exchangeOrderId IN (SELECT ExchangeOrderId
+                                   FROM   FS_ShopFundAccountFlow
+                                   WHERE  FAFlowID IN
+                                    <iterate open="(" close=")" conjunction="," property="flowIdList">
+                                      #flowIdList[]#
+                                    </iterate>
+                                  )
+    </select>
 </sqlMap>

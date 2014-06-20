@@ -23,12 +23,39 @@
     <bean id="destination" class="com.dianping.swallow.common.message.Destination"
           factory-method="topic">
           <constructor-arg>
-            <value>${ba-finance-exchange-service.orderStatus.notice.topic.name}</value>
+            <value>${ba-finance-exchange-service.order.payresult.notice.topic.name}</value>
           </constructor-arg>
     </bean>
     <!--生产者的配置类 ProducerConfig -->
     <bean id="producerConfig" class="com.dianping.swallow.producer.ProducerConfig">
-        <property name="mode" value="SYNC_MODE" /><!--同步模式(推荐)-->
+        <property name="mode" value="ASYNC_MODE" />
     </bean>
 
+    <bean id="payOrderProducer" class="com.dianping.finance.common.swallow.SwallowProducer">
+        <property name="swallowClientWrapperMap">
+            <map>
+                <entry key="EX_FS_PAY_RESULT" value-ref="exFSPayResultClient"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="exFSPayResultClient" init-method="init"
+          class="com.dianping.finance.common.swallow.SwallowClientWrapper">
+        <property name="topic" value="${ba-finance-exchange-service.ex.fs.pay.result.notice.topic.name}"/>
+        <property name="mode" value="ASYNC_MODE"/>
+    </bean>
+
+    <bean id="receiveOrderProducer" class="com.dianping.finance.common.swallow.SwallowProducer">
+        <property name="swallowClientWrapperMap">
+            <map>
+                <entry key="FS_AD_RECEIVE_RESULT" value-ref="fsADReceiveResultClient"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="fsADReceiveResultClient" init-method="init"
+          class="com.dianping.finance.common.swallow.SwallowClientWrapper">
+        <property name="topic" value="${ba-finance-exchange-biz.fs.ad.receive.result.notice.topic.name}"/>
+        <property name="mode" value="ASYNC_MODE"/>
+    </bean>
 </beans>

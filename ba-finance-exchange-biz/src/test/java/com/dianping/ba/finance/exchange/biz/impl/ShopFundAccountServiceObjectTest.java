@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyByte;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -173,6 +174,37 @@ public class ShopFundAccountServiceObjectTest {
         ShopFundAccountFlowDTO actual = shopFundAccountServiceObjectStub.getPaymentPlanShopFundAccountFlow(1);
 
         Assert.assertEquals(shopFundAccountFlowData.getFundAccountId(), actual.getFundAccountId());
+    }
+
+    @Test
+    public void testInsertShopFundAccountFlowForRefundExchangeOrderSuccess(){
+        ExchangeOrderDTO exchangeOrderDTO = new ExchangeOrderDTO();
+        exchangeOrderDTO.setRelevantFundAccountFlowId(1);
+        exchangeOrderDTO.setLoginId(1);
+        exchangeOrderDTO.setStatus(ExchangeOrderStatus.FAIL.value());
+
+        ShopFundAccountFlowData originExchangeOutFlow = new ShopFundAccountFlowData();
+        ShopFundAccountFlowData originPaymentPlanFlow = new ShopFundAccountFlowData();
+        when(shopFundAccountFlowDaoMock.loadShopFundAccountFlow(anyInt(), anyInt(), anyInt())).thenReturn(originExchangeOutFlow);
+        when(shopFundAccountFlowDaoMock.loadShopFundAccountFlowById(anyInt())).thenReturn(originPaymentPlanFlow);
+
+        boolean actual = shopFundAccountServiceObjectStub.insertShopFundAccountFlowForRefundExchangeOrder(exchangeOrderDTO);
+
+        Assert.assertTrue(actual);
+
+    }
+
+    @Test
+    public void testInsertShopFundAccountFlowForRefundExchangeOrderFailWhenStatusInvalid(){
+        ExchangeOrderDTO exchangeOrderDTO = new ExchangeOrderDTO();
+        exchangeOrderDTO.setRelevantFundAccountFlowId(1);
+        exchangeOrderDTO.setLoginId(1);
+        exchangeOrderDTO.setStatus(ExchangeOrderStatus.SUCCESS.value());
+
+        boolean actual = shopFundAccountServiceObjectStub.insertShopFundAccountFlowForRefundExchangeOrder(exchangeOrderDTO);
+
+        Assert.assertFalse(actual);
+
     }
 
     private ShopFundAccountFlowData createShopFundAccountFlowData(){

@@ -12,7 +12,8 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class ExchangeOrderData implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 3607572199351693775L;
     /**
      * 主键
      */
@@ -63,6 +64,25 @@ public class ExchangeOrderData implements Serializable {
     private String bankProvince;
 
     private String bizCode;
+
+    private int addLoginId;
+    private int lastUpdateLoginId;
+
+    public int getAddLoginId() {
+        return addLoginId;
+    }
+
+    public void setAddLoginId(int addLoginId) {
+        this.addLoginId = addLoginId;
+    }
+
+    public int getLastUpdateLoginId() {
+        return lastUpdateLoginId;
+    }
+
+    public void setLastUpdateLoginId(int lastUpdateLoginId) {
+        this.lastUpdateLoginId = lastUpdateLoginId;
+    }
 
     public int getExchangeOrderId() {
         return exchangeOrderId;

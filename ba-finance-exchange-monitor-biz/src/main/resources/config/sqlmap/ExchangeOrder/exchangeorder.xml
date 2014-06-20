@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ExchangeOrder">
+
+    <typeAlias alias="ExchangeOrderMonitorData"
+               type="com.dianping.ba.finance.exchange.monitor.api.datas.ExchangeOrderMonitorData"></typeAlias>
+    <resultMap id="exchangeOrderMonitorData" class="ExchangeOrderMonitorData">
+        <result property="eoId" column="ExchangeOrderID"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="status" column="Status"/>
+        <result property="lastUpdateDate" column="LastUpdateDate"/>
+    </resultMap>
+
+    <select id="findExchangeOrderData" parameterClass="map" resultMap="exchangeOrderMonitorData">
+        SELECT ExchangeOrderID,
+                Status,
+                AddDate,
+                LastUpdateDate
+        FROM FS_ExchangeOrder
+        WHERE  LastUpdateDate BETWEEN #startDate# AND #endDate#
+    </select>
+
+    <select id="loadExchangeOrderData" parameterClass="map" resultMap="exchangeOrderMonitorData">
+        SELECT ExchangeOrderID,
+                Status,
+                AddDate,
+                LastUpdateDate
+        FROM FS_ExchangeOrder
+        WHERE ExchangeOrderID = #eoId#
+    </select>
+
+</sqlMap>

@@ -37,6 +37,30 @@ public class ExchangeOrderDTO implements Serializable {
      * 交易金额
      */
     private BigDecimal orderAmount;
+    /**
+     * 付款单bizCode
+     */
+    private String bizCode;
+    /**
+     * 银行账号
+     */
+    private String bankAccountNo;
+    /**
+     * 退票原因
+     */
+    private String memo;
+    /**
+     * 用户登录ID
+     */
+    private int loginId;
+
+    public int getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(int loginId) {
+        this.loginId = loginId;
+    }
 
     public BigDecimal getOrderAmount() {
         return orderAmount;
@@ -86,5 +110,27 @@ public class ExchangeOrderDTO implements Serializable {
         this.relevantFundAccountId = relevantFundAccountId;
     }
 
+    public String getBizCode() {
+        return bizCode;
+    }
 
+    public void setBizCode(String bizCode) {
+        this.bizCode = bizCode;
+    }
+
+    public String getBankAccountNo() {
+        return bankAccountNo;
+    }
+
+    public void setBankAccountNo(String bankAccountNo) {
+        this.bankAccountNo = bankAccountNo;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
 }

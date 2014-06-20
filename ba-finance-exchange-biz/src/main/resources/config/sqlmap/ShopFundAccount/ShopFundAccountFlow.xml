@@ -13,7 +13,9 @@
         <result property="exchangeOrderId" column="ExchangeOrderID"/>
         <result property="addDate" column="AddDate"/>
         <result property="lastUpdateDate" column="LastUpdateDate"/>
+        <result property="sequence" column="Sequence"/>
         <result property="memo" column="Memo"/>
+        <result property="addLoginId" column="AddLoginID"/>
     </resultMap>
 
     <insert id="insertShopFundAccountFlow" parameterClass="map">
@@ -27,7 +29,8 @@
 		             AddDate,
 		             LastUpdateDate,
 		             Sequence,
-		             Memo
+		             Memo,
+		             AddLoginID
 		             )
 			values (#shopFundAccountFlowData.fundAccountId#,
 			         #shopFundAccountFlowData.flowAmount#,
@@ -37,7 +40,8 @@
 			         NOW(),
 			         NOW(),
 			         #shopFundAccountFlowData.sequence#,
-			         #shopFundAccountFlowData.memo#
+			         #shopFundAccountFlowData.memo#,
+			         #shopFundAccountFlowData.addLoginId#
 		            );
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="fundAccountFlowId">
@@ -56,10 +60,16 @@
     </update>
 
     <select id="loadShopFundAccountFlow" resultMap="shopFundAccountFlowData" parameterClass="map">
-        SELECT FAFlowID,FAID,FlowAmount,FlowType,SourceType,ExchangeOrderID,AddDate,LastUpdateDate,Memo
+        SELECT FAFlowID,FAID,FlowAmount,FlowType,SourceType,ExchangeOrderID,AddDate,LastUpdateDate,Sequence,Memo,AddLoginID
         FROM FS_ShopFundAccountFlow
         WHERE ExchangeOrderID = #exchangeOrderId#
         AND FlowType = #flowType#
         AND SourceType = #sourceType#
+    </select>
+
+    <select id="loadShopFundAccountFlowById" resultMap="shopFundAccountFlowData" parameterClass="map">
+        SELECT FAFlowID,FAID,FlowAmount,FlowType,SourceType,ExchangeOrderID,AddDate,LastUpdateDate,Sequence,Memo,AddLoginID
+        FROM FS_ShopFundAccountFlow
+        WHERE FAFlowID = #flowId#
     </select>
 </sqlMap>
