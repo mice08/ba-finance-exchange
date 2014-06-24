@@ -19,12 +19,6 @@ class ExampleServiceSpockTest extends Specification {
     }
 
     def "Find exchangeOrder list by orderId List"() {
-        given:
-        exchangeOrderDaoMock.findExchangeOrderListByOrderIdList(_ as List<Integer>) >> {
-            def eoData = [exchangeOrderId: 8787, bankName: "bankName"] as ExchangeOrderData;
-            [eoData]
-        }
-
         when:
         exampleServiceStub.findExchangeOrderListByOrderIdList([87871])
 

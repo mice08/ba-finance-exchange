@@ -4,6 +4,7 @@ import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
+import com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService;
 import com.dianping.core.type.PageModel;
 import junit.framework.Assert;
 import org.junit.Before;
@@ -26,13 +27,16 @@ import static org.mockito.Mockito.*;
 public class PayOrderAjaxActionTest {
 
     private PayOrderService payOrderServiceMock;
+    private PayTemplateService payTemplateServiceMock;
     private PayOrderAjaxAction payOrderAjaxActionStub;
 
 	@Before
 	public void setUp() {
 		payOrderServiceMock = mock(PayOrderService.class);
+        payTemplateServiceMock = mock(PayTemplateService.class);
 		payOrderAjaxActionStub = new PayOrderAjaxAction4Test();
 		payOrderAjaxActionStub.setPayOrderService(payOrderServiceMock);
+        payOrderAjaxActionStub.setPayTemplateService(payTemplateServiceMock);
 	}
 
     @Test

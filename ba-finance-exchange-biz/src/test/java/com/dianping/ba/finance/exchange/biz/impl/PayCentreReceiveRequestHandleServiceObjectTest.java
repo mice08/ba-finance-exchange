@@ -59,8 +59,8 @@ public class PayCentreReceiveRequestHandleServiceObjectTest {
 
 		payCentreReceiveRequestHandleServiceObjectStub.handleReceiveRequest(payCentreReceiveRequestDTO);
 
-		verify(receiveOrderServiceMock, atLeastOnce()).createReceiveOrder(any(ReceiveOrderData.class));
-		verify(payCentreReceiveRequestServiceMock, atLeastOnce()).insertPayCentreReceiveRequest(any(PayCentreReceiveRequestData.class));
+		verify(receiveOrderServiceMock, timeout(500).atLeastOnce()).createReceiveOrder(any(ReceiveOrderData.class));
+		verify(payCentreReceiveRequestServiceMock, timeout(500).atLeastOnce()).insertPayCentreReceiveRequest(any(PayCentreReceiveRequestData.class));
 	}
 
 	@Test
@@ -84,8 +84,8 @@ public class PayCentreReceiveRequestHandleServiceObjectTest {
 
 		Assert.assertTrue(result);
 		verify(receiveOrderServiceMock, never()).createReceiveOrder(any(ReceiveOrderData.class));
-		verify(payCentreReceiveRequestServiceMock, atLeastOnce()).insertPayCentreReceiveRequest(any(PayCentreReceiveRequestData.class));
-		verify(receiveOrderServiceMock, atLeastOnce()).dropReceiveOrder(anyInt(), anyString());
+		verify(payCentreReceiveRequestServiceMock, timeout(500).atLeastOnce()).insertPayCentreReceiveRequest(any(PayCentreReceiveRequestData.class));
+		verify(receiveOrderServiceMock, timeout(500).atLeastOnce()).dropReceiveOrder(anyInt(), anyString());
 	}
 
 	@Test
@@ -99,10 +99,10 @@ public class PayCentreReceiveRequestHandleServiceObjectTest {
 		boolean result = payCentreReceiveRequestHandleServiceObjectStub.handleReceiveRequest(buildReverseRequestDTO());
 
 		Assert.assertTrue(result);
-		verify(receiveOrderServiceMock, atLeastOnce()).createReceiveOrder(any(ReceiveOrderData.class));
-		verify(payCentreReceiveRequestServiceMock, atLeastOnce()).insertPayCentreReceiveRequest(any(PayCentreReceiveRequestData.class));
+		verify(receiveOrderServiceMock, timeout(500).atLeastOnce()).createReceiveOrder(any(ReceiveOrderData.class));
+		verify(payCentreReceiveRequestServiceMock, timeout(500).atLeastOnce()).insertPayCentreReceiveRequest(any(PayCentreReceiveRequestData.class));
 		verify(receiveOrderServiceMock, never()).dropReceiveOrder(anyInt(), anyString());
-		verify(receiveOrderServiceMock, atLeastOnce()).updateReverseRoId(anyInt(), anyInt());
+		verify(receiveOrderServiceMock, timeout(500).atLeastOnce()).updateReverseRoId(anyInt(), anyInt());
 	}
 
 	private PayCentreReceiveRequestDTO buildReverseRequestDTO() {
