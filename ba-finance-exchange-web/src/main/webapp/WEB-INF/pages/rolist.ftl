@@ -31,7 +31,7 @@
                     <th width="8%" class="fs tb-header">银行到账日期</th>
                     <th width="8%" class="fs tb-header">系统收款日期</th>
                     <th width="8%" class="fs tb-header">业务类型</th>
-                    <th width="8%" class="fs tb-header">业务ID</th>
+                    <th width="8%" class="fs tb-header">业务信息</th>
                     <th width="6%" class="fs tb-header">收款方式</th>
                     <th width="8%" class="fs tb-header">收款通知ID</th>
                     <th width="7%" class="fs tb-header">付款方户名</th>
@@ -79,7 +79,7 @@
         <td class="fs tb-item auto-break">{{= record.payerName}}</td>
         <td class="fs tb-item auto-break">{{= record.memo}}</td>
         <td class="fs tb-item auto-break">{{= record.status}}</td>
-        <td class="fs tb-item auto-break"><a href="#">修改</a>  <a href="#">删除</a></td>
+        <td class="fs tb-item auto-break"><a href="#">修改</a>  <a href="#">作废</a></td>
     </tr>
     {{/each}}
 

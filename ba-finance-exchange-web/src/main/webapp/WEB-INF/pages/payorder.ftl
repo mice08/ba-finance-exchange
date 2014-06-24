@@ -70,11 +70,11 @@
             <div class="form-horizontal" id="payorder_search">
                 <div class="row-fluid label-colon">
                     <div class="control-group span6" id="business-type-selector">
-                        <label class="control-label">业务类型</label>
+                        <label class="control-label">产品线<span class="required">*</span></label>
 
                         <div class="controls">
                             <select id="businesstype" name="businessType" class="form_value" validate="ne[0]"
-                                    error_msg="ne[0]:请选择业务类型">
+                                    error_msg="ne[0]:请选择产品线">
                             </select>
                         </div>
                     </div>

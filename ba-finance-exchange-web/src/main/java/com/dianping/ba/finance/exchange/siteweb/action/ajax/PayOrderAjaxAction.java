@@ -52,7 +52,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     private String addEndTime;
 
     //付款计划总金额
-    private String totalAmount = new DecimalFormat("0.00").format(BigDecimal.ZERO);
+    private String totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO);
 
     private String payCode;
 
@@ -63,14 +63,14 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     @Override
     protected void jsonExecute() throws Exception {
         if (businessType == BusinessType.DEFAULT.value()) {
-            totalAmount = new DecimalFormat("0.00").format(BigDecimal.ZERO);
+            totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO);
             return;
         }
         try {
             PayOrderSearchBean payOrderSearchBean = buildPayOrderSearchBean();
             payOrderModel = payOrderService.paginatePayOrderList(payOrderSearchBean, page, pageSize);
             payOrderModel.setRecords(buildPayOrderBeans((List<PayOrderData>) payOrderModel.getRecords()));
-            totalAmount = new DecimalFormat("0.00").format(payOrderService.findPayOrderTotalAmount(payOrderSearchBean));
+            totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(payOrderService.findPayOrderTotalAmount(payOrderSearchBean));
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] PayOrderAjaxAction.jsonExecute error!", e);
         }
@@ -190,7 +190,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         payOrderBean.setCustomerName(getCustomerNameById(payOrderData.getCustomerId()));
         payOrderBean.setMemo(payOrderData.getMemo());
         payOrderBean.setPaidDate(DateUtil.formatDateToString(payOrderData.getPaidDate(), "yyyy-MM-dd"));
-        payOrderBean.setPayAmount(new DecimalFormat("0.00").format(payOrderData.getPayAmount()));
+        payOrderBean.setPayAmount(new DecimalFormat("##,###,###,###,##0.00").format(payOrderData.getPayAmount()));
         payOrderBean.setPoId(payOrderData.getPoId());
         payOrderBean.setStatusDesc(PayOrderStatus.valueOf(payOrderData.getStatus()).toString());
         payOrderBean.setStatus(payOrderData.getStatus());

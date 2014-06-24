@@ -80,7 +80,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
     @Override
     protected void jsonExecute() {
         if (businessType == BusinessType.DEFAULT.value()) {
-            totalAmount = new DecimalFormat("0.00").format(BigDecimal.ZERO);
+            totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO);
             return;
         }
 
@@ -88,7 +88,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
             ReceiveOrderSearchBean receiveOrderSearchBean = buildROSearchBean();
             receiveOrderModel = receiveOrderService.paginateReceiveOrderList(receiveOrderSearchBean, page, pageSize);
             receiveOrderModel.setRecords(buildReceiveOrderBeans((List<ReceiveOrderData>) receiveOrderModel.getRecords()));
-            totalAmount=new DecimalFormat("0.00").format(receiveOrderService.loadReceiveOrderTotalAmountByCondition(receiveOrderSearchBean));
+            totalAmount=new DecimalFormat("##,###,###,###,##0.00").format(receiveOrderService.loadReceiveOrderTotalAmountByCondition(receiveOrderSearchBean));
             code=SUCCESS_CODE;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.jsonExecute error!", e);
@@ -153,7 +153,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderBean.setMemo(receiveOrderData.getMemo());
         receiveOrderBean.setPayChannel(ReceiveOrderPayChannel.valueOf(receiveOrderData.getPayChannel()).toString());
         receiveOrderBean.setPayerName("");
-        receiveOrderBean.setReceiveAmount(new DecimalFormat("0.00").format(receiveOrderData.getReceiveAmount()));
+        receiveOrderBean.setReceiveAmount(new DecimalFormat("##,###,###,###,##0.00").format(receiveOrderData.getReceiveAmount()));
         receiveOrderBean.setReceiveTime(DateUtil.formatDateToString(receiveOrderData.getReceiveTime(), "yyyy-MM-dd"));
         receiveOrderBean.setReceiveType(ReceiveType.valueOf(receiveOrderData.getReceiveType()).toString());
         receiveOrderBean.setRoId(receiveOrderData.getRoId());
