@@ -68,6 +68,8 @@ public class PayOrderData implements Serializable {
     //联行号
     private String bankCode;
 
+    private int bankAccountType;
+
     private int addLoginId;
 
     private int updateLoginId;
@@ -246,6 +248,14 @@ public class PayOrderData implements Serializable {
         this.bankCode = bankCode;
     }
 
+    public int getBankAccountType() {
+        return bankAccountType;
+    }
+
+    public void setBankAccountType(int bankAccountType) {
+        this.bankAccountType = bankAccountType;
+    }
+
     public String getPayCode() {
         return payCode;
     }
@@ -285,6 +295,7 @@ public class PayOrderData implements Serializable {
                 ", bankBranchName='" + bankBranchName + '\'' +
                 ", bankFullBranchName='" + bankFullBranchName + '\'' +
                 ", bankCode='" + bankCode + '\'' +
+                ", bankAccountType=" + bankAccountType +
                 ", addLoginId=" + addLoginId +
                 ", updateLoginId=" + updateLoginId +
                 ", addType=" + addType +

@@ -36,10 +36,12 @@ public class PayOrderRequestDTO implements Serializable {
     private String bankCity;
 
     private String bankBranchName;
-    // 人行支付行全称
+
     private String bankFullBranchName;
-    //联行号
+
     private String bankCode;
+
+    private int bankAccountType;
 
     private String memo;
 
@@ -163,6 +165,14 @@ public class PayOrderRequestDTO implements Serializable {
         this.bankCode = bankCode;
     }
 
+    public int getBankAccountType() {
+        return bankAccountType;
+    }
+
+    public void setBankAccountType(int bankAccountType) {
+        this.bankAccountType = bankAccountType;
+    }
+
     public int getCustomerId() {
         return customerId;
     }
@@ -177,6 +187,7 @@ public class PayOrderRequestDTO implements Serializable {
                 "paySequence='" + paySequence + '\'' +
                 ", customerId=" + customerId +
                 ", payAmount=" + payAmount +
+                ", loginId=" + loginId +
                 ", requestDate=" + requestDate +
                 ", businessType=" + businessType +
                 ", customerBankId=" + customerBankId +
@@ -188,6 +199,7 @@ public class PayOrderRequestDTO implements Serializable {
                 ", bankBranchName='" + bankBranchName + '\'' +
                 ", bankFullBranchName='" + bankFullBranchName + '\'' +
                 ", bankCode='" + bankCode + '\'' +
+                ", bankAccountType=" + bankAccountType +
                 ", memo='" + memo + '\'' +
                 '}';
     }

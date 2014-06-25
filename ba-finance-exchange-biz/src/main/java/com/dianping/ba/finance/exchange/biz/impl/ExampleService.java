@@ -21,7 +21,8 @@ public class ExampleService {
     }
 
     public List<ExchangeOrderData> findExchangeOrderListByOrderIdList(List<Integer> orderIdList) {
-        return exchangeOrderDao.findExchangeOrderListByOrderIdList(orderIdList);
+        List<ExchangeOrderData> exchangeOrderDataList =  exchangeOrderDao.findExchangeOrderListByOrderIdList(orderIdList);
+        return exchangeOrderDataList;
     }
 
     public int max(int a, int b) {

@@ -21,6 +21,7 @@
         <result property="bankBranchName" column="BankBranchName"/>
         <result property="bankFullBranchName" column="BankFullBranchName"/>
         <result property="bankCode" column="BankCode"/>
+        <result property="bankAccountType" column="BankAccountType"/>
         <result property="status" column="Status"/>
         <result property="addTime" column="AddTime"/>
         <result property="addType" column="AddType"/>
@@ -44,6 +45,7 @@
 			BankCity,
 			BankFullBranchName,
 			BankCode,
+			BankAccountType,
 			BusinessType,
 			Status,
 			AddTime,
@@ -67,6 +69,7 @@
 			#payOrderData.bankCity#,
 			#payOrderData.bankFullBranchName#,
 			#payOrderData.bankCode#,
+			#payOrderData.bankAccountType#,
 			#payOrderData.businessType#,
 			#payOrderData.status#,
 			NOW(),
@@ -122,6 +125,7 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        BankAccountType,
         BusinessType,
         Status,
         AddTime,
@@ -153,6 +157,7 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        BankAccountType,
         BusinessType,
         Status,
         AddTime,
@@ -248,6 +253,7 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        BankAccountType,
         BusinessType,
         Status,
         AddTime,
@@ -291,6 +297,7 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        BankAccountType,
         BusinessType,
         Status,
         AddTime,
