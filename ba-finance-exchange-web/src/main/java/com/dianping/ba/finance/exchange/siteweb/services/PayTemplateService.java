@@ -24,7 +24,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -238,10 +239,16 @@ public class PayTemplateService {
     }
 
     private void initResponse(HttpServletResponse response, String fileName) throws UnsupportedEncodingException {
-        String downloadFileName = URLEncoder.encode(fileName, "UTF-8");
+        String downloadFileName = getEncodedFileName(fileName);
         response.reset();
         response.setHeader("Content-disposition", "attachment; filename=" + downloadFileName);
         response.setContentType("application/x-download");
+    }
+
+    private String getEncodedFileName(String fileName) throws UnsupportedEncodingException {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String downloadFileName = String.format("%s_%s.xls", fileName, df.format(new Date()));
+        return new String(downloadFileName.getBytes(System.getProperty("file.encoding")), "ISO-8859-1");
     }
 
     private void groupByAccountType(List<PayOrderExportBean> exportBeanList,
