@@ -291,7 +291,15 @@ public class PayTemplateService {
         templateBean.setBankAccountType(accountTypeInTemplate);
         BusinessType businessType = BusinessType.valueOf(payOrderExportBean.getBusinessType());
         templateBean.setUsage("大众点评-" + businessType.toString());
-        templateBean.setBankCodeAndFullBranchName(payOrderExportBean.getBankCode() + "&" + payOrderExportBean.getBankFullBranchName());
+        String bankCode = payOrderExportBean.getBankCode();
+        if (bankCode == null) {
+            bankCode = "";
+        }
+        String fullBranchName = payOrderExportBean.getBankFullBranchName();
+        if (fullBranchName == null) {
+            fullBranchName = "";
+        }
+        templateBean.setBankCodeAndFullBranchName(bankCode + "&" + fullBranchName);
         return templateBean;
     }
 
