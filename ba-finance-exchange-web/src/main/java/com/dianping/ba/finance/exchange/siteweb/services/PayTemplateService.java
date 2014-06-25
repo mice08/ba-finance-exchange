@@ -218,7 +218,13 @@ public class PayTemplateService {
     }
 
     private WritableCellFormat createCellFormat(DisplayFormat format) throws WriteException {
-        WritableCellFormat bodyFormat = new WritableCellFormat(format);
+        DisplayFormat f;
+        if (format == NumberFormats.FLOAT) {
+            f = new NumberFormat("##,###,###,###,##0.00");
+        } else {
+            f = format;
+        }
+        WritableCellFormat bodyFormat = new WritableCellFormat(f);
         bodyFormat.setAlignment(Alignment.LEFT);
         bodyFormat.setVerticalAlignment(VerticalAlignment.CENTRE);
         bodyFormat.setBorder(jxl.format.Border.NONE, jxl.format.BorderLineStyle.THIN);
