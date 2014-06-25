@@ -19,11 +19,14 @@ class ExampleServiceSpockTest extends Specification {
     }
 
     def "Find exchangeOrder list by orderId List"() {
+        setup:
+        def eoData = [exchangeOrderId: 87871, bankName: "bankName"] as ExchangeOrderData;
+
         when:
         exampleServiceStub.findExchangeOrderListByOrderIdList([87871])
 
         then:
-        1 * exchangeOrderDaoMock.findExchangeOrderListByOrderIdList(_ as List<Integer>)
+        1 * exchangeOrderDaoMock.findExchangeOrderListByOrderIdList(_ as List<Integer>) >> [eoData]
     }
 
     def "Find exchangeOrder list by orderId List using where"(int orderId, int eoId) {
