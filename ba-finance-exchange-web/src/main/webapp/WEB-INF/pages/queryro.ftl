@@ -6,7 +6,7 @@
         <div class="form-horizontal" id="ro-search-form">
             <div class="row-fluid label-colon">
                 <div class="control-group span6">
-                    <label class="control-label">产品线</label>
+                    <label class="control-label">产品线<span class="required">*</span></label>
                     <div class="controls">
                         <select id="q-businessType" name="businessType" class="form_value" validate="ne[0]"
                                 error_msg="ne[0]:请选择产品线">
@@ -44,7 +44,7 @@
 
             <div class="row-fluid label-colon">
                 <div class="control-group span6">
-                    <label class="control-label">银行入账日期</label>
+                    <label class="control-label">银行到账日期</label>
 
                     <div class="controls">
                         <select id="q-select-br-time" class="select-small">

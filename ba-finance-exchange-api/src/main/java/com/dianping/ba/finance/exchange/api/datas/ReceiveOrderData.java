@@ -43,6 +43,8 @@ public class ReceiveOrderData implements Serializable{
 
     private Date updateTime;
 
+	private int reverseRoId;
+
     private int updateLoginId;
 
     private String memo;
@@ -202,28 +204,37 @@ public class ReceiveOrderData implements Serializable{
         this.memo = memo;
     }
 
-    @Override
-    public String toString() {
-        return "ReceiveOrderData{" +
-                "roId=" + roId +
-                ", customerId=" + customerId +
-                ", shopId=" + shopId +
-                ", businessType=" + businessType +
-                ", receiveAmount=" + receiveAmount +
-                ", receiveTime=" + receiveTime +
-                ", payTime=" + payTime +
-                ", bankReceiveTime=" + bankReceiveTime +
-                ", payChannel=" + payChannel +
-                ", receiveType=" + receiveType +
-                ", bizContent='" + bizContent + '\'' +
-                ", tradeNo='" + tradeNo + '\'' +
-                ", bankID=" + bankID +
-                ", status=" + status +
-                ", addTime=" + addTime +
-                ", addLoginId=" + addLoginId +
-                ", updateTime=" + updateTime +
-                ", updateLoginId=" + updateLoginId +
-                ", memo='" + memo + '\'' +
-                '}';
-    }
+	public int getReverseRoId() {
+		return reverseRoId;
+	}
+
+	public void setReverseRoId(int reverseRoId) {
+		this.reverseRoId = reverseRoId;
+	}
+
+	@Override
+	public String toString() {
+		return "ReceiveOrderData{" +
+				"roId=" + roId +
+				", customerId=" + customerId +
+				", shopId=" + shopId +
+				", businessType=" + businessType +
+				", receiveAmount=" + receiveAmount +
+				", receiveTime=" + receiveTime +
+				", payTime=" + payTime +
+				", bankReceiveTime=" + bankReceiveTime +
+				", payChannel=" + payChannel +
+				", receiveType=" + receiveType +
+				", bizContent='" + bizContent + '\'' +
+				", tradeNo='" + tradeNo + '\'' +
+				", bankID=" + bankID +
+				", status=" + status +
+				", addTime=" + addTime +
+				", addLoginId=" + addLoginId +
+				", updateTime=" + updateTime +
+				", reverseRoId=" + reverseRoId +
+				", updateLoginId=" + updateLoginId +
+				", memo='" + memo + '\'' +
+				'}';
+	}
 }

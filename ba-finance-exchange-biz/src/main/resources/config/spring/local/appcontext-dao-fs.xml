@@ -60,4 +60,13 @@
         </property>
     </bean>
 
+    <bean id="payCentreReceiveRequestDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.PayCentreReceiveRequestDao" />
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="PayCentreReceiveRequest" />
+            </bean>
+        </property>
+    </bean>
+
 </beans>

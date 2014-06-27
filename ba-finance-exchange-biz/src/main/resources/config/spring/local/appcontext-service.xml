@@ -51,4 +51,14 @@
     <bean id="receiveOrderResultNotify" class="com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify">
         <property name="receiveOrderProducer" ref="receiveOrderProducer"/>
     </bean>
+
+    <bean id="payCentreReceiveRequestService" class="com.dianping.ba.finance.exchange.biz.impl.PayCentreReceiveRequestServiceObject">
+        <property name="payCentreReceiveRequestDao" ref="payCentreReceiveRequestDao"/>
+    </bean>
+
+    <bean id="payCentreReceiveRequestHandleService" class="com.dianping.ba.finance.exchange.biz.impl.PayCentreReceiveRequestHandleServiceObject">
+        <property name="payCentreReceiveRequestService" ref="payCentreReceiveRequestService"/>
+        <property name="receiveOrderService" ref="receiveOrderService"/>
+        <property name="executorService" ref="executorService"/>
+    </bean>
 </beans>

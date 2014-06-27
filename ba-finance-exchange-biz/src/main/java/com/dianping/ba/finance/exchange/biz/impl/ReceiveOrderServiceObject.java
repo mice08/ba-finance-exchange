@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderResultBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
+import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
@@ -88,7 +89,33 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         return receiveOrderDao.loadReceiveOrderTotalAmountByCondition(receiveOrderSearchBean);
     }
 
-    public void setReceiveOrderDao(ReceiveOrderDao receiveOrderDao) {
+	@Log(severity = 1, logAfter = true)
+	@ReturnDefault
+	@Override
+	public ReceiveOrderData loadReceiveOrderByTradeNo(String tradeNo) {
+		return receiveOrderDao.loadReceiveOrderByTradeNo(tradeNo);
+	}
+
+	@Log(severity = 1, logAfter = true)
+	@ReturnDefault
+	@Override
+	public boolean dropReceiveOrder(int roId, String memo) {
+		ReceiveOrderUpdateBean updateBean = new ReceiveOrderUpdateBean();
+		updateBean.setStatus(ReceiveOrderStatus.INVALID.value());
+		updateBean.setMemo(memo);
+		return receiveOrderDao.updateReceiveOrderByRoId(roId, updateBean) > 0;
+	}
+
+	@Log(severity = 1, logAfter = true)
+	@ReturnDefault
+	@Override
+	public boolean updateReverseRoId(int originRoId, int reverseRoId) {
+		ReceiveOrderUpdateBean updateBean = new ReceiveOrderUpdateBean();
+		updateBean.setReverseRoId(reverseRoId);
+		return receiveOrderDao.updateReceiveOrderByRoId(originRoId, updateBean) > 0;
+	}
+
+	public void setReceiveOrderDao(ReceiveOrderDao receiveOrderDao) {
         this.receiveOrderDao = receiveOrderDao;
     }
 

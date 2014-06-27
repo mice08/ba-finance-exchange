@@ -14,6 +14,7 @@
 
     <properties>
         <struts.version>2.3.16.2</struts.version>
+        <groovy.version>2.3.1</groovy.version>
     </properties>
     <dependencies>
 
@@ -21,6 +22,12 @@
             <groupId>com.dianping</groupId>
             <artifactId>ba-finance-portal-header-client</artifactId>
             <version>1.0.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.dianping</groupId>
+                    <artifactId>dp-finance-common-util</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.dianping.lion</groupId>
@@ -365,13 +372,32 @@
             <groupId>com.dianping</groupId>
             <artifactId>ba-finance-common-biz</artifactId>
             <type>pom</type>
-            <version>0.1.3-SNAPSHOT</version>
+            <version>0.1.4-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <artifactId>commons-fileupload</artifactId>
                     <groupId>commons-fileupload</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping</groupId>
+            <artifactId>dp-finance-common-util</artifactId>
+            <version>1.0.4-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${groovy.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <version>0.7-groovy-2.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -393,6 +419,20 @@
             <id>Test</id>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.gmavenplus</groupId>
+                        <artifactId>gmavenplus-plugin</artifactId>
+                        <version>1.2</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>generateStubs</goal>
+                                    <goal>compile</goal>
+                                    <goal>testCompile</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-antrun-plugin</artifactId>

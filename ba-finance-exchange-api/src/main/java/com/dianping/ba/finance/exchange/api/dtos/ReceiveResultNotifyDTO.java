@@ -18,6 +18,10 @@ public class ReceiveResultNotifyDTO implements Serializable {
     private String bizId;
     private int customerId;
     private int shopId;
+	/**
+	 * 类型1:收款2:冲销
+	 */
+	private int type;
     private BigDecimal receiveAmount;
     /**
      * 系统确认收款日期
@@ -32,6 +36,9 @@ public class ReceiveResultNotifyDTO implements Serializable {
      */
     private Date bankReceiveTime;
     private int payChannel;
+	/**
+	 *收款类型:1.广告款
+	 */
     private int receiveType;
     /**
      * 业务文本（广告：合同号）
@@ -45,7 +52,12 @@ public class ReceiveResultNotifyDTO implements Serializable {
      *交易流水号（from支付中心）
      */
     private String tradeNo;
-    private String memo;
+
+	/**
+	 * 原始收款单Id
+	 */
+	private String oriBizId;
+	private String memo;
 
     public String getBizId() {
         return bizId;
@@ -151,12 +163,29 @@ public class ReceiveResultNotifyDTO implements Serializable {
         this.memo = memo;
     }
 
-    @Override
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public String getOriBizId() {
+		return oriBizId;
+	}
+
+	public void setOriBizId(String oriBizId) {
+		this.oriBizId = oriBizId;
+	}
+
+	@Override
     public String toString() {
         return "ReceiveResultNotifyDTO{" +
                 "bizId='" + bizId + '\'' +
                 ", customerId=" + customerId +
                 ", shopId=" + shopId +
+				", type=" + type +
                 ", receiveAmount=" + receiveAmount +
                 ", receiveTime=" + receiveTime +
                 ", payTime=" + payTime +
@@ -166,6 +195,7 @@ public class ReceiveResultNotifyDTO implements Serializable {
                 ", bizContent='" + bizContent + '\'' +
                 ", bankId=" + bankId +
                 ", tradeNo='" + tradeNo + '\'' +
+				", oriBizId ='" + oriBizId  + '\'' +
                 ", memo='" + memo + '\'' +
                 '}';
     }
