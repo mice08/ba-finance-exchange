@@ -5,8 +5,17 @@
         <h4 id="myModalLabel">导入电汇收款单</h4>
     </div>
     <div class="modal-body">
-        <label class="import-label">导入文件：</label>
+        <div class="control-group span6">
+            <label class="control-label">收款银行账户</label>
 
+            <div class="controls">
+                <select id="tt-import-bankId" name="bankId" class="form_value">
+                    <option value="0">请选择收款银行账户</option>
+                </select>
+            </div>
+        </div>
+
+        <label class="import-label">导入文件：</label>
         <div class="uploader">
             <input id="import-file" class="import-file" style="display: none" name="telTransferFile" type="file" size="31">
 
@@ -187,7 +196,7 @@
                             <span class="glyphicon glyphicon-pencil"></span>手工录入</a>
 
                         <a id="btn-import-tel-transfer" href="#import-tel-transfer" role="button" class="btn btn-primary btn-fs-normal btn-fs-xs ajaxdisabledbutton" data-toggle="modal">
-                            <span class="glyphicon glyphicon-file"></span>导入</a>
+                            <span class="glyphicon glyphicon-file"></span>导入电汇收款单</a>
                     </div>
                 </div>
             </div>
