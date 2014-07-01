@@ -2,11 +2,12 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.exchange.api.ReceiveBankService;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveBankData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
-import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
 import com.dianping.ba.finance.exchange.api.dtos.TelTransferDTO;
-import com.dianping.ba.finance.exchange.api.enums.RefundFailedReason;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.finance.common.util.DateUtils;
 import com.dianping.finance.common.util.DecimalUtils;
 import com.google.common.collect.LinkedListMultimap;
@@ -22,10 +23,8 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 
 /**
  *
@@ -59,7 +58,7 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
 
     private File telTransferFile;
 
-    private Map<String,String> invalidRefundMap = new HashMap<String, String>();
+    private int bankId;
 
     private String invalidFileMsg = "";
 
@@ -67,9 +66,9 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
 
     private Map<String, Object> msg = Maps.newHashMap();
 
-    private ExecutorService executorService;
-
     private ReceiveOrderService receiveOrderService;
+
+    private ReceiveBankService receiveBankService;
 
     public String importTelTransfer() throws Exception {
         try {
@@ -86,7 +85,9 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
                 code = SUCCESS_CODE;
                 return SUCCESS;
             }
-            handleTelTransferList(telTransferDTOList);
+            BigDecimal totalAmount = handleTelTransferList(telTransferDTOList);
+            msg.put("totalCount", telTransferDTOList.size());
+            msg.put("totalAmount", totalAmount);
             code = SUCCESS_CODE;
             return SUCCESS;
         } catch(Exception e) {
@@ -136,14 +137,14 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
     }
 
 
-    private void handleTelTransferList(List<TelTransferDTO> telTransferDTOList) {
-        BigDecimal totlaAmount = new BigDecimal(0);
+    private BigDecimal handleTelTransferList(List<TelTransferDTO> telTransferDTOList) {
+        BigDecimal totalAmount = new BigDecimal(0);
         for (TelTransferDTO telTransferDTO : telTransferDTOList) {
             ReceiveOrderData roData = buildReceiveOrderData(telTransferDTO);
             receiveOrderService.createReceiveOrder(roData);
+            totalAmount = totalAmount.add(roData.getReceiveAmount());
         }
-
-//        generateResultMessage(allRefundResultDTO);
+        return totalAmount;
     }
 
     private ReceiveOrderData buildReceiveOrderData(TelTransferDTO telTransferDTO) {
@@ -155,48 +156,12 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
         roData.setPayerAccountName(telTransferDTO.getPayerAccountName());
         roData.setPayerAccountNo(telTransferDTO.getPayerAccountNo());
         roData.setPayerBankName(telTransferDTO.getPayerBankName());
+        roData.setStatus(ReceiveOrderStatus.UNCONFIRMED.value());
+
+        ReceiveBankData bankData = receiveBankService.loadReceiveBankByBankId(bankId);
+        roData.setBusinessType(bankData.getBusinessType());
+        roData.setBankID(bankData.getBankId());
         return roData;
-    }
-
-    private void generateResultMessage(RefundResultDTO allRefundResultDTO) {
-        if (allRefundResultDTO.getSuccessCount() > 0) {
-            msg.put("totalCount", allRefundResultDTO.getSuccessCount());
-            msg.put("refundTotalAmount", allRefundResultDTO.getRefundTotalAmount());
-        }
-
-        Map<RefundFailedReason, StringBuilder> errorInfoMap = extractErrorInfo(allRefundResultDTO);
-        StringBuilder notFoundRefundIdsSb = errorInfoMap.get(RefundFailedReason.INFO_EMPTY);
-        if (notFoundRefundIdsSb != null) {
-            invalidRefundMap.put("notFoundRefundIds", notFoundRefundIdsSb.toString());
-        }
-        StringBuilder statusErrorIdsSb = errorInfoMap.get(RefundFailedReason.STATUS_ERROR);
-        if (statusErrorIdsSb != null) {
-            invalidRefundMap.put("statusErrorIds", statusErrorIdsSb.toString());
-        }
-    }
-
-    private RefundResultDTO mergeToOne(List<RefundResultDTO> refundResultDTOList) {
-        RefundResultDTO allRefundResultDTO = new RefundResultDTO();
-        for (RefundResultDTO refundResultDTO : refundResultDTOList) {
-            allRefundResultDTO.mergeFromOtherResult(refundResultDTO);
-        }
-        return allRefundResultDTO;
-    }
-
-    private Map<RefundFailedReason, StringBuilder> extractErrorInfo(RefundResultDTO refundResultDTO){
-        Map<RefundFailedReason, StringBuilder> errorInfoMap = Maps.newHashMap();
-        for(Map.Entry<String, RefundFailedReason> entry: refundResultDTO.getRefundFailedMap().entrySet()){
-            String refundId = entry.getKey();
-            RefundFailedReason reason = entry.getValue();
-            StringBuilder errMsg = errorInfoMap.get(reason);
-            if(errMsg == null) {
-                errMsg = new StringBuilder(refundId);
-                errorInfoMap.put(reason, errMsg);
-                continue;
-            }
-            errMsg.append(",").append(refundId);
-        }
-        return errorInfoMap;
     }
 
     private List<TelTransferDTO> readExcel() throws Exception {
@@ -251,11 +216,15 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
         return invalidFileMsg;
     }
 
-    public void setExecutorService(ExecutorService executorService) {
-        this.executorService = executorService;
+    public void setBankId(int bankId) {
+        this.bankId = bankId;
     }
 
     public void setReceiveOrderService(ReceiveOrderService receiveOrderService) {
         this.receiveOrderService = receiveOrderService;
+    }
+
+    public void setReceiveBankService(ReceiveBankService receiveBankService) {
+        this.receiveBankService = receiveBankService;
     }
 }
