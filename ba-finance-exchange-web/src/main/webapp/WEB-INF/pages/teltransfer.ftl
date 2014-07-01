@@ -9,7 +9,7 @@
                 <tr>
                     <td>
                         <label class="control-label">收款银行账户</label>
-                        <div class="controls">
+                        <div class="">
                             <select id="tt-import-bankId" name="bankId" class="form_value">
                                 <option value="0">请选择收款银行账户</option>
                             </select>
