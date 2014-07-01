@@ -47,7 +47,10 @@
                          UpdateTime,
                          UpdateLoginID,
                          ReverseROID,
-                         Memo)
+                         Memo,
+                         PayerAccountName,
+                         PayerAccountNo,
+                         PayerBankName)
             VALUES      (#receiveOrderData.customerId#,
                          #receiveOrderData.shopId#,
                          #receiveOrderData.businessType#,
@@ -66,7 +69,10 @@
                          #receiveOrderData.updateTime#,
                          #receiveOrderData.updateLoginId#,
                          #receiveOrderData.reverseRoId#,
-                         #receiveOrderData.memo#)
+                         #receiveOrderData.memo#,
+                         #receiveOrderData.payerAccountName#,
+                         #receiveOrderData.payerAccountNo#,
+                         #receiveOrderData.payerBankName#)
 
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="roId">

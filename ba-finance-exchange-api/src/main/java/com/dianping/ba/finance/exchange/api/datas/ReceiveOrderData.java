@@ -49,6 +49,12 @@ public class ReceiveOrderData implements Serializable{
 
     private String memo;
 
+    private String payerAccountName;
+
+    private String payerAccountNo;
+
+    private String payerBankName;
+
     public ReceiveOrderData() {
     }
 
@@ -212,29 +218,56 @@ public class ReceiveOrderData implements Serializable{
 		this.reverseRoId = reverseRoId;
 	}
 
-	@Override
-	public String toString() {
-		return "ReceiveOrderData{" +
-				"roId=" + roId +
-				", customerId=" + customerId +
-				", shopId=" + shopId +
-				", businessType=" + businessType +
-				", receiveAmount=" + receiveAmount +
-				", receiveTime=" + receiveTime +
-				", payTime=" + payTime +
-				", bankReceiveTime=" + bankReceiveTime +
-				", payChannel=" + payChannel +
-				", receiveType=" + receiveType +
-				", bizContent='" + bizContent + '\'' +
-				", tradeNo='" + tradeNo + '\'' +
-				", bankID=" + bankID +
-				", status=" + status +
-				", addTime=" + addTime +
-				", addLoginId=" + addLoginId +
-				", updateTime=" + updateTime +
-				", reverseRoId=" + reverseRoId +
-				", updateLoginId=" + updateLoginId +
-				", memo='" + memo + '\'' +
-				'}';
-	}
+    public String getPayerAccountName() {
+        return payerAccountName;
+    }
+
+    public void setPayerAccountName(String payerAccountName) {
+        this.payerAccountName = payerAccountName;
+    }
+
+    public String getPayerAccountNo() {
+        return payerAccountNo;
+    }
+
+    public void setPayerAccountNo(String payerAccountNo) {
+        this.payerAccountNo = payerAccountNo;
+    }
+
+    public String getPayerBankName() {
+        return payerBankName;
+    }
+
+    public void setPayerBankName(String payerBankName) {
+        this.payerBankName = payerBankName;
+    }
+
+    @Override
+    public String toString() {
+        return "ReceiveOrderData{" +
+                "roId=" + roId +
+                ", customerId=" + customerId +
+                ", shopId=" + shopId +
+                ", businessType=" + businessType +
+                ", receiveAmount=" + receiveAmount +
+                ", receiveTime=" + receiveTime +
+                ", payTime=" + payTime +
+                ", bankReceiveTime=" + bankReceiveTime +
+                ", payChannel=" + payChannel +
+                ", receiveType=" + receiveType +
+                ", bizContent='" + bizContent + '\'' +
+                ", tradeNo='" + tradeNo + '\'' +
+                ", bankID=" + bankID +
+                ", status=" + status +
+                ", addTime=" + addTime +
+                ", addLoginId=" + addLoginId +
+                ", updateTime=" + updateTime +
+                ", reverseRoId=" + reverseRoId +
+                ", updateLoginId=" + updateLoginId +
+                ", memo='" + memo + '\'' +
+                ", payerAccountName='" + payerAccountName + '\'' +
+                ", payerAccountNo='" + payerAccountNo + '\'' +
+                ", payerBankName='" + payerBankName + '\'' +
+                '}';
+    }
 }
