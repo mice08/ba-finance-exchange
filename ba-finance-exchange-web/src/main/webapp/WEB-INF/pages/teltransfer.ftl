@@ -4,28 +4,37 @@
         <h4 id="myModalLabel">导入电汇收款单</h4>
     </div>
     <div class="modal-body">
-        <div class="control-group span6">
-            <label class="control-label">收款银行账户</label>
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <label class="control-label">收款银行账户</label>
+                        <div class="controls">
+                            <select id="tt-import-bankId" name="bankId" class="form_value">
+                                <option value="0">请选择收款银行账户</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="import-label">导入文件：</label>
+                        <div class="uploader">
+                            <input id="import-file" class="import-file" style="display: none" name="telTransferFile"
+                                   type="file"
+                                   size="31">
 
-            <div class="controls">
-                <select id="tt-import-bankId" name="bankId" class="form_value">
-                    <option value="0">请选择收款银行账户</option>
-                </select>
-            </div>
-        </div>
-
-        <label class="import-label">导入文件：</label>
-
-        <div class="uploader">
-            <input id="import-file" class="import-file" style="display: none" name="telTransferFile" type="file"
-                   size="31">
-
-            <div class="input-append">
-                <input type="text" name="upload-file" data-bind="value: filename" placeholder="这里是文件名">
-                <button id="chooseFile" class="btn btn-default btn-fs-default btn-fs-sm" type="button">选择文件
-                </button>
-            </div>
-        </div>
+                            <div class="input-append">
+                                <input type="text" name="upload-file" data-bind="value: filename" placeholder="这里是文件名">
+                                <button id="choose-file" class="btn btn-default btn-fs-default btn-fs-sm" type="button">
+                                    选择文件
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div class="modal-footer">
         <button class="btn btn-default btn-fs-default btn-fs-xs" data-dismiss="modal" aria-hidden="true">取消
