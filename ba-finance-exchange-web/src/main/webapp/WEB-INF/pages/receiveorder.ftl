@@ -11,6 +11,7 @@
 <body>
 <#include "/WEB-INF/pages/common/tips.ftl">
 <#include "/WEB-INF/pages/addreceiveorder.ftl">
+<#include "/WEB-INF/pages/teltransfer.ftl">
     <!-- @ main -->
     <!--内容-->
     <div class="content">

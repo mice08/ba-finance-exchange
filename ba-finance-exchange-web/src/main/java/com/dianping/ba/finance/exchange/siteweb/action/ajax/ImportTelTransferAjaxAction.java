@@ -18,6 +18,7 @@ import jxl.Sheet;
 import jxl.Workbook;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -53,6 +54,9 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
     private static final String INVALID_DATE = "invalidDateRows";
     private static final String INVALID_AMOUNT = "invalidAmountRows";
     private static final String DUPLICATE_ID = "duplicateIdRows";
+    private static final String EMPTY_FIELD = "emptyFieldRows";
+    private static final String NEGATIVE_OR_ZERO_AMOUNT = "negativeOrZeroAmountRows";
+    private static final String DUPICATE_TRADE_NO = "duplicateTradNoRows";
 
     private static final String INVALID_FILE_MSG = "导入收款文件格式错误！";
 
@@ -85,9 +89,10 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
                 code = SUCCESS_CODE;
                 return SUCCESS;
             }
-            BigDecimal totalAmount = handleTelTransferList(telTransferDTOList);
-            msg.put("totalCount", telTransferDTOList.size());
-            msg.put("totalAmount", totalAmount);
+            handleTelTransferList(telTransferDTOList, invalidMsgMMap);
+            if (!invalidMsgMMap.isEmpty()) {
+                msg.putAll(invalidMsgMMap.asMap());
+            }
             code = SUCCESS_CODE;
             return SUCCESS;
         } catch(Exception e) {
@@ -106,6 +111,11 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
         boolean valid = true;
         for (int r = 0; r < telTransferDTOList.size(); ++r) {
             TelTransferDTO telTransferDTO = telTransferDTOList.get(r);
+            StringBuilder emptyErrSb = new StringBuilder();
+            if (hasEmptyField(telTransferDTO, emptyErrSb)) {
+                invalidMsgMMap.put(EMPTY_FIELD, String.format("第%d行：%s", r, emptyErrSb.toString()));
+                continue;
+            }
             if (!DateUtils.isValidDate(telTransferDTO.getBankReceiveDate(), DATE_FORMAT)) {
                 valid = false;
                 invalidMsgMMap.put(INVALID_DATE, String.format("第%d行：日期格式错误 %s", r, telTransferDTO.getBankReceiveDate()));
@@ -113,14 +123,56 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
             if (!DecimalUtils.isValidBigDecimal(telTransferDTO.getAmount())) {
                 valid = false;
                 invalidMsgMMap.put(INVALID_AMOUNT, String.format("第%d行：金额格式错误 %s", r, telTransferDTO.getAmount()));
+            } else {
+                BigDecimal amount = new BigDecimal(telTransferDTO.getAmount());
+                if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+                    invalidMsgMMap.put(NEGATIVE_OR_ZERO_AMOUNT, String.format("第%d行：金额必须大于0 %s", r, telTransferDTO.getAmount()));
+                }
             }
         }
         return valid;
     }
 
+    private boolean hasEmptyField(TelTransferDTO telTransferDTO, StringBuilder emptyErrSb) {
+        boolean hasEmptyField = false;
+        String flowId = telTransferDTO.getBankFlowId();
+        if (StringUtils.isBlank(flowId)) {
+            hasEmptyField = true;
+            emptyErrSb.append("交易流水为空;");
+        }
+        String bankReceiveDate = telTransferDTO.getBankReceiveDate();
+        if (StringUtils.isBlank(bankReceiveDate)) {
+            hasEmptyField = true;
+            emptyErrSb.append("到款日期为空;");
+        }
+        String amount = telTransferDTO.getAmount();
+        if (StringUtils.isBlank(amount)) {
+            hasEmptyField = true;
+            emptyErrSb.append("金额为空;");
+        }
+
+        String payerAccountName = telTransferDTO.getPayerAccountName();
+        if (StringUtils.isBlank(payerAccountName)) {
+            hasEmptyField = true;
+            emptyErrSb.append("付款方账户名为空;");
+        }
+
+        String payerAccountNo = telTransferDTO.getPayerAccountNo();
+        if (StringUtils.isBlank(payerAccountNo)) {
+            hasEmptyField = true;
+            emptyErrSb.append("付款方账号为空;");
+        }
+        String payerBankName = telTransferDTO.getPayerBankName();
+        if (StringUtils.isBlank(payerBankName)) {
+            hasEmptyField = true;
+            emptyErrSb.append("付款方开户行为空;");
+        }
+        return hasEmptyField;
+    }
+
 
     private boolean hasDuplicateFlowId(List<TelTransferDTO> telTransferDTOList, Multimap<String, String> invalidMsgMMap) {
-        boolean hasDuplicate = true;
+        boolean hasDuplicate = false;
         Map<String, Integer> bankFlowIdRowMap = Maps.newHashMap();
         for (int r = 0; r < telTransferDTOList.size(); ++r) {
             TelTransferDTO telTransferDTO = telTransferDTOList.get(r);
@@ -137,14 +189,21 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
     }
 
 
-    private BigDecimal handleTelTransferList(List<TelTransferDTO> telTransferDTOList) {
+    private void handleTelTransferList(List<TelTransferDTO> telTransferDTOList, Multimap<String, String> invalidMsgMMap) {
         BigDecimal totalAmount = new BigDecimal(0);
+        int totalCount = 0;
         for (TelTransferDTO telTransferDTO : telTransferDTOList) {
             ReceiveOrderData roData = buildReceiveOrderData(telTransferDTO);
-            receiveOrderService.createReceiveOrder(roData);
+            int roId = receiveOrderService.createReceiveOrder(roData);
+            if (roId <= 0) {
+                invalidMsgMMap.put(DUPICATE_TRADE_NO, String.format("导入失败，交易流水为 %s", telTransferDTO.getBankFlowId()));
+                continue;
+            }
+            totalCount++;
             totalAmount = totalAmount.add(roData.getReceiveAmount());
         }
-        return totalAmount;
+        msg.put("totalCount", totalCount);
+        msg.put("totalAmount", totalAmount);
     }
 
     private ReceiveOrderData buildReceiveOrderData(TelTransferDTO telTransferDTO) {
