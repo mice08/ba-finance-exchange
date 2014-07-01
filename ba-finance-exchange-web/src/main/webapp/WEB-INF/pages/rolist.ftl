@@ -79,7 +79,7 @@
         <td class="fs tb-item auto-break">{{= record.payerName}}</td>
         <td class="fs tb-item auto-break">{{= record.memo}}</td>
         <td class="fs tb-item auto-break">{{= record.status}}</td>
-        <td class="fs tb-item auto-break"><a href="#">修改</a>  <a href="#">作废</a></td>
+        <td class="fs tb-item auto-break"><a href="#" roId="{{= record.roId}}" class="modify-link">修改</a>  <a href="#">作废</a></td>
     </tr>
     {{/each}}
 
