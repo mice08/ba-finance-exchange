@@ -172,7 +172,7 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
 
 
     private boolean hasDuplicateFlowId(List<TelTransferDTO> telTransferDTOList, Multimap<String, String> invalidMsgMMap) {
-        boolean hasDuplicate = true;
+        boolean hasDuplicate = false;
         Map<String, Integer> bankFlowIdRowMap = Maps.newHashMap();
         for (int r = 0; r < telTransferDTOList.size(); ++r) {
             TelTransferDTO telTransferDTO = telTransferDTOList.get(r);
