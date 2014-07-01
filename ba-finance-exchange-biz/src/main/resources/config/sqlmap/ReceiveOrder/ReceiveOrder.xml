@@ -254,4 +254,61 @@
         WHERE ROID = #roId#
     </update>
 
+    <update id="updateReceiveOrder" parameterClass="map">
+        UPDATE FC_ReceiveOrder
+        SET
+        <isGreaterThan property="receiveOrderData.customerId" compareValue="0">
+            CustomerID = #receiveOrderData.customerId#,
+        </isGreaterThan>
+        <isGreaterThan property="receiveOrderData.shopId" compareValue="0">
+            ShopID = #receiveOrderData.shopId#,
+        </isGreaterThan>
+        <isGreaterThan property="receiveOrderData.status" compareValue="0">
+            Status = #receiveOrderData.status#,
+        </isGreaterThan>
+        <isGreaterThan property="receiveOrderData.receiveType" compareValue="0">
+            ReceiveType = #receiveOrderData.receiveType#,
+        </isGreaterThan>
+        <isNotEmpty property="receiveOrderData.bizContent">
+            BizContent = #receiveOrderData.bizContent#,
+        </isNotEmpty>
+        <isNotEmpty property="receiveOrderData.receiveTime">
+            ReceiveTime = #receiveOrderData.receiveTime#,
+        </isNotEmpty>
+        <isNotEmpty property="receiveOrderData.memo">
+            Memo = Memo + #receiveOrderData.memo#,
+        </isNotEmpty>
+        <isGreaterThan property="receiveOrderData.updateLoginId" compareValue="0">
+            UpdateLoginID = "receiveOrderData.updateLoginId",
+        </isGreaterThan>
+        UpdateTime = NOW()
+        WHERE ROID = #receiveOrderData.roId#
+    </update>
+
+    <select id="loadReceiveOrderDataByRoId" resultMap="receiveOrderData" parameterClass="map">
+        SELECT ro.ROID,
+        ro.CustomerID,
+        ro.ShopID,
+        ro.BusinessType,
+        ro.ReceiveAmount,
+        ro.ReceiveTime,
+        ro.PayTime,
+        ro.BankReceiveTime,
+        ro.PayChannel,
+        ro.ReceiveType,
+        ro.BizContent,
+        ro.TradeNo,
+        ro.BankID,
+        ro.Status,
+        ro.AddTime,
+        ro.AddLoginID,
+        ro.UpdateTime,
+        ro.UpdateLoginID,
+        ro.ReverseROID,
+        ro.Memo
+        FROM FC_ReceiveOrder ro
+        WHERE ROID = #roId#
+        LIMIT 1
+    </select>
+
 </sqlMap>

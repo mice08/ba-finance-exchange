@@ -145,4 +145,21 @@ public class ReceiveOrderDaoTest {
 		int result = receiveOrderDao.updateReceiveOrderByRoId(1, updateBean);
 		Assert.assertTrue(result > 0);
 	}
+
+    @Test
+    public void testUpdateReceiveOrder() throws Exception {
+        ReceiveOrderData receiveOrderData = new ReceiveOrderData();
+        receiveOrderData.setRoId(114);
+        receiveOrderData.setStatus(2);
+        receiveOrderData.setMemo("123");
+        receiveOrderData.setReceiveTime(new Date());
+        int result = receiveOrderDao.updateReceiveOrder(receiveOrderData);
+        Assert.assertTrue(result > 0);
+    }
+
+    @Test
+    public void testLoadReceiveOrderByRoId() throws Exception {
+        ReceiveOrderData orderData = receiveOrderDao.loadReceiveOrderDataByRoId(124);
+        Assert.assertNotNull(orderData);
+    }
 }
