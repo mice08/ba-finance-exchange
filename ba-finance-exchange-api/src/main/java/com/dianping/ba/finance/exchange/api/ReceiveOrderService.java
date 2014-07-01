@@ -59,4 +59,11 @@ public interface ReceiveOrderService {
 	 * @return
 	 */
 	boolean updateReverseRoId(int originRoId, int reverseRoId);
+
+    /**
+     * 更新收款单对象  customerId  shopId  status  receiveTime  receiveType  bizContent
+     * @param receiveOrderData
+     * @return
+     */
+    int updateReceiveOrder(ReceiveOrderData receiveOrderData);
 }

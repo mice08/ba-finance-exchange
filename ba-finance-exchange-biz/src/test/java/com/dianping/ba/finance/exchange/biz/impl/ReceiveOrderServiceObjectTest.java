@@ -115,4 +115,14 @@ public class ReceiveOrderServiceObjectTest {
 		Assert.assertTrue(result);
 		verify(receiveOrderDaoMock, times(1)).updateReceiveOrderByRoId(anyInt(), any(ReceiveOrderUpdateBean.class));
 	}
+
+    @Test
+    public void testUpdateReceiveOrder() throws Exception {
+        when(receiveOrderDaoMock.updateReceiveOrder(any(ReceiveOrderData.class))).thenReturn(1);
+
+        int result = receiveOrderServiceObjectStub.updateReceiveOrder(new ReceiveOrderData());
+
+        Assert.assertTrue(result > 0);
+        verify(receiveOrderDaoMock, times(1)).updateReceiveOrder(any(ReceiveOrderData.class));
+    }
 }

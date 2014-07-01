@@ -115,6 +115,13 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
 		return receiveOrderDao.updateReceiveOrderByRoId(originRoId, updateBean) > 0;
 	}
 
+    @Log(severity = 1, logAfter = true)
+    @ReturnDefault
+    @Override
+    public int updateReceiveOrder(ReceiveOrderData receiveOrderData){
+        return receiveOrderDao.updateReceiveOrder(receiveOrderData);
+    }
+
 	public void setReceiveOrderDao(ReceiveOrderDao receiveOrderDao) {
         this.receiveOrderDao = receiveOrderDao;
     }
