@@ -4,6 +4,7 @@ import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
+import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
@@ -47,6 +48,8 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     private String bizContent;
 
+    private String receiveTime;
+
     private int bankId;
 
     private String memo;
@@ -64,6 +67,10 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
     private int status;
 
     private String totalAmount;
+
+    private ReceiveOrderData receiveOrder;
+
+    private int roId;
 
 
     //查询结果，付款计划列表
@@ -131,6 +138,44 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
             code = ERROR_CODE;
             return SUCCESS;
         }
+    }
+
+    public String getReceiveOrderById(){
+        try {
+            receiveOrder = receiveOrderService.loadReceiveOrderDataByRoId(roId);
+        } catch (Exception e) {
+            MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.getReveiveOrderById error!", e);
+            code = ERROR_CODE;
+            return SUCCESS;
+        }
+        code = SUCCESS_CODE;
+        return SUCCESS;
+    }
+
+    public String updateReceiveOrder(){
+        try {
+            ReceiveOrderUpdateBean receiveOrderUpdateBean = buildUpdateReceiveOrder();
+            receiveOrderService.updateReceiveOrderConfirm(receiveOrderUpdateBean);
+        } catch (Exception e) {
+            MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.getReveiveOrderById error!", e);
+            code = ERROR_CODE;
+            return SUCCESS;
+        }
+        code = SUCCESS_CODE;
+        return SUCCESS;
+    }
+
+    private ReceiveOrderUpdateBean buildUpdateReceiveOrder() throws ParseException {
+        ReceiveOrderUpdateBean receiveOrderUpdateBean=new ReceiveOrderUpdateBean();
+        receiveOrderUpdateBean.setRoId(roId);
+        Date receiveTimeDate = DateUtil.isValidDate(receiveTime) ? DateUtil.formatDate(receiveTime, false) : null;
+        receiveOrderUpdateBean.setReceiveTime(receiveTimeDate);
+        receiveOrderUpdateBean.setBizContent(bizContent);
+        receiveOrderUpdateBean.setMemo(memo);
+        receiveOrderUpdateBean.setCustomerId(customerId);
+        receiveOrderUpdateBean.setReceiveType(ReceiveType.valueOf(receiveType));
+        receiveOrderUpdateBean.setUpdateLoginId(getLoginId());
+        return receiveOrderUpdateBean;
     }
 
     private List<ReceiveOrderBean> buildReceiveOrderBeans(List<ReceiveOrderData> receiveOrderDataList) {
@@ -342,5 +387,29 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     public void setTotalAmount(String totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public ReceiveOrderData getReceiveOrder() {
+        return receiveOrder;
+    }
+
+    public void setReceiveOrder(ReceiveOrderData receiveOrder) {
+        this.receiveOrder = receiveOrder;
+    }
+
+    public int getRoId() {
+        return roId;
+    }
+
+    public void setRoId(int roId) {
+        this.roId = roId;
+    }
+
+    public String getReceiveTime() {
+        return receiveTime;
+    }
+
+    public void setReceiveTime(String receiveTime) {
+        this.receiveTime = receiveTime;
     }
 }
