@@ -124,7 +124,7 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
                 valid = false;
                 invalidMsgMMap.put(INVALID_AMOUNT, String.format("第%d行：金额格式错误 %s", r, telTransferDTO.getAmount()));
             } else {
-                BigDecimal amount = new BigDecimal(telTransferDTO.getAmount());
+                BigDecimal amount = DecimalUtils.parseBigDecimal(telTransferDTO.getAmount());
                 if (amount.compareTo(BigDecimal.ZERO) <= 0) {
                     invalidMsgMMap.put(NEGATIVE_OR_ZERO_AMOUNT, String.format("第%d行：金额必须大于0 %s", r, telTransferDTO.getAmount()));
                 }
@@ -211,7 +211,7 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
         roData.setTradeNo(telTransferDTO.getBankFlowId());
         roData.setBankReceiveTime(DateUtils.formatDate(DATE_FORMAT, telTransferDTO.getBankReceiveDate()));
         roData.setMemo(telTransferDTO.getBankTradeType() + "-" + telTransferDTO.getMemo());
-        roData.setReceiveAmount(new BigDecimal(telTransferDTO.getAmount()));
+        roData.setReceiveAmount(DecimalUtils.parseBigDecimal(telTransferDTO.getAmount()));
         roData.setPayerAccountName(telTransferDTO.getPayerAccountName());
         roData.setPayerAccountNo(telTransferDTO.getPayerAccountNo());
         roData.setPayerBankName(telTransferDTO.getPayerBankName());
