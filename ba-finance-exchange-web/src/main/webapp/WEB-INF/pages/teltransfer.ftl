@@ -1,4 +1,6 @@
-<div id="import-tel-transfer" class="modal hide fade" style="z-index:50;left:auto;width:80%;margin-left: auto;margin-right: auto;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="import-tel-transfer" class="modal hide fade"
+     style="z-index:50;left:auto;margin-left: auto;margin-right: auto;"
+     tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header section-title">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h4 id="myModalLabel">导入电汇收款单</h4>
@@ -45,7 +47,8 @@
 
 
 <div id="tel-transfer-result" class="modal hide fade"
-     style="z-index:50;left:auto;width:80%;margin-left: auto;margin-right: auto;" tabindex="-1" role="dialog"
+     style="z-index:50;left:auto;margin-left: auto;margin-right: auto;" tabindex="-1"
+     role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header section-title">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
