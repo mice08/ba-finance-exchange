@@ -44,6 +44,9 @@ public class ReceiveOrderDaoTest {
 		receiveOrderData.setUpdateLoginId(7);
 		receiveOrderData.setUpdateTime(new Date());
 		receiveOrderData.setStatus(7);
+        receiveOrderData.setPayerAccountName("payerAccountName");
+        receiveOrderData.setPayerAccountNo("payerAccountNo");
+        receiveOrderData.setPayerBankName("payerBankName");
 		int roId = receiveOrderDao.insertReceiveOrderData(receiveOrderData);
 		Assert.assertTrue(roId > 1);
 	}
