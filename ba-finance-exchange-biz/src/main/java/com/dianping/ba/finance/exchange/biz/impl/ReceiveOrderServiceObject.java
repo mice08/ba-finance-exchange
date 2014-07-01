@@ -118,8 +118,37 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
     @Log(severity = 1, logAfter = true)
     @ReturnDefault
     @Override
-    public int updateReceiveOrder(ReceiveOrderData receiveOrderData){
-        return receiveOrderDao.updateReceiveOrder(receiveOrderData);
+    public int updateReceiveOrderConfirm(ReceiveOrderUpdateBean receiveOrderUpdateBean){
+        ReceiveOrderData receiveOrderUpdateData=buildReceiveOrderUpdateData(receiveOrderUpdateBean);
+        int result = receiveOrderDao.updateReceiveOrder(receiveOrderUpdateData);
+        if (result>0&&ReceiveOrderStatus.CONFIRMED.value() == receiveOrderUpdateData.getStatus()){
+            ReceiveOrderData receiveOrderData=loadReceiveOrderDataByRoId(receiveOrderUpdateData.getRoId());
+            ReceiveOrderResultBean receiveOrderResultBean = buildReceiveOrderResultBean(receiveOrderData, receiveOrderData.getUpdateLoginId());
+            receiveOrderResultNotify.receiveResultNotify(receiveOrderResultBean);
+        }
+        return result;
+    }
+
+    private ReceiveOrderData buildReceiveOrderUpdateData(ReceiveOrderUpdateBean receiveOrderUpdateBean) {
+        ReceiveOrderData receiveOrderData=new ReceiveOrderData();
+        receiveOrderData.setRoId(receiveOrderUpdateBean.getRoId());
+        receiveOrderData.setStatus(receiveOrderUpdateBean.getStatus());
+        receiveOrderData.setCustomerId(receiveOrderUpdateBean.getCustomerId());
+        receiveOrderData.setShopId(receiveOrderUpdateBean.getShopId());
+        receiveOrderData.setBizContent(receiveOrderUpdateBean.getBizContent());
+        receiveOrderData.setReceiveTime(receiveOrderUpdateBean.getReceiveTime());
+        receiveOrderData.setMemo(receiveOrderUpdateBean.getMemo());
+        receiveOrderData.setReverseRoId(receiveOrderUpdateBean.getReverseRoId());
+        receiveOrderData.setReceiveType(receiveOrderUpdateBean.getReceiveType()==null?0:receiveOrderUpdateBean.getReceiveType().value());
+        receiveOrderData.setUpdateLoginId(receiveOrderUpdateBean.getUpdateLoginId());
+        return receiveOrderData;
+    }
+
+    @Log(severity = 1, logAfter = true)
+    @ReturnDefault
+    @Override
+    public ReceiveOrderData loadReceiveOrderDataByRoId(int roId){
+        return receiveOrderDao.loadReceiveOrderDataByRoId(roId);
     }
 
 	public void setReceiveOrderDao(ReceiveOrderDao receiveOrderDao) {

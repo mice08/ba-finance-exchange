@@ -1,15 +1,30 @@
 package com.dianping.ba.finance.exchange.api.beans;
 
+import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Eric on 2014/6/11.
  */
 public class ReceiveOrderUpdateBean implements Serializable {
 
+    private int roId;
+
 	private int reverseRoId;
 
     private int status;
+
+    private ReceiveType receiveType;
+
+    private int customerId;
+
+    private int shopId;
+
+    private String bizContent;
+
+    private Date receiveTime;
 
 	private int updateLoginId;
 
@@ -18,45 +33,99 @@ public class ReceiveOrderUpdateBean implements Serializable {
     public ReceiveOrderUpdateBean() {
     }
 
-	public int getReverseRoId() {
-		return reverseRoId;
-	}
+    public int getRoId() {
+        return roId;
+    }
 
-	public void setReverseRoId(int reverseRoId) {
-		this.reverseRoId = reverseRoId;
-	}
+    public void setRoId(int roId) {
+        this.roId = roId;
+    }
 
-	public int getStatus() {
-		return status;
-	}
+    public int getReverseRoId() {
+        return reverseRoId;
+    }
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
+    public int getShopId() {
+        return shopId;
+    }
 
-	public String getMemo() {
-		return memo;
-	}
+    public void setShopId(int shopId) {
+        this.shopId = shopId;
+    }
 
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
+    public void setReverseRoId(int reverseRoId) {
+        this.reverseRoId = reverseRoId;
+    }
 
-	public int getUpdateLoginId() {
-		return updateLoginId;
-	}
+    public int getStatus() {
+        return status;
+    }
 
-	public void setUpdateLoginId(int updateLoginId) {
-		this.updateLoginId = updateLoginId;
-	}
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
-	@Override
-	public String toString() {
-		return "ReceiveOrderUpdateBean{" +
-				"reverseRoId=" + reverseRoId +
-				", status=" + status +
-				", updateLoginId=" + updateLoginId +
-				", memo='" + memo + '\'' +
-				'}';
-	}
+    public ReceiveType getReceiveType() {
+        return receiveType;
+    }
+
+    public void setReceiveType(ReceiveType receiveType) {
+        this.receiveType = receiveType;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getBizContent() {
+        return bizContent;
+    }
+
+    public void setBizContent(String bizContent) {
+        this.bizContent = bizContent;
+    }
+
+    public Date getReceiveTime() {
+        return receiveTime;
+    }
+
+    public void setReceiveTime(Date receiveTime) {
+        this.receiveTime = receiveTime;
+    }
+
+    public int getUpdateLoginId() {
+        return updateLoginId;
+    }
+
+    public void setUpdateLoginId(int updateLoginId) {
+        this.updateLoginId = updateLoginId;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    @Override
+    public String toString() {
+        return "ReceiveOrderUpdateBean{" +
+                "roId=" + roId +
+                ", reverseRoId=" + reverseRoId +
+                ", status=" + status +
+                ", receiveType=" + receiveType +
+                ", customerId=" + customerId +
+                ", shopId=" + shopId +
+                ", bizContent='" + bizContent + '\'' +
+                ", receiveTime=" + receiveTime +
+                ", updateLoginId=" + updateLoginId +
+                ", memo='" + memo + '\'' +
+                '}';
+    }
 }

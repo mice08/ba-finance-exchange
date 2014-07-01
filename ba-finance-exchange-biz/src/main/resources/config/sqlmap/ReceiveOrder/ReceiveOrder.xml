@@ -285,4 +285,30 @@
         WHERE ROID = #receiveOrderData.roId#
     </update>
 
+    <select id="loadReceiveOrderDataByRoId" resultMap="receiveOrderData" parameterClass="map">
+        SELECT ro.ROID,
+        ro.CustomerID,
+        ro.ShopID,
+        ro.BusinessType,
+        ro.ReceiveAmount,
+        ro.ReceiveTime,
+        ro.PayTime,
+        ro.BankReceiveTime,
+        ro.PayChannel,
+        ro.ReceiveType,
+        ro.BizContent,
+        ro.TradeNo,
+        ro.BankID,
+        ro.Status,
+        ro.AddTime,
+        ro.AddLoginID,
+        ro.UpdateTime,
+        ro.UpdateLoginID,
+        ro.ReverseROID,
+        ro.Memo
+        FROM FC_ReceiveOrder ro
+        WHERE ROID = #roId#
+        LIMIT 1
+    </select>
+
 </sqlMap>

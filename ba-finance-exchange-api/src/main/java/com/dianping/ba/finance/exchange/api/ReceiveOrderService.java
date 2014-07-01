@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.api;
 
 
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
+import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.core.type.PageModel;
 
@@ -61,9 +62,16 @@ public interface ReceiveOrderService {
 	boolean updateReverseRoId(int originRoId, int reverseRoId);
 
     /**
-     * 更新收款单对象  customerId  shopId  status  receiveTime  receiveType  bizContent
-     * @param receiveOrderData
+     * 更新确认收款单对象  customerId  shopId  status  receiveTime  receiveType  bizContent
+     * @param receiveOrderUpdateBean
      * @return
      */
-    int updateReceiveOrder(ReceiveOrderData receiveOrderData);
+    int updateReceiveOrderConfirm(ReceiveOrderUpdateBean receiveOrderUpdateBean);
+
+    /**
+     * 根据主键获取实体
+     * @param roId
+     * @return
+     */
+    ReceiveOrderData loadReceiveOrderDataByRoId(int roId);
 }

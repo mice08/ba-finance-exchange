@@ -65,4 +65,12 @@ public interface ReceiveOrderDao extends GenericDao {
      */
     @DAOAction(action = DAOActionType.UPDATE)
     int updateReceiveOrder(@DAOParam("receiveOrderData") ReceiveOrderData receiveOrderData);
+
+    /**
+     * 通过主键获取实体
+     * @param roId
+     * @return
+     */
+    @DAOAction(action = DAOActionType.LOAD)
+    ReceiveOrderData loadReceiveOrderDataByRoId(@DAOParam("roId") int roId);
 }

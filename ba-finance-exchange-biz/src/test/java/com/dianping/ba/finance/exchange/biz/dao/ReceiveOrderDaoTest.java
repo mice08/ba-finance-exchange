@@ -156,4 +156,10 @@ public class ReceiveOrderDaoTest {
         int result = receiveOrderDao.updateReceiveOrder(receiveOrderData);
         Assert.assertTrue(result > 0);
     }
+
+    @Test
+    public void testLoadReceiveOrderByRoId() throws Exception {
+        ReceiveOrderData orderData = receiveOrderDao.loadReceiveOrderDataByRoId(124);
+        Assert.assertNotNull(orderData);
+    }
 }
