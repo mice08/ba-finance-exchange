@@ -98,7 +98,7 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
         } catch(Exception e) {
             MONITOR_LOGGER.error(String.format("severity=[1] ImportTelTransferAjaxAction.importTelTransfer error! telTransferFile=%s", telTransferFile.getCanonicalPath()), e);
             invalidFileMsg = INVALID_FILE_MSG;
-            code = ERROR_CODE;
+            code = SUCCESS_CODE;
             return SUCCESS;
         }
     }
