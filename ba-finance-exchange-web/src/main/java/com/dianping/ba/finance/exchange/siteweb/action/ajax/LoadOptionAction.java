@@ -158,6 +158,19 @@ public class LoadOptionAction extends AjaxBaseAction {
         return SUCCESS;
     }
 
+    public String loadAllReceiveBankOption() {
+        option.put(0, "请选择收款银行账户");
+        List<ReceiveBankData> receiveBankDataList = receiveBankService.findAllReceiveBank();
+        for (ReceiveBankData receiveBankData : receiveBankDataList) {
+            CompanyIDName companyIDName = CompanyIDName.valueOf(receiveBankData.getCompanyId());
+            if (companyIDName != null) {
+                option.put(receiveBankData.getBankId(), companyIDName.getCompanyName());
+            }
+        }
+        code = SUCCESS_CODE;
+        return SUCCESS;
+    }
+
     @Override
     protected void jsonExecute() throws Exception {
 

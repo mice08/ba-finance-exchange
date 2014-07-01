@@ -154,6 +154,24 @@ public class LoadOptionActionTest {
     }
 
     @Test
+    public void testLoadAllReceiveBankOption() throws Exception {
+        ReceiveBankData rbData = new ReceiveBankData();
+        rbData.setAddTime(new Date());
+        rbData.setBankId(123);
+        rbData.setBankName("bankName");
+        rbData.setBusinessType(BusinessType.ADVERTISEMENT.value());
+        rbData.setCompanyId(1);
+        when(receiveBankServiceMock.findAllReceiveBank()).thenReturn(Arrays.asList(rbData));
+
+
+        String result = loadOptionActionStub.loadAllReceiveBankOption();
+        Assert.assertEquals(Action.SUCCESS, result);
+        Assert.assertEquals(AjaxBaseAction.SUCCESS_CODE, loadOptionActionStub.getCode());
+        Assert.assertEquals(2, loadOptionActionStub.getOption().size());
+
+    }
+
+    @Test
     public void testJsonExecute() throws Exception {
         loadOptionActionStub.jsonExecute();
     }
