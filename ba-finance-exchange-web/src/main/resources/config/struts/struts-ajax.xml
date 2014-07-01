@@ -59,6 +59,18 @@
             <result type="json"></result>
         </action>
 
+        <action name="getReceiveOrderById"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction"
+                method="getReceiveOrderById">
+            <result type="json"></result>
+        </action>
+
+        <action name="updateReceiveOrder"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction"
+                method="updateReceiveOrder">
+            <result type="json"></result>
+        </action>
+
 
         <action name="loadReceiveBankOption"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
