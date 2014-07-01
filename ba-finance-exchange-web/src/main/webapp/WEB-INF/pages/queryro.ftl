@@ -1,4 +1,5 @@
 <div id="import-tel-transfer" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     style="z-index:999"
      aria-hidden="true">
     <div class="modal-header section-title">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -31,6 +32,7 @@
     </div>
 </div>
 <div id="tel-transfer-result" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="tel-transfer-result"
+     style="z-index:999"
      aria-hidden="true">
     <div class="modal-header section-title">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -196,7 +198,7 @@
                             <span class="glyphicon glyphicon-pencil"></span>手工录入</a>
 
                         <a id="btn-import-tel-transfer" href="#import-tel-transfer" role="button" class="btn btn-primary btn-fs-normal btn-fs-xs ajaxdisabledbutton" data-toggle="modal">
-                            <span class="glyphicon glyphicon-file"></span>导入电汇收款单</a>
+                            <span class="glyphicon glyphicon-file"></span>导入</a>
                     </div>
                 </div>
             </div>
