@@ -121,16 +121,16 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
             }
             if (!DateUtils.isValidDate(telTransferDTO.getBankReceiveDate(), DATE_FORMAT)) {
                 valid = false;
-                invalidMsgMMap.put(INVALID_DATE, String.format("第%d行：日期格式错误 %s", r + 1, telTransferDTO.getBankReceiveDate()));
+                invalidMsgMMap.put(INVALID_DATE, String.format("第%d行：日期格式错误：%s", r + 1, telTransferDTO.getBankReceiveDate()));
             }
             if (!DecimalUtils.isValidBigDecimal(telTransferDTO.getAmount())) {
                 valid = false;
-                invalidMsgMMap.put(INVALID_AMOUNT, String.format("第%d行：金额格式错误 %s", r + 1, telTransferDTO.getAmount()));
+                invalidMsgMMap.put(INVALID_AMOUNT, String.format("第%d行：金额格式错误：%s", r + 1, telTransferDTO.getAmount()));
             } else {
                 BigDecimal amount = DecimalUtils.parseBigDecimal(telTransferDTO.getAmount());
                 if (amount.compareTo(BigDecimal.ZERO) <= 0) {
                     valid = false;
-                    invalidMsgMMap.put(NEGATIVE_OR_ZERO_AMOUNT, String.format("第%d行：金额必须大于0 %s", r + 1, telTransferDTO.getAmount()));
+                    invalidMsgMMap.put(NEGATIVE_OR_ZERO_AMOUNT, String.format("第%d行：金额必须大于0：%s", r + 1, telTransferDTO.getAmount()));
                 }
             }
         }
