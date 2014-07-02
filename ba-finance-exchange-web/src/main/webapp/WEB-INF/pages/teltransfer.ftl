@@ -1,5 +1,5 @@
 <div id="import-tel-transfer" class="modal hide fade"
-     style="z-index:50;left:auto;margin-left: auto;margin-right: auto;"
+     style="z-index:50;"
      tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header section-title">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -49,7 +49,7 @@
 
 
 <div id="tel-transfer-result" class="modal hide fade"
-     style="z-index:50;left:auto;margin-left: auto;margin-right: auto;" tabindex="-1"
+     style="z-index:50;" tabindex="-1"
      role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header section-title">
