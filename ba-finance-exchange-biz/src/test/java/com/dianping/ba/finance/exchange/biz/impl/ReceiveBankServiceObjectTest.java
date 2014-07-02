@@ -89,4 +89,21 @@ public class ReceiveBankServiceObjectTest {
 
 
     }
+
+    @Test
+    public void testLoadReceiveBankByBankId() throws Exception {
+        ReceiveBankData rbData = new ReceiveBankData();
+        rbData.setAddTime(new Date());
+        rbData.setBankId(123);
+        rbData.setBankName("bankName");
+        rbData.setBusinessType(BusinessType.ADVERTISEMENT.value());
+        rbData.setCompanyId(87);
+        when(receiveBankDaoMock.findAllReceiveBank()).thenReturn(Arrays.asList(rbData));
+
+        receiveBankServiceObjectStub.setCache(true);
+
+        ReceiveBankData receiveBankData = receiveBankServiceObjectStub.loadReceiveBankByBankId(123);
+        Assert.assertNotNull(receiveBankData);
+        Assert.assertEquals(123, receiveBankData.getBankId());
+    }
 }
