@@ -113,20 +113,20 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
             TelTransferDTO telTransferDTO = telTransferDTOList.get(r);
             StringBuilder emptyErrSb = new StringBuilder();
             if (hasEmptyField(telTransferDTO, emptyErrSb)) {
-                invalidMsgMMap.put(EMPTY_FIELD, String.format("第%d行：%s", r, emptyErrSb.toString()));
+                invalidMsgMMap.put(EMPTY_FIELD, String.format("第%d行：%s", r + 1, emptyErrSb.toString()));
                 continue;
             }
             if (!DateUtils.isValidDate(telTransferDTO.getBankReceiveDate(), DATE_FORMAT)) {
                 valid = false;
-                invalidMsgMMap.put(INVALID_DATE, String.format("第%d行：日期格式错误 %s", r, telTransferDTO.getBankReceiveDate()));
+                invalidMsgMMap.put(INVALID_DATE, String.format("第%d行：日期格式错误 %s", r + 1, telTransferDTO.getBankReceiveDate()));
             }
             if (!DecimalUtils.isValidBigDecimal(telTransferDTO.getAmount())) {
                 valid = false;
-                invalidMsgMMap.put(INVALID_AMOUNT, String.format("第%d行：金额格式错误 %s", r, telTransferDTO.getAmount()));
+                invalidMsgMMap.put(INVALID_AMOUNT, String.format("第%d行：金额格式错误 %s", r + 1, telTransferDTO.getAmount()));
             } else {
                 BigDecimal amount = DecimalUtils.parseBigDecimal(telTransferDTO.getAmount());
                 if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-                    invalidMsgMMap.put(NEGATIVE_OR_ZERO_AMOUNT, String.format("第%d行：金额必须大于0 %s", r, telTransferDTO.getAmount()));
+                    invalidMsgMMap.put(NEGATIVE_OR_ZERO_AMOUNT, String.format("第%d行：金额必须大于0 %s", r + 1, telTransferDTO.getAmount()));
                 }
             }
         }
@@ -183,7 +183,7 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
                 continue;
             }
             hasDuplicate = true;
-            invalidMsgMMap.put(DUPLICATE_ID, String.format("第%d行与第%d行，交易流水重复，ID=%s", duplicateRow, r, bankFlowId));
+            invalidMsgMMap.put(DUPLICATE_ID, String.format("第%d行与第%d行，交易流水重复，ID=%s", duplicateRow + 1, r + 1, bankFlowId));
         }
         return hasDuplicate;
     }
