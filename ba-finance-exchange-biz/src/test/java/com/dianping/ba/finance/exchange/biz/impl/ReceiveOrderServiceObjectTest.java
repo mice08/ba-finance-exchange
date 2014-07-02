@@ -5,6 +5,7 @@ import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify;
 import com.dianping.core.type.PageModel;
@@ -14,6 +15,7 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Date;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -127,12 +129,36 @@ public class ReceiveOrderServiceObjectTest {
         ReceiveOrderUpdateBean receiveOrderUpdateBean=new ReceiveOrderUpdateBean();
         receiveOrderUpdateBean.setRoId(1);
         receiveOrderUpdateBean.setStatus(2);
+        receiveOrderUpdateBean.setReceiveType(ReceiveType.AD_FEE);
+        receiveOrderUpdateBean.setCustomerId(123);
+        receiveOrderUpdateBean.setBizContent("AD2014SH0001");
+        receiveOrderUpdateBean.setReceiveTime(new Date());
         int result = receiveOrderServiceObjectStub.updateReceiveOrderConfirm(receiveOrderUpdateBean);
 
         Assert.assertTrue(result > 0);
         verify(receiveOrderDaoMock, times(1)).updateReceiveOrder(any(ReceiveOrderData.class));
         verify(receiveOrderDaoMock, times(1)).loadReceiveOrderDataByRoId(anyInt());
         verify(receiveOrderResultNotifyMock, times(1)).receiveResultNotify(any(ReceiveOrderResultBean.class));
+    }
+
+    @Test
+    public void testUpdateReceiveOrderConfirmWrong() throws Exception {
+        when(receiveOrderDaoMock.updateReceiveOrder(any(ReceiveOrderData.class))).thenReturn(1);
+        ReceiveOrderData receiveOrderData=new ReceiveOrderData();
+        receiveOrderData.setRoId(1);
+        receiveOrderData.setStatus(2);
+        when(receiveOrderDaoMock.loadReceiveOrderDataByRoId(anyInt())).thenReturn(receiveOrderData);
+
+        ReceiveOrderUpdateBean receiveOrderUpdateBean=new ReceiveOrderUpdateBean();
+        receiveOrderUpdateBean.setRoId(1);
+        receiveOrderUpdateBean.setStatus(2);
+        receiveOrderUpdateBean.setCustomerId(0);
+        int result = receiveOrderServiceObjectStub.updateReceiveOrderConfirm(receiveOrderUpdateBean);
+
+        Assert.assertTrue(result == -1);
+        verify(receiveOrderDaoMock, times(0)).updateReceiveOrder(any(ReceiveOrderData.class));
+        verify(receiveOrderDaoMock, times(0)).loadReceiveOrderDataByRoId(anyInt());
+        verify(receiveOrderResultNotifyMock, times(0)).receiveResultNotify(any(ReceiveOrderResultBean.class));
     }
 
     @Test
