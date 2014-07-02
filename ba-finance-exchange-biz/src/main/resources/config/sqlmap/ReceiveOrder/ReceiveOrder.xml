@@ -282,7 +282,7 @@
             ReceiveTime = #receiveOrderData.receiveTime#,
         </isNotEmpty>
         <isNotEmpty property="receiveOrderData.memo">
-            Memo = Memo + #receiveOrderData.memo#,
+            Memo = #receiveOrderData.memo#,
         </isNotEmpty>
         <isGreaterThan property="receiveOrderData.updateLoginId" compareValue="0">
             UpdateLoginID = "receiveOrderData.updateLoginId",
