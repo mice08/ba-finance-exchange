@@ -119,7 +119,7 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
     @ReturnDefault
     @Override
     public int updateReceiveOrderConfirm(ReceiveOrderUpdateBean receiveOrderUpdateBean){
-        if (checkReceiveOrderUpdateBeanConfirmStatus(receiveOrderUpdateBean)){
+        if (!checkReceiveOrderUpdateBeanConfirmStatus(receiveOrderUpdateBean)){
             return -1;
         }
         ReceiveOrderData receiveOrderUpdateData=buildReceiveOrderUpdateData(receiveOrderUpdateBean);
