@@ -200,7 +200,13 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderBean.setPayerName("");
         receiveOrderBean.setReceiveAmount(new DecimalFormat("##,###,###,###,##0.00").format(receiveOrderData.getReceiveAmount()));
         receiveOrderBean.setReceiveTime(DateUtil.formatDateToString(receiveOrderData.getReceiveTime(), "yyyy-MM-dd"));
-        receiveOrderBean.setReceiveType(ReceiveType.valueOf(receiveOrderData.getReceiveType()).toString());
+        ReceiveType rt = ReceiveType.valueOf(receiveOrderData.getReceiveType());
+        if (rt == ReceiveType.DEFAULT) {
+            receiveOrderBean.setReceiveType(rt.toString());
+        } else {
+            // 未匹配的，暂时显示为空
+            receiveOrderBean.setReceiveType("");
+        }
         receiveOrderBean.setRoId(receiveOrderData.getRoId());
         receiveOrderBean.setStatus(ReceiveOrderStatus.valueOf(receiveOrderData.getStatus()).toString());
         return receiveOrderBean;
