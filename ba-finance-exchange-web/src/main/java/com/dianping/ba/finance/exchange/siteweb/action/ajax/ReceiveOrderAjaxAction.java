@@ -176,6 +176,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderUpdateBean.setBizContent(bizContent);
         receiveOrderUpdateBean.setMemo(memo);
         receiveOrderUpdateBean.setCustomerId(customerId);
+        receiveOrderUpdateBean.setStatus(status);
         receiveOrderUpdateBean.setReceiveType(ReceiveType.valueOf(receiveType));
         receiveOrderUpdateBean.setUpdateLoginId(getLoginId());
         return receiveOrderUpdateBean;

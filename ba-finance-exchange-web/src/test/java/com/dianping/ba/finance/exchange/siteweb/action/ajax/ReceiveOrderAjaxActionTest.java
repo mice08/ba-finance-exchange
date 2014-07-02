@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
+import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
@@ -30,6 +31,19 @@ public class ReceiveOrderAjaxActionTest {
 
         receiveOrderServiceMock = mock(ReceiveOrderService.class);
         receiveOrderAjaxActionStub.setReceiveOrderService(receiveOrderServiceMock);
+    }
+
+    @Test
+    public void testUpdateReceiveOrder(){
+        receiveOrderAjaxActionStub.updateReceiveOrder();
+        verify(receiveOrderServiceMock, times(1)).updateReceiveOrderConfirm(any(ReceiveOrderUpdateBean.class));
+    }
+
+    @Test
+    public void testGetReceiveOrderById(){
+        when(receiveOrderServiceMock.loadReceiveOrderDataByRoId(anyInt())).thenReturn(new ReceiveOrderData());
+        receiveOrderAjaxActionStub.getReceiveOrderById();
+        Assert.assertNotNull(receiveOrderAjaxActionStub.getReceiveOrder());
     }
 
     @Test

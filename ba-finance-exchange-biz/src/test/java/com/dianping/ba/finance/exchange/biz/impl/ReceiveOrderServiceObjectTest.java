@@ -119,7 +119,7 @@ public class ReceiveOrderServiceObjectTest {
 	}
 
     @Test
-    public void testUpdateReceiveOrderConfirm() throws Exception {
+    public void testUpdateReceiveOrderConfirmWrong() throws Exception {
         when(receiveOrderDaoMock.updateReceiveOrder(any(ReceiveOrderData.class))).thenReturn(1);
         ReceiveOrderData receiveOrderData=new ReceiveOrderData();
         receiveOrderData.setRoId(1);
@@ -135,14 +135,14 @@ public class ReceiveOrderServiceObjectTest {
         receiveOrderUpdateBean.setReceiveTime(new Date());
         int result = receiveOrderServiceObjectStub.updateReceiveOrderConfirm(receiveOrderUpdateBean);
 
-        Assert.assertTrue(result > 0);
-        verify(receiveOrderDaoMock, times(1)).updateReceiveOrder(any(ReceiveOrderData.class));
-        verify(receiveOrderDaoMock, times(1)).loadReceiveOrderDataByRoId(anyInt());
-        verify(receiveOrderResultNotifyMock, times(1)).receiveResultNotify(any(ReceiveOrderResultBean.class));
+        Assert.assertTrue(result == -1);
+        verify(receiveOrderDaoMock, times(0)).updateReceiveOrder(any(ReceiveOrderData.class));
+        verify(receiveOrderDaoMock, times(0)).loadReceiveOrderDataByRoId(anyInt());
+        verify(receiveOrderResultNotifyMock, times(0)).receiveResultNotify(any(ReceiveOrderResultBean.class));
     }
 
     @Test
-    public void testUpdateReceiveOrderConfirmWrong() throws Exception {
+    public void testUpdateReceiveOrderConfirm() throws Exception {
         when(receiveOrderDaoMock.updateReceiveOrder(any(ReceiveOrderData.class))).thenReturn(1);
         ReceiveOrderData receiveOrderData=new ReceiveOrderData();
         receiveOrderData.setRoId(1);
@@ -155,10 +155,12 @@ public class ReceiveOrderServiceObjectTest {
         receiveOrderUpdateBean.setCustomerId(0);
         int result = receiveOrderServiceObjectStub.updateReceiveOrderConfirm(receiveOrderUpdateBean);
 
-        Assert.assertTrue(result == -1);
-        verify(receiveOrderDaoMock, times(0)).updateReceiveOrder(any(ReceiveOrderData.class));
-        verify(receiveOrderDaoMock, times(0)).loadReceiveOrderDataByRoId(anyInt());
-        verify(receiveOrderResultNotifyMock, times(0)).receiveResultNotify(any(ReceiveOrderResultBean.class));
+        Assert.assertTrue(result > 0);
+        verify(receiveOrderDaoMock, times(1)).updateReceiveOrder(any(ReceiveOrderData.class));
+        verify(receiveOrderDaoMock, times(1)).loadReceiveOrderDataByRoId(anyInt());
+        verify(receiveOrderResultNotifyMock, times(1)).receiveResultNotify(any(ReceiveOrderResultBean.class));
+
+
     }
 
     @Test
