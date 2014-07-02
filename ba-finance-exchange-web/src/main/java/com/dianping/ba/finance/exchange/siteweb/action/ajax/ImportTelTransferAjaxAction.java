@@ -115,6 +115,7 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
             TelTransferDTO telTransferDTO = telTransferDTOList.get(r);
             StringBuilder emptyErrSb = new StringBuilder();
             if (hasEmptyField(telTransferDTO, emptyErrSb)) {
+                valid = false;
                 invalidMsgMMap.put(EMPTY_FIELD, String.format("第%d行：%s", r + 1, emptyErrSb.toString()));
                 continue;
             }
