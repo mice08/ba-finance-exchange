@@ -129,6 +129,7 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
             } else {
                 BigDecimal amount = DecimalUtils.parseBigDecimal(telTransferDTO.getAmount());
                 if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+                    valid = false;
                     invalidMsgMMap.put(NEGATIVE_OR_ZERO_AMOUNT, String.format("第%d行：金额必须大于0 %s", r + 1, telTransferDTO.getAmount()));
                 }
             }
