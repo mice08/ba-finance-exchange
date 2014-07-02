@@ -14,7 +14,7 @@
                         <div class="">
                             <select id="tt-import-bankId" name="bankId" class="form_value"
                                     validate="ne[0]"
-                                    error_msg="ne[0]:请选择产品线">
+                                    error_msg="ne[0]:请选择收款银行账户">
                                 <option value="0">请选择收款银行账户</option>
                             </select>
                         </div>
