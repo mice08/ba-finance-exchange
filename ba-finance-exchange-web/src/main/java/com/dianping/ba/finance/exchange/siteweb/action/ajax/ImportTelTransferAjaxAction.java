@@ -196,8 +196,9 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
     private void handleTelTransferList(List<TelTransferDTO> telTransferDTOList, Multimap<String, String> invalidMsgMMap) {
         BigDecimal totalAmount = new BigDecimal(0);
         int totalCount = 0;
+        int loginId = getLoginId();
         for (TelTransferDTO telTransferDTO : telTransferDTOList) {
-            ReceiveOrderData roData = buildReceiveOrderData(telTransferDTO);
+            ReceiveOrderData roData = buildReceiveOrderData(telTransferDTO, loginId);
             int roId = receiveOrderService.createReceiveOrder(roData);
             if (roId <= 0) {
                 invalidMsgMMap.put(DUPICATE_TRADE_NO, String.format("导入失败，交易流水为 %s", telTransferDTO.getBankFlowId()));
@@ -210,7 +211,7 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
         msg.put("totalAmount", totalAmount);
     }
 
-    private ReceiveOrderData buildReceiveOrderData(TelTransferDTO telTransferDTO) {
+    private ReceiveOrderData buildReceiveOrderData(TelTransferDTO telTransferDTO, int loginId) {
         ReceiveOrderData roData = new ReceiveOrderData();
         roData.setTradeNo(telTransferDTO.getBankFlowId());
         roData.setBankReceiveTime(DateUtils.formatDate(DATE_FORMAT, telTransferDTO.getBankReceiveDate()));
@@ -222,6 +223,8 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
         roData.setStatus(ReceiveOrderStatus.UNCONFIRMED.value());
         roData.setPayChannel(ReceiveOrderPayChannel.TELEGRAPHIC_TRANSFER.value());
         roData.setReceiveType(ReceiveType.DEFAULT.value());
+        roData.setAddLoginId(loginId);
+        roData.setUpdateLoginId(loginId);
 
         ReceiveBankData bankData = receiveBankService.loadReceiveBankByBankId(bankId);
         roData.setBusinessType(bankData.getBusinessType());
