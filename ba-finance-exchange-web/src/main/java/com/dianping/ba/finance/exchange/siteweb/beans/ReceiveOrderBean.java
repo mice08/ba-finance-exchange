@@ -18,6 +18,7 @@ public class ReceiveOrderBean {
     private String payChannel;
     private String receiveNotifyId;
     private String payerName;
+    private int customerId;
     private String status;
     private String memo;
 
@@ -123,5 +124,13 @@ public class ReceiveOrderBean {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 }

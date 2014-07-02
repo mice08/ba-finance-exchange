@@ -68,7 +68,9 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     private String totalAmount;
 
-    private ReceiveOrderData receiveOrder;
+    private ReceiveOrderBean receiveOrder;
+
+    private ReceiveOrderData receiveOrderData;
 
     private int roId;
 
@@ -142,7 +144,8 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     public String getReceiveOrderById(){
         try {
-            receiveOrder = receiveOrderService.loadReceiveOrderDataByRoId(roId);
+            receiveOrderData = receiveOrderService.loadReceiveOrderDataByRoId(roId);
+            receiveOrder = convertRODataToROBean(receiveOrderData);
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.getReveiveOrderById error!", e);
             code = ERROR_CODE;
@@ -195,6 +198,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderBean.setBizContent(receiveOrderData.getBizContent());
         receiveOrderBean.setBusinessType(BusinessType.valueOf(receiveOrderData.getBusinessType()).toString());
         receiveOrderBean.setCustomerName(getCustomerNameById(receiveOrderData.getCustomerId()));
+        receiveOrderBean.setCustomerId(receiveOrderData.getCustomerId());
         receiveOrderBean.setMemo(receiveOrderData.getMemo());
         receiveOrderBean.setPayChannel(ReceiveOrderPayChannel.valueOf(receiveOrderData.getPayChannel()).toString());
         receiveOrderBean.setPayerName("");
@@ -389,14 +393,6 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         this.totalAmount = totalAmount;
     }
 
-    public ReceiveOrderData getReceiveOrder() {
-        return receiveOrder;
-    }
-
-    public void setReceiveOrder(ReceiveOrderData receiveOrder) {
-        this.receiveOrder = receiveOrder;
-    }
-
     public int getRoId() {
         return roId;
     }
@@ -411,5 +407,21 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     public void setReceiveTime(String receiveTime) {
         this.receiveTime = receiveTime;
+    }
+
+    public ReceiveOrderBean getReceiveOrder() {
+        return receiveOrder;
+    }
+
+    public void setReceiveOrder(ReceiveOrderBean receiveOrder) {
+        this.receiveOrder = receiveOrder;
+    }
+
+    public ReceiveOrderData getReceiveOrderData() {
+        return receiveOrderData;
+    }
+
+    public void setReceiveOrderData(ReceiveOrderData receiveOrderData) {
+        this.receiveOrderData = receiveOrderData;
     }
 }

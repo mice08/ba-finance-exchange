@@ -28,8 +28,8 @@
 
                     <th width="7%" class="fs tb-header">客户名</th>
                     <th width="7%" class="fs tb-header">收款金额</th>
-                    <th width="8%" class="fs tb-header">银行到账日期</th>
-                    <th width="8%" class="fs tb-header">系统收款日期</th>
+                    <th width="8%" class="fs tb-header">到款日期</th>
+                    <th width="8%" class="fs tb-header">系统入账日期</th>
                     <th width="8%" class="fs tb-header">业务类型</th>
                     <th width="8%" class="fs tb-header">业务信息</th>
                     <th width="6%" class="fs tb-header">收款方式</th>
@@ -79,7 +79,7 @@
         <td class="fs tb-item auto-break">{{= record.payerName}}</td>
         <td class="fs tb-item auto-break">{{= record.memo}}</td>
         <td class="fs tb-item auto-break">{{= record.status}}</td>
-        <td class="fs tb-item auto-break"><a href="#" roId="{{= record.roId}}" class="modify-link">修改</a>  <a href="#">作废</a></td>
+        <td class="fs tb-item auto-break">{{if record.status=="待确认"}}<a href="javascript:void(0)" roId="{{= record.roId}}" class="modify-link">修改</a> {{/if}} <a href="#">作废</a></td>
     </tr>
     {{/each}}
 
