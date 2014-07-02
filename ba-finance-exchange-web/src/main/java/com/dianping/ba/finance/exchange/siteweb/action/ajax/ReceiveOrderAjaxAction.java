@@ -201,7 +201,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderBean.setReceiveAmount(new DecimalFormat("##,###,###,###,##0.00").format(receiveOrderData.getReceiveAmount()));
         receiveOrderBean.setReceiveTime(DateUtil.formatDateToString(receiveOrderData.getReceiveTime(), "yyyy-MM-dd"));
         ReceiveType rt = ReceiveType.valueOf(receiveOrderData.getReceiveType());
-        if (rt == ReceiveType.DEFAULT) {
+        if (rt != ReceiveType.DEFAULT) {
             receiveOrderBean.setReceiveType(rt.toString());
         } else {
             // 未匹配的，暂时显示为空
