@@ -29,7 +29,11 @@
                                    size="31">
 
                             <div class="input-append">
-                                <input type="text" name="upload-file" data-bind="value: filename" placeholder="这里是文件名">
+                                <input id="upload-file-input"
+                                       type="text" name="upload-file"
+                                       data-bind="value: filename" placeholder="这里是文件名"
+                                       validate="+"
+                                       error_msg="+:请选择文件" >
                                 <button id="choose-file" class="btn btn-default btn-fs-default btn-fs-sm" type="button">
                                     选择文件
                                 </button>
