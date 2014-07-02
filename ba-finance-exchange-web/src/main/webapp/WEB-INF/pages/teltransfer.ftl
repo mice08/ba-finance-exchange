@@ -1,5 +1,5 @@
 <div id="import-tel-transfer" class="modal hide fade"
-     style="z-index:50;left:auto;margin-left: auto;margin-right: auto;"
+     style="z-index:50;"
      tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header section-title">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -14,7 +14,7 @@
                         <div class="">
                             <select id="tt-import-bankId" name="bankId" class="form_value"
                                     validate="ne[0]"
-                                    error_msg="ne[0]:请选择产品线">
+                                    error_msg="ne[0]:请选择收款银行账户">
                                 <option value="0">请选择收款银行账户</option>
                             </select>
                         </div>
@@ -29,7 +29,11 @@
                                    size="31">
 
                             <div class="input-append">
-                                <input type="text" name="upload-file" data-bind="value: filename" placeholder="这里是文件名">
+                                <input id="upload-file-input"
+                                       type="text" name="upload-file"
+                                       data-bind="value: filename" placeholder="这里是文件名"
+                                       validate="+"
+                                       error_msg="+:请选择文件" >
                                 <button id="choose-file" class="btn btn-default btn-fs-default btn-fs-sm" type="button">
                                     选择文件
                                 </button>
@@ -49,7 +53,7 @@
 
 
 <div id="tel-transfer-result" class="modal hide fade"
-     style="z-index:50;left:auto;margin-left: auto;margin-right: auto;" tabindex="-1"
+     style="z-index:50;" tabindex="-1"
      role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header section-title">

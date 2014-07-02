@@ -7,7 +7,9 @@ import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveBankData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.dtos.TelTransferDTO;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
 import com.dianping.finance.common.util.DateUtils;
 import com.dianping.finance.common.util.DecimalUtils;
 import com.google.common.collect.LinkedListMultimap;
@@ -98,7 +100,7 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
         } catch(Exception e) {
             MONITOR_LOGGER.error(String.format("severity=[1] ImportTelTransferAjaxAction.importTelTransfer error! telTransferFile=%s", telTransferFile.getCanonicalPath()), e);
             invalidFileMsg = INVALID_FILE_MSG;
-            code = ERROR_CODE;
+            code = SUCCESS_CODE;
             return SUCCESS;
         }
     }
@@ -113,20 +115,22 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
             TelTransferDTO telTransferDTO = telTransferDTOList.get(r);
             StringBuilder emptyErrSb = new StringBuilder();
             if (hasEmptyField(telTransferDTO, emptyErrSb)) {
-                invalidMsgMMap.put(EMPTY_FIELD, String.format("第%d行：%s", r, emptyErrSb.toString()));
+                valid = false;
+                invalidMsgMMap.put(EMPTY_FIELD, String.format("第%d行：%s", r + 2, emptyErrSb.toString()));
                 continue;
             }
             if (!DateUtils.isValidDate(telTransferDTO.getBankReceiveDate(), DATE_FORMAT)) {
                 valid = false;
-                invalidMsgMMap.put(INVALID_DATE, String.format("第%d行：日期格式错误 %s", r, telTransferDTO.getBankReceiveDate()));
+                invalidMsgMMap.put(INVALID_DATE, String.format("第%d行：日期格式错误：%s", r + 2, telTransferDTO.getBankReceiveDate()));
             }
             if (!DecimalUtils.isValidBigDecimal(telTransferDTO.getAmount())) {
                 valid = false;
-                invalidMsgMMap.put(INVALID_AMOUNT, String.format("第%d行：金额格式错误 %s", r, telTransferDTO.getAmount()));
+                invalidMsgMMap.put(INVALID_AMOUNT, String.format("第%d行：金额格式错误：%s", r + 2, telTransferDTO.getAmount()));
             } else {
-                BigDecimal amount = new BigDecimal(telTransferDTO.getAmount());
+                BigDecimal amount = DecimalUtils.parseBigDecimal(telTransferDTO.getAmount());
                 if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-                    invalidMsgMMap.put(NEGATIVE_OR_ZERO_AMOUNT, String.format("第%d行：金额必须大于0 %s", r, telTransferDTO.getAmount()));
+                    valid = false;
+                    invalidMsgMMap.put(NEGATIVE_OR_ZERO_AMOUNT, String.format("第%d行：金额必须大于0：%s", r + 2, telTransferDTO.getAmount()));
                 }
             }
         }
@@ -183,7 +187,7 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
                 continue;
             }
             hasDuplicate = true;
-            invalidMsgMMap.put(DUPLICATE_ID, String.format("第%d行与第%d行，交易流水重复，ID=%s", duplicateRow, r, bankFlowId));
+            invalidMsgMMap.put(DUPLICATE_ID, String.format("第%d行与第%d行，交易流水重复，ID=%s", duplicateRow + 2, r + 2, bankFlowId));
         }
         return hasDuplicate;
     }
@@ -192,8 +196,9 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
     private void handleTelTransferList(List<TelTransferDTO> telTransferDTOList, Multimap<String, String> invalidMsgMMap) {
         BigDecimal totalAmount = new BigDecimal(0);
         int totalCount = 0;
+        int loginId = getLoginId();
         for (TelTransferDTO telTransferDTO : telTransferDTOList) {
-            ReceiveOrderData roData = buildReceiveOrderData(telTransferDTO);
+            ReceiveOrderData roData = buildReceiveOrderData(telTransferDTO, loginId);
             int roId = receiveOrderService.createReceiveOrder(roData);
             if (roId <= 0) {
                 invalidMsgMMap.put(DUPICATE_TRADE_NO, String.format("导入失败，交易流水为 %s", telTransferDTO.getBankFlowId()));
@@ -206,16 +211,20 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
         msg.put("totalAmount", totalAmount);
     }
 
-    private ReceiveOrderData buildReceiveOrderData(TelTransferDTO telTransferDTO) {
+    private ReceiveOrderData buildReceiveOrderData(TelTransferDTO telTransferDTO, int loginId) {
         ReceiveOrderData roData = new ReceiveOrderData();
         roData.setTradeNo(telTransferDTO.getBankFlowId());
         roData.setBankReceiveTime(DateUtils.formatDate(DATE_FORMAT, telTransferDTO.getBankReceiveDate()));
         roData.setMemo(telTransferDTO.getBankTradeType() + "-" + telTransferDTO.getMemo());
-        roData.setReceiveAmount(new BigDecimal(telTransferDTO.getAmount()));
+        roData.setReceiveAmount(DecimalUtils.parseBigDecimal(telTransferDTO.getAmount()));
         roData.setPayerAccountName(telTransferDTO.getPayerAccountName());
         roData.setPayerAccountNo(telTransferDTO.getPayerAccountNo());
         roData.setPayerBankName(telTransferDTO.getPayerBankName());
         roData.setStatus(ReceiveOrderStatus.UNCONFIRMED.value());
+        roData.setPayChannel(ReceiveOrderPayChannel.TELEGRAPHIC_TRANSFER.value());
+        roData.setReceiveType(ReceiveType.DEFAULT.value());
+        roData.setAddLoginId(loginId);
+        roData.setUpdateLoginId(loginId);
 
         ReceiveBankData bankData = receiveBankService.loadReceiveBankByBankId(bankId);
         roData.setBusinessType(bankData.getBusinessType());

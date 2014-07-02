@@ -1,11 +1,9 @@
 package com.dianping.ba.finance.exchange.siteweb.action.ajax
-
 import com.dianping.ba.finance.exchange.api.ReceiveBankService
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService
 import com.dianping.ba.finance.exchange.api.datas.ReceiveBankData
-import com.dianping.ba.finance.exchange.api.dtos.TelTransferDTO
+import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData
 import spock.lang.Specification
-
 /**
  * Created by will on 14-7-1.
  */
@@ -28,7 +26,7 @@ class ImportTelTransferAjaxActionTest extends Specification {
 
     def "ImportTelTransfer for Empty Excel"(String invalidFileMsg, String fileName) {
         given:
-        importTelTransferAjaxActionStub.telTransferFile=new File(getClass().getResource(fileName)==null?"":getClass().getResource(fileName).getPath());
+        importTelTransferAjaxActionStub.telTransferFile = new File(getClass().getResource(fileName) == null ? "" : getClass().getResource(fileName).getPath());
 
         expect:
         importTelTransferAjaxActionStub.importTelTransfer();
@@ -42,14 +40,15 @@ class ImportTelTransferAjaxActionTest extends Specification {
 
     def "ImportTelTransfer for Normal Excel"(boolean isNormal, String fileName) {
         given:
-        importTelTransferAjaxActionStub.telTransferFile=new File(getClass().getResource(fileName).getPath());
+        importTelTransferAjaxActionStub.telTransferFile = new File(getClass().getResource(fileName).getPath());
         receiveBankServiceMock.loadReceiveBankByBankId(_ as Integer) >> {
             [] as ReceiveBankData;
         }
+        receiveOrderServiceMock.createReceiveOrder(_ as ReceiveOrderData) >> 1
 
         expect:
         importTelTransferAjaxActionStub.importTelTransfer();
-        isNormal == (importTelTransferAjaxActionStub.msg==null);
+        isNormal == (importTelTransferAjaxActionStub.msg["totalCount"] == 1);
 
         where:
         isNormal | fileName
@@ -58,11 +57,11 @@ class ImportTelTransferAjaxActionTest extends Specification {
 
     def "ImportTelTransfer for Invalid Excel"(boolean isNormal, String fileName) {
         given:
-        importTelTransferAjaxActionStub.telTransferFile=new File(getClass().getResource(fileName).getPath());
+        importTelTransferAjaxActionStub.telTransferFile = new File(getClass().getResource(fileName).getPath());
 
         expect:
         importTelTransferAjaxActionStub.importTelTransfer();
-        isNormal == (importTelTransferAjaxActionStub.msg==null);
+        isNormal == (importTelTransferAjaxActionStub.msg == null);
 
         where:
         isNormal | fileName
