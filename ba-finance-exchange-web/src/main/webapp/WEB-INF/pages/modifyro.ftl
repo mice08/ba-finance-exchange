@@ -53,7 +53,7 @@
                 <div class="control-group span6">
                     <label class="control-label">客户ID</label>
                     <div class="controls">
-                        <input type="text" id="m-customerId" name="customerId" class="load_value">
+                        <input type="text" id="m-customerId" name="customerId" class="form_value load_value">
                     </div>
                 </div>
                 <div class="control-group span6">
@@ -79,7 +79,7 @@
                     <label class="control-label">到款日期</label>
                     <div class="controls">
                         <div class="input-append">
-                            <input type="text" class="span12 load_value" id="m-bankReceiveTime" name="bankReceiveTime" datatype="date">
+                            <input type="text" class="span12 load_value form_value" id="m-receiveTime" name="receiveTime" datatype="date">
                         <span class="add-on">
                                                 <i class="icon-calendar">
                                                 </i>
