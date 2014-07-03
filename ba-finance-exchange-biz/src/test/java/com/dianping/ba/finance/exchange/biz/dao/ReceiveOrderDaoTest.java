@@ -152,10 +152,12 @@ public class ReceiveOrderDaoTest {
     @Test
     public void testUpdateReceiveOrder() throws Exception {
         ReceiveOrderData receiveOrderData = new ReceiveOrderData();
-        receiveOrderData.setRoId(114);
-        receiveOrderData.setStatus(2);
-        receiveOrderData.setMemo("123");
-        receiveOrderData.setReceiveTime(new Date());
+        receiveOrderData.setRoId(117);
+//        receiveOrderData.setStatus(2);
+        receiveOrderData.setMemo("dddd");
+        receiveOrderData.setBizContent("3333");
+        receiveOrderData.setUpdateLoginId(-1);
+//        receiveOrderData.setReceiveTime(new Date());
         int result = receiveOrderDao.updateReceiveOrder(receiveOrderData);
         Assert.assertTrue(result > 0);
     }
