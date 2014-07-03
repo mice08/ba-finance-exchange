@@ -142,9 +142,9 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
                     &&receiveOrderUpdateBean.getCustomerId()>0
                     &&StringUtils.isNotEmpty(receiveOrderUpdateBean.getBizContent())
                     &&receiveOrderUpdateBean.getReceiveType().value()>0){
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
     }
 
