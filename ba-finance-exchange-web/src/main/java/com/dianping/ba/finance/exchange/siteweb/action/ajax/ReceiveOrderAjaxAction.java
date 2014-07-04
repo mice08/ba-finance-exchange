@@ -200,7 +200,9 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     private ReceiveOrderBean convertRODataToROBean(ReceiveOrderData receiveOrderData) {
         ReceiveOrderBean receiveOrderBean = new ReceiveOrderBean();
-        receiveOrderBean.setBankReceiveTime(DateUtil.formatDateToString(receiveOrderData.getBankReceiveTime(), "yyyy-MM-dd"));
+        if (receiveOrderData.getBankReceiveTime() != null) {
+            receiveOrderBean.setBankReceiveTime(DateUtil.formatDateToString(receiveOrderData.getBankReceiveTime(), "yyyy-MM-dd"));
+        }
         receiveOrderBean.setBizContent(receiveOrderData.getBizContent());
         receiveOrderBean.setBusinessType(BusinessType.valueOf(receiveOrderData.getBusinessType()).toString());
         receiveOrderBean.setCustomerName(getCustomerNameById(receiveOrderData.getCustomerId()));
