@@ -142,7 +142,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         }
     }
 
-    public String getReceiveOrderById(){
+    public String loadReceiveOrderById(){
         try {
             receiveOrderData = receiveOrderService.loadReceiveOrderDataByRoId(roId);
             receiveOrder = convertRODataToROBean(receiveOrderData);
