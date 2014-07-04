@@ -237,7 +237,8 @@
         ro.UpdateTime,
         ro.UpdateLoginID,
         ro.ReverseROID,
-        ro.Memo
+        ro.Memo,
+        ro.PayerAccountName
         FROM FC_ReceiveOrder ro
         WHERE TradeNo = #tradeNo#
         LIMIT 1
@@ -313,7 +314,8 @@
         ro.UpdateTime,
         ro.UpdateLoginID,
         ro.ReverseROID,
-        ro.Memo
+        ro.Memo,
+        ro.PayerAccountName
         FROM FC_ReceiveOrder ro
         WHERE ROID = #roId#
         LIMIT 1
