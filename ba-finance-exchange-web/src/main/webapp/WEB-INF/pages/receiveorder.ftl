@@ -12,6 +12,7 @@
 <#include "/WEB-INF/pages/common/tips.ftl">
 <#include "/WEB-INF/pages/addreceiveorder.ftl">
 <#include "/WEB-INF/pages/teltransfer.ftl">
+<#include "/WEB-INF/pages/modifyro.ftl">
     <!-- @ main -->
     <!--内容-->
     <div class="content">

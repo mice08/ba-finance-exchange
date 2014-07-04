@@ -119,12 +119,12 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
     @ReturnDefault
     @Override
     public int updateReceiveOrderConfirm(ReceiveOrderUpdateBean receiveOrderUpdateBean){
-        if (checkReceiveOrderUpdateBeanConfirmStatus(receiveOrderUpdateBean)){
+        if (!allowReceiveOrderUpdateBeanConfirmStatus(receiveOrderUpdateBean)){
             return -1;
         }
         ReceiveOrderData receiveOrderUpdateData=buildReceiveOrderUpdateData(receiveOrderUpdateBean);
         int result = receiveOrderDao.updateReceiveOrder(receiveOrderUpdateData);
-        if (result>0&&ReceiveOrderStatus.CONFIRMED.value() == receiveOrderUpdateData.getStatus()){
+        if (result > 0 && ReceiveOrderStatus.CONFIRMED.value() == receiveOrderUpdateData.getStatus()){
             ReceiveOrderData receiveOrderData=loadReceiveOrderDataByRoId(receiveOrderUpdateData.getRoId());
             ReceiveOrderResultBean receiveOrderResultBean = buildReceiveOrderResultBean(receiveOrderData, receiveOrderData.getUpdateLoginId());
             receiveOrderResultNotify.receiveResultNotify(receiveOrderResultBean);
@@ -132,19 +132,16 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         return result;
     }
 
-    private boolean checkReceiveOrderUpdateBeanConfirmStatus(ReceiveOrderUpdateBean receiveOrderUpdateBean){
+    private boolean allowReceiveOrderUpdateBeanConfirmStatus(ReceiveOrderUpdateBean receiveOrderUpdateBean){
         //已确认状态判断字段 推广——客户名，系统入账时间，收款类型，业务类型
         if (receiveOrderUpdateBean.getStatus()!=ReceiveOrderStatus.CONFIRMED.value()){
             return true;
         }
         else{
-            if (receiveOrderUpdateBean.getReceiveTime()!=null
+            return receiveOrderUpdateBean.getReceiveTime()!=null
                     &&receiveOrderUpdateBean.getCustomerId()>0
                     &&StringUtils.isNotEmpty(receiveOrderUpdateBean.getBizContent())
-                    &&receiveOrderUpdateBean.getReceiveType().value()>0){
-                return false;
-            }
-            return true;
+                    &&receiveOrderUpdateBean.getReceiveType().value()>0;
         }
     }
 
