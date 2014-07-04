@@ -202,7 +202,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderBean.setCustomerId(receiveOrderData.getCustomerId());
         receiveOrderBean.setMemo(receiveOrderData.getMemo());
         receiveOrderBean.setPayChannel(ReceiveOrderPayChannel.valueOf(receiveOrderData.getPayChannel()).toString());
-        receiveOrderBean.setPayerName("");
+        receiveOrderBean.setPayerName(receiveOrderData.getPayerAccountName());
         receiveOrderBean.setReceiveAmount(new DecimalFormat("##,###,###,###,##0.00").format(receiveOrderData.getReceiveAmount()));
         receiveOrderBean.setReceiveTime(DateUtil.formatDateToString(receiveOrderData.getReceiveTime(), "yyyy-MM-dd"));
         ReceiveType rt = ReceiveType.valueOf(receiveOrderData.getReceiveType());
