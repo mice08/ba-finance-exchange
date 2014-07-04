@@ -44,7 +44,7 @@ public class ReceiveOrderAjaxActionTest {
         ReceiveOrderData receiveOrderData = new ReceiveOrderData();
         receiveOrderData.setReceiveAmount(BigDecimal.ONE);
         when(receiveOrderServiceMock.loadReceiveOrderDataByRoId(anyInt())).thenReturn(receiveOrderData);
-        receiveOrderAjaxActionStub.getReceiveOrderById();
+        receiveOrderAjaxActionStub.loadReceiveOrderById();
         Assert.assertNotNull(receiveOrderAjaxActionStub.getReceiveOrder());
     }
 

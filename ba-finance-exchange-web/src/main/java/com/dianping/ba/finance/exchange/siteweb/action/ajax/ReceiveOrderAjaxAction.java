@@ -142,7 +142,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         }
     }
 
-    public String getReceiveOrderById(){
+    public String loadReceiveOrderById(){
         try {
             receiveOrderData = receiveOrderService.loadReceiveOrderDataByRoId(roId);
             receiveOrder = convertRODataToROBean(receiveOrderData);
@@ -200,14 +200,16 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     private ReceiveOrderBean convertRODataToROBean(ReceiveOrderData receiveOrderData) {
         ReceiveOrderBean receiveOrderBean = new ReceiveOrderBean();
-        receiveOrderBean.setBankReceiveTime(DateUtil.formatDateToString(receiveOrderData.getBankReceiveTime(), "yyyy-MM-dd"));
+        if (receiveOrderData.getBankReceiveTime() != null) {
+            receiveOrderBean.setBankReceiveTime(DateUtil.formatDateToString(receiveOrderData.getBankReceiveTime(), "yyyy-MM-dd"));
+        }
         receiveOrderBean.setBizContent(receiveOrderData.getBizContent());
         receiveOrderBean.setBusinessType(BusinessType.valueOf(receiveOrderData.getBusinessType()).toString());
         receiveOrderBean.setCustomerName(getCustomerNameById(receiveOrderData.getCustomerId()));
         receiveOrderBean.setCustomerId(receiveOrderData.getCustomerId());
         receiveOrderBean.setMemo(receiveOrderData.getMemo());
         receiveOrderBean.setPayChannel(ReceiveOrderPayChannel.valueOf(receiveOrderData.getPayChannel()).toString());
-        receiveOrderBean.setPayerName("");
+        receiveOrderBean.setPayerName(receiveOrderData.getPayerAccountName());
         receiveOrderBean.setReceiveAmount(new DecimalFormat("##,###,###,###,##0.00").format(receiveOrderData.getReceiveAmount()));
         receiveOrderBean.setReceiveTime(DateUtil.formatDateToString(receiveOrderData.getReceiveTime(), "yyyy-MM-dd"));
         ReceiveType rt = ReceiveType.valueOf(receiveOrderData.getReceiveType());

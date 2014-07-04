@@ -23,6 +23,7 @@
         <result property="updateTime" column="UpdateTime"/>
         <result property="updateLoginId" column="UpdateLoginID"/>
         <result property="reverseRoId" column="ReverseROID"/>
+        <result property="payerAccountName" column="PayerAccountName"/>
         <result property="memo" column="Memo"/>
     </resultMap>
 
@@ -102,7 +103,8 @@
             ro.UpdateTime,
             ro.UpdateLoginID,
             ro.ReverseROID,
-            ro.Memo
+            ro.Memo,
+            ro.PayerAccountName
        FROM FC_ReceiveOrder ro
         <dynamic prepend="WHERE">
             <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
@@ -235,7 +237,8 @@
         ro.UpdateTime,
         ro.UpdateLoginID,
         ro.ReverseROID,
-        ro.Memo
+        ro.Memo,
+        ro.PayerAccountName
         FROM FC_ReceiveOrder ro
         WHERE TradeNo = #tradeNo#
         LIMIT 1
@@ -311,7 +314,8 @@
         ro.UpdateTime,
         ro.UpdateLoginID,
         ro.ReverseROID,
-        ro.Memo
+        ro.Memo,
+        ro.PayerAccountName
         FROM FC_ReceiveOrder ro
         WHERE ROID = #roId#
         LIMIT 1
