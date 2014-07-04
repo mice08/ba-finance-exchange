@@ -53,13 +53,15 @@
                 <div class="control-group span6">
                     <label class="control-label">客户ID</label>
                     <div class="controls">
-                        <input type="text" id="m-customerId" name="customerId" class="form_value load_value">
+                        <input type="text" id="m-customerId" name="customerId" class="form_value load_value" validate="n[0,10]"
+                               error_msg="n[0,11]:请输入0-10位数字">
                     </div>
                 </div>
                 <div class="control-group span6">
                     <label class="control-label">业务信息</label>
                     <div class="controls">
-                        <input type="text" id="m-bizContent" name="bizContent" class="form_value load_value">
+                        <input type="text" id="m-bizContent" name="bizContent" class="form_value load_value" validate="s[0,100]"
+                               error_msg="s[0,254]:请输入0-100位字符">
                     </div>
                 </div>
             </div>
@@ -93,7 +95,8 @@
                 <div class="control-group span6">
                     <label class="control-label">备注</label>
                     <div class="controls">
-                        <input type="text" id="m-memo" name="memo" class="form_value load_value">
+                        <input type="text" id="m-memo" name="memo" class="form_value load_value" validate="s[0,100]"
+                               error_msg="s[0,254]:请输入0-100位字符">
                     </div>
                 </div>
             </div>

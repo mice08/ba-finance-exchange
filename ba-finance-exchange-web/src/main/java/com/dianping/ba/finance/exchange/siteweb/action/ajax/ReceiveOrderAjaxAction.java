@@ -156,15 +156,20 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
     }
 
     public String updateReceiveOrder(){
+        int result = -1;
         try {
             ReceiveOrderUpdateBean receiveOrderUpdateBean = buildUpdateReceiveOrder();
-            receiveOrderService.updateReceiveOrderConfirm(receiveOrderUpdateBean);
+            result = receiveOrderService.updateReceiveOrderConfirm(receiveOrderUpdateBean);
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.getReveiveOrderById error!", e);
             code = ERROR_CODE;
             return SUCCESS;
         }
-        code = SUCCESS_CODE;
+        if (result == -1){
+            code = ERROR_CODE;
+        } else {
+            code = SUCCESS_CODE;
+        }
         return SUCCESS;
     }
 

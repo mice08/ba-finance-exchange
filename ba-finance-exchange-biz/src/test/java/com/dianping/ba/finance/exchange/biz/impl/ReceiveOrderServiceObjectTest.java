@@ -131,7 +131,6 @@ public class ReceiveOrderServiceObjectTest {
         receiveOrderUpdateBean.setStatus(2);
         receiveOrderUpdateBean.setReceiveType(ReceiveType.AD_FEE);
         receiveOrderUpdateBean.setCustomerId(123);
-        receiveOrderUpdateBean.setBizContent("AD2014SH0001");
         receiveOrderUpdateBean.setReceiveTime(new Date());
         int result = receiveOrderServiceObjectStub.updateReceiveOrderConfirm(receiveOrderUpdateBean);
 
