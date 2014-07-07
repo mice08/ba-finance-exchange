@@ -25,10 +25,10 @@
 
             <div class="row-fluid label-colon">
                 <div class="control-group span6">
-                    <label class="control-label">到款类型</label>
+                    <label class="control-label">款项类型</label>
                     <div class="controls">
                         <select id="q-receiveType" name="receiveType" class="form_value">
-                            <option value="0">请选择到款类型</option>
+                            <option value="0">请选择款项类型</option>
                         </select>
                     </div>
                 </div>
