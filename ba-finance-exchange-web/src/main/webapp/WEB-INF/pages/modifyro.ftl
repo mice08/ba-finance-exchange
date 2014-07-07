@@ -1,9 +1,9 @@
-<div id="modify-ro-dialog" class="modal hide fade" style="z-index:50;left:auto;width:80%;margin-left: auto;margin-right: auto;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="modify-ro-dialog" class="modal hide fade" style="z-index:50;left:auto;width:80%;margin-left: auto;margin-right: auto;top:5%;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header section-title">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h4 id="myModalLabel">收款单修改</h4>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" style="max-height: 530px">
         <div class="form-horizontal" id="modify-ro-form" load_url="/exchange/ajax/getReceiveOrderById" form_url="/exchange/ajax/updateReceiveOrder">
             <input type="text" style="display: none" class="form_value load_value" id="m-id" name="roId" validate="+" error_msg="收款单信息异常">
             <div class="row-fluid label-colon">
@@ -48,13 +48,101 @@
             </div>
 
             <div class="row-fluid label-colon">
+                <div class="control-group span6">
+                    <label class="control-label">分店ID</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <label id="m-shopId" class="load_value" style="padding-top: 5px" name="shopId"></label>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="control-group span6">
+                    <label class="control-label">到款日期</label>
+                    <div class="controls">
+                        <label id="m-bankReceiveTime" class="load_value" name="bankReceiveTime" style="padding-top: 5px"></label>
+                    </div>
+                </div>
+            </div>
 
+            <div class="row-fluid label-colon">
+                <div class="control-group span6">
+                    <label class="control-label">交易流水</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <label id="m-tradeNo" class="load_value" style="padding-top: 5px" name="tradeNo"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group span6">
+                    <label class="control-label">收款银行ID</label>
+                    <div class="controls">
+                        <label id="m-bankID" class="load_value" name="bankID" style="padding-top: 5px"></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-fluid label-colon">
+                <div class="control-group span6">
+                    <label class="control-label">状态</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <label id="m-status" class="load_value" style="padding-top: 5px" name="status"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group span6">
+                    <label class="control-label">付款方账户名</label>
+                    <div class="controls">
+                        <label id="m-payerAccountName" class="load_value" name="payerAccountName" style="padding-top: 5px"></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-fluid label-colon">
+                <div class="control-group span6">
+                    <label class="control-label">付款方账号</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <label id="m-payerAccountNo" class="load_value" style="padding-top: 5px" name="payerAccountNo"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group span6">
+                    <label class="control-label">付款方银行</label>
+                    <div class="controls">
+                        <label id="m-payerBankName" class="load_value" name="payerBankName" style="padding-top: 5px"></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-fluid label-colon">
+                <div class="control-group span6">
+                    <label class="control-label">打款时间</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <label id="m-payTime" class="load_value" style="padding-top: 5px" name="payTime"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group span6">
+                    <label class="control-label">冲销对应ID</label>
+                    <div class="controls">
+                        <label id="m-reverseRoId" class="load_value" name="reverseRoId" style="padding-top: 5px"></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-fluid label-colon">
                 <div class="control-group span6">
                     <label class="control-label">客户ID</label>
                     <div class="controls">
                         <input type="text" id="m-customerId" name="customerId" class="form_value load_value" validate="n[0,10]"
-                               error_msg="n[0,11]:请输入0-10位数字">
+                               error_msg="n[0,10]:请输入0-10位数字">
                     </div>
                 </div>
                 <div class="control-group span6">
@@ -78,7 +166,7 @@
                 </div>
 
                 <div class="control-group span6" id="bankReceiveTime-cntr">
-                    <label class="control-label">到款日期</label>
+                    <label class="control-label">系统入账日期</label>
                     <div class="controls">
                         <div class="input-append">
                             <input type="text" class="span12 load_value form_value" id="m-receiveTime" name="receiveTime" datatype="date">

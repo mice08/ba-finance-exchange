@@ -15,6 +15,14 @@ public class ReceiveOrderBean {
     private String receiveTime;
     private String receiveType;
     private String bizContent;
+    private String payerAccountName;
+    private String payerAccountNo;
+    private String payerBankName;
+    private String tradeNo;
+    private int bankID;
+    private int reverseRoId;
+    private int shopId;
+    private String payTime;
     private String payChannel;
     private String receiveNotifyId;
     private String payerName;
@@ -132,5 +140,69 @@ public class ReceiveOrderBean {
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
+    }
+
+    public String getPayerAccountName() {
+        return payerAccountName;
+    }
+
+    public void setPayerAccountName(String payerAccountName) {
+        this.payerAccountName = payerAccountName;
+    }
+
+    public String getPayerAccountNo() {
+        return payerAccountNo;
+    }
+
+    public void setPayerAccountNo(String payerAccountNo) {
+        this.payerAccountNo = payerAccountNo;
+    }
+
+    public String getPayerBankName() {
+        return payerBankName;
+    }
+
+    public void setPayerBankName(String payerBankName) {
+        this.payerBankName = payerBankName;
+    }
+
+    public String getTradeNo() {
+        return tradeNo;
+    }
+
+    public void setTradeNo(String tradeNo) {
+        this.tradeNo = tradeNo;
+    }
+
+    public int getBankID() {
+        return bankID;
+    }
+
+    public void setBankID(int bankID) {
+        this.bankID = bankID;
+    }
+
+    public int getReverseRoId() {
+        return reverseRoId;
+    }
+
+    public void setReverseRoId(int reverseRoId) {
+        this.reverseRoId = reverseRoId;
+    }
+
+    public int getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(int shopId) {
+        this.shopId = shopId;
+    }
+
+    public String getPayTime() {
+        return payTime;
+    }
+
+    public void setPayTime(String payTime) {
+        this.payTime = payTime;
     }
 }

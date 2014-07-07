@@ -11,6 +11,8 @@
         <result property="receiveAmount" column="ReceiveAmount"/>
         <result property="receiveTime" column="ReceiveTime"/>
         <result property="payTime" column="PayTime"/>
+        <result property="payerAccountNo" column="PayerAccountNo"/>
+        <result property="payerBankName" column="PayerBankName"/>
         <result property="bankReceiveTime" column="BankReceiveTime"/>
         <result property="payChannel" column="PayChannel"/>
         <result property="receiveType" column="ReceiveType"/>
@@ -297,6 +299,8 @@
         ro.ShopID,
         ro.BusinessType,
         ro.ReceiveAmount,
+        ro.PayerAccountNo,
+        ro.PayerBankName,
         ro.ReceiveTime,
         ro.PayTime,
         ro.BankReceiveTime,
