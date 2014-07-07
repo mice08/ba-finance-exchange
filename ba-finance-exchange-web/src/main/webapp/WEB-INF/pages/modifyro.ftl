@@ -76,15 +76,6 @@
                 </div>
 
                 <div class="control-group span6">
-                    <label class="control-label">收款银行ID</label>
-                    <div class="controls">
-                        <label id="m-bankID" class="load_value" name="bankID" style="padding-top: 5px"></label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row-fluid label-colon">
-                <div class="control-group span6">
                     <label class="control-label">状态</label>
                     <div class="controls">
                         <div class="input-prepend">
@@ -92,9 +83,18 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="row-fluid label-colon">
+                <div class="control-group span6">
+                    <label class="control-label">付款方开户行</label>
+                    <div class="controls">
+                        <label id="m-payerBankName" class="load_value" name="payerBankName" style="padding-top: 5px"></label>
+                    </div>
+                </div>
 
                 <div class="control-group span6">
-                    <label class="control-label">付款方账户名</label>
+                    <label class="control-label">付款方户名</label>
                     <div class="controls">
                         <label id="m-payerAccountName" class="load_value" name="payerAccountName" style="padding-top: 5px"></label>
                     </div>
@@ -103,46 +103,34 @@
 
             <div class="row-fluid label-colon">
                 <div class="control-group span6">
-                    <label class="control-label">付款方账号</label>
+                    <label class="control-label">付款方账户</label>
                     <div class="controls">
                         <div class="input-prepend">
                             <label id="m-payerAccountNo" class="load_value" style="padding-top: 5px" name="payerAccountNo"></label>
                         </div>
                     </div>
                 </div>
-
-                <div class="control-group span6">
-                    <label class="control-label">付款方银行</label>
-                    <div class="controls">
-                        <label id="m-payerBankName" class="load_value" name="payerBankName" style="padding-top: 5px"></label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row-fluid label-colon">
-                <div class="control-group span6">
-                    <label class="control-label">打款时间</label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <label id="m-payTime" class="load_value" style="padding-top: 5px" name="payTime"></label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="control-group span6">
-                    <label class="control-label">冲销对应ID</label>
-                    <div class="controls">
-                        <label id="m-reverseRoId" class="load_value" name="reverseRoId" style="padding-top: 5px"></label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row-fluid label-colon">
                 <div class="control-group span6">
                     <label class="control-label">客户ID</label>
                     <div class="controls">
                         <input type="text" id="m-customerId" name="customerId" class="form_value load_value" validate="n[0,10]"
                                error_msg="n[0,10]:请输入0-10位数字">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row-fluid label-colon">
+                <div class="control-group span6" id="bankReceiveTime-cntr">
+                    <label class="control-label">系统入账日期</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input type="text" class="span12 load_value form_value" id="m-receiveTime" name="receiveTime" datatype="date">
+                        <span class="add-on">
+                                                <i class="icon-calendar">
+                                                </i>
+                                            </span>
+                        </div>
                     </div>
                 </div>
                 <div class="control-group span6">
@@ -164,22 +152,6 @@
                         </select>
                     </div>
                 </div>
-
-                <div class="control-group span6" id="bankReceiveTime-cntr">
-                    <label class="control-label">系统入账日期</label>
-                    <div class="controls">
-                        <div class="input-append">
-                            <input type="text" class="span12 load_value form_value" id="m-receiveTime" name="receiveTime" datatype="date">
-                        <span class="add-on">
-                                                <i class="icon-calendar">
-                                                </i>
-                                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row-fluid label-colon">
                 <div class="control-group span6">
                     <label class="control-label">备注</label>
                     <div class="controls">
@@ -187,6 +159,7 @@
                                error_msg="s[0,254]:请输入0-100位字符">
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
