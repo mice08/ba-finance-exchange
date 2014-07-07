@@ -25,10 +25,10 @@
 
             <div class="row-fluid label-colon">
                 <div class="control-group span6">
-                    <label class="control-label">业务类型</label>
+                    <label class="control-label">到款类型</label>
                     <div class="controls">
                         <select id="q-receiveType" name="receiveType" class="form_value">
-                            <option value="0">请选择业务类型</option>
+                            <option value="0">请选择到款类型</option>
                         </select>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
 
             <div class="row-fluid label-colon">
                 <div class="control-group span6">
-                    <label class="control-label">银行到账日期</label>
+                    <label class="control-label">到款日期</label>
 
                     <div class="controls">
                         <select id="q-select-br-time" class="select-small">
@@ -77,7 +77,7 @@
                 </div>
 
                 <div class="control-group span6">
-                    <label class="control-label">系统收款日期</label>
+                    <label class="control-label">系统入账日期</label>
 
                     <div class="controls">
                         <select id="q-select-receive-time" class="select-small">

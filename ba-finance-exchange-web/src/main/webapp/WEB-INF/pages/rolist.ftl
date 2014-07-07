@@ -30,7 +30,7 @@
                     <th width="7%" class="fs tb-header">收款金额</th>
                     <th width="8%" class="fs tb-header">到款日期</th>
                     <th width="8%" class="fs tb-header">系统入账日期</th>
-                    <th width="8%" class="fs tb-header">业务类型</th>
+                    <th width="8%" class="fs tb-header">到款类型</th>
                     <th width="8%" class="fs tb-header">业务信息</th>
                     <th width="6%" class="fs tb-header">收款方式</th>
                     <th width="8%" class="fs tb-header">收款通知ID</th>
