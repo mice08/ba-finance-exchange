@@ -61,7 +61,7 @@
 
         <action name="getReceiveOrderById"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction"
-                method="getReceiveOrderById">
+                method="loadReceiveOrderById">
             <result type="json"></result>
         </action>
 

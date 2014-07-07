@@ -145,13 +145,16 @@ public class ReceiveOrderServiceObjectTest {
         when(receiveOrderDaoMock.updateReceiveOrder(any(ReceiveOrderData.class))).thenReturn(1);
         ReceiveOrderData receiveOrderData=new ReceiveOrderData();
         receiveOrderData.setRoId(1);
-        receiveOrderData.setStatus(2);
+        receiveOrderData.setStatus(ReceiveOrderStatus.CONFIRMED.value());
         when(receiveOrderDaoMock.loadReceiveOrderDataByRoId(anyInt())).thenReturn(receiveOrderData);
 
         ReceiveOrderUpdateBean receiveOrderUpdateBean=new ReceiveOrderUpdateBean();
         receiveOrderUpdateBean.setRoId(1);
-        receiveOrderUpdateBean.setStatus(2);
-        receiveOrderUpdateBean.setCustomerId(0);
+        receiveOrderUpdateBean.setStatus(ReceiveOrderStatus.CONFIRMED.value());
+        receiveOrderUpdateBean.setCustomerId(10);
+        receiveOrderUpdateBean.setBizContent("123");
+        receiveOrderUpdateBean.setReceiveType(ReceiveType.AD_FEE);
+        receiveOrderUpdateBean.setReceiveTime(new Date());
         int result = receiveOrderServiceObjectStub.updateReceiveOrderConfirm(receiveOrderUpdateBean);
 
         Assert.assertTrue(result > 0);
