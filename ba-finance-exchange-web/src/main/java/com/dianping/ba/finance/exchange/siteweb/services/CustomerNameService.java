@@ -2,7 +2,9 @@ package com.dianping.ba.finance.exchange.siteweb.services;
 
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
+import com.dianping.ba.finance.exchange.siteweb.beans.CustomerNameSuggestionBean;
 import com.dianping.customerinfo.api.CustomerInfoService;
+import com.dianping.customerinfo.dto.Customer;
 import com.dianping.customerinfo.dto.CustomerLite;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
@@ -12,6 +14,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import org.apache.commons.collections.CollectionUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +56,31 @@ public class CustomerNameService {
             businessTypeCustomerIdMMap.put(poDate.getBusinessType(), poDate.getCustomerId());
         }
         return businessTypeCustomerIdMMap;
+    }
+
+
+    /**
+     * 获取客户名称的输入提示
+     * @param customerName
+     * @param maxSize
+     * @param loginId
+     * @return
+     */
+    @Log(severity = 2, logBefore = true, logAfter = true)
+    @ReturnDefault
+    public List<CustomerNameSuggestionBean> getCustomerNameSuggestion(String customerName, int maxSize, int loginId) {
+        List<Customer> customerList = customerInfoService.searchByCustomerName(customerName, 0, maxSize, loginId);
+        if (CollectionUtils.isEmpty(customerList)) {
+            return Collections.emptyList();
+        }
+        List<CustomerNameSuggestionBean> suggestionBeanList = Lists.newLinkedList();
+        for (Customer customer : customerList) {
+            CustomerNameSuggestionBean suggestionBean = new CustomerNameSuggestionBean();
+            suggestionBean.setCustomerId(customer.getCustomerID());
+            suggestionBean.setCustomerName(customer.getCustomerName());
+            suggestionBeanList.add(suggestionBean);
+        }
+        return suggestionBeanList;
     }
 
     public void setCustomerInfoService(CustomerInfoService customerInfoService) {

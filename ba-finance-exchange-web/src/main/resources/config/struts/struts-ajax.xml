@@ -125,6 +125,12 @@
                 method="importTelTransfer">
             <result type="json"></result>
         </action>
+
+        <action name="fetchCustomerNameSuggestion"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.CustomerNameSuggestionAction"
+                method="fetchCustomerNameSuggestion">
+            <result type="json"></result>
+        </action>
     </package>
 
 </struts>
