@@ -5,6 +5,17 @@ package com.dianping.ba.finance.exchange.api.enums;
  */
 public enum ReceiveType {
 
+    /**
+     *
+
+
+
+
+
+     超级退款
+     人工返利
+     */
+
 	/**
 	 * 0-默认错误
 	 */
@@ -38,7 +49,22 @@ public enum ReceiveType {
 	/**
      * 6-团购-多付款
      */
-    TG_EXTRA_FEE(6, "团购-多付款");
+    TG_EXTRA_FEE(6, "团购-多付款"),
+
+	/**
+     * 7-团购-商户赔偿
+     */
+    TG_COMPENSATION(7, "团购-商户赔偿"),
+
+	/**
+     * 8-团购-超级退款
+     */
+    TG_SUPER_REFUND(8, "团购-超级退款"),
+
+	/**
+     * 9-团购-人工返利
+     */
+    TG_REBATE_MANUALLY(9, "团购-人工返利");
 
     private int receiveType;
 
