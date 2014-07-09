@@ -68,7 +68,14 @@ public class CustomerNameService {
      */
     @Log(severity = 2, logBefore = true, logAfter = true)
     @ReturnDefault
-    public List<CustomerNameSuggestionBean> getCustomerNameSuggestion(String customerName, int maxSize, int loginId) {
+    public List<CustomerNameSuggestionBean> getCustomerNameSuggestion(String customerName, int maxSize, int businessType, int loginId) {
+        if (businessType == BusinessType.GROUP_PURCHASE.value()) {
+            return fetchTGCustomerSuggestion(customerName, maxSize, loginId);
+        }
+        return Collections.emptyList();
+    }
+
+    private List<CustomerNameSuggestionBean> fetchTGCustomerSuggestion(String customerName, int maxSize, int loginId) {
         List<Customer> customerList = customerInfoService.searchByCustomerName(customerName, 0, maxSize, loginId);
         if (CollectionUtils.isEmpty(customerList)) {
             return Collections.emptyList();

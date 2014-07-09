@@ -5,7 +5,9 @@ import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.finance.common.util.LionConfigUtils;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +25,8 @@ public class CustomerNameSuggestionAction extends AjaxBaseAction {
      */
     private String q;
 
+    private String businessType;
+
     private CustomerNameService customerNameService;
 
     @Override
@@ -30,8 +34,19 @@ public class CustomerNameSuggestionAction extends AjaxBaseAction {
     }
 
     public String fetchCustomerNameSuggestion() {
+        if (StringUtils.isBlank(q)) {
+            msg.put("suggestion", Collections.emptyList());
+            code = SUCCESS_CODE;
+            return SUCCESS;
+        }
+        if (StringUtils.isBlank(businessType)) {
+            msg.put("suggestion", Collections.emptyList());
+            code = SUCCESS_CODE;
+            return SUCCESS;
+        }
         int maxSize = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-settle-web.suggestion.maxSize", "10"));
-        List<CustomerNameSuggestionBean> suggestionBeanList = customerNameService.getCustomerNameSuggestion(q, maxSize, getLoginId());
+
+        List<CustomerNameSuggestionBean> suggestionBeanList = customerNameService.getCustomerNameSuggestion(q, maxSize, Integer.parseInt(businessType), getLoginId());
         if (CollectionUtils.isNotEmpty(suggestionBeanList)) {
             msg.put("suggestion", suggestionBeanList);
         }
@@ -51,6 +66,10 @@ public class CustomerNameSuggestionAction extends AjaxBaseAction {
 
     public void setQ(String q) {
         this.q = q;
+    }
+
+    public void setBusinessType(String businessType) {
+        this.businessType = businessType;
     }
 
     public void setCustomerNameService(CustomerNameService customerNameService) {

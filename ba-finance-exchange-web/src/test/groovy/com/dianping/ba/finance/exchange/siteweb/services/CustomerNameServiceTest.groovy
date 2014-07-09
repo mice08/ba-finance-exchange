@@ -45,7 +45,7 @@ class CustomerNameServiceTest extends Specification {
     }
 
     @Unroll
-    def "get customer name suggestions"(String customerNameParam, Integer customerId, String customerName) {
+    def "get customer name suggestions"(String customerNameParam, Integer businessType, Integer customerId, String customerName) {
         given:
         customerInfoServiceMock.searchByCustomerName(_ as String, 0, _ as Integer, _ as Integer) >> { args ->
             Customer customer = [customerID: 123, customerName: args[0] + "-客户名称"];
@@ -53,13 +53,14 @@ class CustomerNameServiceTest extends Specification {
         }
 
         expect:
-        def suggestionBean = customerNameServiceStub.getCustomerNameSuggestion(customerNameParam, 10, -1)[0];
-        customerId == suggestionBean.customerId;
-        customerName == suggestionBean.customerName;
+        def suggestionBean = customerNameServiceStub.getCustomerNameSuggestion(customerNameParam, 10, businessType, -1)[0];
+        customerId == suggestionBean?.customerId;
+        customerName == suggestionBean?.customerName;
 
         where:
-        customerNameParam | customerId | customerName
-        "商户"             | 123        | "商户-客户名称"
+        customerNameParam  | businessType                        | customerId | customerName
+        "商户"              | BusinessType.ADVERTISEMENT.value()  | null       | null
+        "商户"              | BusinessType.GROUP_PURCHASE.value() | 123        | "商户-客户名称"
 
     }
 }
