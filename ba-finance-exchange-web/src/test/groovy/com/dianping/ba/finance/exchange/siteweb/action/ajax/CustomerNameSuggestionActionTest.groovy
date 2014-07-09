@@ -24,7 +24,7 @@ class CustomerNameSuggestionActionTest extends Specification {
     @Unroll
     def "FetchCustomerNameSuggestion"(String customerNamePrefix, Integer customerId, String customerName) {
         given:
-        customerNameSuggestionActionStub.customerName = customerNamePrefix;
+        customerNameSuggestionActionStub.q = customerNamePrefix;
         customerNameServiceMock.getCustomerNameSuggestion(_ as String, _ as Integer, _ as Integer) >> { args ->
             CustomerNameSuggestionBean suggestionBean = [customerId: 123, customerName: args[0] + "-客户名称"];
             [suggestionBean]

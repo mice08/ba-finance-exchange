@@ -18,7 +18,10 @@ public class CustomerNameSuggestionAction extends AjaxBaseAction {
 
     private int code;
 
-    private String customerName;
+    /**
+     * autocomplete插件的参数名为q
+     */
+    private String q;
 
     private CustomerNameService customerNameService;
 
@@ -28,7 +31,7 @@ public class CustomerNameSuggestionAction extends AjaxBaseAction {
 
     public String fetchCustomerNameSuggestion() {
         int maxSize = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-settle-web.suggestion.maxSize", "10"));
-        List<CustomerNameSuggestionBean> suggestionBeanList = customerNameService.getCustomerNameSuggestion(customerName, maxSize, getLoginId());
+        List<CustomerNameSuggestionBean> suggestionBeanList = customerNameService.getCustomerNameSuggestion(q, maxSize, getLoginId());
         if (CollectionUtils.isNotEmpty(suggestionBeanList)) {
             msg.put("suggestion", suggestionBeanList);
         }
@@ -46,8 +49,8 @@ public class CustomerNameSuggestionAction extends AjaxBaseAction {
         return msg;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setQ(String q) {
+        this.q = q;
     }
 
     public void setCustomerNameService(CustomerNameService customerNameService) {
