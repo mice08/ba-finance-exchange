@@ -41,10 +41,13 @@ public class ReceiveOrderResultNotify {
         receiveResultNotifyDTO.setBizId(String.valueOf(receiveOrderResultBean.getRoId()));
         receiveResultNotifyDTO.setCustomerId(receiveOrderResultBean.getCustomerId());
         receiveResultNotifyDTO.setShopId(receiveOrderResultBean.getShopId());
-		int type = receiveOrderResultBean.getReceiveAmount().compareTo(BigDecimal.ZERO) > 0 ? 1 : 2;
-		receiveResultNotifyDTO.setType(type);
+        BigDecimal receiveAmount = receiveOrderResultBean.getReceiveAmount();
+        if (receiveAmount != null) {
+            int type = receiveAmount.compareTo(BigDecimal.ZERO) > 0 ? 1 : 2;
+            receiveResultNotifyDTO.setType(type);
+            receiveResultNotifyDTO.setReceiveAmount(receiveAmount.abs());
+        }
         receiveResultNotifyDTO.setPayChannel(receiveOrderResultBean.getPayChannel().value());
-        receiveResultNotifyDTO.setReceiveAmount(receiveOrderResultBean.getReceiveAmount().abs());
         receiveResultNotifyDTO.setReceiveType(receiveOrderResultBean.getReceiveType().value());
         receiveResultNotifyDTO.setBizContent(receiveOrderResultBean.getBizContent());
         receiveResultNotifyDTO.setPayTime(receiveOrderResultBean.getPayTime());
