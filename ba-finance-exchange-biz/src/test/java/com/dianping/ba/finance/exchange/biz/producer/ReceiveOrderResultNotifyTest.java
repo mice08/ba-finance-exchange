@@ -47,4 +47,21 @@ public class ReceiveOrderResultNotifyTest {
         receiveOrderResultNotifyStub.receiveResultNotify(receiveOrderResultBean);
         verify(producerMock, times(1)).fireSwallowEvent(any(SwallowEventBean.class));
     }
+    @Test
+    public void testReceiveResultNotifyTS() throws Exception{
+        ReceiveOrderResultBean receiveOrderResultBean = new ReceiveOrderResultBean();
+        receiveOrderResultBean.setBusinessType(BusinessType.GROUP_PURCHASE);
+        receiveOrderResultBean.setRoId(1);
+        receiveOrderResultBean.setLoginId(-1);
+        receiveOrderResultBean.setTradeNo("P123");
+        receiveOrderResultBean.setBankReceiveTime(new Date());
+        receiveOrderResultBean.setBankId(1);
+        receiveOrderResultBean.setCustomerId(123456);
+        receiveOrderResultBean.setPayChannel(ReceiveOrderPayChannel.CASH);
+        receiveOrderResultBean.setReceiveAmount(BigDecimal.TEN);
+        receiveOrderResultBean.setReceiveType(ReceiveType.TG_SHELVING_FEE);
+        receiveOrderResultBean.setPayTime(new Date());
+        receiveOrderResultNotifyStub.receiveResultNotify(receiveOrderResultBean);
+        verify(producerMock, times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+    }
 }

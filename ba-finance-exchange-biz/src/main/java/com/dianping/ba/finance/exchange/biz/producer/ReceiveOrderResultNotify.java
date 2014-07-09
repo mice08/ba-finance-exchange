@@ -22,11 +22,16 @@ public class ReceiveOrderResultNotify {
 
     public static final String AD_RECEIVE_RESULT_EVENT_KEY = "FS_AD_RECEIVE_RESULT";
 
+    public static final String TS_RECEIVE_RESULT_EVENT_KEY = "FS_TS_RECEIVE_RESULT";
+
     @Log(severity = 1, logBefore = true, logAfter = true)
     public void receiveResultNotify(ReceiveOrderResultBean receiveOrderResultBean) {
         ReceiveResultNotifyDTO receiveResultNotifyDTO = buildReceiveResultNotifyDTO(receiveOrderResultBean);
-        if(receiveOrderResultBean.getBusinessType()== BusinessType.ADVERTISEMENT){
+        if(receiveOrderResultBean.getBusinessType() == BusinessType.ADVERTISEMENT){
             SwallowEventBean eventBean = new SwallowEventBean(AD_RECEIVE_RESULT_EVENT_KEY, receiveResultNotifyDTO);
+            receiveOrderProducer.fireSwallowEvent(eventBean);
+        } else if(receiveOrderResultBean.getBusinessType() == BusinessType.GROUP_PURCHASE){
+            SwallowEventBean eventBean = new SwallowEventBean(TS_RECEIVE_RESULT_EVENT_KEY, receiveResultNotifyDTO);
             receiveOrderProducer.fireSwallowEvent(eventBean);
         }
     }
