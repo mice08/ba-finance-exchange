@@ -26,7 +26,8 @@
                     <div class="controls">
                         <input type="text" id="customerName" name="customerName" class="form_value"  validate="+"
                                error_msg="+:请输入客户名">
-                        <input type="hidden" id="customerId" name="customerId" class="form_value"  validate="+ n[0,11]">
+                        <input type="hidden" id="customerId" name="customerId" class="form_value"  validate="+ n[0,11]"
+                               error_msg="+:请输入有效的客户名称">
                     </div>
                 </div>
             </div>
