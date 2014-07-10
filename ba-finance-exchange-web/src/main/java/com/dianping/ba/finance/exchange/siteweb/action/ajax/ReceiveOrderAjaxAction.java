@@ -11,18 +11,17 @@ import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
 import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveOrderBean;
+import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
 import com.google.common.collect.Maps;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -86,6 +85,8 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     private ReceiveOrderService receiveOrderService;
 
+    private CustomerNameService customerNameService;
+
     @Override
     protected void jsonExecute() {
         if (businessType == BusinessType.DEFAULT.value()) {
@@ -145,7 +146,8 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
     public String loadReceiveOrderById(){
         try {
             receiveOrderData = receiveOrderService.loadReceiveOrderDataByRoId(roId);
-            receiveOrder = convertRODataToROBean(receiveOrderData);
+            Map<Integer, String> customerIdNameMap = Collections.emptyMap();
+            receiveOrder = convertRODataToROBean(receiveOrderData, customerIdNameMap);
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.getReveiveOrderById error!", e);
             code = ERROR_CODE;
@@ -188,24 +190,27 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
     }
 
     private List<ReceiveOrderBean> buildReceiveOrderBeans(List<ReceiveOrderData> receiveOrderDataList) {
-        List<ReceiveOrderBean> receiveOrderBeans = new ArrayList<ReceiveOrderBean>();
-        if (receiveOrderDataList == null) {
-            return receiveOrderBeans;
+        if (CollectionUtils.isEmpty(receiveOrderDataList)) {
+            return Collections.emptyList();
         }
+
+        Map<Integer, String> customerIdNameMap = customerNameService.getROCustomerName(receiveOrderDataList, getLoginId());
+
+        List<ReceiveOrderBean> receiveOrderBeans = new ArrayList<ReceiveOrderBean>();
         for (ReceiveOrderData receiveOrderData : receiveOrderDataList) {
-            receiveOrderBeans.add(convertRODataToROBean(receiveOrderData));
+            receiveOrderBeans.add(convertRODataToROBean(receiveOrderData, customerIdNameMap));
         }
         return receiveOrderBeans;
     }
 
-    private ReceiveOrderBean convertRODataToROBean(ReceiveOrderData receiveOrderData) {
+    private ReceiveOrderBean convertRODataToROBean(ReceiveOrderData receiveOrderData, Map<Integer, String> customerIdNameMap) {
         ReceiveOrderBean receiveOrderBean = new ReceiveOrderBean();
         if (receiveOrderData.getBankReceiveTime() != null) {
             receiveOrderBean.setBankReceiveTime(DateUtil.formatDateToString(receiveOrderData.getBankReceiveTime(), "yyyy-MM-dd"));
         }
         receiveOrderBean.setBizContent(receiveOrderData.getBizContent());
         receiveOrderBean.setBusinessType(BusinessType.valueOf(receiveOrderData.getBusinessType()).toString());
-        receiveOrderBean.setCustomerName(getCustomerNameById(receiveOrderData.getCustomerId()));
+        receiveOrderBean.setCustomerName(getCustomerNameById(receiveOrderData.getCustomerId(), customerIdNameMap));
         receiveOrderBean.setCustomerId(receiveOrderData.getCustomerId());
         receiveOrderBean.setMemo(receiveOrderData.getMemo());
         receiveOrderBean.setPayChannel(ReceiveOrderPayChannel.valueOf(receiveOrderData.getPayChannel()).toString());
@@ -232,7 +237,11 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         return receiveOrderBean;
     }
 
-    private String getCustomerNameById(int id){
+    private String getCustomerNameById(int id, Map<Integer, String> customerIdNameMap){
+        String customerName = customerIdNameMap.get(id);
+        if (StringUtils.isNotEmpty(customerName)) {
+            return customerName;
+        }
         return "";
     }
 
@@ -445,5 +454,9 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     public void setReceiveOrderData(ReceiveOrderData receiveOrderData) {
         this.receiveOrderData = receiveOrderData;
+    }
+
+    public void setCustomerNameService(CustomerNameService customerNameService) {
+        this.customerNameService = customerNameService;
     }
 }

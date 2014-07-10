@@ -6,8 +6,11 @@ import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
+import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.core.type.PageModel;
+import com.google.common.collect.Maps;
 import com.opensymphony.xwork2.Action;
 import junit.framework.Assert;
 import org.junit.Before;
@@ -15,6 +18,8 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Map;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -25,12 +30,17 @@ public class ReceiveOrderAjaxActionTest {
 
     private ReceiveOrderService receiveOrderServiceMock;
 
+    private CustomerNameService customerNameServiceMock;
+
     @Before
     public void setUp() throws Exception {
         receiveOrderAjaxActionStub = new ReceiveOrderAjaxAction();
 
         receiveOrderServiceMock = mock(ReceiveOrderService.class);
         receiveOrderAjaxActionStub.setReceiveOrderService(receiveOrderServiceMock);
+
+        customerNameServiceMock = mock(CustomerNameService.class);
+        receiveOrderAjaxActionStub.setCustomerNameService(customerNameServiceMock);
     }
 
     @Test
@@ -63,6 +73,31 @@ public class ReceiveOrderAjaxActionTest {
         receiveOrderAjaxActionStub.jsonExecute();
 
         Assert.assertEquals(receiveOrderAjaxActionStub.getTotalAmount(),"0.00");
+    }
+
+    @Test
+    public void testJsonExecuteSuccess() throws Exception {
+        PageModel pageModel = new PageModel();
+        ReceiveOrderData receiveOrderData = new ReceiveOrderData();
+        receiveOrderData.setCustomerId(123);
+        receiveOrderData.setBusinessType(BusinessType.GROUP_PURCHASE.value());
+        receiveOrderData.setPayChannel(ReceiveOrderPayChannel.POS_MACHINE.value());
+        receiveOrderData.setPayTime(new Date());
+        receiveOrderData.setReceiveAmount(BigDecimal.TEN);
+        receiveOrderData.setReceiveTime(new Date());
+        receiveOrderData.setStatus(ReceiveOrderStatus.UNCONFIRMED.value());
+        pageModel.setRecords(Arrays.asList(receiveOrderData));
+        when(receiveOrderServiceMock.paginateReceiveOrderList(any(ReceiveOrderSearchBean.class), anyInt(), anyInt())).thenReturn(pageModel);
+        when(receiveOrderServiceMock.loadReceiveOrderTotalAmountByCondition(any(ReceiveOrderSearchBean.class))).thenReturn(BigDecimal.ONE);
+
+        Map<Integer, String> customerIdNameMap = Maps.newHashMap();
+        customerIdNameMap.put(123, "客户名称");
+        when(customerNameServiceMock.getROCustomerName(anyList(), anyInt())).thenReturn(customerIdNameMap);
+
+        receiveOrderAjaxActionStub.setBusinessType(BusinessType.GROUP_PURCHASE.value());
+        receiveOrderAjaxActionStub.jsonExecute();
+
+        Assert.assertEquals(receiveOrderAjaxActionStub.getTotalAmount(), "1.00");
     }
 
     @Test

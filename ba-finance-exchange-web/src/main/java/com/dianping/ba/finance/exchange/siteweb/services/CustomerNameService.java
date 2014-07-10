@@ -1,6 +1,7 @@
 package com.dianping.ba.finance.exchange.siteweb.services;
 
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.siteweb.beans.CustomerNameSuggestionBean;
 import com.dianping.customerinfo.api.CustomerInfoService;
@@ -36,6 +37,7 @@ public class CustomerNameService {
         return customerIdNameMap;
     }
 
+
     private void fetchTGCustomerName(Multimap<Integer, Integer> businessTypeCustomerIdMMap, Map<Integer, String> customerIdNameMap, int loginId) {
         List<Integer> tgCustomerIdList = Lists.newLinkedList(businessTypeCustomerIdMMap.get(BusinessType.GROUP_PURCHASE.value()));
         if (CollectionUtils.isEmpty(tgCustomerIdList)) {
@@ -58,6 +60,25 @@ public class CustomerNameService {
         return businessTypeCustomerIdMMap;
     }
 
+
+    @Log(severity = 2, logBefore = true, logAfter = true)
+    @ReturnDefault
+    public Map<Integer, String> getROCustomerName(List<ReceiveOrderData> receiveOrderDataList, int loginId) {
+        Multimap<Integer, Integer> businessTypeCustomerIdMMap = roGroupByBusinessType(receiveOrderDataList);
+        Map<Integer, String> customerIdNameMap = Maps.newHashMap();
+        // 获取团购的客户名称
+        fetchTGCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
+
+        return customerIdNameMap;
+    }
+
+    private Multimap<Integer, Integer> roGroupByBusinessType(List<ReceiveOrderData> receiveOrderDataList) {
+        Multimap<Integer, Integer> businessTypeCustomerIdMMap = LinkedListMultimap.create(receiveOrderDataList.size());
+        for (ReceiveOrderData roDate : receiveOrderDataList) {
+            businessTypeCustomerIdMMap.put(roDate.getBusinessType(), roDate.getCustomerId());
+        }
+        return businessTypeCustomerIdMMap;
+    }
 
     /**
      * 获取客户名称的输入提示
