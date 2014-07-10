@@ -88,6 +88,9 @@ public class LoadOptionAction extends AjaxBaseAction {
             option.put(ReceiveType.TG_SECURITY_DEPOSIT.value(), ReceiveType.TG_SECURITY_DEPOSIT.getDescription());
             option.put(ReceiveType.TG_GUARANTEE.value(), ReceiveType.TG_GUARANTEE.getDescription());
             option.put(ReceiveType.TG_EXTRA_FEE.value(), ReceiveType.TG_EXTRA_FEE.getDescription());
+            option.put(ReceiveType.TG_COMPENSATION.value(), ReceiveType.TG_COMPENSATION.getDescription());
+            option.put(ReceiveType.TG_SUPER_REFUND.value(), ReceiveType.TG_SUPER_REFUND.getDescription());
+            option.put(ReceiveType.TG_REBATE_MANUALLY.value(), ReceiveType.TG_REBATE_MANUALLY.getDescription());
         } else if (businessType == BusinessType.ADVERTISEMENT.value()) {
             option.put(ReceiveType.AD_FEE.value(), ReceiveType.AD_FEE.getDescription());
         }
@@ -108,6 +111,9 @@ public class LoadOptionAction extends AjaxBaseAction {
             option.put(ReceiveType.TG_SECURITY_DEPOSIT.value(), ReceiveType.TG_SECURITY_DEPOSIT.getDescription());
             option.put(ReceiveType.TG_GUARANTEE.value(), ReceiveType.TG_GUARANTEE.getDescription());
             option.put(ReceiveType.TG_EXTRA_FEE.value(), ReceiveType.TG_EXTRA_FEE.getDescription());
+            option.put(ReceiveType.TG_COMPENSATION.value(), ReceiveType.TG_COMPENSATION.getDescription());
+            option.put(ReceiveType.TG_SUPER_REFUND.value(), ReceiveType.TG_SUPER_REFUND.getDescription());
+            option.put(ReceiveType.TG_REBATE_MANUALLY.value(), ReceiveType.TG_REBATE_MANUALLY.getDescription());
         } else if (businessType == BusinessType.ADVERTISEMENT.value()) {
             option.put(ReceiveType.AD_FEE.value(), ReceiveType.AD_FEE.getDescription());
         }
