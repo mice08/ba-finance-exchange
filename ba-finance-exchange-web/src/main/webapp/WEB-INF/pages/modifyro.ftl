@@ -111,10 +111,14 @@
                     </div>
                 </div>
                 <div class="control-group span6">
-                    <label class="control-label">客户ID</label>
+                    <label class="control-label">客户名称</label>
                     <div class="controls">
-                        <input type="text" id="m-customerId" name="customerId" class="form_value load_value" validate="n[0,10]"
-                               error_msg="n[0,10]:请输入0-10位数字">
+                        <input type="text" id="m-customerName" name="customerName" class="form_value"
+                               validate="+"
+                               error_msg="+:请输入客户名">
+                        <input type="hidden" id="m-customerId" name="customerId" class="form_value load_value"
+                               validate="n[0,10]"
+                               error_msg="n[0,10]:请输入有效的客户名称">
                     </div>
                 </div>
 
