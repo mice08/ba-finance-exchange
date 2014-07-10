@@ -9,6 +9,7 @@ import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
+import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
@@ -64,6 +65,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     private PayTemplateService payTemplateService;
 
+    private CustomerNameService customerNameService;
     @Override
     protected void jsonExecute() throws Exception {
         if (businessType == BusinessType.DEFAULT.value()) {
@@ -162,17 +164,20 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     }
 
     private List<PayOrderBean> buildPayOrderBeans(List<PayOrderData> payOrderDataList) {
-        List<PayOrderBean> payOrderBeans = new ArrayList<PayOrderBean>();
-        if (payOrderDataList == null) {
-            return payOrderBeans;
+        if (CollectionUtils.isEmpty(payOrderDataList)) {
+            return Collections.emptyList();
         }
+        List<PayOrderBean> payOrderBeans = new ArrayList<PayOrderBean>();
+
+        Map<Integer, String> customerIdNameMap = customerNameService.getCustomerName(payOrderDataList, getLoginId());
+
         for (PayOrderData payOrderData : payOrderDataList) {
-            payOrderBeans.add(convertPODataToPOBean(payOrderData));
+            payOrderBeans.add(convertPODataToPOBean(payOrderData, customerIdNameMap));
         }
         return payOrderBeans;
     }
 
-    private PayOrderBean convertPODataToPOBean(PayOrderData payOrderData) {
+    private PayOrderBean convertPODataToPOBean(PayOrderData payOrderData, Map<Integer, String> customerIdNameMap) {
         PayOrderBean payOrderBean = new PayOrderBean();
         payOrderBean.setPayCode(payOrderData.getPayCode());
         payOrderBean.setAddTime(DateUtil.formatDateToString(payOrderData.getAddTime(), "yyyy-MM-dd"));
@@ -182,7 +187,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         payOrderBean.setBankAccountName(payOrderData.getBankAccountName());
         payOrderBean.setBankAccountNo(payOrderData.getBankAccountNo());
         payOrderBean.setBankFullBranchName(payOrderData.getBankFullBranchName());
-        payOrderBean.setCustomerName(getCustomerNameById(payOrderData.getCustomerId()));
+        payOrderBean.setCustomerName(getCustomerNameById(payOrderData.getCustomerId(), customerIdNameMap));
         payOrderBean.setMemo(payOrderData.getMemo());
         payOrderBean.setPaidDate(DateUtil.formatDateToString(payOrderData.getPaidDate(), "yyyy-MM-dd"));
         payOrderBean.setPayAmount(new DecimalFormat("##,###,###,###,##0.00").format(payOrderData.getPayAmount()));
@@ -193,7 +198,11 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         return payOrderBean;
     }
 
-    private String getCustomerNameById(int customerId){
+    private String getCustomerNameById(int customerId, Map<Integer, String> customerIdNameMap){
+        String customerName = customerIdNameMap.get(customerId);
+        if (StringUtils.isNotEmpty(customerName)) {
+            return customerName;
+        }
         return "";
     }
 
@@ -269,6 +278,10 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     public void setPayTemplateService(PayTemplateService payTemplateService) {
         this.payTemplateService = payTemplateService;
+    }
+
+    public void setCustomerNameService(CustomerNameService customerNameService) {
+        this.customerNameService = customerNameService;
     }
 
     public String getAddBeginTime() {

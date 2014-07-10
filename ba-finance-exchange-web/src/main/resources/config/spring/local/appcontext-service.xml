@@ -13,4 +13,9 @@
           class="com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService">
         <property name="templateName" value="民生银行支付模板Service"/>
     </bean>
+
+    <bean id="customerNameService"
+          class="com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService">
+        <property name="customerInfoService" ref="customerInfoService"/>
+    </bean>
 </beans>
