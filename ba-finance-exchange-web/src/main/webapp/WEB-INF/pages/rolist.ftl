@@ -24,20 +24,19 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th width="8%" class="fs tb-header">收款单ID</th>
-
+                    <th width="4%" class="fs tb-header">收款单ID</th>
                     <th width="7%" class="fs tb-header">客户名</th>
                     <th width="7%" class="fs tb-header">收款金额</th>
-                    <th width="8%" class="fs tb-header">到款日期</th>
-                    <th width="8%" class="fs tb-header">系统入账日期</th>
-                    <th width="8%" class="fs tb-header">款项类型</th>
-                    <th width="8%" class="fs tb-header">业务信息</th>
-                    <th width="6%" class="fs tb-header">收款方式</th>
-                    <th width="8%" class="fs tb-header">收款通知ID</th>
+                    <th width="6%" class="fs tb-header">到款日期</th>
+                    <th width="7%" class="fs tb-header">系统入账日期</th>
+                    <th width="6%" class="fs tb-header">款项类型</th>
+                    <th width="6%" class="fs tb-header">业务信息</th>
+                    <th width="5%" class="fs tb-header">收款方式</th>
+                    <th width="6%" class="fs tb-header">收款通知ID</th>
                     <th width="7%" class="fs tb-header">付款方户名</th>
-                    <th width="10%" class="fs tb-header">备注</th>
+                    <th width="5%" class="fs tb-header">备注</th>
                     <th width="4%" class="fs tb-header">状态</th>
-                    <th width="10%" class="fs tb-header">操作</th>
+                    <th width="6%" class="fs tb-header">操作</th>
                 </tr>
                 </thead>
 
