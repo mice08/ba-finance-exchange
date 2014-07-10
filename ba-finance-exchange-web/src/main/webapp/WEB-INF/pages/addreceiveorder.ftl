@@ -22,7 +22,7 @@
                     <#--</div>-->
                 <#--</div>-->
                 <div class="control-group span6">
-                    <label class="control-label">客户名称<span class="required">*</span></label>
+                    <label class="control-label">客户名<span class="required">*</span></label>
                     <div class="controls">
                         <input type="text" id="customerName" name="customerName" class="form_value"  validate="+"
                                error_msg="+:请输入客户名">
