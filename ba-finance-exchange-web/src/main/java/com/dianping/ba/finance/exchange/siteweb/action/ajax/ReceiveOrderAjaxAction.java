@@ -146,7 +146,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
     public String loadReceiveOrderById(){
         try {
             receiveOrderData = receiveOrderService.loadReceiveOrderDataByRoId(roId);
-            Map<Integer, String> customerIdNameMap = Collections.emptyMap();
+            Map<Integer, String> customerIdNameMap = customerNameService.getROCustomerName(Arrays.asList(receiveOrderData), getLoginId());
             receiveOrder = convertRODataToROBean(receiveOrderData, customerIdNameMap);
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.getReveiveOrderById error!", e);

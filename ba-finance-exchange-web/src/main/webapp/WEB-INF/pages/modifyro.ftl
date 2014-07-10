@@ -113,7 +113,7 @@
                 <div class="control-group span6">
                     <label class="control-label">客户名称</label>
                     <div class="controls">
-                        <input type="text" id="m-customerName" name="customerName" class="form_value"
+                        <input type="text" id="m-customerName" name="customerName" class="form_value load_value"
                                validate="+"
                                error_msg="+:请输入客户名">
                         <input type="hidden" id="m-customerId" name="customerId" class="form_value load_value"
