@@ -14,6 +14,7 @@ import com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.util.ConvertUtils;
+import com.dianping.finance.common.util.LionConfigUtils;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +36,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
      */
     private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.web.monitor.PayOrderAjaxAction");
 
-    private static Set<Integer> ALLOWED_EXPORT_STATUS = Sets.newHashSet(PayOrderStatus.INIT.value(), PayOrderStatus.EXPORT_PAYING.value());
+    private static final Set<Integer> ALLOWED_EXPORT_STATUS = Sets.newHashSet(PayOrderStatus.INIT.value(), PayOrderStatus.EXPORT_PAYING.value());
 
     //查询结果，付款计划列表
     private PageModel payOrderModel = new PageModel();
@@ -63,7 +64,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     private PayOrderService payOrderService;
 
-    private PayTemplateService payTemplateService;
+    private Map<String, PayTemplateService> payTemplateServiceMap;
 
     private CustomerNameService customerNameService;
     @Override
@@ -116,6 +117,11 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
 	private void exportPayOrders(List<PayOrderExportBean> beanList) throws Exception {
 		HttpServletResponse response = getHttpServletResponse();
+        String exportBank = LionConfigUtils.getProperty("ba-finance-exchange-web.exportBank", "Minsheng");
+        PayTemplateService payTemplateService = payTemplateServiceMap.get(exportBank);
+        if (payTemplateService == null) {
+            throw new RuntimeException("不支持该银行的支付模板!exportBank=" + exportBank);
+        }
         payTemplateService.createExcelAndDownload(response, "付款单", beanList);
 	}
 
@@ -276,8 +282,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         this.payOrderService = payOrderService;
     }
 
-    public void setPayTemplateService(PayTemplateService payTemplateService) {
-        this.payTemplateService = payTemplateService;
+    public void setPayTemplateServiceMap(Map<String, PayTemplateService> payTemplateServiceMap) {
+        this.payTemplateServiceMap = payTemplateServiceMap;
     }
 
     public void setCustomerNameService(CustomerNameService customerNameService) {
