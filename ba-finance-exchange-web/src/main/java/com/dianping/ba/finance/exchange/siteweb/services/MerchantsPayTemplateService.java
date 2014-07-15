@@ -1,8 +1,8 @@
 package com.dianping.ba.finance.exchange.siteweb.services;
 
-import com.dianping.ba.finance.exchange.api.enums.BankAccountType;
-import com.dianping.ba.finance.exchange.api.enums.BusinessType;
-import com.dianping.ba.finance.exchange.siteweb.beans.*;
+import com.dianping.ba.finance.exchange.siteweb.beans.BusinessExportInfoBean;
+import com.dianping.ba.finance.exchange.siteweb.beans.MerchantsTemplateBean;
+import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
@@ -246,59 +246,6 @@ public class MerchantsPayTemplateService implements PayTemplateService {
         return new String(downloadFileName.getBytes(System.getProperty("file.encoding")), "ISO-8859-1");
     }
 
-    private void groupByAccountType(List<PayOrderExportBean> exportBeanList,
-                                    List<CommonTemplateBean> commonTemplateBeanList,
-                                    List<SameBankPersonalTemplateBean> sameBankPersonalTemplateBeanList) {
-        for (PayOrderExportBean payOrderExportBean : exportBeanList) {
-            if (isSameBankAndPersonal(payOrderExportBean)) {
-                // 行内对私
-                SameBankPersonalTemplateBean templateBean = buildSameBankPersonalTemplateBean(payOrderExportBean);
-                sameBankPersonalTemplateBeanList.add(templateBean);
-            } else {
-                CommonTemplateBean templateBean = buildCommonTemplateBean(payOrderExportBean);
-                commonTemplateBeanList.add(templateBean);
-            }
-        }
-    }
-
-    private boolean isSameBankAndPersonal(PayOrderExportBean payOrderExportBean) {
-        int accountType = payOrderExportBean.getBankAccountType();
-        String bankName = payOrderExportBean.getBankName();
-        if (bankName == null) {
-            bankName = "";
-        }
-        return BankAccountType.PERSONAL.value() == accountType && bankName.contains("民生");
-    }
-
-    private CommonTemplateBean buildCommonTemplateBean(PayOrderExportBean payOrderExportBean) {
-        CommonTemplateBean templateBean = new CommonTemplateBean();
-        templateBean.setPayCode(payOrderExportBean.getPayCode());
-        templateBean.setPayAmount(payOrderExportBean.getPayAmount());
-        templateBean.setBankAccountNo(payOrderExportBean.getBankAccountNo());
-        templateBean.setBankAccountName(payOrderExportBean.getBankAccountName());
-        int accountTypeInTemplate = payOrderExportBean.getBankAccountType() == 1 ? 0 : 1;
-        templateBean.setBankAccountType(accountTypeInTemplate);
-        BusinessType businessType = BusinessType.valueOf(payOrderExportBean.getBusinessType());
-        templateBean.setUsage("大众点评-" + businessType.toString());
-        String bankCode = payOrderExportBean.getBankCode();
-        if (bankCode == null) {
-            bankCode = "";
-        }
-        String fullBranchName = payOrderExportBean.getBankFullBranchName();
-        if (fullBranchName == null) {
-            fullBranchName = "";
-        }
-        templateBean.setBankCodeAndFullBranchName(bankCode + "&" + fullBranchName);
-        return templateBean;
-    }
-
-    private SameBankPersonalTemplateBean buildSameBankPersonalTemplateBean(PayOrderExportBean payOrderExportBean) {
-        SameBankPersonalTemplateBean templateBean = new SameBankPersonalTemplateBean();
-        templateBean.setBankAccountName(payOrderExportBean.getBankAccountName());
-        templateBean.setBankAccountNo(payOrderExportBean.getBankAccountNo());
-        templateBean.setPayAmount(payOrderExportBean.getPayAmount());
-        return templateBean;
-    }
 
     public void setTemplateName(String templateName) {
         this.templateName = templateName;
