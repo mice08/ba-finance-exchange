@@ -118,6 +118,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 	private void exportPayOrders(List<PayOrderExportBean> beanList) throws Exception {
 		HttpServletResponse response = getHttpServletResponse();
         String exportBank = LionConfigUtils.getProperty("ba-finance-exchange-web.exportBank", "Minsheng");
+        MONITOR_LOGGER.info(String.format("exportBank=%s", exportBank));
         PayTemplateService payTemplateService = payTemplateServiceMap.get(exportBank);
         if (payTemplateService == null) {
             throw new RuntimeException("不支持该银行的支付模板!exportBank=" + exportBank);
