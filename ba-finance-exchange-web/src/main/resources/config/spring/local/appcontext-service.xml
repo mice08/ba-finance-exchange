@@ -9,7 +9,7 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-    <bean id="payTemplateServiceMap" class="java.util.LinkedHashMap">
+    <bean id="payTemplateServiceMap" class="java.util.HashMap">
         <constructor-arg>
             <map key-type="java.lang.String"
                  value-type="com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService">
@@ -29,9 +29,10 @@
           class="com.dianping.ba.finance.exchange.siteweb.services.MerchantsPayTemplateService">
         <property name="templateName" value="招商银行支付模板Service"/>
         <property name="businessExportInfoBeanMap">
-            <map>
-                <entry key="1" value="grouponExportInfoBean"/>
-                <entry key="2" value="bookingExportInfoBean"/>
+            <map key-type="java.lang.Integer"
+                 value-type="com.dianping.ba.finance.exchange.siteweb.beans.BusinessExportInfoBean">
+                <entry key="1" value-ref="grouponExportInfoBean"/>
+                <entry key="2" value-ref="bookingExportInfoBean"/>
             </map>
         </property>
     </bean>
