@@ -6,6 +6,7 @@ import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService;
 import com.dianping.core.type.PageModel;
+import com.google.common.collect.Maps;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -36,7 +38,9 @@ public class PayOrderAjaxActionTest {
         payTemplateServiceMock = mock(PayTemplateService.class);
 		payOrderAjaxActionStub = new PayOrderAjaxAction4Test();
 		payOrderAjaxActionStub.setPayOrderService(payOrderServiceMock);
-        payOrderAjaxActionStub.setPayTemplateService(payTemplateServiceMock);
+        Map<String, PayTemplateService> payTemplateServiceMap = Maps.newHashMap();
+        payTemplateServiceMap.put("Minsheng", payTemplateServiceMock);
+        payOrderAjaxActionStub.setPayTemplateServiceMap(payTemplateServiceMap);
 	}
 
     @Test
@@ -97,6 +101,7 @@ public class PayOrderAjaxActionTest {
 
 		Assert.assertNull(actual);
 		verify(payOrderServiceMock, atLeastOnce()).updatePayOrderToPaying(anyList(), anyInt());
+		verify(payTemplateServiceMock, atLeastOnce()).createExcelAndDownload(any(HttpServletResponse.class), anyString(), anyList());
 	}
 
 	private class PayOrderAjaxAction4Test extends PayOrderAjaxAction {
