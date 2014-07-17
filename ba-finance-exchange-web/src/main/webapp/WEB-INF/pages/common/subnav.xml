@@ -1,3 +1,16 @@
 <tags>
-    <link name="付款单查询" url="http://${ba-finance-exchange-web.Domain}/caiwu/exchangeorder/orderlist"/>
+    <set name="收款管理">
+        <link name="收款单查询" url="http://${ba-finance-exchange-web.Domain}/exchange/receiveorder/orderlist"/>
+    </set>
+    <set name="付款管理">
+        <link name="付款计划查询" url="http://${ba-finance-settle-web.Domain}/settle/payplan/payplanlist"/>
+        <link name="付款单查询" url="http://${ba-finance-exchange-web.Domain}/exchange/payorder/orderlist"/>
+    </set>
+    <set name="开票管理">
+        <link name="开票查询" url="http://${ba-finance-settle-web.Domain}/settle/invoice/invoicelist"/>
+    </set>
+    <set name="预约预定">
+        <link name="付款计划查询" url="http://${ba-finance-settle-web.Domain}/caiwu/paymentplan/paymentplanlist"/>
+        <link name="付款单查询" url="http://${ba-finance-settle-web.Domain}/caiwu/exchangeorder/orderlist"/>
+    </set>
 </tags>
