@@ -16,9 +16,10 @@
                 </div>
 
                 <div class="control-group span6">
-                    <label class="control-label">客户ID</label>
+                    <label class="control-label">客户名</label>
                     <div class="controls">
-                        <input type="text" id="q-customerId" name="customerId" class="form_value"  validate="n">
+                        <input type="text" id="q-customerName" name="customerName" class="form_value">
+                        <input type="hidden" id="q-customerId" name="customerId" class="form_value"  validate="n">
                     </div>
                 </div>
             </div>
