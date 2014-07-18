@@ -84,7 +84,6 @@ public class LoadOptionAction extends AjaxBaseAction {
         if (businessType == BusinessType.GROUP_PURCHASE.value()) {
             option.put(ReceiveType.DEFAULT.value(), "请选择业务类型");
             option.put(ReceiveType.TG_SHELVING_FEE.value(), ReceiveType.TG_SHELVING_FEE.getDescription());
-            option.put(ReceiveType.TG_DEPOSIT.value(), ReceiveType.TG_DEPOSIT.getDescription());
             option.put(ReceiveType.TG_SECURITY_DEPOSIT.value(), ReceiveType.TG_SECURITY_DEPOSIT.getDescription());
             option.put(ReceiveType.TG_GUARANTEE.value(), ReceiveType.TG_GUARANTEE.getDescription());
             option.put(ReceiveType.TG_EXTRA_FEE.value(), ReceiveType.TG_EXTRA_FEE.getDescription());
@@ -107,7 +106,6 @@ public class LoadOptionAction extends AjaxBaseAction {
         }
         if (businessType == BusinessType.GROUP_PURCHASE.value()) {
             option.put(ReceiveType.TG_SHELVING_FEE.value(), ReceiveType.TG_SHELVING_FEE.getDescription());
-            option.put(ReceiveType.TG_DEPOSIT.value(), ReceiveType.TG_DEPOSIT.getDescription());
             option.put(ReceiveType.TG_SECURITY_DEPOSIT.value(), ReceiveType.TG_SECURITY_DEPOSIT.getDescription());
             option.put(ReceiveType.TG_GUARANTEE.value(), ReceiveType.TG_GUARANTEE.getDescription());
             option.put(ReceiveType.TG_EXTRA_FEE.value(), ReceiveType.TG_EXTRA_FEE.getDescription());
