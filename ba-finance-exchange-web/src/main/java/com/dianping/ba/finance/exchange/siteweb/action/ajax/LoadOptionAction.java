@@ -170,7 +170,9 @@ public class LoadOptionAction extends AjaxBaseAction {
         for (ReceiveBankData receiveBankData : receiveBankDataList) {
             CompanyIDName companyIDName = CompanyIDName.valueOf(receiveBankData.getCompanyId());
             if (companyIDName != null) {
-                option.put(receiveBankData.getBankId(), companyIDName.getCompanyName());
+                BusinessType businessTypeEnum = BusinessType.valueOf(receiveBankData.getBusinessType());
+                String name = String.format("%s(%s)", companyIDName.getCompanyName(), businessTypeEnum.toString());
+                option.put(receiveBankData.getBankId(), name);
             }
         }
         code = SUCCESS_CODE;
