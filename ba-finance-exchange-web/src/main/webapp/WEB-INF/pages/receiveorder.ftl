@@ -6,11 +6,14 @@
     <title>收款单</title>
     <link rel="stylesheet" href="<@ava.extStaticResource resource='/build/base-css.min.css'/>" type="text/css">
     <link rel="stylesheet" href="<@ava.extStaticResource resource='/build/common-css.css'/>" type="text/css">
+    <link rel="stylesheet" href="<@ava.extStaticResource resource='/build/jquery.autocomplete.css'/>" type="text/css">
 </head>
 
 <body>
 <#include "/WEB-INF/pages/common/tips.ftl">
 <#include "/WEB-INF/pages/addreceiveorder.ftl">
+<#include "/WEB-INF/pages/teltransfer.ftl">
+<#include "/WEB-INF/pages/modifyro.ftl">
     <!-- @ main -->
     <!--内容-->
     <div class="content">

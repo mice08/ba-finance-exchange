@@ -34,6 +34,23 @@ public class ReceiveBankServiceObject implements ReceiveBankService {
         return receiveBankDao.findAllReceiveBank();
     }
 
+    @Log(severity = 1, logBefore = true, logAfter = true)
+    @ReturnDefault
+    @Override
+    public ReceiveBankData loadReceiveBankByBankId(int bankId) {
+        List<ReceiveBankData> receiveBankDataList = findAllReceiveBank();
+        return getBankDataByBankId(receiveBankDataList, bankId);
+    }
+
+    private ReceiveBankData getBankDataByBankId(List<ReceiveBankData> receiveBankDataList, int bankId) {
+        for (ReceiveBankData receiveBankData : receiveBankDataList) {
+            if (bankId == receiveBankData.getBankId()) {
+                return receiveBankData;
+            }
+        }
+        return null;
+    }
+
     @Override
     public void clearCache() {
         receiveBankDataCache = null;

@@ -16,19 +16,20 @@
                 </div>
 
                 <div class="control-group span6">
-                    <label class="control-label">客户ID</label>
+                    <label class="control-label">客户名</label>
                     <div class="controls">
-                        <input type="text" id="q-customerId" name="customerId" class="form_value"  validate="n">
+                        <input type="text" id="q-customerName" name="customerName" class="form_value">
+                        <input type="hidden" id="q-customerId" name="customerId" class="form_value"  validate="n">
                     </div>
                 </div>
             </div>
 
             <div class="row-fluid label-colon">
                 <div class="control-group span6">
-                    <label class="control-label">业务类型</label>
+                    <label class="control-label">款项类型</label>
                     <div class="controls">
                         <select id="q-receiveType" name="receiveType" class="form_value">
-                            <option value="0">请选择业务类型</option>
+                            <option value="0">请选择款项类型</option>
                         </select>
                     </div>
                 </div>
@@ -44,7 +45,7 @@
 
             <div class="row-fluid label-colon">
                 <div class="control-group span6">
-                    <label class="control-label">银行到账日期</label>
+                    <label class="control-label">到款日期</label>
 
                     <div class="controls">
                         <select id="q-select-br-time" class="select-small">
@@ -77,7 +78,7 @@
                 </div>
 
                 <div class="control-group span6">
-                    <label class="control-label">系统收款日期</label>
+                    <label class="control-label">系统入账日期</label>
 
                     <div class="controls">
                         <select id="q-select-receive-time" class="select-small">
@@ -146,7 +147,7 @@
                         <a id="btn-add-br" style="width: 100px" href="#add-ro-dialog" role="button" class="btn btn-primary btn-fs-normal btn-fs-xs ajaxdisabledbutton" data-toggle="modal">
                             <span class="glyphicon glyphicon-pencil"></span>手工录入</a>
 
-                        <a id="btn-add-br" href="#" role="button" class="btn btn-primary btn-fs-normal btn-fs-xs ajaxdisabledbutton" data-toggle="modal">
+                        <a id="btn-import-tel-transfer" href="#import-tel-transfer" role="button" class="btn btn-primary btn-fs-normal btn-fs-xs ajaxdisabledbutton" data-toggle="modal">
                             <span class="glyphicon glyphicon-file"></span>导入</a>
                     </div>
                 </div>

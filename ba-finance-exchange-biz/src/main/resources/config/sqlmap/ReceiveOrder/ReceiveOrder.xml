@@ -11,6 +11,8 @@
         <result property="receiveAmount" column="ReceiveAmount"/>
         <result property="receiveTime" column="ReceiveTime"/>
         <result property="payTime" column="PayTime"/>
+        <result property="payerAccountNo" column="PayerAccountNo"/>
+        <result property="payerBankName" column="PayerBankName"/>
         <result property="bankReceiveTime" column="BankReceiveTime"/>
         <result property="payChannel" column="PayChannel"/>
         <result property="receiveType" column="ReceiveType"/>
@@ -23,6 +25,7 @@
         <result property="updateTime" column="UpdateTime"/>
         <result property="updateLoginId" column="UpdateLoginID"/>
         <result property="reverseRoId" column="ReverseROID"/>
+        <result property="payerAccountName" column="PayerAccountName"/>
         <result property="memo" column="Memo"/>
     </resultMap>
 
@@ -47,7 +50,10 @@
                          UpdateTime,
                          UpdateLoginID,
                          ReverseROID,
-                         Memo)
+                         Memo,
+                         PayerAccountName,
+                         PayerAccountNo,
+                         PayerBankName)
             VALUES      (#receiveOrderData.customerId#,
                          #receiveOrderData.shopId#,
                          #receiveOrderData.businessType#,
@@ -66,7 +72,10 @@
                          #receiveOrderData.updateTime#,
                          #receiveOrderData.updateLoginId#,
                          #receiveOrderData.reverseRoId#,
-                         #receiveOrderData.memo#)
+                         #receiveOrderData.memo#,
+                         #receiveOrderData.payerAccountName#,
+                         #receiveOrderData.payerAccountNo#,
+                         #receiveOrderData.payerBankName#)
 
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="roId">
@@ -82,6 +91,8 @@
             ro.ShopID,
             ro.BusinessType,
             ro.ReceiveAmount,
+            ro.PayerAccountNo,
+            ro.PayerBankName,
             ro.ReceiveTime,
             ro.PayTime,
             ro.BankReceiveTime,
@@ -96,7 +107,8 @@
             ro.UpdateTime,
             ro.UpdateLoginID,
             ro.ReverseROID,
-            ro.Memo
+            ro.Memo,
+            ro.PayerAccountName
        FROM FC_ReceiveOrder ro
         <dynamic prepend="WHERE">
             <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
@@ -216,6 +228,8 @@
         ro.BusinessType,
         ro.ReceiveAmount,
         ro.ReceiveTime,
+        ro.PayerAccountNo,
+        ro.PayerBankName,
         ro.PayTime,
         ro.BankReceiveTime,
         ro.PayChannel,
@@ -229,7 +243,8 @@
         ro.UpdateTime,
         ro.UpdateLoginID,
         ro.ReverseROID,
-        ro.Memo
+        ro.Memo,
+        ro.PayerAccountName
         FROM FC_ReceiveOrder ro
         WHERE TradeNo = #tradeNo#
         LIMIT 1
@@ -253,5 +268,65 @@
         UpdateTime = NOW()
         WHERE ROID = #roId#
     </update>
+
+    <update id="updateReceiveOrder" parameterClass="map">
+        UPDATE FC_ReceiveOrder
+        SET
+        <isGreaterThan property="receiveOrderData.customerId" compareValue="0">
+            CustomerID = #receiveOrderData.customerId#,
+        </isGreaterThan>
+        <isGreaterThan property="receiveOrderData.shopId" compareValue="0">
+            ShopID = #receiveOrderData.shopId#,
+        </isGreaterThan>
+        <isGreaterThan property="receiveOrderData.status" compareValue="0">
+            Status = #receiveOrderData.status#,
+        </isGreaterThan>
+        <isGreaterThan property="receiveOrderData.receiveType" compareValue="0">
+            ReceiveType = #receiveOrderData.receiveType#,
+        </isGreaterThan>
+        <isNotEmpty property="receiveOrderData.bizContent">
+            BizContent = #receiveOrderData.bizContent#,
+        </isNotEmpty>
+        <isNotEmpty property="receiveOrderData.receiveTime">
+            ReceiveTime = #receiveOrderData.receiveTime#,
+        </isNotEmpty>
+        <isNotEmpty property="receiveOrderData.memo">
+            Memo = #receiveOrderData.memo#,
+        </isNotEmpty>
+        <isGreaterThan property="receiveOrderData.updateLoginId" compareValue="0">
+            UpdateLoginID = "receiveOrderData.updateLoginId",
+        </isGreaterThan>
+        UpdateTime = NOW()
+        WHERE ROID = #receiveOrderData.roId#
+    </update>
+
+    <select id="loadReceiveOrderDataByRoId" resultMap="receiveOrderData" parameterClass="map">
+        SELECT ro.ROID,
+        ro.CustomerID,
+        ro.ShopID,
+        ro.BusinessType,
+        ro.ReceiveAmount,
+        ro.PayerAccountNo,
+        ro.PayerBankName,
+        ro.ReceiveTime,
+        ro.PayTime,
+        ro.BankReceiveTime,
+        ro.PayChannel,
+        ro.ReceiveType,
+        ro.BizContent,
+        ro.TradeNo,
+        ro.BankID,
+        ro.Status,
+        ro.AddTime,
+        ro.AddLoginID,
+        ro.UpdateTime,
+        ro.UpdateLoginID,
+        ro.ReverseROID,
+        ro.Memo,
+        ro.PayerAccountName
+        FROM FC_ReceiveOrder ro
+        WHERE ROID = #roId#
+        LIMIT 1
+    </select>
 
 </sqlMap>

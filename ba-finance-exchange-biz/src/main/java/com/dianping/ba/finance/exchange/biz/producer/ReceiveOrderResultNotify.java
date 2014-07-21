@@ -22,11 +22,16 @@ public class ReceiveOrderResultNotify {
 
     public static final String AD_RECEIVE_RESULT_EVENT_KEY = "FS_AD_RECEIVE_RESULT";
 
+    public static final String TS_RECEIVE_RESULT_EVENT_KEY = "FS_TS_RECEIVE_RESULT";
+
     @Log(severity = 1, logBefore = true, logAfter = true)
     public void receiveResultNotify(ReceiveOrderResultBean receiveOrderResultBean) {
         ReceiveResultNotifyDTO receiveResultNotifyDTO = buildReceiveResultNotifyDTO(receiveOrderResultBean);
-        if(receiveOrderResultBean.getBusinessType()== BusinessType.ADVERTISEMENT){
+        if(receiveOrderResultBean.getBusinessType() == BusinessType.ADVERTISEMENT){
             SwallowEventBean eventBean = new SwallowEventBean(AD_RECEIVE_RESULT_EVENT_KEY, receiveResultNotifyDTO);
+            receiveOrderProducer.fireSwallowEvent(eventBean);
+        } else if(receiveOrderResultBean.getBusinessType() == BusinessType.GROUP_PURCHASE){
+            SwallowEventBean eventBean = new SwallowEventBean(TS_RECEIVE_RESULT_EVENT_KEY, receiveResultNotifyDTO);
             receiveOrderProducer.fireSwallowEvent(eventBean);
         }
     }
@@ -36,10 +41,13 @@ public class ReceiveOrderResultNotify {
         receiveResultNotifyDTO.setBizId(String.valueOf(receiveOrderResultBean.getRoId()));
         receiveResultNotifyDTO.setCustomerId(receiveOrderResultBean.getCustomerId());
         receiveResultNotifyDTO.setShopId(receiveOrderResultBean.getShopId());
-		int type = receiveOrderResultBean.getReceiveAmount().compareTo(BigDecimal.ZERO) > 0 ? 1 : 2;
-		receiveResultNotifyDTO.setType(type);
+        BigDecimal receiveAmount = receiveOrderResultBean.getReceiveAmount();
+        if (receiveAmount != null) {
+            int type = receiveAmount.compareTo(BigDecimal.ZERO) > 0 ? 1 : 2;
+            receiveResultNotifyDTO.setType(type);
+            receiveResultNotifyDTO.setReceiveAmount(receiveAmount.abs());
+        }
         receiveResultNotifyDTO.setPayChannel(receiveOrderResultBean.getPayChannel().value());
-        receiveResultNotifyDTO.setReceiveAmount(receiveOrderResultBean.getReceiveAmount().abs());
         receiveResultNotifyDTO.setReceiveType(receiveOrderResultBean.getReceiveType().value());
         receiveResultNotifyDTO.setBizContent(receiveOrderResultBean.getBizContent());
         receiveResultNotifyDTO.setPayTime(receiveOrderResultBean.getPayTime());

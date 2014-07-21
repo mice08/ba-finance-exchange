@@ -49,6 +49,7 @@
         <property name="swallowClientWrapperMap">
             <map>
                 <entry key="FS_AD_RECEIVE_RESULT" value-ref="fsADReceiveResultClient"/>
+                <entry key="FS_TS_RECEIVE_RESULT" value-ref="fsTSReceiveResultClient"/>
             </map>
         </property>
     </bean>
@@ -56,6 +57,12 @@
     <bean id="fsADReceiveResultClient" init-method="init"
           class="com.dianping.finance.common.swallow.SwallowClientWrapper">
         <property name="topic" value="${ba-finance-exchange-biz.fs.ad.receive.result.notice.topic.name}"/>
+        <property name="mode" value="ASYNC_MODE"/>
+    </bean>
+
+    <bean id="fsTSReceiveResultClient" init-method="init"
+          class="com.dianping.finance.common.swallow.SwallowClientWrapper">
+        <property name="topic" value="${ba-finance-exchange-biz.fs.ts.receive.result.notice.topic.name}"/>
         <property name="mode" value="ASYNC_MODE"/>
     </bean>
 </beans>

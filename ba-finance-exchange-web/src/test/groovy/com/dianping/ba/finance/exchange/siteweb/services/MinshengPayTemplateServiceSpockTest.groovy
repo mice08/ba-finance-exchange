@@ -7,19 +7,18 @@ import javax.servlet.http.HttpServletResponse
 /**
  * Created by noahshen on 14-6-24.
  */
-class PayTemplateServiceSpockTest extends Specification {
+class MinshengPayTemplateServiceSpockTest extends Specification {
 
-    PayTemplateService payTemplateServiceStub;
-
+    MinshengPayTemplateService minShengPayTemplateServiceStub;
 
     void setup() {
-        payTemplateServiceStub = [];
-        payTemplateServiceStub.templateName = "民生银行支付模板Service";
+        minShengPayTemplateServiceStub = [];
+        minShengPayTemplateServiceStub.templateName = "民生银行支付模板Service";
     }
 
     def "Init"() {
         when:
-        payTemplateServiceStub.init();
+        minShengPayTemplateServiceStub.init();
 
         then:
         notThrown(NullPointerException)
@@ -35,8 +34,8 @@ class PayTemplateServiceSpockTest extends Specification {
         def exportBeans = [commonExportBean, sameBankExportBean];
 
         when:
-        payTemplateServiceStub.init();
-        payTemplateServiceStub.createExcelAndDownload(responseMock, fileName, exportBeans);
+        minShengPayTemplateServiceStub.init();
+        minShengPayTemplateServiceStub.createExcelAndDownload(responseMock, fileName, exportBeans);
 
         then:
         1 * responseMock.getOutputStream() >> new MockServletOutputStream();

@@ -22,9 +22,12 @@
                     <#--</div>-->
                 <#--</div>-->
                 <div class="control-group span6">
-                    <label class="control-label">客户ID<span class="required">*</span></label>
+                    <label class="control-label">客户名<span class="required">*</span></label>
                     <div class="controls">
-                        <input type="text" id="customerId" name="customerId" class="form_value"  validate="+ n[0,11]">
+                        <input type="text" id="customerName" name="customerName" class="form_value"  validate="+"
+                               error_msg="+:请输入客户名">
+                        <input type="hidden" id="customerId" name="customerId" class="form_value"  validate="+ n[0,11]"
+                               error_msg="+:请输入有效的客户名称">
                     </div>
                 </div>
             </div>
@@ -53,10 +56,10 @@
 
             <div class="row-fluid label-colon">
                 <div class="control-group span6">
-                    <label class="control-label">业务类型<span class="required">*</span></label>
+                    <label class="control-label">款项类型<span class="required">*</span></label>
                     <div class="controls">
                         <select id="receiveType" name="receiveType" class="form_value"  validate="ne[0]" error_msg="ne[0]:请选择业务类型">
-                            <option value="0">请选择业务类型</option>
+                            <option value="0">请选择款项类型</option>
                         </select>
                     </div>
                 </div>

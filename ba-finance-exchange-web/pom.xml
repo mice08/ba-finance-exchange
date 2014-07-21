@@ -399,6 +399,13 @@
             <version>0.7-groovy-2.0</version>
             <scope>test</scope>
         </dependency>
+
+
+        <dependency>
+            <groupId>com.dianping</groupId>
+            <artifactId>customerinfo-api</artifactId>
+            <version>1.0.8-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

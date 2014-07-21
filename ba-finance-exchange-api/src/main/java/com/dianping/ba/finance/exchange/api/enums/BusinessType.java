@@ -50,7 +50,7 @@ public enum BusinessType {
             case 4:
                 return "储值卡" ;
             case 5:
-                return "本地广告" ;
+                return "广告" ;
             default:
                 return "默认";
         }

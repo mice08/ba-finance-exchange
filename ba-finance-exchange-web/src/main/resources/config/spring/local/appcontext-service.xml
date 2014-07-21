@@ -9,8 +9,60 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-    <bean id="payTemplateService" init-method="init"
-          class="com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService">
+    <bean id="payTemplateServiceMap" class="java.util.HashMap">
+        <constructor-arg>
+            <map key-type="java.lang.String"
+                 value-type="com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService">
+                <entry key="Minsheng" value-ref="minshengPayTemplateService"/>
+                <entry key="Merchants" value-ref="merchantsPayTemplateService"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+
+    <bean id="minshengPayTemplateService" init-method="init"
+          class="com.dianping.ba.finance.exchange.siteweb.services.MinshengPayTemplateService">
         <property name="templateName" value="民生银行支付模板Service"/>
+    </bean>
+
+    <bean id="merchantsPayTemplateService" init-method="init"
+          class="com.dianping.ba.finance.exchange.siteweb.services.MerchantsPayTemplateService">
+        <property name="templateName" value="招商银行支付模板Service"/>
+        <property name="businessExportInfoBeanMap">
+            <map key-type="java.lang.Integer"
+                 value-type="com.dianping.ba.finance.exchange.siteweb.beans.BusinessExportInfoBean">
+                <entry key="1" value-ref="grouponExportInfoBean"/>
+                <entry key="2" value-ref="bookingExportInfoBean"/>
+            </map>
+        </property>
+    </bean>
+
+
+    <bean id="grouponExportInfoBean"
+          class="com.dianping.ba.finance.exchange.siteweb.beans.BusinessExportInfoBean">
+        <property name="businessType" value="GROUP_PURCHASE"/>
+        <property name="currency" value="人民币"/>
+        <property name="payerBranchBank" value="上海"/>
+        <property name="settleType" value="普通"/>
+        <property name="payerAccountNo" value="121909245310505"/>
+        <property name="use" value="大众点评网"/>
+        <property name="businessSummary" value="大众点评网团购"/>
+    </bean>
+
+    <bean id="bookingExportInfoBean"
+          class="com.dianping.ba.finance.exchange.siteweb.beans.BusinessExportInfoBean">
+        <property name="businessType" value="BOOKING"/>
+        <property name="currency" value="人民币"/>
+        <property name="payerBranchBank" value="上海"/>
+        <property name="settleType" value="普通"/>
+        <property name="payerAccountNo" value="121909245310704"/>
+        <property name="use" value="大众点评网"/>
+        <property name="businessSummary" value="预约预订业务"/>
+    </bean>
+
+
+    <bean id="customerNameService"
+          class="com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService">
+        <property name="customerInfoService" ref="customerInfoService"/>
     </bean>
 </beans>

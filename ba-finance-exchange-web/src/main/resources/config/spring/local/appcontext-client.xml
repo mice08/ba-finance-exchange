@@ -27,4 +27,14 @@
         <property name="timeout" value="5000"/>
     </bean>
 
+    <bean id="customerInfoService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName"
+                  value="http://service.dianping.com/customerInfoService/customerInfoService_1.0.0"/>
+        <property name="iface" value="com.dianping.customerinfo.api.CustomerInfoService"/>
+        <property name="serialize" value="hessian"/>
+        <property name="callMethod" value="sync"/>
+        <property name="timeout" value="5000"/>
+        <property name="timeoutRetry" value="true"/>
+        <property name="retries" value="${ba-finance-exchange-web.pigeon.retryTimes}"/>
+    </bean>
 </beans>

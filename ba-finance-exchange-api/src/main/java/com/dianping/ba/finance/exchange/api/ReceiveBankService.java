@@ -16,7 +16,13 @@ public interface ReceiveBankService {
     List<ReceiveBankData> findAllReceiveBank();
 
     /**
-     * 清除缓存
+     * 根据BankId获取银行
+     * @param bankId
+     * @return
      */
+    ReceiveBankData loadReceiveBankByBankId(int bankId);
+        /**
+         * 清除缓存
+         */
     void clearCache();
 }

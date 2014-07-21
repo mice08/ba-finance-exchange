@@ -59,10 +59,28 @@
             <result type="json"></result>
         </action>
 
+        <action name="getReceiveOrderById"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction"
+                method="loadReceiveOrderById">
+            <result type="json"></result>
+        </action>
+
+        <action name="updateReceiveOrder"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction"
+                method="updateReceiveOrder">
+            <result type="json"></result>
+        </action>
+
 
         <action name="loadReceiveBankOption"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
                 method="loadReceiveBankOption">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadAllReceiveBankOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadAllReceiveBankOption">
             <result type="json"></result>
         </action>
 
@@ -99,6 +117,18 @@
         <action name="findCustomerNameSuggestion"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.CustomerAjaxAction"
                 method="findCustomerNameSuggestion">
+            <result type="json"></result>
+        </action>
+
+        <action name="importTelTransfer"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ImportTelTransferAjaxAction"
+                method="importTelTransfer">
+            <result type="json"></result>
+        </action>
+
+        <action name="fetchCustomerNameSuggestion"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.CustomerNameSuggestionAction"
+                method="fetchCustomerNameSuggestion">
             <result type="json"></result>
         </action>
     </package>
