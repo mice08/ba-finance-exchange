@@ -269,30 +269,21 @@
         WHERE ROID = #roId#
     </update>
 
+    <!-- 不进行非空判断-->
     <update id="updateReceiveOrder" parameterClass="map">
         UPDATE FC_ReceiveOrder
         SET
-        <isGreaterThan property="receiveOrderData.customerId" compareValue="0">
-            CustomerID = #receiveOrderData.customerId#,
-        </isGreaterThan>
-        <isGreaterThan property="receiveOrderData.shopId" compareValue="0">
-            ShopID = #receiveOrderData.shopId#,
-        </isGreaterThan>
+        CustomerID = #receiveOrderData.customerId#,
+        ShopID = #receiveOrderData.shopId#,
         <isGreaterThan property="receiveOrderData.status" compareValue="0">
             Status = #receiveOrderData.status#,
         </isGreaterThan>
         <isGreaterThan property="receiveOrderData.receiveType" compareValue="0">
             ReceiveType = #receiveOrderData.receiveType#,
         </isGreaterThan>
-        <isNotEmpty property="receiveOrderData.bizContent">
-            BizContent = #receiveOrderData.bizContent#,
-        </isNotEmpty>
-        <isNotEmpty property="receiveOrderData.receiveTime">
-            ReceiveTime = #receiveOrderData.receiveTime#,
-        </isNotEmpty>
-        <isNotEmpty property="receiveOrderData.memo">
-            Memo = #receiveOrderData.memo#,
-        </isNotEmpty>
+        BizContent = #receiveOrderData.bizContent#,
+        ReceiveTime = #receiveOrderData.receiveTime#,
+        Memo = #receiveOrderData.memo#,
         <isGreaterThan property="receiveOrderData.updateLoginId" compareValue="0">
             UpdateLoginID = "receiveOrderData.updateLoginId",
         </isGreaterThan>
