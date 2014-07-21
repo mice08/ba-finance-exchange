@@ -53,7 +53,7 @@ public class LoadOptionAction extends AjaxBaseAction {
         ReceiveOrderPayChannel[] channels = ReceiveOrderPayChannel.values();
         for (ReceiveOrderPayChannel channel : channels) {
             if (channel.getChannel() == 0) {
-                option.put(channel.getChannel(), "请选择收款方式");
+                option.put(channel.getChannel(), "全部");
             } else  if (!(channel.getChannel() == ReceiveOrderPayChannel.CREDIT_VOUCHER.value())){
                 option.put(channel.getChannel(), channel.getDescription());
             }
@@ -66,7 +66,7 @@ public class LoadOptionAction extends AjaxBaseAction {
         ReceiveType[] receiveTypes = ReceiveType.values();
         for (ReceiveType type : receiveTypes) {
             if (type.getReceiveType() == 0 && receiveTypes.length > 1) {
-                option.put(type.getReceiveType(), "请选择业务类型");
+                option.put(type.getReceiveType(), "全部");
             } else {
                 option.put(type.getReceiveType(), type.getDescription());
             }
@@ -82,7 +82,7 @@ public class LoadOptionAction extends AjaxBaseAction {
             return SUCCESS;
         }
         if (businessType == BusinessType.GROUP_PURCHASE.value()) {
-            option.put(ReceiveType.DEFAULT.value(), "请选择业务类型");
+            option.put(ReceiveType.DEFAULT.value(), "全部");
             option.put(ReceiveType.TG_SHELVING_FEE.value(), ReceiveType.TG_SHELVING_FEE.getDescription());
             option.put(ReceiveType.TG_SECURITY_DEPOSIT.value(), ReceiveType.TG_SECURITY_DEPOSIT.getDescription());
             option.put(ReceiveType.TG_GUARANTEE.value(), ReceiveType.TG_GUARANTEE.getDescription());
@@ -99,7 +99,7 @@ public class LoadOptionAction extends AjaxBaseAction {
 
     public String loadReceiveTypeOptionInQuery() {
 
-        option.put(ReceiveType.DEFAULT.value(), "请选择业务类型");
+        option.put(ReceiveType.DEFAULT.value(), "全部");
         if (businessType == BusinessType.DEFAULT.value()) {
             code = ERROR_CODE;
             return SUCCESS;
@@ -120,7 +120,7 @@ public class LoadOptionAction extends AjaxBaseAction {
     }
 
     public String loadReceiveBankOption() {
-        option.put(0, "请选择收款银行账户");
+        option.put(0, "全部");
         if (businessType == BusinessType.DEFAULT.value()) {
             code = ERROR_CODE;
             return SUCCESS;
@@ -143,7 +143,7 @@ public class LoadOptionAction extends AjaxBaseAction {
     }
 
     public String loadReceiveBankOptionInQuery() {
-        option.put(0, "请选择收款银行账户");
+        option.put(0, "全部");
         if (businessType == BusinessType.DEFAULT.value()) {
             code = ERROR_CODE;
             return SUCCESS;
