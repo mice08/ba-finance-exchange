@@ -54,6 +54,8 @@ public class ReceiveOrderResultBean implements Serializable {
     private String memo;
 	private int reverseRoId;
 
+	private int receiveNotifyId;
+
 	public int getRoId() {
         return roId;
     }
@@ -182,7 +184,15 @@ public class ReceiveOrderResultBean implements Serializable {
 		this.reverseRoId = reverseRoId;
 	}
 
-	@Override
+    public int getReceiveNotifyId() {
+        return receiveNotifyId;
+    }
+
+    public void setReceiveNotifyId(int receiveNotifyId) {
+        this.receiveNotifyId = receiveNotifyId;
+    }
+
+    @Override
     public String toString() {
         return "ReceiveOrderResultBean{" +
                 "roId=" + roId +
@@ -200,7 +210,8 @@ public class ReceiveOrderResultBean implements Serializable {
                 ", bankId=" + bankId +
                 ", tradeNo='" + tradeNo + '\'' +
                 ", memo='" + memo + '\'' +
-				", reverseRoId=" + reverseRoId +
+                ", reverseRoId=" + reverseRoId +
+                ", receiveNotifyId=" + receiveNotifyId +
                 '}';
     }
 }

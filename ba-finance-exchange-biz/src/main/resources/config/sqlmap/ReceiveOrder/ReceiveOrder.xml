@@ -53,7 +53,8 @@
                          Memo,
                          PayerAccountName,
                          PayerAccountNo,
-                         PayerBankName)
+                         PayerBankName,
+                         ReceiveNotifyID)
             VALUES      (#receiveOrderData.customerId#,
                          #receiveOrderData.shopId#,
                          #receiveOrderData.businessType#,
@@ -75,7 +76,8 @@
                          #receiveOrderData.memo#,
                          #receiveOrderData.payerAccountName#,
                          #receiveOrderData.payerAccountNo#,
-                         #receiveOrderData.payerBankName#)
+                         #receiveOrderData.payerBankName#,
+                         #receiveOrderData.receiveNotifyId#)
 
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="roId">
@@ -284,9 +286,8 @@
         BizContent = #receiveOrderData.bizContent#,
         ReceiveTime = #receiveOrderData.receiveTime#,
         Memo = #receiveOrderData.memo#,
-        <isGreaterThan property="receiveOrderData.updateLoginId" compareValue="0">
-            UpdateLoginID = "receiveOrderData.updateLoginId",
-        </isGreaterThan>
+        ReceiveNotifyID = #receiveOrderData.receiveNotifyId#,
+        UpdateLoginID = #receiveOrderData.updateLoginId#,
         UpdateTime = NOW()
         WHERE ROID = #receiveOrderData.roId#
     </update>

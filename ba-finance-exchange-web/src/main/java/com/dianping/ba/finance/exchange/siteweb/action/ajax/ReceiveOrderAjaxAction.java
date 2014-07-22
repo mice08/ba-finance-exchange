@@ -51,6 +51,8 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     private int bankId;
 
+    private int receiveNotifyId;
+
     private String memo;
 
     private int code;
@@ -181,6 +183,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         Date receiveTimeDate = DateUtil.isValidDate(receiveTime) ? DateUtil.formatDate(receiveTime, false) : null;
         receiveOrderUpdateBean.setReceiveTime(receiveTimeDate);
         receiveOrderUpdateBean.setBizContent(bizContent);
+        receiveOrderUpdateBean.setReceiveNotifyId(receiveNotifyId);
         receiveOrderUpdateBean.setMemo(memo);
         receiveOrderUpdateBean.setCustomerId(customerId);
         receiveOrderUpdateBean.setStatus(status);
@@ -221,6 +224,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderBean.setPayerBankName(receiveOrderData.getPayerBankName());
         receiveOrderBean.setPayTime(DateUtil.formatDateToString(receiveOrderData.getPayTime(), "yyyy-MM-dd"));
         receiveOrderBean.setReverseRoId(receiveOrderData.getReverseRoId());
+        receiveOrderBean.setReceiveNotifyId(String.valueOf(receiveOrderData.getReceiveNotifyId()));
         receiveOrderBean.setShopId(receiveOrderData.getShopId());
         receiveOrderBean.setPayerName(receiveOrderData.getPayerAccountName());
         receiveOrderBean.setReceiveAmount(new DecimalFormat("##,###,###,###,##0.00").format(receiveOrderData.getReceiveAmount()));
@@ -304,6 +308,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         roData.setReceiveType(receiveType);
         roData.setBizContent(bizContent);
         roData.setBankID(bankId);
+        roData.setReceiveNotifyId(receiveNotifyId);
         roData.setMemo(memo);
         roData.setStatus(ReceiveOrderStatus.CONFIRMED.value());
         roData.setAddLoginId(loginId);
@@ -454,6 +459,10 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     public void setReceiveOrderData(ReceiveOrderData receiveOrderData) {
         this.receiveOrderData = receiveOrderData;
+    }
+
+    public void setReceiveNotifyId(int receiveNotifyId) {
+        this.receiveNotifyId = receiveNotifyId;
     }
 
     public void setCustomerNameService(CustomerNameService customerNameService) {

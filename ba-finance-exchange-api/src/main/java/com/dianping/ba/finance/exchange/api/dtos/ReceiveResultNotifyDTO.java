@@ -59,6 +59,11 @@ public class ReceiveResultNotifyDTO implements Serializable {
 	private String oriBizId;
 	private String memo;
 
+    /**
+     * 收款通知的ID
+     */
+	private String applicationId;
+
     public String getBizId() {
         return bizId;
     }
@@ -179,13 +184,21 @@ public class ReceiveResultNotifyDTO implements Serializable {
 		this.oriBizId = oriBizId;
 	}
 
-	@Override
+    public String getApplicationId() {
+        return applicationId;
+    }
+
+    public void setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
+    }
+
+    @Override
     public String toString() {
         return "ReceiveResultNotifyDTO{" +
                 "bizId='" + bizId + '\'' +
                 ", customerId=" + customerId +
                 ", shopId=" + shopId +
-				", type=" + type +
+                ", type=" + type +
                 ", receiveAmount=" + receiveAmount +
                 ", receiveTime=" + receiveTime +
                 ", payTime=" + payTime +
@@ -195,8 +208,9 @@ public class ReceiveResultNotifyDTO implements Serializable {
                 ", bizContent='" + bizContent + '\'' +
                 ", bankId=" + bankId +
                 ", tradeNo='" + tradeNo + '\'' +
-				", oriBizId ='" + oriBizId  + '\'' +
+                ", oriBizId='" + oriBizId + '\'' +
                 ", memo='" + memo + '\'' +
+                ", applicationId='" + applicationId + '\'' +
                 '}';
     }
 }
