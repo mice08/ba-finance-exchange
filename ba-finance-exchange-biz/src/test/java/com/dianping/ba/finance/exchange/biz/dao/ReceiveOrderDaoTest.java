@@ -137,7 +137,7 @@ public class ReceiveOrderDaoTest {
 
 	@Test
 	public void testFindReceiveOrderListByTradeNo() throws Exception {
-		ReceiveOrderData orderData = receiveOrderDao.loadReceiveOrderByTradeNo("FS-18529147151478146");
+		ReceiveOrderData orderData = receiveOrderDao.loadReceiveOrderByTradeNo("FS-20180649378172714");
 		Assert.assertNotNull(orderData);
 	}
 
@@ -169,7 +169,7 @@ public class ReceiveOrderDaoTest {
 
     @Test
     public void testLoadReceiveOrderByRoId() throws Exception {
-        ReceiveOrderData orderData = receiveOrderDao.loadReceiveOrderDataByRoId(124);
+        ReceiveOrderData orderData = receiveOrderDao.loadReceiveOrderDataByRoId(449);
         Assert.assertNotNull(orderData);
     }
 }
