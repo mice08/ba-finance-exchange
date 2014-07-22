@@ -24,7 +24,7 @@ public class ReceiveOrderUpdateBean implements Serializable {
 
     private String bizContent;
 
-    private int receiveNotifyId;
+    private String receiveNotifyId;
 
     private Date receiveTime;
 
@@ -115,11 +115,11 @@ public class ReceiveOrderUpdateBean implements Serializable {
         this.memo = memo;
     }
 
-    public int getReceiveNotifyId() {
+    public String getReceiveNotifyId() {
         return receiveNotifyId;
     }
 
-    public void setReceiveNotifyId(int receiveNotifyId) {
+    public void setReceiveNotifyId(String receiveNotifyId) {
         this.receiveNotifyId = receiveNotifyId;
     }
 

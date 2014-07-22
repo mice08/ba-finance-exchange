@@ -46,11 +46,9 @@
                 </div>
 
                 <div class="control-group span6">
-                    <label class="control-label">收款通知ID<span class="required">*</span></label>
+                    <label class="control-label">收款通知ID</label>
                     <div class="controls">
-                        <input type="text" id="receiveNotifyId" name="receiveNotifyId" class="form_value"
-                               validate="+ n[0,11]"
-                               error_msg="+:请输入收款通知ID">
+                        <input type="text" id="receiveNotifyId" name="receiveNotifyId" class="form_value">
                     </div>
                 </div>
 

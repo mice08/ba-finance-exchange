@@ -210,7 +210,7 @@ public class ReceiveResultNotifyDTO implements Serializable {
                 ", tradeNo='" + tradeNo + '\'' +
                 ", oriBizId='" + oriBizId + '\'' +
                 ", memo='" + memo + '\'' +
-                ", applicationId='" + applicationId + '\'' +
+                ", applicationId=" + applicationId +
                 '}';
     }
 }

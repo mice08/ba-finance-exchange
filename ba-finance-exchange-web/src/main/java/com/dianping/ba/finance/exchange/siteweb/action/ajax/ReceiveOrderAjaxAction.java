@@ -51,7 +51,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     private int bankId;
 
-    private int receiveNotifyId;
+    private String receiveNotifyId;
 
     private String memo;
 
@@ -461,7 +461,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         this.receiveOrderData = receiveOrderData;
     }
 
-    public void setReceiveNotifyId(int receiveNotifyId) {
+    public void setReceiveNotifyId(String receiveNotifyId) {
         this.receiveNotifyId = receiveNotifyId;
     }
 

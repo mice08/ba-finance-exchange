@@ -54,7 +54,7 @@ public class ReceiveOrderResultBean implements Serializable {
     private String memo;
 	private int reverseRoId;
 
-	private int receiveNotifyId;
+	private String receiveNotifyId;
 
 	public int getRoId() {
         return roId;
@@ -184,11 +184,11 @@ public class ReceiveOrderResultBean implements Serializable {
 		this.reverseRoId = reverseRoId;
 	}
 
-    public int getReceiveNotifyId() {
+    public String getReceiveNotifyId() {
         return receiveNotifyId;
     }
 
-    public void setReceiveNotifyId(int receiveNotifyId) {
+    public void setReceiveNotifyId(String receiveNotifyId) {
         this.receiveNotifyId = receiveNotifyId;
     }
 

@@ -40,14 +40,14 @@ public class ReceiveOrderDaoTest {
 		receiveOrderData.setReceiveTime(new Date());
 		receiveOrderData.setReceiveType(1);
 		receiveOrderData.setShopId(567);
-		receiveOrderData.setTradeNo("tradeNo8787");
+		receiveOrderData.setTradeNo("tradeNo8787-1");
 		receiveOrderData.setUpdateLoginId(7);
 		receiveOrderData.setUpdateTime(new Date());
 		receiveOrderData.setStatus(7);
         receiveOrderData.setPayerAccountName("payerAccountName");
         receiveOrderData.setPayerAccountNo("payerAccountNo");
         receiveOrderData.setPayerBankName("payerBankName");
-        receiveOrderData.setReceiveNotifyId(8787);
+        receiveOrderData.setReceiveNotifyId("receiveNotifyNo8787");
 		int roId = receiveOrderDao.insertReceiveOrderData(receiveOrderData);
 		Assert.assertTrue(roId > 1);
 	}
@@ -161,7 +161,7 @@ public class ReceiveOrderDaoTest {
         receiveOrderData.setMemo("dddd");
         receiveOrderData.setBizContent("3333");
         receiveOrderData.setUpdateLoginId(-12);
-        receiveOrderData.setReceiveNotifyId(1238787);
+        receiveOrderData.setReceiveNotifyId("1238787Notify");
         receiveOrderData.setReceiveTime(new Date());
         int result = receiveOrderDao.updateReceiveOrder(receiveOrderData);
         Assert.assertTrue(result > 0);
