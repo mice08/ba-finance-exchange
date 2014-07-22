@@ -238,6 +238,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         }
         receiveOrderBean.setRoId(receiveOrderData.getRoId());
         receiveOrderBean.setStatus(ReceiveOrderStatus.valueOf(receiveOrderData.getStatus()).toString());
+        receiveOrderBean.setReceiveNotifyId(receiveOrderData.getReceiveNotifyId());
         return receiveOrderBean;
     }
 
