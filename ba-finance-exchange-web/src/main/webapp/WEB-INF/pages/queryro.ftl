@@ -148,7 +148,7 @@
                             <span class="glyphicon glyphicon-pencil"></span>手工录入</a>
 
                         <a id="btn-import-tel-transfer" href="#import-tel-transfer" role="button" class="btn btn-primary btn-fs-normal btn-fs-xs ajaxdisabledbutton" data-toggle="modal">
-                            <span class="glyphicon glyphicon-file"></span>导入</a>
+                            <span class="glyphicon glyphicon-upload"></span>导入</a>
                     </div>
                 </div>
             </div>
