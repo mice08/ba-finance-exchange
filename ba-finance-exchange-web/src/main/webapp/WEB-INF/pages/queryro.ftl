@@ -29,7 +29,7 @@
                     <label class="control-label">款项类型</label>
                     <div class="controls">
                         <select id="q-receiveType" name="receiveType" class="form_value">
-                            <option value="0">请选择款项类型</option>
+                            <option value="0">全部</option>
                         </select>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                     <label class="control-label">收款方式</label>
                     <div class="controls">
                         <select id="q-payChannel" name="payChannel" class="form_value">
-                            <option value="0">请选择收款方式</option>
+                            <option value="0">全部</option>
                         </select>
                     </div>
                 </div>
@@ -118,7 +118,7 @@
                     <label class="control-label">确认收款情况</label>
                     <div class="controls">
                         <select id="q-status" name="status" class="form_value">
-                            <option value="0">请选择收款情况</option>
+                            <option value="0">全部</option>
                         </select>
                     </div>
                 </div>
@@ -127,7 +127,7 @@
                     <label class="control-label">收款银行账户</label>
                     <div class="controls">
                         <select id="q-bankId" name="bankId" class="form_value">
-                            <option value="0">请选择收款银行账户</option>
+                            <option value="0">全部</option>
                         </select>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
                             <span class="glyphicon glyphicon-pencil"></span>手工录入</a>
 
                         <a id="btn-import-tel-transfer" href="#import-tel-transfer" role="button" class="btn btn-primary btn-fs-normal btn-fs-xs ajaxdisabledbutton" data-toggle="modal">
-                            <span class="glyphicon glyphicon-file"></span>导入</a>
+                            <span class="glyphicon glyphicon-upload"></span>导入</a>
                     </div>
                 </div>
             </div>
