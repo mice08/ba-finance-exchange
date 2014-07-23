@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.siteweb.services;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
+import com.dianping.ba.finance.exchange.siteweb.beans.CustomerInfoBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.CustomerNameSuggestionBean;
 import com.dianping.customerinfo.api.CustomerInfoService;
 import com.dianping.customerinfo.dto.Customer;
@@ -125,14 +126,12 @@ public class CustomerNameService {
     }
 
     private List<CustomerNameSuggestionBean> fetchADCustomerSuggestion(String customerName, int maxSize, int loginId) {
-        List<CorporationDTO> corporationDTOList = corporationService.queryCorporationByName(customerName);
+        List<CorporationDTO> corporationDTOList = corporationService.queryCorporationByName(customerName, maxSize);
         if (CollectionUtils.isEmpty(corporationDTOList)) {
             return Collections.emptyList();
         }
         List<CustomerNameSuggestionBean> suggestionBeanList = Lists.newLinkedList();
-        int len = Math.min(corporationDTOList.size(), maxSize);
-        for (int i = 0; i < len; ++i) {
-            CorporationDTO corporationDTO = corporationDTOList.get(i);
+        for (CorporationDTO corporationDTO : corporationDTOList) {
             CustomerNameSuggestionBean suggestionBean = new CustomerNameSuggestionBean();
             suggestionBean.setCustomerId(corporationDTO.getId());
             suggestionBean.setCustomerName(corporationDTO.getName());
@@ -155,6 +154,35 @@ public class CustomerNameService {
         }
         return suggestionBeanList;
     }
+
+    @Log(severity = 2, logBefore = true, logAfter = true)
+    @ReturnDefault
+    public CustomerInfoBean getCustomerInfo(int businessType, String bizContent, int loginId) {
+        if (businessType == BusinessType.GROUP_PURCHASE.value()) {
+            return fetchTGCustomerInfo(bizContent, loginId);
+        }
+        if (businessType == BusinessType.ADVERTISEMENT.value()) {
+            return fetchADCustomerInfo(bizContent, loginId);
+        }
+        return null;
+    }
+
+    private CustomerInfoBean fetchADCustomerInfo(String bizContent, int loginId) {
+        CorporationDTO corporationDTO = corporationService.queryCorporationByBizContent(bizContent);
+        if (corporationDTO != null) {
+            CustomerInfoBean customerInfoBean = new CustomerInfoBean();
+            customerInfoBean.setCustomerId(corporationDTO.getId());
+            customerInfoBean.setCustomerName(corporationDTO.getName());
+            return customerInfoBean;
+        }
+        return null;
+    }
+
+    private CustomerInfoBean fetchTGCustomerInfo(String bizContent, int loginId) {
+        // TODO 待阿波罗团购提供接口
+        return null;
+    }
+
 
     public void setCustomerInfoService(CustomerInfoService customerInfoService) {
         this.customerInfoService = customerInfoService;

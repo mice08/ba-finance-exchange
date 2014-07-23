@@ -94,7 +94,7 @@ class CustomerNameServiceTest extends Specification {
             Customer customer = [customerID: 123, customerName: args[0] + "-客户名称"];
             [customer]
         }
-        corporationServiceMock.queryCorporationByName(_ as String) >> { String name ->
+        corporationServiceMock.queryCorporationByName(_ as String, _ as Integer) >> { String name, Integer maxSize ->
             CorporationDTO corporationDTO = [id: 125, name: name + "-客户名称-广告"]
             [corporationDTO]
         }
@@ -109,7 +109,25 @@ class CustomerNameServiceTest extends Specification {
         "商户"              | BusinessType.GROUP_PURCHASE.value() | 123        | "商户-客户名称"
         "商户"              | BusinessType.ADVERTISEMENT.value()  | 125        | "商户-客户名称-广告"
         "商户"              | BusinessType.PREPAID_CARD.value()   | null       | null
+    }
 
+    @Unroll
+    def "get Customer Info by bizContent"(String bizContent, Integer businessType, Integer customerId, String customerName) {
+        given:
+        corporationServiceMock.queryCorporationByBizContent(_ as String) >> { String bizContentParam ->
+            CorporationDTO corporationDTO = [id: 125, name: bizContentParam + "-客户名称-广告"]
+            corporationDTO
+        }
+
+        expect:
+        def customerInfoBean = customerNameServiceStub.getCustomerInfo(businessType, bizContent, -1);
+        customerId == customerInfoBean?.customerId;
+        customerName == customerInfoBean?.customerName;
+
+        where:
+        bizContent | businessType                        | customerId | customerName
+        "AD123123" | BusinessType.ADVERTISEMENT.value()  | 125        | "AD123123-客户名称-广告"
+        "TG123456" | BusinessType.GROUP_PURCHASE.value() | null       | null
 
     }
 }
