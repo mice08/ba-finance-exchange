@@ -153,13 +153,21 @@
                     </div>
                 </div>
                 <div class="control-group span6">
+                    <label class="control-label">收款通知ID</label>
+                    <div class="controls">
+                        <input type="text" id="m-receiveNotifyId" name="receiveNotifyId" class="form_value load_value">
+                    </div>
+                </div>
+
+            </div>
+            <div class="row-fluid label-colon">
+                <div class="control-group span6">
                     <label class="control-label">备注</label>
                     <div class="controls">
                         <input type="text" id="m-memo" name="memo" class="form_value load_value" validate="s[0,100]"
                                error_msg="s[0,254]:请输入0-100位字符">
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

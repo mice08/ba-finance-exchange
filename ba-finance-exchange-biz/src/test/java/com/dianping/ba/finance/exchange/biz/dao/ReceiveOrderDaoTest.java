@@ -40,13 +40,14 @@ public class ReceiveOrderDaoTest {
 		receiveOrderData.setReceiveTime(new Date());
 		receiveOrderData.setReceiveType(1);
 		receiveOrderData.setShopId(567);
-		receiveOrderData.setTradeNo("tradeNo");
+		receiveOrderData.setTradeNo("tradeNo8787-1");
 		receiveOrderData.setUpdateLoginId(7);
 		receiveOrderData.setUpdateTime(new Date());
 		receiveOrderData.setStatus(7);
         receiveOrderData.setPayerAccountName("payerAccountName");
         receiveOrderData.setPayerAccountNo("payerAccountNo");
         receiveOrderData.setPayerBankName("payerBankName");
+        receiveOrderData.setReceiveNotifyId("receiveNotifyNo8787");
 		int roId = receiveOrderDao.insertReceiveOrderData(receiveOrderData);
 		Assert.assertTrue(roId > 1);
 	}
@@ -136,7 +137,7 @@ public class ReceiveOrderDaoTest {
 
 	@Test
 	public void testFindReceiveOrderListByTradeNo() throws Exception {
-		ReceiveOrderData orderData = receiveOrderDao.loadReceiveOrderByTradeNo("FS-18529147151478146");
+		ReceiveOrderData orderData = receiveOrderDao.loadReceiveOrderByTradeNo("FS-20180649378172714");
 		Assert.assertNotNull(orderData);
 	}
 
@@ -152,19 +153,23 @@ public class ReceiveOrderDaoTest {
     @Test
     public void testUpdateReceiveOrder() throws Exception {
         ReceiveOrderData receiveOrderData = new ReceiveOrderData();
-        receiveOrderData.setRoId(117);
-//        receiveOrderData.setStatus(2);
+        receiveOrderData.setRoId(446);
+        receiveOrderData.setCustomerId(8787123);
+        receiveOrderData.setShopId(989887);
+        receiveOrderData.setReceiveType(9);
+        receiveOrderData.setStatus(2);
         receiveOrderData.setMemo("dddd");
         receiveOrderData.setBizContent("3333");
-        receiveOrderData.setUpdateLoginId(-1);
-//        receiveOrderData.setReceiveTime(new Date());
+        receiveOrderData.setUpdateLoginId(-12);
+        receiveOrderData.setReceiveNotifyId("1238787Notify");
+        receiveOrderData.setReceiveTime(new Date());
         int result = receiveOrderDao.updateReceiveOrder(receiveOrderData);
         Assert.assertTrue(result > 0);
     }
 
     @Test
     public void testLoadReceiveOrderByRoId() throws Exception {
-        ReceiveOrderData orderData = receiveOrderDao.loadReceiveOrderDataByRoId(124);
+        ReceiveOrderData orderData = receiveOrderDao.loadReceiveOrderDataByRoId(449);
         Assert.assertNotNull(orderData);
     }
 }

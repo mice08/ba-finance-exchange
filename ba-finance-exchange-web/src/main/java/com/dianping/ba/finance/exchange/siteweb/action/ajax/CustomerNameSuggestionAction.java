@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 
+import com.dianping.ba.finance.exchange.siteweb.beans.CustomerInfoBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.CustomerNameSuggestionBean;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.finance.common.util.LionConfigUtils;
@@ -26,6 +27,8 @@ public class CustomerNameSuggestionAction extends AjaxBaseAction {
     private String q;
 
     private String businessType;
+
+    private String bizContent;
 
     private CustomerNameService customerNameService;
 
@@ -54,6 +57,24 @@ public class CustomerNameSuggestionAction extends AjaxBaseAction {
         return SUCCESS;
     }
 
+    public String fetchCustomerInfo() {
+        if (StringUtils.isBlank(bizContent)) {
+            code = SUCCESS_CODE;
+            return SUCCESS;
+        }
+        if (StringUtils.isBlank(businessType)) {
+            code = SUCCESS_CODE;
+            return SUCCESS;
+        }
+
+        CustomerInfoBean customerInfoBean = customerNameService.getCustomerInfo(Integer.parseInt(businessType), bizContent, getLoginId());
+        if (customerInfoBean != null && customerInfoBean.getCustomerId() > 0) {
+            msg.put("customerInfoBean", customerInfoBean);
+        }
+        code = SUCCESS_CODE;
+        return SUCCESS;
+    }
+
     @Override
     public int getCode() {
         return this.code;
@@ -70,6 +91,10 @@ public class CustomerNameSuggestionAction extends AjaxBaseAction {
 
     public void setBusinessType(String businessType) {
         this.businessType = businessType;
+    }
+
+    public void setBizContent(String bizContent) {
+        this.bizContent = bizContent;
     }
 
     public void setCustomerNameService(CustomerNameService customerNameService) {

@@ -183,14 +183,14 @@
                     <thead>
                     <tr>
                         <th width="3%"><input type="checkbox" id="select-all"></th>
-                        <th width="10%" class="fs tb-header id">付款单号</th>
-                        <th width="15%" class="fs tb-header customer-name">客户名</th>
+                        <th width="5%" class="fs tb-header id">付款单号</th>
+                        <th width="20%" class="fs tb-header customer-name">客户名</th>
                         <th width="8%" class="fs tb-header amount">付款单金额</th>
                         <th width="10%" class="fs tb-header date">产生日期</th>
-                        <th width="9%" class="fs tb-header bank-account">银行账号</th>
-                        <th width="10%" class="fs tb-header paid-time">付款日期</th>
-                        <th width="10%" class="fs tb-header sendback-time">退票日期</th>
-                        <th width="10%" class="fs tb-header status">状态</th>
+                        <th width="5%" class="fs tb-header bank-account">银行账号</th>
+                        <th width="6%" class="fs tb-header paid-time">付款日期</th>
+                        <th width="6%" class="fs tb-header sendback-time">退票日期</th>
+                        <th width="5%" class="fs tb-header status">状态</th>
                         <th class="fs tb-header memo">备注</th>
                     </tr>
                     </thead>

@@ -406,6 +406,13 @@
             <artifactId>customerinfo-api</artifactId>
             <version>1.0.8-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.dianping.midas</groupId>
+            <artifactId>midas-finance-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <build>

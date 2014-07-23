@@ -1,6 +1,7 @@
 package com.dianping.ba.finance.exchange.siteweb.action.ajax
 
 import com.dianping.ba.finance.exchange.api.enums.BusinessType
+import com.dianping.ba.finance.exchange.siteweb.beans.CustomerInfoBean
 import com.dianping.ba.finance.exchange.siteweb.beans.CustomerNameSuggestionBean
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService
 import spock.lang.Specification
@@ -39,6 +40,29 @@ class CustomerNameSuggestionActionTest extends Specification {
 
         where:
         customerNamePrefix | businessType                        | customerId | customerName
+        null               | null                                | null       | null
+        "ABC"              | null                                | null       | null
+        "ABC"              | BusinessType.ADVERTISEMENT.value()  | 123        | "ABC-客户名称"
+        "商户"              | BusinessType.GROUP_PURCHASE.value() | 123        | "商户-客户名称"
+    }
+
+    @Unroll
+    def "FetchCustomerInfo"(String bizContent, String businessType, Integer customerId, String customerName) {
+        given:
+        customerNameSuggestionActionStub.businessType = businessType;
+        customerNameSuggestionActionStub.bizContent = bizContent;
+        customerNameServiceMock.getCustomerInfo(_ as Integer,_ as String, _ as Integer) >> { args ->
+            CustomerInfoBean customerInfoBean = [customerId: 123, customerName: args[1] + "-客户名称"];
+            customerInfoBean
+        }
+
+        expect:
+        customerNameSuggestionActionStub.fetchCustomerInfo();
+        customerId == customerNameSuggestionActionStub.msg["customerInfoBean"]?.customerId;
+        customerName == customerNameSuggestionActionStub.msg["customerInfoBean"]?.customerName;
+
+        where:
+        bizContent | businessType                        | customerId | customerName
         null               | null                                | null       | null
         "ABC"              | null                                | null       | null
         "ABC"              | BusinessType.ADVERTISEMENT.value()  | 123        | "ABC-客户名称"

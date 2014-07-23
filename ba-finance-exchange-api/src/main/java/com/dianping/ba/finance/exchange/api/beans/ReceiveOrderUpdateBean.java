@@ -24,6 +24,8 @@ public class ReceiveOrderUpdateBean implements Serializable {
 
     private String bizContent;
 
+    private String receiveNotifyId;
+
     private Date receiveTime;
 
 	private int updateLoginId;
@@ -113,6 +115,14 @@ public class ReceiveOrderUpdateBean implements Serializable {
         this.memo = memo;
     }
 
+    public String getReceiveNotifyId() {
+        return receiveNotifyId;
+    }
+
+    public void setReceiveNotifyId(String receiveNotifyId) {
+        this.receiveNotifyId = receiveNotifyId;
+    }
+
     @Override
     public String toString() {
         return "ReceiveOrderUpdateBean{" +
@@ -123,6 +133,7 @@ public class ReceiveOrderUpdateBean implements Serializable {
                 ", customerId=" + customerId +
                 ", shopId=" + shopId +
                 ", bizContent='" + bizContent + '\'' +
+                ", receiveNotifyId=" + receiveNotifyId +
                 ", receiveTime=" + receiveTime +
                 ", updateLoginId=" + updateLoginId +
                 ", memo='" + memo + '\'' +
