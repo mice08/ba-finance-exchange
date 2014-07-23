@@ -68,7 +68,7 @@ public class CustomerNameSuggestionAction extends AjaxBaseAction {
         }
 
         CustomerInfoBean customerInfoBean = customerNameService.getCustomerInfo(Integer.parseInt(businessType), bizContent, getLoginId());
-        if (customerInfoBean != null) {
+        if (customerInfoBean != null && customerInfoBean.getCustomerId() > 0) {
             msg.put("customerInfoBean", customerInfoBean);
         }
         code = SUCCESS_CODE;

@@ -62,7 +62,6 @@ public class CustomerNameService {
 
     }
 
-
     private void fetchTGCustomerName(Multimap<Integer, Integer> businessTypeCustomerIdMMap, Map<Integer, String> customerIdNameMap, int loginId) {
         List<Integer> tgCustomerIdList = Lists.newLinkedList(businessTypeCustomerIdMMap.get(BusinessType.GROUP_PURCHASE.value()));
         if (CollectionUtils.isEmpty(tgCustomerIdList)) {
