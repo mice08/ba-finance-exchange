@@ -134,7 +134,7 @@
                     </div>
                 </div>
                 <div class="control-group span6">
-                    <label class="control-label">业务信息</label>
+                    <label class="control-label">合同号</label>
                     <div class="controls">
                         <input type="text" id="m-bizContent" name="bizContent" class="form_value load_value" validate="s[0,100]"
                                error_msg="s[0,254]:请输入0-100位字符">
