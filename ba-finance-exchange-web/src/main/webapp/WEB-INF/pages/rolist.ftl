@@ -78,7 +78,7 @@
         <a href="javascript:void(0);" data-toggle="popover" data-placement="top"
         tradeNo="{{= record.tradeNo}}" payerAccountNo="{{= record.payerAccountNo}}"
         payerBankName="{{= record.payerBankName}}" memoInfo="{{= record.memo}}"
-        receiveNotifyId="{{= record.receiveNotifyId}}"
+        applicationId="{{= record.applicationId}}"
         class="ro-show"  rel="popover-medium">查看</a>
         {{if record.status=="待确认"}}
         <a href="javascript:void(0)" roId="{{= record.roId}}" class="modify-link">修改</a> {{/if}} <a href="#">作废</a>

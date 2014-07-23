@@ -26,7 +26,7 @@
         <result property="updateLoginId" column="UpdateLoginID"/>
         <result property="reverseRoId" column="ReverseROID"/>
         <result property="payerAccountName" column="PayerAccountName"/>
-        <result property="receiveNotifyId" column="ReceiveNotifyID"/>
+        <result property="applicationId" column="ApplicationID"/>
         <result property="memo" column="Memo"/>
     </resultMap>
 
@@ -55,7 +55,7 @@
                          PayerAccountName,
                          PayerAccountNo,
                          PayerBankName,
-                         ReceiveNotifyID)
+                         ApplicationID)
             VALUES      (#receiveOrderData.customerId#,
                          #receiveOrderData.shopId#,
                          #receiveOrderData.businessType#,
@@ -78,7 +78,7 @@
                          #receiveOrderData.payerAccountName#,
                          #receiveOrderData.payerAccountNo#,
                          #receiveOrderData.payerBankName#,
-                         #receiveOrderData.receiveNotifyId#)
+                         #receiveOrderData.applicationId#)
 
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="roId">
@@ -112,7 +112,7 @@
             ro.ReverseROID,
             ro.Memo,
             ro.PayerAccountName,
-            ro.ReceiveNotifyID
+            ro.ApplicationID
        FROM FC_ReceiveOrder ro
         <dynamic prepend="WHERE">
             <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
@@ -249,7 +249,7 @@
         ro.ReverseROID,
         ro.Memo,
         ro.PayerAccountName,
-        ro.ReceiveNotifyID
+        ro.ApplicationID
         FROM FC_ReceiveOrder ro
         WHERE TradeNo = #tradeNo#
         LIMIT 1
@@ -289,7 +289,7 @@
         BizContent = #receiveOrderData.bizContent#,
         ReceiveTime = #receiveOrderData.receiveTime#,
         Memo = #receiveOrderData.memo#,
-        ReceiveNotifyID = #receiveOrderData.receiveNotifyId#,
+        ApplicationID = #receiveOrderData.applicationId#,
         UpdateLoginID = #receiveOrderData.updateLoginId#,
         UpdateTime = NOW()
         WHERE ROID = #receiveOrderData.roId#
@@ -319,7 +319,7 @@
         ro.ReverseROID,
         ro.Memo,
         ro.PayerAccountName,
-        ro.ReceiveNotifyID
+        ro.ApplicationID
         FROM FC_ReceiveOrder ro
         WHERE ROID = #roId#
         LIMIT 1

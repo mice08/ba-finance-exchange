@@ -58,7 +58,7 @@ public class ReceiveOrderResultNotify {
         receiveResultNotifyDTO.setMemo(receiveOrderResultBean.getMemo());
 		receiveResultNotifyDTO.setOriBizId(String.valueOf(receiveOrderResultBean.getReverseRoId()));
 
-        receiveResultNotifyDTO.setApplicationId(receiveOrderResultBean.getReceiveNotifyId());
+        receiveResultNotifyDTO.setApplicationId(receiveOrderResultBean.getApplicationId());
         return receiveResultNotifyDTO;
     }
 
