@@ -6,8 +6,8 @@ import com.dianping.ba.finance.exchange.api.enums.BusinessType
 import com.dianping.customerinfo.api.CustomerInfoService
 import com.dianping.customerinfo.dto.Customer
 import com.dianping.customerinfo.dto.CustomerLite
+import com.dianping.midas.finance.api.dto.CorporationDTO
 import com.dianping.midas.finance.api.service.CorporationService
-import com.dianping.midas.shopdiy.api.dto.CorporationDTO
 import spock.lang.Specification
 import spock.lang.Unroll
 
