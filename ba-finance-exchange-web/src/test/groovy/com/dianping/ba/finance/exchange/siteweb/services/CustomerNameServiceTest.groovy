@@ -1,4 +1,5 @@
 package com.dianping.ba.finance.exchange.siteweb.services
+
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData
 import com.dianping.ba.finance.exchange.api.enums.BusinessType
@@ -9,6 +10,7 @@ import com.dianping.midas.finance.api.dto.CorporationDTO
 import com.dianping.midas.finance.api.service.CorporationService
 import spock.lang.Specification
 import spock.lang.Unroll
+
 /**
  * Created by noahshen on 14-7-7.
  */
