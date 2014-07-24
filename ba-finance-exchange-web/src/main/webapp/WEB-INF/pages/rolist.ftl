@@ -24,19 +24,17 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th width="4%" class="fs tb-header">收款单ID</th>
-                    <th width="7%" class="fs tb-header">客户名</th>
+                    <th width="7%" class="fs tb-header">收款单ID</th>
+                    <th width="15%" class="fs tb-header">客户名</th>
                     <th width="7%" class="fs tb-header">收款金额</th>
-                    <th width="6%" class="fs tb-header">到款日期</th>
-                    <th width="7%" class="fs tb-header">系统入账日期</th>
-                    <th width="6%" class="fs tb-header">款项类型</th>
-                    <th width="6%" class="fs tb-header">业务信息</th>
-                    <th width="5%" class="fs tb-header">收款方式</th>
-                    <th width="6%" class="fs tb-header">收款通知ID</th>
-                    <th width="7%" class="fs tb-header">付款方户名</th>
-                    <th width="5%" class="fs tb-header">备注</th>
-                    <th width="4%" class="fs tb-header">状态</th>
-                    <th width="6%" class="fs tb-header">操作</th>
+                    <th width="8%" class="fs tb-header">收款方式</th>
+                    <th width="8%" class="fs tb-header">到款日期</th>
+                    <th width="8%" class="fs tb-header">系统入账日期</th>
+                    <th width="8%" class="fs tb-header">款项类型</th>
+                    <th width="8%" class="fs tb-header">合同号</th>
+                    <th width="12%" class="fs tb-header">付款方户名</th>
+                    <th width="6%" class="fs tb-header">状态</th>
+                    <th width="12%" class="fs tb-header">操作</th>
                 </tr>
                 </thead>
 
@@ -69,16 +67,22 @@
 
         <td class="fs tb-item auto-break">{{= record.customerName}}</td>
         <td class="fs tb-item auto-break">{{= record.receiveAmount}}</td>
+        <td class="fs tb-item auto-break">{{= record.payChannel}}</td>
         <td class="fs tb-item auto-break">{{= record.bankReceiveTime}}</td>
         <td class="fs tb-item auto-break">{{= record.receiveTime}}</td>
         <td class="fs tb-item auto-break">{{= record.receiveType}}</td>
         <td class="fs tb-item auto-break">{{= record.bizContent}}</td>
-        <td class="fs tb-item auto-break">{{= record.payChannel}}</td>
-        <td class="fs tb-item auto-break">{{= record.receiveNotifyId}}</td>
         <td class="fs tb-item auto-break">{{= record.payerName}}</td>
-        <td class="fs tb-item auto-break">{{= record.memo}}</td>
         <td class="fs tb-item auto-break">{{= record.status}}</td>
-        <td class="fs tb-item auto-break">{{if record.status=="待确认"}}<a href="javascript:void(0)" roId="{{= record.roId}}" class="modify-link">修改</a> {{/if}} <a href="#">作废</a></td>
+        <td class="fs tb-item auto-break">
+        <a href="javascript:void(0);" data-toggle="popover" data-placement="top"
+        tradeNo="{{= record.tradeNo}}" payerAccountNo="{{= record.payerAccountNo}}"
+        payerBankName="{{= record.payerBankName}}" memoInfo="{{= record.memo}}"
+        applicationId="{{= record.applicationId}}"
+        class="ro-show"  rel="popover-medium">查看</a>
+        {{if record.status=="待确认"}}
+        <a href="javascript:void(0)" roId="{{= record.roId}}" class="modify-link">修改</a> {{/if}} <a href="#">作废</a>
+        </td>
     </tr>
     {{/each}}
 

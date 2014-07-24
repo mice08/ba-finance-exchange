@@ -26,7 +26,7 @@
                     <div class="controls">
                         <input type="text" id="customerName" name="customerName" class="form_value"  validate="+"
                                error_msg="+:请输入客户名">
-                        <input type="hidden" id="customerId" name="customerId" class="form_value"  validate="+ n[0,11]"
+                        <input type="hidden" id="customerId" name="customerId" class="form_value" validate="+ n[0,11]"
                                error_msg="+:请输入有效的客户名称">
                     </div>
                 </div>
@@ -38,20 +38,20 @@
                     <div class="controls">
                         <div class="input-prepend">
                             <span class="add-on">¥</span>
-                        <input type="text" id="receiveAmount" name="receiveAmount" class="span12 form_value"  validate="gt[0] + f[0,2]" error_msg="gt[0]:金额必须大于0 f[0,2]:金额格式不正确，必须为数值且整数位数不大于10位，小数位数不大于2位">
-
+                            <input type="text" id="receiveAmount" name="receiveAmount" class="span12 form_value"
+                                   validate="gt[0] + f[0,2]"
+                                   error_msg="gt[0]:金额必须大于0 f[0,2]:金额格式不正确，必须为数值且整数位数不大于10位，小数位数不大于2位">
                         </div>
-                        </div>
+                    </div>
                 </div>
 
                 <div class="control-group span6">
-                    <label class="control-label">收款方式<span class="required">*</span></label>
+                    <label class="control-label">收款通知ID</label>
                     <div class="controls">
-                        <select id="payChannel" name="payChannel" class="form_value"  validate="ne[0]" error_msg="ne[0]:请选择收款方式">
-                            <option value="0">请选择收款方式</option>
-                        </select>
+                        <input type="text" id="applicationId" name="applicationId" class="form_value">
                     </div>
                 </div>
+
             </div>
 
             <div class="row-fluid label-colon">
@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <div class="control-group span6">
-                    <label class="control-label">业务信息<span class="required">*</span></label>
+                    <label class="control-label">合同号<span class="required">*</span></label>
                     <div class="controls">
                         <input type="text" id="bizContent" name="bizContent" class="form_value"  validate="+">
                     </div>
@@ -82,16 +82,13 @@
                     </div>
                 </div>
 
-                <div class="control-group span6" id="bankReceiveTime-cntr">
-                    <label class="control-label">银行到账日期<span class="required">*</span></label>
+                <div class="control-group span6">
+                    <label class="control-label">收款方式<span class="required">*</span></label>
                     <div class="controls">
-                        <div class="input-append">
-                            <input type="text" class="span12" id="bankReceiveTime" name="bankReceiveTime" validate="+" datatype="date">
-                        <span class="add-on">
-                                                <i class="icon-calendar">
-                                                </i>
-                                            </span>
-                        </div>
+                        <select id="payChannel" name="payChannel" class="form_value" validate="ne[0]"
+                                error_msg="ne[0]:请选择收款方式">
+                            <option value="0">请选择收款方式</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -101,6 +98,19 @@
                     <label class="control-label">备注</label>
                     <div class="controls">
                         <input type="text" id="memo" name="memo" class="form_value">
+                    </div>
+                </div>
+
+                <div class="control-group span6" id="bankReceiveTime-cntr">
+                    <label class="control-label">银行到账日期<span class="required">*</span></label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input type="text" class="span12" id="bankReceiveTime" name="bankReceiveTime" validate="+"
+                                   datatype="date">
+                            <span class="add-on">
+                                <i class="icon-calendar"></i>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>

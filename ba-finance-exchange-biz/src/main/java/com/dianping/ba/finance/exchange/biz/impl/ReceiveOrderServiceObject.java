@@ -72,6 +72,8 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         receiveOrderResultBean.setShopId(receiveOrderData.getShopId());
         receiveOrderResultBean.setTradeNo(receiveOrderData.getTradeNo());
 
+        receiveOrderResultBean.setApplicationId(receiveOrderData.getApplicationId());
+
         return receiveOrderResultBean;
     }
 
@@ -118,14 +120,14 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
     @Log(severity = 1, logAfter = true)
     @ReturnDefault
     @Override
-    public int updateReceiveOrderConfirm(ReceiveOrderUpdateBean receiveOrderUpdateBean){
-        if (!allowReceiveOrderUpdateBeanConfirmStatus(receiveOrderUpdateBean)){
+    public int updateReceiveOrderConfirm(ReceiveOrderUpdateBean receiveOrderUpdateBean) {
+        if (!allowReceiveOrderUpdateBeanConfirmStatus(receiveOrderUpdateBean)) {
             return -1;
         }
-        ReceiveOrderData receiveOrderUpdateData=buildReceiveOrderUpdateData(receiveOrderUpdateBean);
+        ReceiveOrderData receiveOrderUpdateData = buildReceiveOrderUpdateData(receiveOrderUpdateBean);
         int result = receiveOrderDao.updateReceiveOrder(receiveOrderUpdateData);
-        if (result > 0 && ReceiveOrderStatus.CONFIRMED.value() == receiveOrderUpdateData.getStatus()){
-            ReceiveOrderData receiveOrderData=loadReceiveOrderDataByRoId(receiveOrderUpdateData.getRoId());
+        if (result > 0 && ReceiveOrderStatus.CONFIRMED.value() == receiveOrderUpdateData.getStatus()) {
+            ReceiveOrderData receiveOrderData = loadReceiveOrderDataByRoId(receiveOrderUpdateData.getRoId());
             ReceiveOrderResultBean receiveOrderResultBean = buildReceiveOrderResultBean(receiveOrderData, receiveOrderData.getUpdateLoginId());
             receiveOrderResultNotify.receiveResultNotify(receiveOrderResultBean);
         }
@@ -146,7 +148,7 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
     }
 
     private ReceiveOrderData buildReceiveOrderUpdateData(ReceiveOrderUpdateBean receiveOrderUpdateBean) {
-        ReceiveOrderData receiveOrderData=new ReceiveOrderData();
+        ReceiveOrderData receiveOrderData = new ReceiveOrderData();
         receiveOrderData.setRoId(receiveOrderUpdateBean.getRoId());
         receiveOrderData.setStatus(receiveOrderUpdateBean.getStatus());
         receiveOrderData.setCustomerId(receiveOrderUpdateBean.getCustomerId());
@@ -155,7 +157,8 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         receiveOrderData.setReceiveTime(receiveOrderUpdateBean.getReceiveTime());
         receiveOrderData.setMemo(receiveOrderUpdateBean.getMemo());
         receiveOrderData.setReverseRoId(receiveOrderUpdateBean.getReverseRoId());
-        receiveOrderData.setReceiveType(receiveOrderUpdateBean.getReceiveType()==null?0:receiveOrderUpdateBean.getReceiveType().value());
+        receiveOrderData.setApplicationId(receiveOrderUpdateBean.getApplicationId());
+        receiveOrderData.setReceiveType(receiveOrderUpdateBean.getReceiveType() == null ? 0 : receiveOrderUpdateBean.getReceiveType().value());
         receiveOrderData.setUpdateLoginId(receiveOrderUpdateBean.getUpdateLoginId());
         return receiveOrderData;
     }

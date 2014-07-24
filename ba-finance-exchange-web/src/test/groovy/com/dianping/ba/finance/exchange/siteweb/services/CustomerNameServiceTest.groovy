@@ -5,6 +5,8 @@ import com.dianping.ba.finance.exchange.api.enums.BusinessType
 import com.dianping.customerinfo.api.CustomerInfoService
 import com.dianping.customerinfo.dto.Customer
 import com.dianping.customerinfo.dto.CustomerLite
+import com.dianping.midas.finance.api.dto.CorporationDTO
+import com.dianping.midas.finance.api.service.CorporationService
 import spock.lang.Specification
 import spock.lang.Unroll
 /**
@@ -16,11 +18,18 @@ class CustomerNameServiceTest extends Specification {
 
     private CustomerInfoService customerInfoServiceMock;
 
+    private CorporationService corporationServiceMock;
+
+
     void setup() {
         customerNameServiceStub = [];
 
         customerInfoServiceMock = Mock();
         customerNameServiceStub.customerInfoService = customerInfoServiceMock;
+
+        corporationServiceMock = Mock();
+        customerNameServiceStub.corporationService = corporationServiceMock;
+
     }
 
     @Unroll
@@ -36,13 +45,19 @@ class CustomerNameServiceTest extends Specification {
             customerLiteList
         }
 
+        corporationServiceMock.queryCorporationById(_ as Integer) >> { Integer id ->
+            CorporationDTO corporationDTO = [id: id, name: "客户名称-广告-" + id]
+            corporationDTO
+        }
+
         expect:
         customerName == customerNameServiceStub.getCustomerName([poDate], 8787)[customerId];
 
         where:
-        businessType                       | customerId | customerName
-        BusinessType.GROUP_PURCHASE.value()| 87871      | "客户名称87871"
-        BusinessType.ADVERTISEMENT.value() | 87871      | null
+        businessType                        | customerId | customerName
+        BusinessType.GROUP_PURCHASE.value() | 87871      | "客户名称87871"
+        BusinessType.ADVERTISEMENT.value()  | 87872      | "客户名称-广告-87872"
+        BusinessType.PREPAID_CARD.value()   | 87872      | null
     }
 
     @Unroll
@@ -57,14 +72,19 @@ class CustomerNameServiceTest extends Specification {
             }
             customerLiteList
         }
+        corporationServiceMock.queryCorporationById(_ as Integer) >> { Integer id ->
+            CorporationDTO corporationDTO = [id: id, name: "客户名称-广告-" + id]
+            corporationDTO
+        }
 
         expect:
         customerName == customerNameServiceStub.getROCustomerName([roDate], 8787)[customerId];
 
         where:
-        businessType                       | customerId | customerName
-        BusinessType.GROUP_PURCHASE.value()| 87871      | "客户名称87871"
-        BusinessType.ADVERTISEMENT.value() | 87871      | null
+        businessType                        | customerId | customerName
+        BusinessType.GROUP_PURCHASE.value() | 87871      | "客户名称87871"
+        BusinessType.ADVERTISEMENT.value()  | 87872      | "客户名称-广告-87872"
+        BusinessType.PREPAID_CARD.value()   | 87872      | null
     }
 
     @Unroll
@@ -74,6 +94,10 @@ class CustomerNameServiceTest extends Specification {
             Customer customer = [customerID: 123, customerName: args[0] + "-客户名称"];
             [customer]
         }
+        corporationServiceMock.queryCorporationByName(_ as String, _ as Integer) >> { String name, Integer maxSize ->
+            CorporationDTO corporationDTO = [id: 125, name: name + "-客户名称-广告"]
+            [corporationDTO]
+        }
 
         expect:
         def suggestionBean = customerNameServiceStub.getCustomerNameSuggestion(customerNameParam, 10, businessType, -1)[0];
@@ -81,9 +105,29 @@ class CustomerNameServiceTest extends Specification {
         customerName == suggestionBean?.customerName;
 
         where:
-        customerNameParam  | businessType                        | customerId | customerName
-        "商户"              | BusinessType.ADVERTISEMENT.value()  | null       | null
+        customerNameParam | businessType                        | customerId | customerName
         "商户"              | BusinessType.GROUP_PURCHASE.value() | 123        | "商户-客户名称"
+        "商户"              | BusinessType.ADVERTISEMENT.value()  | 125        | "商户-客户名称-广告"
+        "商户"              | BusinessType.PREPAID_CARD.value()   | null       | null
+    }
+
+    @Unroll
+    def "get Customer Info by bizContent"(String bizContent, Integer businessType, Integer customerId, String customerName) {
+        given:
+        corporationServiceMock.queryCorporationByBizContent(_ as String) >> { String bizContentParam ->
+            CorporationDTO corporationDTO = [id: 125, name: bizContentParam + "-客户名称-广告"]
+            corporationDTO
+        }
+
+        expect:
+        def customerInfoBean = customerNameServiceStub.getCustomerInfo(businessType, bizContent, -1);
+        customerId == customerInfoBean?.customerId;
+        customerName == customerInfoBean?.customerName;
+
+        where:
+        bizContent | businessType                        | customerId | customerName
+        "AD123123" | BusinessType.ADVERTISEMENT.value()  | 125        | "AD123123-客户名称-广告"
+        "TG123456" | BusinessType.GROUP_PURCHASE.value() | null       | null
 
     }
 }

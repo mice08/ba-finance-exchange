@@ -51,6 +51,8 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     private int bankId;
 
+    private String applicationId;
+
     private String memo;
 
     private int code;
@@ -181,6 +183,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         Date receiveTimeDate = DateUtil.isValidDate(receiveTime) ? DateUtil.formatDate(receiveTime, false) : null;
         receiveOrderUpdateBean.setReceiveTime(receiveTimeDate);
         receiveOrderUpdateBean.setBizContent(bizContent);
+        receiveOrderUpdateBean.setApplicationId(applicationId);
         receiveOrderUpdateBean.setMemo(memo);
         receiveOrderUpdateBean.setCustomerId(customerId);
         receiveOrderUpdateBean.setStatus(status);
@@ -221,6 +224,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderBean.setPayerBankName(receiveOrderData.getPayerBankName());
         receiveOrderBean.setPayTime(DateUtil.formatDateToString(receiveOrderData.getPayTime(), "yyyy-MM-dd"));
         receiveOrderBean.setReverseRoId(receiveOrderData.getReverseRoId());
+        receiveOrderBean.setApplicationId(String.valueOf(receiveOrderData.getApplicationId()));
         receiveOrderBean.setShopId(receiveOrderData.getShopId());
         receiveOrderBean.setPayerName(receiveOrderData.getPayerAccountName());
         receiveOrderBean.setReceiveAmount(new DecimalFormat("##,###,###,###,##0.00").format(receiveOrderData.getReceiveAmount()));
@@ -234,6 +238,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         }
         receiveOrderBean.setRoId(receiveOrderData.getRoId());
         receiveOrderBean.setStatus(ReceiveOrderStatus.valueOf(receiveOrderData.getStatus()).toString());
+        receiveOrderBean.setApplicationId(receiveOrderData.getApplicationId());
         return receiveOrderBean;
     }
 
@@ -304,6 +309,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         roData.setReceiveType(receiveType);
         roData.setBizContent(bizContent);
         roData.setBankID(bankId);
+        roData.setApplicationId(applicationId);
         roData.setMemo(memo);
         roData.setStatus(ReceiveOrderStatus.CONFIRMED.value());
         roData.setAddLoginId(loginId);
@@ -454,6 +460,10 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     public void setReceiveOrderData(ReceiveOrderData receiveOrderData) {
         this.receiveOrderData = receiveOrderData;
+    }
+
+    public void setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
     }
 
     public void setCustomerNameService(CustomerNameService customerNameService) {

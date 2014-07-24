@@ -26,6 +26,7 @@
         <result property="updateLoginId" column="UpdateLoginID"/>
         <result property="reverseRoId" column="ReverseROID"/>
         <result property="payerAccountName" column="PayerAccountName"/>
+        <result property="applicationId" column="ApplicationID"/>
         <result property="memo" column="Memo"/>
     </resultMap>
 
@@ -53,7 +54,8 @@
                          Memo,
                          PayerAccountName,
                          PayerAccountNo,
-                         PayerBankName)
+                         PayerBankName,
+                         ApplicationID)
             VALUES      (#receiveOrderData.customerId#,
                          #receiveOrderData.shopId#,
                          #receiveOrderData.businessType#,
@@ -75,7 +77,8 @@
                          #receiveOrderData.memo#,
                          #receiveOrderData.payerAccountName#,
                          #receiveOrderData.payerAccountNo#,
-                         #receiveOrderData.payerBankName#)
+                         #receiveOrderData.payerBankName#,
+                         #receiveOrderData.applicationId#)
 
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="roId">
@@ -108,7 +111,8 @@
             ro.UpdateLoginID,
             ro.ReverseROID,
             ro.Memo,
-            ro.PayerAccountName
+            ro.PayerAccountName,
+            ro.ApplicationID
        FROM FC_ReceiveOrder ro
         <dynamic prepend="WHERE">
             <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
@@ -244,7 +248,8 @@
         ro.UpdateLoginID,
         ro.ReverseROID,
         ro.Memo,
-        ro.PayerAccountName
+        ro.PayerAccountName,
+        ro.ApplicationID
         FROM FC_ReceiveOrder ro
         WHERE TradeNo = #tradeNo#
         LIMIT 1
@@ -269,33 +274,23 @@
         WHERE ROID = #roId#
     </update>
 
+    <!-- 不进行非空判断-->
     <update id="updateReceiveOrder" parameterClass="map">
         UPDATE FC_ReceiveOrder
         SET
-        <isGreaterThan property="receiveOrderData.customerId" compareValue="0">
-            CustomerID = #receiveOrderData.customerId#,
-        </isGreaterThan>
-        <isGreaterThan property="receiveOrderData.shopId" compareValue="0">
-            ShopID = #receiveOrderData.shopId#,
-        </isGreaterThan>
+        CustomerID = #receiveOrderData.customerId#,
+        ShopID = #receiveOrderData.shopId#,
         <isGreaterThan property="receiveOrderData.status" compareValue="0">
             Status = #receiveOrderData.status#,
         </isGreaterThan>
         <isGreaterThan property="receiveOrderData.receiveType" compareValue="0">
             ReceiveType = #receiveOrderData.receiveType#,
         </isGreaterThan>
-        <isNotEmpty property="receiveOrderData.bizContent">
-            BizContent = #receiveOrderData.bizContent#,
-        </isNotEmpty>
-        <isNotEmpty property="receiveOrderData.receiveTime">
-            ReceiveTime = #receiveOrderData.receiveTime#,
-        </isNotEmpty>
-        <isNotEmpty property="receiveOrderData.memo">
-            Memo = #receiveOrderData.memo#,
-        </isNotEmpty>
-        <isGreaterThan property="receiveOrderData.updateLoginId" compareValue="0">
-            UpdateLoginID = "receiveOrderData.updateLoginId",
-        </isGreaterThan>
+        BizContent = #receiveOrderData.bizContent#,
+        ReceiveTime = #receiveOrderData.receiveTime#,
+        Memo = #receiveOrderData.memo#,
+        ApplicationID = #receiveOrderData.applicationId#,
+        UpdateLoginID = #receiveOrderData.updateLoginId#,
         UpdateTime = NOW()
         WHERE ROID = #receiveOrderData.roId#
     </update>
@@ -323,7 +318,8 @@
         ro.UpdateLoginID,
         ro.ReverseROID,
         ro.Memo,
-        ro.PayerAccountName
+        ro.PayerAccountName,
+        ro.ApplicationID
         FROM FC_ReceiveOrder ro
         WHERE ROID = #roId#
         LIMIT 1
