@@ -48,7 +48,7 @@
                 <div class="control-group span6">
                     <label class="control-label">收款通知ID</label>
                     <div class="controls">
-                        <input type="text" id="receiveNotifyId" name="receiveNotifyId" class="form_value">
+                        <input type="text" id="applicationId" name="applicationId" class="form_value">
                     </div>
                 </div>
 
@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <div class="control-group span6">
-                    <label class="control-label">业务信息<span class="required">*</span></label>
+                    <label class="control-label">合同号<span class="required">*</span></label>
                     <div class="controls">
                         <input type="text" id="bizContent" name="bizContent" class="form_value"  validate="+">
                     </div>

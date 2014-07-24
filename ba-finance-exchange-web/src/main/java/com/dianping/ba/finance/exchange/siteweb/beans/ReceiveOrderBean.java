@@ -1,7 +1,5 @@
 package com.dianping.ba.finance.exchange.siteweb.beans;
 
-import java.math.BigDecimal;
-
 /**
  * Created by Eric on 2014/6/18.
  */
@@ -24,7 +22,7 @@ public class ReceiveOrderBean {
     private int shopId;
     private String payTime;
     private String payChannel;
-    private String receiveNotifyId;
+    private String applicationId;
     private String payerName;
     private int customerId;
     private String status;
@@ -102,12 +100,12 @@ public class ReceiveOrderBean {
         this.payChannel = payChannel;
     }
 
-    public String getReceiveNotifyId() {
-        return receiveNotifyId;
+    public String getApplicationId() {
+        return applicationId;
     }
 
-    public void setReceiveNotifyId(String receiveNotifyId) {
-        this.receiveNotifyId = receiveNotifyId;
+    public void setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
     }
 
     public String getPayerName() {

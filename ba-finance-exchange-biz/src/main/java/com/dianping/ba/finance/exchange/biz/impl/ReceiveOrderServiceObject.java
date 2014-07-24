@@ -72,7 +72,7 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         receiveOrderResultBean.setShopId(receiveOrderData.getShopId());
         receiveOrderResultBean.setTradeNo(receiveOrderData.getTradeNo());
 
-        receiveOrderResultBean.setReceiveNotifyId(receiveOrderData.getReceiveNotifyId());
+        receiveOrderResultBean.setApplicationId(receiveOrderData.getApplicationId());
 
         return receiveOrderResultBean;
     }
@@ -157,7 +157,7 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         receiveOrderData.setReceiveTime(receiveOrderUpdateBean.getReceiveTime());
         receiveOrderData.setMemo(receiveOrderUpdateBean.getMemo());
         receiveOrderData.setReverseRoId(receiveOrderUpdateBean.getReverseRoId());
-        receiveOrderData.setReceiveNotifyId(receiveOrderUpdateBean.getReceiveNotifyId());
+        receiveOrderData.setApplicationId(receiveOrderUpdateBean.getApplicationId());
         receiveOrderData.setReceiveType(receiveOrderUpdateBean.getReceiveType() == null ? 0 : receiveOrderUpdateBean.getReceiveType().value());
         receiveOrderData.setUpdateLoginId(receiveOrderUpdateBean.getUpdateLoginId());
         return receiveOrderData;
