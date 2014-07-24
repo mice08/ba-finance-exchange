@@ -58,7 +58,7 @@
 			SELECT
 			#payOrderData.payAmount#,
 			#payOrderData.paySequence#,
-			MAX(POID) + 1,
+			IFNULL(MAX(POID), 10000000) + 1,
 			#payOrderData.customerId#,
 			#payOrderData.customerBankId#,
 			#payOrderData.bankAccountNo#,
