@@ -12,6 +12,7 @@ import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
+import com.dianping.ba.finance.exchange.biz.service.BizInfoService;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 import com.dianping.finance.common.util.ConvertUtils;
@@ -35,8 +36,7 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 
 	private ExecutorService executorService;
 
-	private CorporationService corporationService;
-
+	private BizInfoService bizInfoService;
 	@Log(logBefore = true, logAfter = true, severity = 1)
 	@ReturnDefault
 	@Override
@@ -131,9 +131,6 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 		return roData;
 	}
 
-	public void setCorporationService(CorporationService corporationService) {
-		this.corporationService = corporationService;
-	}
 
 	/**
 	 * 根据bizContent去调推广（广告）接口查询客户ID
@@ -141,16 +138,9 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 	 * @param requestDTO
 	 * @return
 	 */
+
 	private int getAdCustomerIdByBizContent(PayCentreReceiveRequestDTO requestDTO) {
-		//判断businessType是不是广告
-		if (requestDTO.getBusinessType() == BusinessType.ADVERTISEMENT.value()) {
-			//RPC调用
-			CorporationDTO corporationDTO = corporationService.queryCorporationByBizContent(requestDTO.getBizContent());
-			if (corporationDTO != null) {
-				return corporationDTO.getId();
-			}
-		}
-		return 0;
+		return bizInfoService.getBizInfo(requestDTO);
 	}
 
 	public void setReceiveOrderService(ReceiveOrderService receiveOrderService) {
@@ -163,5 +153,9 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 
 	public void setPayCentreReceiveRequestService(PayCentreReceiveRequestService payCentreReceiveRequestService) {
 		this.payCentreReceiveRequestService = payCentreReceiveRequestService;
+	}
+
+	public void setBizInfoService(BizInfoService bizInfoService) {
+		this.bizInfoService = bizInfoService;
 	}
 }

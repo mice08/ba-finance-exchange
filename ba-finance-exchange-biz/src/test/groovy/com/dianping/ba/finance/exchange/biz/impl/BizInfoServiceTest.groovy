@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.biz.impl
 
 import com.dianping.ba.finance.exchange.api.dtos.PayCentreReceiveRequestDTO
 import com.dianping.ba.finance.exchange.api.enums.BusinessType
+import com.dianping.ba.finance.exchange.biz.service.BizInfoService
 import com.dianping.core.type.PageModel
 import com.dianping.midas.finance.api.dto.CorporationDTO
 import com.dianping.midas.finance.api.service.CorporationService
@@ -14,8 +15,8 @@ import spock.lang.Specification
  * Time: 11:22
  * To change this template use File | Settings | File Templates.
  */
-class PayCentreReceiveRequestHandleServiceObjectTestGroovy extends Specification {
-    def serviceStub = new PayCentreReceiveRequestHandleServiceObject()
+class BizInfoServiceTest extends Specification {
+    def serviceStub = new BizInfoService()
     private CorporationService corporationServiceMock
 
     void setup() {
@@ -23,30 +24,30 @@ class PayCentreReceiveRequestHandleServiceObjectTestGroovy extends Specification
         serviceStub.setCorporationService(corporationServiceMock)
     }
 
-    def "testgetAdCustomerIdByBizContent"() {
+    def "testgetBizInfo"() {
         setup:
         def requestDTO = new PayCentreReceiveRequestDTO()
         requestDTO.businessType = BusinessType.ADVERTISEMENT.value()
 
         when:
-        serviceStub.getAdCustomerIdByBizContent(requestDTO)
+        serviceStub.getBizInfo(requestDTO)
 
         then:
         1 * corporationServiceMock.queryCorporationByBizContent(requestDTO.bizContent)
     }
 
-    def "testgetAdCustomerIdByBizContentNoType"() {
+    def "testgetBizInfoNoType"() {
         setup:
         def requestDTO = new PayCentreReceiveRequestDTO()
 
         when:
-        serviceStub.getAdCustomerIdByBizContent(requestDTO)
+        serviceStub.getBizInfo(requestDTO)
 
         then:
         0 * corporationServiceMock.queryCorporationByBizContent(requestDTO.bizContent)
     }
 
-    def "testgetAdCustomerIdByBizContentReturn"(Integer buType,Integer customId) {
+    def "testgetBizInfoReturn"(Integer buType,Integer customId) {
         given:
         def requestDTO = new PayCentreReceiveRequestDTO()
         requestDTO.businessType = buType
@@ -58,8 +59,8 @@ class PayCentreReceiveRequestHandleServiceObjectTestGroovy extends Specification
         }
 
         expect:
-        //corporationServiceMock.queryCorporationByBizContent(requestDTO.bizContent)
-        customId == serviceStub.getAdCustomerIdByBizContent(requestDTO)
+        corporationServiceMock.queryCorporationByBizContent(requestDTO.bizContent)
+        customId == serviceStub.getBizInfo(requestDTO)
 
         where:
         buType ||customId
