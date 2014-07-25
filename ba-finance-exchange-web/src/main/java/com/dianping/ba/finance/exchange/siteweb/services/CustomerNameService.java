@@ -6,8 +6,8 @@ import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.siteweb.beans.CustomerInfoBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.CustomerNameSuggestionBean;
 import com.dianping.customerinfo.api.CustomerInfoService;
-import com.dianping.customerinfo.dto.Customer;
 import com.dianping.customerinfo.dto.CustomerLite;
+import com.dianping.customerinfo.dto.CustomerShopLite;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 import com.dianping.midas.finance.api.dto.CorporationDTO;
@@ -140,15 +140,15 @@ public class CustomerNameService {
     }
 
     private List<CustomerNameSuggestionBean> fetchTGCustomerSuggestion(String customerName, int maxSize, int loginId) {
-        List<Customer> customerList = customerInfoService.searchByCustomerName(customerName, 0, maxSize, loginId);
+        List<CustomerShopLite> customerList = customerInfoService.searchByCustomerAndShopInfo(customerName, null, true, 0, maxSize).getY();
         if (CollectionUtils.isEmpty(customerList)) {
             return Collections.emptyList();
         }
         List<CustomerNameSuggestionBean> suggestionBeanList = Lists.newLinkedList();
-        for (Customer customer : customerList) {
+        for (CustomerShopLite customer : customerList) {
             CustomerNameSuggestionBean suggestionBean = new CustomerNameSuggestionBean();
             suggestionBean.setCustomerId(customer.getCustomerID());
-            suggestionBean.setCustomerName(customer.getCustomerName());
+            suggestionBean.setCustomerName(customer.getCustomreName());
             suggestionBeanList.add(suggestionBean);
         }
         return suggestionBeanList;
