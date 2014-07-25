@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.service;
 
+import com.dianping.ba.finance.exchange.api.beans.BizInfoBean;
 import com.dianping.ba.finance.exchange.api.dtos.PayCentreReceiveRequestDTO;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.finance.common.aop.annotation.Log;
@@ -24,21 +25,23 @@ public class BizInfoService {
 	 */
 	@Log(logBefore = true, logAfter = true, severity = 1)
 	@ReturnDefault
-	public int getBizInfo(PayCentreReceiveRequestDTO requestDTO) {
+	public BizInfoBean getBizInfo(PayCentreReceiveRequestDTO requestDTO) {
+		BizInfoBean bean = new BizInfoBean();
 		//判断businessType是不是广告
 		if (requestDTO.getBusinessType() == BusinessType.ADVERTISEMENT.value()) {
 			try {
 				//RPC调用
 				CorporationDTO corporationDTO = corporationService.queryCorporationByBizContent(requestDTO.getBizContent());
 				if (corporationDTO != null) {
-					return corporationDTO.getId();
+					bean.setCustomerId(corporationDTO.getId());
+					bean.setCustomerName(corporationDTO.getName());
 				}
 			}
 			catch (Exception e){
 				e.printStackTrace();
 			}
 		}
-		return 0;
+		return bean;
 	}
 
 	public void setCorporationService(CorporationService corporationService) {
