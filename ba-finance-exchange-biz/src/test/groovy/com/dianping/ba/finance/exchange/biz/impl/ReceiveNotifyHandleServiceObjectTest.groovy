@@ -45,7 +45,7 @@ class ReceiveNotifyHandleServiceObjectTest extends Specification {
         accessTokenServiceMock = Mock();
         receiveNotifyHandleServiceObjectStub.accessTokenService = accessTokenServiceMock;
 
-        receiveNotifyResultProducerMock = Spy();
+        receiveNotifyResultProducerMock = Mock();
         receiveNotifyHandleServiceObjectStub.receiveNotifyResultProducer = receiveNotifyResultProducerMock;
 
         executorServiceMock = Executors.newSingleThreadExecutor();
