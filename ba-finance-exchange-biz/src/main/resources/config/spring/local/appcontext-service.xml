@@ -61,4 +61,27 @@
         <property name="receiveOrderService" ref="receiveOrderService"/>
         <property name="executorService" ref="executorService"/>
     </bean>
+
+    <bean id="accessTokenService" init-method="init" class="com.dianping.ba.finance.exchange.biz.impl.AccessTokenServiceObject">
+        <property name="authTokenDao" ref="authTokenDao"/>
+        <property name="useCache" value="true"/>
+        <property name="loadAllWhenInitial" value="true"/>
+    </bean>
+
+    <bean id="receiveNotifyRecordService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveNotifyRecordServiceObject">
+        <property name="receiveNotifyRecordDao" ref="receiveNotifyRecordDao"/>
+    </bean>
+
+    <bean id="receiveNotifyService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveNotifyServiceObject">
+        <property name="receiveNotifyDao" ref="receiveNotifyDao"/>
+    </bean>
+
+    <bean id="receiveNotifyHandleService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveNotifyHandleServiceObject">
+        <property name="accessTokenService" ref="accessTokenService"/>
+        <property name="receiveNotifyRecordService" ref="receiveNotifyRecordService"/>
+        <property name="receiveNotifyService" ref="receiveNotifyService"/>
+        <property name="receiveNotifyResultProducer" ref="receiveNotifyResultProducer"/>
+        <property name="timeout" value="${ba-finance-exchange-biz.receive.notify.timeout}"/>
+        <property name="executorService" ref="executorService"/>
+    </bean>
 </beans>
