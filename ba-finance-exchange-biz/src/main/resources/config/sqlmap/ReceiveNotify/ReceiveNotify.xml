@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ReceiveNotify">
+    <typeAlias alias="ReceiveNotifyData" type="com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData"></typeAlias>
+    <resultMap id="receiveNotifyData" class="ReceiveNotifyData">
+        <result property="receiveNotifyId" column="ReceiveNotifyID"/>
+        <result property="applicationId" column="ApplicationID"/>
+        <result property="businessType" column="BusinessType"/>
+        <result property="receiveAmount" column="ReceiveAmount"/>
+        <result property="customerId" column="CustomerID"/>
+        <result property="payChannel" column="PayChannel"/>
+        <result property="payTime" column="PayTime"/>
+        <result property="payerName" column="PayerName"/>
+        <result property="bizContent" column="BizContent"/>
+        <result property="bankId" column="BankID"/>
+        <result property="attachment" column="Attachment"/>
+        <result property="status" column="Status"/>
+        <result property="roMatcherId" column="ROMatcherID"/>
+        <result property="memo" column="Memo"/>
+        <result property="addTime" column="AddTime"/>
+        <result property="addLoginId" column="AddLoginID"/>
+        <result property="updateTime" column="UpdateTime"/>
+        <result property="updateLoginId" column="UpdateLoginID"/>
+    </resultMap>
+
+    <insert id="insertReceiveNotify" parameterClass="map">
+        <![CDATA[
+            INSERT INTO FC_ReceiveNotify
+                        (ApplicationID,
+                         BusinessType,
+                         ReceiveAmount,
+                         CustomerID,
+                         PayChannel,
+                         PayTime,
+                         PayerName,
+                         BizContent,
+                         BankID,
+                         Attachment,
+                         Status,
+                         ROMatcherID,
+                         Memo,
+                         AddTime,
+                         AddLoginID,
+                         UpdateTime,
+                         UpdateLoginID
+                         )
+            VALUES      (#receiveNotifyData.applicationId#,
+                         #receiveNotifyData.businessType#,
+                         #receiveNotifyData.receiveAmount#,
+                         #receiveNotifyData.customerId#,
+                         #receiveNotifyData.payChannel#,
+                         #receiveNotifyData.payTime#,
+                         #receiveNotifyData.payerName#,
+                         #receiveNotifyData.bizContent#,
+                         #receiveNotifyData.bankId#,
+                         #receiveNotifyData.attachment#,
+                         #receiveNotifyData.status#,
+                         #receiveNotifyData.roMatcherId#,
+                         #receiveNotifyData.memo#,
+                         #receiveNotifyData.addTime#,
+                         #receiveNotifyData.addLoginId#,
+                         #receiveNotifyData.updateTime#,
+                         #receiveNotifyData.updateLoginId#)
+
+        ]]>
+        <selectKey resultClass="java.lang.Integer" keyProperty="receiveNotifyId">
+            <![CDATA[
+			SELECT @@IDENTITY AS id
+		]]>
+        </selectKey>
+    </insert>
+
+</sqlMap>

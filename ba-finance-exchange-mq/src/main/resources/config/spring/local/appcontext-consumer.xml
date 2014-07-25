@@ -25,4 +25,11 @@
         <property name="consumerId" value="${ba-finance-exchange-mq.consumerid}"/>
         <property name="consumerCount" value="3"/>
     </bean>
+
+    <bean id="receiveNotifyListener" init-method="init" class="com.dianping.ba.finance.exchange.mq.listener.ReceiveNotifyListener">
+        <property name="receiveNotifyHandleService" ref="receiveNotifyHandleService"/>
+        <property name="topic" value="${ba-finance-exchange-mq.ad.fs.receive.notify.notice.topic.name}"/>
+        <property name="consumerId" value="${ba-finance-exchange-mq.consumerid}"/>
+        <property name="consumerCount" value="3"/>
+    </bean>
 </beans>
