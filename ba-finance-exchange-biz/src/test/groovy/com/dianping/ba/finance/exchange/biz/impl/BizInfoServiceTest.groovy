@@ -1,14 +1,10 @@
 package com.dianping.ba.finance.exchange.biz.impl
-
-import com.dianping.ba.finance.exchange.api.beans.BizInfoBean
 import com.dianping.ba.finance.exchange.api.dtos.PayCentreReceiveRequestDTO
 import com.dianping.ba.finance.exchange.api.enums.BusinessType
 import com.dianping.ba.finance.exchange.biz.service.BizInfoService
-import com.dianping.core.type.PageModel
 import com.dianping.midas.finance.api.dto.CorporationDTO
 import com.dianping.midas.finance.api.service.CorporationService
 import spock.lang.Specification
-
 /**
  * Created by IntelliJ IDEA.
  * User: yaxiong.cheng
@@ -17,57 +13,32 @@ import spock.lang.Specification
  * To change this template use File | Settings | File Templates.
  */
 class BizInfoServiceTest extends Specification {
-    def serviceStub = new BizInfoService()
+    private BizInfoService bizInfoServiceStub;
     private CorporationService corporationServiceMock
 
     void setup() {
+        bizInfoServiceStub = []
+
         corporationServiceMock = Mock()
-        serviceStub.setCorporationService(corporationServiceMock)
+        bizInfoServiceStub.corporationService = corporationServiceMock;
     }
 
-    def "testgetBizInfo"() {
-        setup:
-        def requestDTO = new PayCentreReceiveRequestDTO()
-        requestDTO.businessType = BusinessType.ADVERTISEMENT.value()
-
-        when:
-        serviceStub.getBizInfo(requestDTO)
-
-        then:
-        1 * corporationServiceMock.queryCorporationByBizContent(requestDTO.bizContent)
-    }
-
-    def "testgetBizInfoNoType"() {
-        setup:
-        def requestDTO = new PayCentreReceiveRequestDTO()
-
-        when:
-        serviceStub.getBizInfo(requestDTO)
-
-        then:
-        0 * corporationServiceMock.queryCorporationByBizContent(requestDTO.bizContent)
-    }
-
-    def "testgetBizInfoReturn"(Integer buType,Integer customId) {
+    def "GetBizInfoReturn"(Integer businessType, String bizContentParam, Integer customerId) {
         given:
-        def requestDTO = new PayCentreReceiveRequestDTO()
-        requestDTO.businessType = buType
-        requestDTO.bizContent = "ttt"
-        def bean = new BizInfoBean()
-
-        corporationServiceMock.queryCorporationByBizContent(_ as String) >> {
-            def corporationDTO = [id:100] as CorporationDTO
-            return corporationDTO
+        PayCentreReceiveRequestDTO requestDTO = [businessType: businessType, bizContent: bizContentParam]
+        corporationServiceMock.queryCorporationByBizContent(_ as String) >> { String bizContent ->
+            CorporationDTO corporationDTO = [id: 100, name: bizContent + "-客户名称"]
+            corporationDTO
         }
 
         expect:
-        corporationServiceMock.queryCorporationByBizContent(requestDTO.bizContent)
-        customId == serviceStub.getBizInfo(requestDTO).customerId
+        customerId == bizInfoServiceStub.getBizInfo(requestDTO)?.customerId
 
         where:
-        buType ||customId
-        1      || 0
-        5      || 100
+        businessType                        | bizContentParam | customerId
+        BusinessType.GROUP_PURCHASE.value() | null            | null
+        BusinessType.GROUP_PURCHASE.value() | "团购合同123"       | null
+        BusinessType.ADVERTISEMENT.value()  | "广告合同"          | 100
     }
 
 }

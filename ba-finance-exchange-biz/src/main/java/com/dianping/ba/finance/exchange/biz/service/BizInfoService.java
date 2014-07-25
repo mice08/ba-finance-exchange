@@ -25,24 +25,20 @@ public class BizInfoService {
 	 */
 	@Log(logBefore = true, logAfter = true, severity = 1)
 	@ReturnDefault
-	public BizInfoBean getBizInfo(PayCentreReceiveRequestDTO requestDTO) {
-		BizInfoBean bean = new BizInfoBean();
-		//判断businessType是不是广告
-		if (requestDTO.getBusinessType() == BusinessType.ADVERTISEMENT.value()) {
-			try {
-				//RPC调用
-				CorporationDTO corporationDTO = corporationService.queryCorporationByBizContent(requestDTO.getBizContent());
-				if (corporationDTO != null) {
-					bean.setCustomerId(corporationDTO.getId());
-					bean.setCustomerName(corporationDTO.getName());
-				}
-			}
-			catch (Exception e){
-				e.printStackTrace();
-			}
-		}
-		return bean;
-	}
+    public BizInfoBean getBizInfo(PayCentreReceiveRequestDTO requestDTO) {
+        //判断businessType是不是广告
+        if (requestDTO.getBusinessType() == BusinessType.ADVERTISEMENT.value()) {
+            //RPC调用
+            CorporationDTO corporationDTO = corporationService.queryCorporationByBizContent(requestDTO.getBizContent());
+            if (corporationDTO != null) {
+                BizInfoBean bean = new BizInfoBean();
+                bean.setCustomerId(corporationDTO.getId());
+                bean.setCustomerName(corporationDTO.getName());
+                return bean;
+            }
+        }
+        return null;
+    }
 
 	public void setCorporationService(CorporationService corporationService) {
 		this.corporationService = corporationService;

@@ -109,13 +109,13 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 	}
 
 	private ReceiveOrderData buildReceiveOrderData(PayCentreReceiveRequestDTO requestDTO, int reverseRoId) {
-		ReceiveOrderData roData = new ReceiveOrderData();
-		BizInfoBean bean = getCustomerIdByBizContent(requestDTO);
-		if(bean!=null){
-			int customerId = bean.getCustomerId();
-			roData.setCustomerId(customerId);
-		}
-		roData.setTradeNo(requestDTO.getTradeNo());
+        ReceiveOrderData roData = new ReceiveOrderData();
+        BizInfoBean bean = bizInfoService.getBizInfo(requestDTO);
+        if (bean != null) {
+            int customerId = bean.getCustomerId();
+            roData.setCustomerId(customerId);
+        }
+        roData.setTradeNo(requestDTO.getTradeNo());
 		roData.setBusinessType(BusinessType.valueOfPayCentre(requestDTO.getBusinessType()).value());
 		roData.setReceiveAmount(requestDTO.getReceiveAmount());
 		roData.setBankReceiveTime(requestDTO.getReceiveDate());
@@ -130,18 +130,6 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 		roData.setUpdateLoginId(0);
 		roData.setReverseRoId(reverseRoId);
 		return roData;
-	}
-
-
-	/**
-	 * 根据bizContent去调推广（广告）接口查询客户ID
-	 *
-	 * @param requestDTO
-	 * @return
-	 */
-
-	private BizInfoBean getCustomerIdByBizContent(PayCentreReceiveRequestDTO requestDTO) {
-		return bizInfoService.getBizInfo(requestDTO);
 	}
 
 	public void setReceiveOrderService(ReceiveOrderService receiveOrderService) {
