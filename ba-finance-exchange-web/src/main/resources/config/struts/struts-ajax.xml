@@ -131,6 +131,11 @@
                 method="fetchCustomerNameSuggestion">
             <result type="json"></result>
         </action>
+        <action name="fetchCustomerInfo"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.CustomerNameSuggestionAction"
+                method="fetchCustomerInfo">
+            <result type="json"></result>
+        </action>
     </package>
 
 </struts>

@@ -45,7 +45,7 @@ public class ReceiveOrderData implements Serializable{
 
 	private int reverseRoId;
 
-    private String receiveNotifyId;
+    private String applicationId;
 
     private int updateLoginId;
 
@@ -244,12 +244,12 @@ public class ReceiveOrderData implements Serializable{
         this.payerBankName = payerBankName;
     }
 
-    public String getReceiveNotifyId() {
-        return receiveNotifyId;
+    public String getApplicationId() {
+        return applicationId;
     }
 
-    public void setReceiveNotifyId(String receiveNotifyId) {
-        this.receiveNotifyId = receiveNotifyId;
+    public void setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
     }
 
     @Override
@@ -273,7 +273,7 @@ public class ReceiveOrderData implements Serializable{
                 ", addLoginId=" + addLoginId +
                 ", updateTime=" + updateTime +
                 ", reverseRoId=" + reverseRoId +
-                ", receiveNotifyId='" + receiveNotifyId + '\'' +
+                ", applicationId='" + applicationId + '\'' +
                 ", updateLoginId=" + updateLoginId +
                 ", memo='" + memo + '\'' +
                 ", payerAccountName='" + payerAccountName + '\'' +

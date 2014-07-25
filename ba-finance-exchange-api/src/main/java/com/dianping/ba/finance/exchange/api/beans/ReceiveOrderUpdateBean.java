@@ -24,7 +24,7 @@ public class ReceiveOrderUpdateBean implements Serializable {
 
     private String bizContent;
 
-    private String receiveNotifyId;
+    private String applicationId;
 
     private Date receiveTime;
 
@@ -115,12 +115,12 @@ public class ReceiveOrderUpdateBean implements Serializable {
         this.memo = memo;
     }
 
-    public String getReceiveNotifyId() {
-        return receiveNotifyId;
+    public String getApplicationId() {
+        return applicationId;
     }
 
-    public void setReceiveNotifyId(String receiveNotifyId) {
-        this.receiveNotifyId = receiveNotifyId;
+    public void setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
     }
 
     @Override
@@ -133,7 +133,7 @@ public class ReceiveOrderUpdateBean implements Serializable {
                 ", customerId=" + customerId +
                 ", shopId=" + shopId +
                 ", bizContent='" + bizContent + '\'' +
-                ", receiveNotifyId=" + receiveNotifyId +
+                ", applicationId='" + applicationId + '\'' +
                 ", receiveTime=" + receiveTime +
                 ", updateLoginId=" + updateLoginId +
                 ", memo='" + memo + '\'' +

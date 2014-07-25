@@ -31,7 +31,7 @@
                     <th width="8%" class="fs tb-header">到款日期</th>
                     <th width="8%" class="fs tb-header">系统入账日期</th>
                     <th width="8%" class="fs tb-header">款项类型</th>
-                    <th width="8%" class="fs tb-header">业务信息</th>
+                    <th width="8%" class="fs tb-header">合同号</th>
                     <th width="12%" class="fs tb-header">付款方户名</th>
                     <th width="6%" class="fs tb-header">状态</th>
                     <th width="12%" class="fs tb-header">操作</th>
@@ -78,7 +78,7 @@
         <a href="javascript:void(0);" data-toggle="popover" data-placement="top"
         tradeNo="{{= record.tradeNo}}" payerAccountNo="{{= record.payerAccountNo}}"
         payerBankName="{{= record.payerBankName}}" memoInfo="{{= record.memo}}"
-        receiveNotifyId="{{= record.receiveNotifyId}}"
+        applicationId="{{= record.applicationId}}"
         class="ro-show"  rel="popover-medium">查看</a>
         {{if record.status=="待确认"}}
         <a href="javascript:void(0)" roId="{{= record.roId}}" class="modify-link">修改</a> {{/if}} <a href="#">作废</a>
