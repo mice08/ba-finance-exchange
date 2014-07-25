@@ -7,6 +7,7 @@ import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.dtos.PayCentreReceiveRequestDTO;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
+import com.dianping.ba.finance.exchange.biz.service.BizInfoService;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +30,8 @@ public class PayCentreReceiveRequestHandleServiceObjectTest {
 
 	private ExecutorService executorServiceMock;
 
+	private BizInfoService bizInfoService;
+
 	@Before
 	public void setUp() throws Exception {
 		payCentreReceiveRequestHandleServiceObjectStub = new PayCentreReceiveRequestHandleServiceObject();
@@ -41,6 +44,9 @@ public class PayCentreReceiveRequestHandleServiceObjectTest {
 
 		executorServiceMock = Executors.newSingleThreadExecutor();
 		payCentreReceiveRequestHandleServiceObjectStub.setExecutorService(executorServiceMock);
+
+		bizInfoService = mock(BizInfoService.class);
+		payCentreReceiveRequestHandleServiceObjectStub.setBizInfoService(bizInfoService);
 	}
 
 	@Test

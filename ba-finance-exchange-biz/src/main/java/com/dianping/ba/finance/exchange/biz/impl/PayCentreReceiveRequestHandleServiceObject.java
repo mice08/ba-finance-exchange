@@ -5,6 +5,7 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.PayCentreReceiveRequestHandleService;
 import com.dianping.ba.finance.exchange.api.PayCentreReceiveRequestService;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
+import com.dianping.ba.finance.exchange.api.beans.BizInfoBean;
 import com.dianping.ba.finance.exchange.api.datas.PayCentreReceiveRequestData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.dtos.PayCentreReceiveRequestDTO;
@@ -17,9 +18,6 @@ import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 import com.dianping.finance.common.util.ConvertUtils;
 import com.dianping.finance.common.util.DateUtils;
-import com.dianping.midas.finance.api.dto.CorporationDTO;
-import com.dianping.midas.finance.api.service.CorporationService;
-
 import java.math.BigDecimal;
 import java.util.concurrent.ExecutorService;
 
@@ -112,8 +110,11 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 
 	private ReceiveOrderData buildReceiveOrderData(PayCentreReceiveRequestDTO requestDTO, int reverseRoId) {
 		ReceiveOrderData roData = new ReceiveOrderData();
-		int customerId = getAdCustomerIdByBizContent(requestDTO);
-		roData.setCustomerId(customerId);
+		BizInfoBean bean = getCustomerIdByBizContent(requestDTO);
+		if(bean!=null){
+			int customerId = bean.getCustomerId();
+			roData.setCustomerId(customerId);
+		}
 		roData.setTradeNo(requestDTO.getTradeNo());
 		roData.setBusinessType(BusinessType.valueOfPayCentre(requestDTO.getBusinessType()).value());
 		roData.setReceiveAmount(requestDTO.getReceiveAmount());
@@ -123,7 +124,7 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 		roData.setBizContent(requestDTO.getBizContent());
 		roData.setBankID(requestDTO.getBankId());
 		roData.setMemo(requestDTO.getMemo());
-		int status = (customerId > 0 || reverseRoId > 0) ? ReceiveOrderStatus.CONFIRMED.value() : ReceiveOrderStatus.UNCONFIRMED.value();
+		int status = (roData.getCustomerId() > 0 || reverseRoId > 0) ? ReceiveOrderStatus.CONFIRMED.value() : ReceiveOrderStatus.UNCONFIRMED.value();
 		roData.setStatus(status);
 		roData.setAddLoginId(0);
 		roData.setUpdateLoginId(0);
@@ -139,7 +140,7 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 	 * @return
 	 */
 
-	private int getAdCustomerIdByBizContent(PayCentreReceiveRequestDTO requestDTO) {
+	private BizInfoBean getCustomerIdByBizContent(PayCentreReceiveRequestDTO requestDTO) {
 		return bizInfoService.getBizInfo(requestDTO);
 	}
 

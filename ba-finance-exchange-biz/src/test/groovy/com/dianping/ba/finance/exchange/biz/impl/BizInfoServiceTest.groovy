@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.impl
 
+import com.dianping.ba.finance.exchange.api.beans.BizInfoBean
 import com.dianping.ba.finance.exchange.api.dtos.PayCentreReceiveRequestDTO
 import com.dianping.ba.finance.exchange.api.enums.BusinessType
 import com.dianping.ba.finance.exchange.biz.service.BizInfoService
@@ -52,6 +53,7 @@ class BizInfoServiceTest extends Specification {
         def requestDTO = new PayCentreReceiveRequestDTO()
         requestDTO.businessType = buType
         requestDTO.bizContent = "ttt"
+        def bean = new BizInfoBean()
 
         corporationServiceMock.queryCorporationByBizContent(_ as String) >> {
             def corporationDTO = [id:100] as CorporationDTO
@@ -60,7 +62,7 @@ class BizInfoServiceTest extends Specification {
 
         expect:
         corporationServiceMock.queryCorporationByBizContent(requestDTO.bizContent)
-        customId == serviceStub.getBizInfo(requestDTO)
+        customId == serviceStub.getBizInfo(requestDTO).customerId
 
         where:
         buType ||customId

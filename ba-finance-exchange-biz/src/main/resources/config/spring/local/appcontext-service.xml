@@ -48,6 +48,10 @@
         <property name="cache" value="true"/>
     </bean>
 
+    <bean id="bizInfoService" class="com.dianping.ba.finance.exchange.biz.service.BizInfoService">
+        <property name="corporationService" ref="corporationService"/>
+    </bean>
+
     <bean id="receiveOrderResultNotify" class="com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify">
         <property name="receiveOrderProducer" ref="receiveOrderProducer"/>
     </bean>
@@ -60,5 +64,6 @@
         <property name="payCentreReceiveRequestService" ref="payCentreReceiveRequestService"/>
         <property name="receiveOrderService" ref="receiveOrderService"/>
         <property name="executorService" ref="executorService"/>
+        <property name="bizInfoService" ref="bizInfoService"/>
     </bean>
 </beans>
