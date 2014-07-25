@@ -10,7 +10,7 @@ import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyRecordData;
  * Created by Administrator on 2014/7/23.
  */
 public interface ReceiveNotifyRecordDao extends GenericDao {
-    
+
     /**
      * 添加收款通知记录
      * @param receiveNotifyRecordData
