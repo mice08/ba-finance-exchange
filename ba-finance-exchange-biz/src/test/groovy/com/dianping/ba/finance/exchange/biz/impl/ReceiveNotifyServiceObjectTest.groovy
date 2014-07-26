@@ -71,4 +71,36 @@ class ReceiveNotifyServiceObjectTest extends Specification {
         ReceiveNotifyStatus.INIT      | false
         ReceiveNotifyStatus.CONFIRMED | true
     }
+
+    @Unroll
+    def "findUnmatchedLeftReceiveNotify"(ReceiveNotifyStatus status, String excludeApplicationId, Boolean noUnMatchedRN) {
+        given:
+        receiveNotifyDaoMock.findUnmatchedLeftReceiveNotify(_ as Integer, _ as String) >> {
+            ReceiveNotifyData rnData = [receiveNotifyId: 123]
+            [rnData]
+        }
+
+        expect:
+        noUnMatchedRN == receiveNotifyServiceStub.findUnmatchedLeftReceiveNotify(status, excludeApplicationId).isEmpty()
+
+        where:
+        status                      | excludeApplicationId | noUnMatchedRN
+        ReceiveNotifyStatus.MATCHED | "123"                | false
+    }
+
+    @Unroll
+    def "clearReceiveNotifyMatchInfo"(ReceiveNotifyStatus status, Integer rnId, Integer updatedRows) {
+        given:
+        def rnIdList = [rnId]
+        receiveNotifyDaoMock.clearReceiveNotifyMatchInfo(_ as Integer, _ as List) >> {
+            10
+        }
+
+        expect:
+        updatedRows == receiveNotifyServiceStub.clearReceiveNotifyMatchInfo(status, rnIdList)
+
+        where:
+        status                   | rnId | updatedRows
+        ReceiveNotifyStatus.INIT | 123  | 10
+    }
 }

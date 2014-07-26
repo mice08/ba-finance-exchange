@@ -106,5 +106,10 @@
     <bean id="rornMatcherTelTransfer" class="com.dianping.ba.finance.exchange.biz.rornmatcher.RORNMatcherTelTransfer">
     </bean>
 
-
+    <bean id="rornMatchFireService" class="com.dianping.ba.finance.exchange.biz.impl.RORNMatchFireServiceObject">
+        <property name="executorService" ref="executorService"/>
+        <property name="receiveNotifyService" ref="receiveNotifyService"/>
+        <property name="rornMatchService" ref="rornMatchService"/>
+        <property name="receiveOrderService" ref="receiveOrderService"/>
+    </bean>
 </beans>

@@ -105,4 +105,38 @@
                 OR ROMatcherID = 0 )
     </select>
 
+    <select id="findUnmatchedLeftReceiveNotify" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+               ApplicationID,
+               BusinessType,
+               ReceiveAmount,
+               CustomerID,
+               PayChannel,
+               PayTime,
+               PayerName,
+               BizContent,
+               BankID,
+               Attachment,
+               Status,
+               ROMatcherID,
+               Memo,
+               AddTime,
+               AddLoginID,
+               UpdateTime,
+               UpdateLoginID
+          FROM FC_ReceiveNotify
+         WHERE Status = #status#
+           AND ROMatcherID > 0
+           AND ApplicationID != #excludeApplicationId#
+    </select>
+
+    <update id="clearReceiveNotifyMatchInfo" parameterClass="map">
+        UPDATE FC_ReceiveNotify
+        SET    Status = #status#,
+               ROMatcherID = 0
+        WHERE  ReceiveNotifyID IN
+        <iterate open="(" close=")" conjunction="," property="rnIdList">
+            #rnIdList[]#
+        </iterate>
+    </update>
 </sqlMap>

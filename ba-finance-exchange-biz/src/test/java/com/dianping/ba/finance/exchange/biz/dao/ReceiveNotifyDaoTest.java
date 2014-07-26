@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -54,9 +55,22 @@ public class ReceiveNotifyDaoTest {
         int u = receiveNotifyDao.updateReceiveNotifyMatchId(ReceiveNotifyStatus.MATCHED.value(), 8787123, ReceiveNotifyStatus.INIT.value(), 15);
         Assert.assertTrue(u > 0);
     }
+
     @Test
     public void testGetUnMatchedReceiveNotify() throws Exception {
         List<ReceiveNotifyData> receiveNotifyDataList = receiveNotifyDao.getUnMatchedReceiveNotify(ReceiveNotifyStatus.INIT.value());
         Assert.assertNotNull(receiveNotifyDataList);
+    }
+
+    @Test
+    public void testFindUnmatchedLeftReceiveNotify() throws Exception {
+        List<ReceiveNotifyData> receiveNotifyDataList = receiveNotifyDao.findUnmatchedLeftReceiveNotify(ReceiveNotifyStatus.MATCHED.value(), "87872");
+        Assert.assertNotNull(receiveNotifyDataList);
+    }
+
+    @Test
+    public void testClearReceiveNotifyMatchInfo() throws Exception {
+        int u = receiveNotifyDao.clearReceiveNotifyMatchInfo(ReceiveNotifyStatus.INIT.value(), Arrays.asList(11));
+        Assert.assertTrue(u > 0);
     }
 }

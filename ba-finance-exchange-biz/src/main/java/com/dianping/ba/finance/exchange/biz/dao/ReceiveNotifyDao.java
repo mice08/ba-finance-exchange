@@ -31,6 +31,14 @@ public interface ReceiveNotifyDao extends GenericDao {
     List<ReceiveNotifyData> getUnMatchedReceiveNotify(@DAOParam("status") int status);
 
 
+    @DAOAction(action = DAOActionType.QUERY)
+    List<ReceiveNotifyData> findUnmatchedLeftReceiveNotify(@DAOParam("status") int status,
+                                                           @DAOParam("excludeApplicationId") String excludeApplicationId);
+
+    @DAOAction(action = DAOActionType.UPDATE)
+    int clearReceiveNotifyMatchInfo(@DAOParam("status") int status, @DAOParam("rnIdList") List<Integer> rnIdList);
+
+
 
 
 }

@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.biz.dao;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.core.type.PageModel;
 import junit.framework.Assert;
 import org.junit.Test;
@@ -171,5 +172,10 @@ public class ReceiveOrderDaoTest {
     public void testLoadReceiveOrderByRoId() throws Exception {
         ReceiveOrderData orderData = receiveOrderDao.loadReceiveOrderDataByRoId(449);
         Assert.assertNotNull(orderData);
+    }
+    @Test
+    public void testFindUnmatchAndUnconfirmedReceiveOrder() throws Exception {
+        List<ReceiveOrderData> orderDataList = receiveOrderDao.findUnmatchAndUnconfirmedReceiveOrder(ReceiveOrderStatus.UNCONFIRMED.value());
+        Assert.assertNotNull(orderDataList);
     }
 }

@@ -18,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by noahshen on 14-6-17.
@@ -170,7 +171,12 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         return receiveOrderDao.loadReceiveOrderDataByRoId(roId);
     }
 
-	public void setReceiveOrderDao(ReceiveOrderDao receiveOrderDao) {
+    @Override
+    public List<ReceiveOrderData> findUnmatchAndUnconfirmedReceiveOrder(ReceiveOrderStatus status) {
+        return receiveOrderDao.findUnmatchAndUnconfirmedReceiveOrder(status.value());
+    }
+
+    public void setReceiveOrderDao(ReceiveOrderDao receiveOrderDao) {
         this.receiveOrderDao = receiveOrderDao;
     }
 

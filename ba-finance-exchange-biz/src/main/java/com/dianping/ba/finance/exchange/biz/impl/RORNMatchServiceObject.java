@@ -20,7 +20,6 @@ import java.util.List;
  */
 public class RORNMatchServiceObject implements RORNMatchService {
 
-
     private ReceiveNotifyService receiveNotifyService;
 
     private List<RORNMatcher> matchers;

@@ -1,12 +1,15 @@
 package com.dianping.ba.finance.exchange.api;
 
 
+import com.dianping.avatar.dao.annotation.DAOParam;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.core.type.PageModel;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  *  处理收款款的Service类
@@ -74,4 +77,12 @@ public interface ReceiveOrderService {
      * @return
      */
     ReceiveOrderData loadReceiveOrderDataByRoId(int roId);
+
+    /**
+     * 获取所有未匹配、未确认的收款单
+     * @param status
+     * @return
+     */
+    List<ReceiveOrderData> findUnmatchAndUnconfirmedReceiveOrder(ReceiveOrderStatus status);
+
 }

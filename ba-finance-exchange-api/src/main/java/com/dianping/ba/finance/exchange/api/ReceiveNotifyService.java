@@ -1,6 +1,5 @@
 package com.dianping.ba.finance.exchange.api;
 
-import com.dianping.avatar.dao.annotation.DAOParam;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
 
@@ -34,5 +33,22 @@ public interface ReceiveNotifyService {
      * @return
      */
     List<ReceiveNotifyData> getUnMatchedReceiveNotify(ReceiveNotifyStatus status);
+
+    /**
+     *
+     * @param status
+     * @param excludeApplicationId
+     * @return
+     */
+    List<ReceiveNotifyData> findUnmatchedLeftReceiveNotify(ReceiveNotifyStatus status, String excludeApplicationId);
+
+    /**
+     * 清除未匹配上的收款通知的匹配信息
+     * @param status
+     * @param rnIdList
+     * @return
+     */
+    int clearReceiveNotifyMatchInfo(ReceiveNotifyStatus status, List<Integer> rnIdList);
+
 
 }

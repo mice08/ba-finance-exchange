@@ -16,6 +16,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -173,5 +174,17 @@ public class ReceiveOrderServiceObjectTest {
 
         Assert.assertNull(roId);
         verify(receiveOrderDaoMock, times(1)).loadReceiveOrderDataByRoId(anyInt());
+    }
+
+    @Test
+    public void testFindUnmatchAndUnconfirmedReceiveOrder() throws Exception {
+        ReceiveOrderData roData = new ReceiveOrderData();
+        roData.setStatus(ReceiveOrderStatus.UNCONFIRMED.value());
+        when(receiveOrderDaoMock.findUnmatchAndUnconfirmedReceiveOrder(anyInt())).thenReturn(Arrays.asList(roData));
+
+        List<ReceiveOrderData> receiveOrderDataList = receiveOrderServiceObjectStub.findUnmatchAndUnconfirmedReceiveOrder(ReceiveOrderStatus.UNCONFIRMED);
+
+        Assert.assertNotNull(receiveOrderDataList);
+        Assert.assertEquals(ReceiveOrderStatus.UNCONFIRMED.value(), receiveOrderDataList.get(0).getStatus());
     }
 }

@@ -13,6 +13,7 @@ import java.util.List;
  * Created by Administrator on 2014/7/24.
  */
 public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
+
     private ReceiveNotifyDao receiveNotifyDao;
 
     @Log(severity = 1, logBefore = true, logAfter = false)
@@ -35,6 +36,16 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
     @Override
     public List<ReceiveNotifyData> getUnMatchedReceiveNotify(ReceiveNotifyStatus status) {
         return receiveNotifyDao.getUnMatchedReceiveNotify(status.value());
+    }
+
+    @Override
+    public List<ReceiveNotifyData> findUnmatchedLeftReceiveNotify(ReceiveNotifyStatus status, String excludeApplicationId) {
+        return receiveNotifyDao.findUnmatchedLeftReceiveNotify(status.value(), excludeApplicationId);
+    }
+
+    @Override
+    public int clearReceiveNotifyMatchInfo(ReceiveNotifyStatus status, List<Integer> rnIdList) {
+        return receiveNotifyDao.clearReceiveNotifyMatchInfo(status.value(), rnIdList);
     }
 
     public void setReceiveNotifyDao(ReceiveNotifyDao receiveNotifyDao) {
