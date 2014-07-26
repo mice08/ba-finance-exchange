@@ -1,6 +1,7 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
 import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2014/7/24.
@@ -45,5 +47,16 @@ public class ReceiveNotifyDaoTest {
         int recordId = receiveNotifyDao.insertReceiveNotify(receiveNotifyData);
 
         Assert.assertTrue(recordId > 0);
+    }
+
+    @Test
+    public void testUpdateReceiveNotifyMatchId() throws Exception {
+        int u = receiveNotifyDao.updateReceiveNotifyMatchId(ReceiveNotifyStatus.MATCHED.value(), 8787123, ReceiveNotifyStatus.INIT.value(), 15);
+        Assert.assertTrue(u > 0);
+    }
+    @Test
+    public void testGetUnMatchedReceiveNotify() throws Exception {
+        List<ReceiveNotifyData> receiveNotifyDataList = receiveNotifyDao.getUnMatchedReceiveNotify(ReceiveNotifyStatus.INIT.value());
+        Assert.assertNotNull(receiveNotifyDataList);
     }
 }

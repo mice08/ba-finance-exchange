@@ -89,4 +89,22 @@
         <property name="timeout" value="${ba-finance-exchange-biz.receive.notify.timeout}"/>
         <property name="executorService" ref="executorService"/>
     </bean>
+
+    <bean id="rornMatchService" class="com.dianping.ba.finance.exchange.biz.impl.RORNMatchServiceObject">
+        <property name="matchers">
+            <list value-type="com.dianping.ba.finance.exchange.biz.rornmatcher.RORNMatcher">
+                <ref bean="rornMatcherPos"></ref>
+                <ref bean="rornMatcherTelTransfer"></ref>
+            </list>
+        </property>
+        <property name="receiveNotifyService" ref="receiveNotifyService"/>
+    </bean>
+
+    <bean id="rornMatcherPos" class="com.dianping.ba.finance.exchange.biz.rornmatcher.RORNMatcherPos">
+    </bean>
+
+    <bean id="rornMatcherTelTransfer" class="com.dianping.ba.finance.exchange.biz.rornmatcher.RORNMatcherTelTransfer">
+    </bean>
+
+
 </beans>

@@ -1,84 +1,65 @@
 package com.dianping.ba.finance.exchange.api.enums;
 
 /**
- * Created by Administrator on 2014/7/24.
+ * 收款类型
  */
-public enum  ReceiveNotifyStatus {
-    /**
-     *异常
-     */
-    DEFAULT(0),
-    /**
-     *合法的收款申请通知
-     */
-    VALID_RECEIVENOTIFY(1),
-    /**
-     *超时
-     */
-    TIMEOUT(2),
-    /**
-     *非法的token
-     */
-    INVALID_TOKEN(3),
-    /**
-     *非法的金额
-     */
-    INVALID_RECEIVEAMOUNT(4),
-    /**
-     *重复的applicationId
-     */
-    DUPLICATE_APPLICATIONID(5)
-    ;
-    private int receiveNotifyStatus;
+public enum ReceiveNotifyStatus {
 
-    private ReceiveNotifyStatus(int receiveNotifyStatus) {
-        this.receiveNotifyStatus = receiveNotifyStatus;
+	/**
+	 * 0-异常
+	 */
+	DEFAULT(0, "异常"),
+
+    INIT(1, "初始"),
+
+    // 2为处理失败，见ReceiveNotifyResultStatus
+
+    REJECT(3, "驳回"),
+
+    MATCHED(4, "已匹配"),
+
+    CONFIRMED(5, "已关联");
+
+    private int status;
+
+    private String description;
+
+    public int getStatus() {
+        return status;
     }
 
-    public static ReceiveNotifyStatus valueOf(int value) {
-        switch (value) {
-            case 1:
-                return VALID_RECEIVENOTIFY;
-            case 2:
-                return TIMEOUT;
-            case 3:
-                return INVALID_TOKEN;
-            case 4:
-                return INVALID_RECEIVEAMOUNT;
-            case 5:
-                return DUPLICATE_APPLICATIONID;
-            default:
-                return DEFAULT;
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    private ReceiveNotifyStatus(int status, String description) {
+        this.status = status;
+        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return this.description;
+    }
+
+	public static ReceiveNotifyStatus valueOf(int value) {
+        for (ReceiveNotifyStatus status : ReceiveNotifyStatus.values()) {
+            if (status.value() == value) {
+                return status;
+            }
         }
-    }
-
-    public String toString(){
-        switch (receiveNotifyStatus){
-            case 1:
-                return "合法的收款申请通知";
-            case 2:
-                return "超时";
-            case 3:
-                return "非法的token";
-            case 4:
-                return "非法的金额";
-            case 5:
-                return "重复的applicationId";
-            default:
-                return "错误";
-
-        }
-    }
-
-    public int getReceiveNotifyStatus() {
-        return receiveNotifyStatus;
-    }
-
-    public void setReceiveNotifyStatus(int receiveNotifyStatus) {
-        this.receiveNotifyStatus = receiveNotifyStatus;
-    }
+        return DEFAULT;
+	}
 
     public int value(){
-        return receiveNotifyStatus;
+        return status;
     }
 }
