@@ -21,13 +21,12 @@
                         <#--<input type="text" class="input-small" id="customerName" name="customerName">&nbsp;&nbsp;对应客户ID为：<label id="customerId" name="customerId" class="form_value"/>-->
                     <#--</div>-->
                 <#--</div>-->
+
                 <div class="control-group span6">
-                    <label class="control-label">客户名<span class="required">*</span></label>
+                    <label class="control-label">收款通知ID</label>
+
                     <div class="controls">
-                        <input type="text" id="customerName" name="customerName" class="form_value"  validate="+"
-                               error_msg="+:请输入客户名">
-                        <input type="hidden" id="customerId" name="customerId" class="form_value" validate="+ n[0,11]"
-                               error_msg="+:请输入有效的客户名称">
+                        <input type="text" id="applicationId" name="applicationId" class="form_value">
                     </div>
                 </div>
             </div>
@@ -44,14 +43,13 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="control-group span6">
-                    <label class="control-label">收款通知ID</label>
+                    <label class="control-label">合同号<span class="required">*</span></label>
+
                     <div class="controls">
-                        <input type="text" id="applicationId" name="applicationId" class="form_value">
+                        <input type="text" id="bizContent" name="bizContent" class="form_value" validate="+">
                     </div>
                 </div>
-
             </div>
 
             <div class="row-fluid label-colon">
@@ -64,11 +62,16 @@
                     </div>
                 </div>
                 <div class="control-group span6">
-                    <label class="control-label">合同号<span class="required">*</span></label>
+                    <label class="control-label">客户名<span class="required">*</span></label>
+
                     <div class="controls">
-                        <input type="text" id="bizContent" name="bizContent" class="form_value"  validate="+">
+                        <input type="text" id="customerName" name="customerName" class="form_value" validate="+"
+                               error_msg="+:请输入客户名">
+                        <input type="hidden" id="customerId" name="customerId" class="form_value" validate="+ n[0,11]"
+                               error_msg="+:请输入有效的客户名称">
                     </div>
                 </div>
+
             </div>
 
             <div class="row-fluid label-colon">

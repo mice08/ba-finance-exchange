@@ -1,13 +1,11 @@
 package com.dianping.ba.finance.exchange.biz.impl
-
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData
-import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyResultStatus
+import com.dianping.ba.finance.exchange.api.enums.BusinessType
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveNotifyDao
 import spock.lang.Specification
 import spock.lang.Unroll
-
 /**
  * Created by Administrator on 2014/7/25.
  */
@@ -102,5 +100,23 @@ class ReceiveNotifyServiceObjectTest extends Specification {
         where:
         status                   | rnId | updatedRows
         ReceiveNotifyStatus.INIT | 123  | 10
+    }
+
+    @Unroll
+    def "loadUnmatchedReceiveNotifyByApplicationId"(ReceiveNotifyStatus status, Integer businessType, String applicationIdParam, Integer rnId, String applicationId) {
+        given:
+        receiveNotifyDaoMock.loadUnmatchedReceiveNotifyByApplicationId(_ as Integer, _ as Integer, _ as String) >> { args ->
+            ReceiveNotifyData rnData = [receiveNotifyId: 123, businessType: args[1], applicationId: args[2]]
+            rnData
+        }
+
+        expect:
+        def rnData = receiveNotifyServiceStub.loadUnmatchedReceiveNotifyByApplicationId(status, businessType, applicationIdParam)
+        rnId == rnData.receiveNotifyId
+        applicationId == rnData.applicationId
+
+        where:
+        status                   | businessType                       | applicationIdParam | rnId | applicationId
+        ReceiveNotifyStatus.INIT | BusinessType.ADVERTISEMENT.value() | "123"              | 123  | "123"
     }
 }

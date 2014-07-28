@@ -73,4 +73,10 @@ public class ReceiveNotifyDaoTest {
         int u = receiveNotifyDao.clearReceiveNotifyMatchInfo(ReceiveNotifyStatus.INIT.value(), Arrays.asList(11));
         Assert.assertTrue(u > 0);
     }
+
+    @Test
+    public void testLoadUnmatchedReceiveNotifyByApplicationId() throws Exception {
+        ReceiveNotifyData receiveNotifyData = receiveNotifyDao.loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus.INIT.value(), 5, "87871");
+        Assert.assertNotNull(receiveNotifyData);
+    }
 }

@@ -50,5 +50,13 @@ public interface ReceiveNotifyService {
      */
     int clearReceiveNotifyMatchInfo(ReceiveNotifyStatus status, List<Integer> rnIdList);
 
+    /**
+     * 根据appliactionId，获取未匹配的收款通知
+     * @param status
+     * @param applicationId
+     * @return
+     */
+    ReceiveNotifyData loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus status, int businessType, String applicationId);
+
 
 }

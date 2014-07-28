@@ -39,6 +39,12 @@ public interface ReceiveNotifyDao extends GenericDao {
     int clearReceiveNotifyMatchInfo(@DAOParam("status") int status, @DAOParam("rnIdList") List<Integer> rnIdList);
 
 
+    @DAOAction(action = DAOActionType.LOAD)
+    ReceiveNotifyData loadUnmatchedReceiveNotifyByApplicationId(@DAOParam("status") int status,
+                                                                @DAOParam("businessType") int businessType,
+                                                                @DAOParam("applicationId") String applicationId);
+
+
 
 
 }

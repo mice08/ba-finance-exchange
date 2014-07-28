@@ -111,10 +111,10 @@
                     </div>
                 </div>
                 <div class="control-group span6">
-                    <label class="control-label">客户名</label>
+                    <label class="control-label">收款通知ID</label>
+
                     <div class="controls">
-                        <input type="text" id="m-customerName" name="customerName" class="form_value load_value">
-                        <input type="hidden" id="m-customerId" name="customerId" class="form_value load_value">
+                        <input type="text" id="m-applicationId" name="applicationId" class="form_value load_value">
                     </div>
                 </div>
 
@@ -152,13 +152,15 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="control-group span6">
-                    <label class="control-label">收款通知ID</label>
+                    <label class="control-label">客户名</label>
+
                     <div class="controls">
-                        <input type="text" id="m-applicationId" name="applicationId" class="form_value load_value">
+                        <input type="text" id="m-customerName" name="customerName" class="form_value load_value">
+                        <input type="hidden" id="m-customerId" name="customerId" class="form_value load_value">
                     </div>
                 </div>
-
             </div>
             <div class="row-fluid label-colon">
                 <div class="control-group span6">

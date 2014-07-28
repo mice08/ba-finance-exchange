@@ -139,4 +139,32 @@
             #rnIdList[]#
         </iterate>
     </update>
+
+    <select id="loadUnmatchedReceiveNotifyByApplicationId" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+               ApplicationID,
+               BusinessType,
+               ReceiveAmount,
+               CustomerID,
+               PayChannel,
+               PayTime,
+               PayerName,
+               BizContent,
+               BankID,
+               Attachment,
+               Status,
+               ROMatcherID,
+               Memo,
+               AddTime,
+               AddLoginID,
+               UpdateTime,
+               UpdateLoginID
+          FROM FC_ReceiveNotify
+         WHERE Status = #status#
+           AND BusinessType = #businessType#
+           AND ROMatcherID = 0
+           AND ApplicationID = #applicationId#
+    </select>
+
+
 </sqlMap>

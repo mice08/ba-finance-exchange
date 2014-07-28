@@ -4,8 +4,6 @@ import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.finance.common.util.DateUtils;
-import com.dianping.finance.common.util.LionConfigUtils;
-import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -19,7 +17,8 @@ public class RORNMatcherPos implements RORNMatcher {
     @Override
     public boolean match(ReceiveOrderData receiveOrderData, ReceiveNotifyData receiveNotifyData) {
         if (receiveOrderData.getPayChannel() == ReceiveOrderPayChannel.POS_MACHINE.value()
-                && receiveNotifyData.getPayChannel() == ReceiveOrderPayChannel.POS_MACHINE.value()) {
+                && receiveNotifyData.getPayChannel() == ReceiveOrderPayChannel.POS_MACHINE.value()
+                && receiveOrderData.getBusinessType() == receiveNotifyData.getBusinessType()) {
             return timeDifferenceMatch(receiveOrderData, receiveNotifyData)
                     && amountMatch(receiveOrderData, receiveNotifyData)
                     && bankMatch(receiveOrderData, receiveNotifyData);

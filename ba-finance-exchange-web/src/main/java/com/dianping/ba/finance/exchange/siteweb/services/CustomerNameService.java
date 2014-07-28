@@ -156,6 +156,34 @@ public class CustomerNameService {
 
     @Log(severity = 2, logBefore = true, logAfter = true)
     @ReturnDefault
+    public CustomerInfoBean getCustomerInfoById(int businessType, int customerId, int loginId) {
+        if (businessType == BusinessType.GROUP_PURCHASE.value()) {
+            return fetchTGCustomerInfoById(customerId, loginId);
+        }
+        if (businessType == BusinessType.ADVERTISEMENT.value()) {
+            return fetchADCustomerInfoById(customerId, loginId);
+        }
+        return null;
+    }
+
+    private CustomerInfoBean fetchADCustomerInfoById(int customerId, int loginId) {
+        CorporationDTO corporationDTO = corporationService.queryCorporationById(customerId);
+        if (corporationDTO != null) {
+            CustomerInfoBean customerInfoBean = new CustomerInfoBean();
+            customerInfoBean.setCustomerId(corporationDTO.getId());
+            customerInfoBean.setCustomerName(corporationDTO.getName());
+            return customerInfoBean;
+        }
+        return null;
+    }
+
+    private CustomerInfoBean fetchTGCustomerInfoById(int customerId, int loginId) {
+        // TODO 待阿波罗团购提供接口
+        return null;
+    }
+
+    @Log(severity = 2, logBefore = true, logAfter = true)
+    @ReturnDefault
     public CustomerInfoBean getCustomerInfo(int businessType, String bizContent, int loginId) {
         if (businessType == BusinessType.GROUP_PURCHASE.value()) {
             return fetchTGCustomerInfo(bizContent, loginId);

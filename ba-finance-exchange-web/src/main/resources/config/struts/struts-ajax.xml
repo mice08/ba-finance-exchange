@@ -136,6 +136,12 @@
                 method="fetchCustomerInfo">
             <result type="json"></result>
         </action>
+
+        <action name="loadReceiveOrderInfo"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveNotifyAjaxAction"
+                method="loadReceiveOrderInfo">
+            <result type="json"></result>
+        </action>
     </package>
 
 </struts>

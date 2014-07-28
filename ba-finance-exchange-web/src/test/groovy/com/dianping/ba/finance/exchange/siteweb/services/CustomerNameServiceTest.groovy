@@ -131,4 +131,24 @@ class CustomerNameServiceTest extends Specification {
         "TG123456" | BusinessType.GROUP_PURCHASE.value() | null       | null
 
     }
+
+    @Unroll
+    def "get Customer Info by Id"(Integer customerIdParam, Integer businessType, Integer customerId, String customerName) {
+        given:
+        corporationServiceMock.queryCorporationById(_ as Integer) >> { Integer custId ->
+            CorporationDTO corporationDTO = [id: custId, name: "客户名称-广告"]
+            corporationDTO
+        }
+
+        expect:
+        def customerInfoBean = customerNameServiceStub.getCustomerInfoById(businessType, customerIdParam, -1);
+        customerId == customerInfoBean?.customerId;
+        customerName == customerInfoBean?.customerName;
+
+        where:
+        customerIdParam | businessType                        | customerId | customerName
+        123             | BusinessType.ADVERTISEMENT.value()  | 123        | "客户名称-广告"
+        789             | BusinessType.GROUP_PURCHASE.value() | null       | null
+
+    }
 }

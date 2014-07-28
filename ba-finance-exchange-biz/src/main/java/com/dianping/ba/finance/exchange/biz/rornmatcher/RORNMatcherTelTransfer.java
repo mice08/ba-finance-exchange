@@ -21,7 +21,8 @@ public class RORNMatcherTelTransfer implements RORNMatcher {
     @Override
     public boolean match(ReceiveOrderData receiveOrderData, ReceiveNotifyData receiveNotifyData) {
         if (receiveOrderData.getPayChannel() == ReceiveOrderPayChannel.TELEGRAPHIC_TRANSFER.value()
-                && receiveNotifyData.getPayChannel() == ReceiveOrderPayChannel.TELEGRAPHIC_TRANSFER.value()) {
+                && receiveNotifyData.getPayChannel() == ReceiveOrderPayChannel.TELEGRAPHIC_TRANSFER.value()
+                && receiveOrderData.getBusinessType() == receiveNotifyData.getBusinessType()) {
             return payerNameMatch(receiveOrderData, receiveNotifyData)
                     && timeDifferenceMatch(receiveOrderData, receiveNotifyData)
                     && amountMatch(receiveOrderData, receiveNotifyData)
