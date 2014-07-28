@@ -10,6 +10,7 @@ import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.core.type.PageModel;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 收款单Dao
@@ -73,4 +74,14 @@ public interface ReceiveOrderDao extends GenericDao {
      */
     @DAOAction(action = DAOActionType.LOAD)
     ReceiveOrderData loadReceiveOrderDataByRoId(@DAOParam("roId") int roId);
+
+    /**
+     * 获取所有未匹配、未确认的收款单
+     * @param status
+     * @return
+     */
+    @DAOAction(action = DAOActionType.QUERY)
+    List<ReceiveOrderData> findUnmatchAndUnconfirmedReceiveOrder(@DAOParam("status") int status);
+
+
 }

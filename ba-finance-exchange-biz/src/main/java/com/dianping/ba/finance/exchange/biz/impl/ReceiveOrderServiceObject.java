@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
+import com.dianping.ba.finance.exchange.api.RORNMatchFireService;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderResultBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
@@ -18,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by noahshen on 14-6-17.
@@ -25,6 +27,8 @@ import java.util.Date;
 public class ReceiveOrderServiceObject implements ReceiveOrderService {
 
     private ReceiveOrderDao receiveOrderDao;
+
+    private RORNMatchFireService rornMatchFireService;
 
     private ReceiveOrderResultNotify receiveOrderResultNotify;
 
@@ -39,7 +43,7 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         }
         //手工录入财务自动生成
         if(StringUtils.isBlank(receiveOrderData.getTradeNo())){
-            receiveOrderData.setTradeNo("FS-"+System.nanoTime());
+            receiveOrderData.setTradeNo("FS-" + System.nanoTime());
         }
         int roId = receiveOrderDao.insertReceiveOrderData(receiveOrderData);
         receiveOrderData.setRoId(roId);
@@ -47,6 +51,12 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         if (ReceiveOrderStatus.CONFIRMED.value() == receiveOrderData.getStatus()) {
             ReceiveOrderResultBean receiveOrderResultBean = buildReceiveOrderResultBean(receiveOrderData, receiveOrderData.getAddLoginId());
             receiveOrderResultNotify.receiveResultNotify(receiveOrderResultBean);
+            String applicationId = receiveOrderData.getApplicationId();
+            if (StringUtils.isNotBlank(applicationId)) {
+                rornMatchFireService.executeMatchingForReceiveOrderConfirmed(receiveOrderData);
+            }
+        } else {
+            rornMatchFireService.executeMatchingForNewReceiveOrder(receiveOrderData);
         }
         return roId;
     }
@@ -130,6 +140,10 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
             ReceiveOrderData receiveOrderData = loadReceiveOrderDataByRoId(receiveOrderUpdateData.getRoId());
             ReceiveOrderResultBean receiveOrderResultBean = buildReceiveOrderResultBean(receiveOrderData, receiveOrderData.getUpdateLoginId());
             receiveOrderResultNotify.receiveResultNotify(receiveOrderResultBean);
+            String applicationId = receiveOrderData.getApplicationId();
+            if (StringUtils.isNotBlank(applicationId)) {
+                rornMatchFireService.executeMatchingForReceiveOrderConfirmed(receiveOrderData);
+            }
         }
         return result;
     }
@@ -170,11 +184,20 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         return receiveOrderDao.loadReceiveOrderDataByRoId(roId);
     }
 
-	public void setReceiveOrderDao(ReceiveOrderDao receiveOrderDao) {
+    @Override
+    public List<ReceiveOrderData> findUnmatchAndUnconfirmedReceiveOrder(ReceiveOrderStatus status) {
+        return receiveOrderDao.findUnmatchAndUnconfirmedReceiveOrder(status.value());
+    }
+
+    public void setReceiveOrderDao(ReceiveOrderDao receiveOrderDao) {
         this.receiveOrderDao = receiveOrderDao;
     }
 
     public void setReceiveOrderResultNotify(ReceiveOrderResultNotify receiveOrderResultNotify) {
         this.receiveOrderResultNotify = receiveOrderResultNotify;
+    }
+
+    public void setRornMatchFireService(RORNMatchFireService rornMatchFireService) {
+        this.rornMatchFireService = rornMatchFireService;
     }
 }

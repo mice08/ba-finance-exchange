@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.impl
 import com.dianping.ba.finance.exchange.api.AccessTokenService
+import com.dianping.ba.finance.exchange.api.RORNMatchFireService
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyRecordService
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyRecordData
@@ -28,6 +29,8 @@ class ReceiveNotifyHandleServiceObjectTest extends Specification {
 
     private SwallowProducer receiveNotifyResultProducerMock;
 
+    private RORNMatchFireService rornMatchFireServiceMock;
+
     private ExecutorService executorServiceMock;
 
     public void setup(){
@@ -49,7 +52,10 @@ class ReceiveNotifyHandleServiceObjectTest extends Specification {
         receiveNotifyHandleServiceObjectStub.receiveNotifyResultProducer = receiveNotifyResultProducerMock;
 
         executorServiceMock = Executors.newSingleThreadExecutor();
-        receiveNotifyHandleServiceObjectStub.setExecutorService(executorServiceMock);
+        receiveNotifyHandleServiceObjectStub.executorService = executorServiceMock;
+
+        rornMatchFireServiceMock = Mock();
+        receiveNotifyHandleServiceObjectStub.rornMatchFireService = rornMatchFireServiceMock
     }
 
     def "HandleReceiveNotify  Normal"() {

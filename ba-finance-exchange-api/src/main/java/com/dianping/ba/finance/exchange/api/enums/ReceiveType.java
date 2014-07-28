@@ -5,17 +5,6 @@ package com.dianping.ba.finance.exchange.api.enums;
  */
 public enum ReceiveType {
 
-    /**
-     *
-
-
-
-
-
-     超级退款
-     人工返利
-     */
-
 	/**
 	 * 0-默认错误
 	 */

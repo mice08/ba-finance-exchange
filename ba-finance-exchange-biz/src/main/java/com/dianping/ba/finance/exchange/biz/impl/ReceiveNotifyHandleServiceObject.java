@@ -2,15 +2,13 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
-import com.dianping.ba.finance.exchange.api.AccessTokenService;
-import com.dianping.ba.finance.exchange.api.ReceiveNotifyHandleService;
-import com.dianping.ba.finance.exchange.api.ReceiveNotifyRecordService;
-import com.dianping.ba.finance.exchange.api.ReceiveNotifyService;
+import com.dianping.ba.finance.exchange.api.*;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifyResultBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyRecordData;
 import com.dianping.ba.finance.exchange.api.dtos.ReceiveNotifyDTO;
 import com.dianping.ba.finance.exchange.api.dtos.ReceiveNotifyResultDTO;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyCheckResult;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyResultStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
 import com.dianping.finance.common.aop.annotation.Log;
@@ -27,7 +25,8 @@ import java.util.concurrent.ExecutorService;
  * Created by Administrator on 2014/7/23.
  */
 public class ReceiveNotifyHandleServiceObject implements ReceiveNotifyHandleService {
-    private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.settle.biz.monitor.NewPayRequestServiceObject");
+
+    private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.biz.monitor.ReceiveNotifyHandleServiceObject");
 
     private long timeout;
 
@@ -38,6 +37,8 @@ public class ReceiveNotifyHandleServiceObject implements ReceiveNotifyHandleServ
     private AccessTokenService accessTokenService;
 
     private SwallowProducer receiveNotifyResultProducer;
+
+    private RORNMatchFireService rornMatchFireService;
 
     private ExecutorService executorService;
 
@@ -59,41 +60,43 @@ public class ReceiveNotifyHandleServiceObject implements ReceiveNotifyHandleServ
     private void doHandle(ReceiveNotifyRecordData receiveNotifyRecordData, ReceiveNotifyDTO receiveNotifyDTO) {
         ReceiveNotifyResultBean receiveNotifyResultBean = new ReceiveNotifyResultBean();
         receiveNotifyResultBean.setApplicationId(receiveNotifyRecordData.getApplicationId());
-        receiveNotifyResultBean.setStatus(ReceiveNotifyResultStatus. SUCCESS);
+        receiveNotifyResultBean.setStatus(ReceiveNotifyResultStatus.SUCCESS);
         receiveNotifyResultBean.setMemo("");
 
-        if(!checkNotify(receiveNotifyDTO,receiveNotifyResultBean)){
+        if(!checkNotify(receiveNotifyDTO, receiveNotifyResultBean)){
             resultNotify(receiveNotifyResultBean);
             return;
         }
 
-        ReceiveNotifyData receiveNotifyDate = buildReceiveNotifyData(receiveNotifyDTO);
+        ReceiveNotifyData receiveNotifyData = buildReceiveNotifyData(receiveNotifyDTO);
         try {
-            int receiveNotifyId = receiveNotifyService.insertReceiveNotify(receiveNotifyDate);
+            int receiveNotifyId = receiveNotifyService.insertReceiveNotify(receiveNotifyData);
+            receiveNotifyData.setReceiveNotifyId(receiveNotifyId);
             receiveNotifyResultBean.setReceiveNotifyId(receiveNotifyId);
 
         }catch (Exception e ){
             receiveNotifyResultBean.setStatus(ReceiveNotifyResultStatus.FAIL);
-            receiveNotifyResultBean.setMemo(ReceiveNotifyStatus.DUPLICATE_APPLICATIONID.toString());
+            receiveNotifyResultBean.setMemo(ReceiveNotifyCheckResult.DUPLICATE_APPLICATIONID.toString());
         }
 
         resultNotify(receiveNotifyResultBean);
+        rornMatchFireService.executeMatchingForNewReceiveNotify(receiveNotifyData);
     }
 
     private boolean checkNotify(ReceiveNotifyDTO receiveNotifyDTO, ReceiveNotifyResultBean receiveNotifyResultBean) {
         if(!checkTimeout(receiveNotifyDTO)){
             receiveNotifyResultBean.setStatus(ReceiveNotifyResultStatus.FAIL);
-            receiveNotifyResultBean.setMemo(ReceiveNotifyStatus.TIMEOUT.toString());
+            receiveNotifyResultBean.setMemo(ReceiveNotifyCheckResult.TIMEOUT.toString());
             return false;
         }
         if(!checkToken(receiveNotifyDTO)){
             receiveNotifyResultBean.setStatus(ReceiveNotifyResultStatus.FAIL);
-            receiveNotifyResultBean.setMemo(ReceiveNotifyStatus.INVALID_TOKEN.toString());
+            receiveNotifyResultBean.setMemo(ReceiveNotifyCheckResult.INVALID_TOKEN.toString());
             return false;
         }
         if(!checkReceiveAmount(receiveNotifyDTO)){
             receiveNotifyResultBean.setStatus(ReceiveNotifyResultStatus.FAIL);
-            receiveNotifyResultBean.setMemo(ReceiveNotifyStatus.INVALID_RECEIVEAMOUNT.toString());
+            receiveNotifyResultBean.setMemo(ReceiveNotifyCheckResult.INVALID_RECEIVEAMOUNT.toString());
             return false;
         }
         return true;
@@ -170,8 +173,8 @@ public class ReceiveNotifyHandleServiceObject implements ReceiveNotifyHandleServ
         receiveNotifyData.setCustomerId(receiveNotifyDTO.getCustomerId());
         receiveNotifyData.setBankId(receiveNotifyDTO.getBankId());
         receiveNotifyData.setAttachment(receiveNotifyDTO.getAttachment());
-        receiveNotifyData.setStatus(1);
-        receiveNotifyData.setRoMatcherId(-1);
+        receiveNotifyData.setStatus(ReceiveNotifyStatus.INIT.value());
+        receiveNotifyData.setRoMatcherId(0);
         receiveNotifyData.setMemo(receiveNotifyDTO.getMemo());
         receiveNotifyData.setAddTime(new Date());
         receiveNotifyData.setAddLoginId(-1);
@@ -204,4 +207,7 @@ public class ReceiveNotifyHandleServiceObject implements ReceiveNotifyHandleServ
         this.executorService = executorService;
     }
 
+    public void setRornMatchFireService(RORNMatchFireService rornMatchFireService) {
+        this.rornMatchFireService = rornMatchFireService;
+    }
 }

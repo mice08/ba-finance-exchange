@@ -41,6 +41,8 @@
     <bean id="receiveOrderService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveOrderServiceObject">
         <property name="receiveOrderDao" ref="receiveOrderDao"/>
         <property name="receiveOrderResultNotify" ref="receiveOrderResultNotify"/>
+        <property name="rornMatchFireService" ref="rornMatchFireService"/>
+
     </bean>
 
     <bean id="receiveBankService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveBankServiceObject">
@@ -88,5 +90,30 @@
         <property name="receiveNotifyResultProducer" ref="receiveNotifyResultProducer"/>
         <property name="timeout" value="${ba-finance-exchange-biz.receive.notify.timeout}"/>
         <property name="executorService" ref="executorService"/>
+        <property name="rornMatchFireService" ref="rornMatchFireService"/>
+
+    </bean>
+
+    <bean id="rornMatchService" class="com.dianping.ba.finance.exchange.biz.impl.RORNMatchServiceObject">
+        <property name="matchers">
+            <list value-type="com.dianping.ba.finance.exchange.biz.rornmatcher.RORNMatcher">
+                <ref bean="rornMatcherPos"></ref>
+                <ref bean="rornMatcherTelTransfer"></ref>
+            </list>
+        </property>
+        <property name="receiveNotifyService" ref="receiveNotifyService"/>
+    </bean>
+
+    <bean id="rornMatcherPos" class="com.dianping.ba.finance.exchange.biz.rornmatcher.RORNMatcherPos">
+    </bean>
+
+    <bean id="rornMatcherTelTransfer" class="com.dianping.ba.finance.exchange.biz.rornmatcher.RORNMatcherTelTransfer">
+    </bean>
+
+    <bean id="rornMatchFireService" class="com.dianping.ba.finance.exchange.biz.impl.RORNMatchFireServiceObject">
+        <property name="executorService" ref="executorService"/>
+        <property name="receiveNotifyService" ref="receiveNotifyService"/>
+        <property name="rornMatchService" ref="rornMatchService"/>
+        <property name="receiveOrderService" ref="receiveOrderService"/>
     </bean>
 </beans>

@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
+import com.dianping.ba.finance.exchange.api.RORNMatchFireService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderResultBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
@@ -16,6 +17,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -24,7 +26,9 @@ public class ReceiveOrderServiceObjectTest {
 
 	private ReceiveOrderServiceObject receiveOrderServiceObjectStub;
 
-	private ReceiveOrderDao receiveOrderDaoMock;
+    private RORNMatchFireService rornMatchFireServiceMock;
+
+    private ReceiveOrderDao receiveOrderDaoMock;
 
 	private ReceiveOrderResultNotify receiveOrderResultNotifyMock;
 
@@ -37,6 +41,9 @@ public class ReceiveOrderServiceObjectTest {
 
 		receiveOrderResultNotifyMock = mock(ReceiveOrderResultNotify.class);
 		receiveOrderServiceObjectStub.setReceiveOrderResultNotify(receiveOrderResultNotifyMock);
+
+        rornMatchFireServiceMock = mock(RORNMatchFireService.class);
+        receiveOrderServiceObjectStub.setRornMatchFireService(rornMatchFireServiceMock);
 	}
 
 	@Test
@@ -52,6 +59,41 @@ public class ReceiveOrderServiceObjectTest {
 		Assert.assertEquals(87, roData.getRoId());
 
 		verify(receiveOrderResultNotifyMock, times(1)).receiveResultNotify(any(ReceiveOrderResultBean.class));
+	}
+
+	@Test
+	public void testCreateReceiveOrderConfirmedApplicationIdNotNull() throws Exception {
+		when(receiveOrderDaoMock.insertReceiveOrderData(any(ReceiveOrderData.class))).thenReturn(87);
+
+		ReceiveOrderData roData = new ReceiveOrderData();
+		roData.setCustomerId(123);
+		roData.setShopId(123);
+		roData.setStatus(ReceiveOrderStatus.CONFIRMED.value());
+        roData.setApplicationId("applicationId");
+		int roId = receiveOrderServiceObjectStub.createReceiveOrder(roData);
+		Assert.assertEquals(87, roId);
+		Assert.assertEquals(87, roData.getRoId());
+
+		verify(receiveOrderResultNotifyMock, times(1)).receiveResultNotify(any(ReceiveOrderResultBean.class));
+        verify(rornMatchFireServiceMock, times(1)).executeMatchingForReceiveOrderConfirmed(any(ReceiveOrderData.class));
+
+    }
+
+	@Test
+	public void testCreateReceiveOrderUnconfirmed() throws Exception {
+		when(receiveOrderDaoMock.insertReceiveOrderData(any(ReceiveOrderData.class))).thenReturn(87);
+
+		ReceiveOrderData roData = new ReceiveOrderData();
+		roData.setCustomerId(123);
+		roData.setShopId(123);
+		roData.setStatus(ReceiveOrderStatus.UNCONFIRMED.value());
+		int roId = receiveOrderServiceObjectStub.createReceiveOrder(roData);
+		Assert.assertEquals(87, roId);
+		Assert.assertEquals(87, roData.getRoId());
+
+		verify(receiveOrderResultNotifyMock, never()).receiveResultNotify(any(ReceiveOrderResultBean.class));
+
+		verify(rornMatchFireServiceMock, times(1)).executeMatchingForNewReceiveOrder(any(ReceiveOrderData.class));
 	}
 
 	@Test
@@ -146,6 +188,7 @@ public class ReceiveOrderServiceObjectTest {
         ReceiveOrderData receiveOrderData=new ReceiveOrderData();
         receiveOrderData.setRoId(1);
         receiveOrderData.setStatus(ReceiveOrderStatus.CONFIRMED.value());
+        receiveOrderData.setApplicationId("applicationId");
         when(receiveOrderDaoMock.loadReceiveOrderDataByRoId(anyInt())).thenReturn(receiveOrderData);
 
         ReceiveOrderUpdateBean receiveOrderUpdateBean=new ReceiveOrderUpdateBean();
@@ -161,8 +204,7 @@ public class ReceiveOrderServiceObjectTest {
         verify(receiveOrderDaoMock, times(1)).updateReceiveOrder(any(ReceiveOrderData.class));
         verify(receiveOrderDaoMock, times(1)).loadReceiveOrderDataByRoId(anyInt());
         verify(receiveOrderResultNotifyMock, times(1)).receiveResultNotify(any(ReceiveOrderResultBean.class));
-
-
+        verify(rornMatchFireServiceMock, times(1)).executeMatchingForReceiveOrderConfirmed(any(ReceiveOrderData.class));
     }
 
     @Test
@@ -173,5 +215,17 @@ public class ReceiveOrderServiceObjectTest {
 
         Assert.assertNull(roId);
         verify(receiveOrderDaoMock, times(1)).loadReceiveOrderDataByRoId(anyInt());
+    }
+
+    @Test
+    public void testFindUnmatchAndUnconfirmedReceiveOrder() throws Exception {
+        ReceiveOrderData roData = new ReceiveOrderData();
+        roData.setStatus(ReceiveOrderStatus.UNCONFIRMED.value());
+        when(receiveOrderDaoMock.findUnmatchAndUnconfirmedReceiveOrder(anyInt())).thenReturn(Arrays.asList(roData));
+
+        List<ReceiveOrderData> receiveOrderDataList = receiveOrderServiceObjectStub.findUnmatchAndUnconfirmedReceiveOrder(ReceiveOrderStatus.UNCONFIRMED);
+
+        Assert.assertNotNull(receiveOrderDataList);
+        Assert.assertEquals(ReceiveOrderStatus.UNCONFIRMED.value(), receiveOrderDataList.get(0).getStatus());
     }
 }
