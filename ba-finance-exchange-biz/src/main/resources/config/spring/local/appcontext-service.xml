@@ -41,6 +41,8 @@
     <bean id="receiveOrderService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveOrderServiceObject">
         <property name="receiveOrderDao" ref="receiveOrderDao"/>
         <property name="receiveOrderResultNotify" ref="receiveOrderResultNotify"/>
+        <property name="rornMatchFireService" ref="rornMatchFireService"/>
+
     </bean>
 
     <bean id="receiveBankService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveBankServiceObject">
@@ -88,6 +90,8 @@
         <property name="receiveNotifyResultProducer" ref="receiveNotifyResultProducer"/>
         <property name="timeout" value="${ba-finance-exchange-biz.receive.notify.timeout}"/>
         <property name="executorService" ref="executorService"/>
+        <property name="rornMatchFireService" ref="rornMatchFireService"/>
+
     </bean>
 
     <bean id="rornMatchService" class="com.dianping.ba.finance.exchange.biz.impl.RORNMatchServiceObject">

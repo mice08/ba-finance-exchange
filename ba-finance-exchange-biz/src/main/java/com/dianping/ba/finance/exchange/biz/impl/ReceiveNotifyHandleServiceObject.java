@@ -2,10 +2,7 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
-import com.dianping.ba.finance.exchange.api.AccessTokenService;
-import com.dianping.ba.finance.exchange.api.ReceiveNotifyHandleService;
-import com.dianping.ba.finance.exchange.api.ReceiveNotifyRecordService;
-import com.dianping.ba.finance.exchange.api.ReceiveNotifyService;
+import com.dianping.ba.finance.exchange.api.*;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifyResultBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyRecordData;
@@ -13,6 +10,7 @@ import com.dianping.ba.finance.exchange.api.dtos.ReceiveNotifyDTO;
 import com.dianping.ba.finance.exchange.api.dtos.ReceiveNotifyResultDTO;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyCheckResult;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyResultStatus;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 import com.dianping.finance.common.swallow.SwallowEventBean;
@@ -39,6 +37,8 @@ public class ReceiveNotifyHandleServiceObject implements ReceiveNotifyHandleServ
     private AccessTokenService accessTokenService;
 
     private SwallowProducer receiveNotifyResultProducer;
+
+    private RORNMatchFireService rornMatchFireService;
 
     private ExecutorService executorService;
 
@@ -68,9 +68,10 @@ public class ReceiveNotifyHandleServiceObject implements ReceiveNotifyHandleServ
             return;
         }
 
-        ReceiveNotifyData receiveNotifyDate = buildReceiveNotifyData(receiveNotifyDTO);
+        ReceiveNotifyData receiveNotifyData = buildReceiveNotifyData(receiveNotifyDTO);
         try {
-            int receiveNotifyId = receiveNotifyService.insertReceiveNotify(receiveNotifyDate);
+            int receiveNotifyId = receiveNotifyService.insertReceiveNotify(receiveNotifyData);
+            receiveNotifyData.setReceiveNotifyId(receiveNotifyId);
             receiveNotifyResultBean.setReceiveNotifyId(receiveNotifyId);
 
         }catch (Exception e ){
@@ -79,6 +80,7 @@ public class ReceiveNotifyHandleServiceObject implements ReceiveNotifyHandleServ
         }
 
         resultNotify(receiveNotifyResultBean);
+        rornMatchFireService.executeMatchingForNewReceiveNotify(receiveNotifyData);
     }
 
     private boolean checkNotify(ReceiveNotifyDTO receiveNotifyDTO, ReceiveNotifyResultBean receiveNotifyResultBean) {
@@ -171,7 +173,7 @@ public class ReceiveNotifyHandleServiceObject implements ReceiveNotifyHandleServ
         receiveNotifyData.setCustomerId(receiveNotifyDTO.getCustomerId());
         receiveNotifyData.setBankId(receiveNotifyDTO.getBankId());
         receiveNotifyData.setAttachment(receiveNotifyDTO.getAttachment());
-        receiveNotifyData.setStatus(ReceiveNotifyCheckResult.VALID_RECEIVENOTIFY.value());
+        receiveNotifyData.setStatus(ReceiveNotifyStatus.INIT.value());
         receiveNotifyData.setRoMatcherId(0);
         receiveNotifyData.setMemo(receiveNotifyDTO.getMemo());
         receiveNotifyData.setAddTime(new Date());
@@ -205,4 +207,7 @@ public class ReceiveNotifyHandleServiceObject implements ReceiveNotifyHandleServ
         this.executorService = executorService;
     }
 
+    public void setRornMatchFireService(RORNMatchFireService rornMatchFireService) {
+        this.rornMatchFireService = rornMatchFireService;
+    }
 }
