@@ -74,4 +74,22 @@ public interface ReceiveNotifyService {
     boolean removeReceiveNotifyMatchRelation(int rnId, int roMatcherId);
 
 
+    /**
+     * 获取与收款单匹配但还未关联的收款通知
+     * @param rnId
+     * @param roId
+     * @return
+     */
+    ReceiveNotifyData loadMatchedReceiveNotify(int rnId, int roId);
+
+
+    /**
+     * 更新收款通知为已关联
+     * @param roId
+     * @param rnId
+     * @return
+     */
+    boolean updateReceiveNotifyConfirm(int roId, int rnId);
+
+
 }

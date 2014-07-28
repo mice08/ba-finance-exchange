@@ -91,7 +91,7 @@ public interface ReceiveOrderService {
      * @param rnId
      * @return
      */
-    boolean confirmReceiveOrderAndReceiveNotify(int roId, int rnId);
+    boolean confirmReceiveOrderAndReceiveNotify(int roId, int rnId, int loginId);
 
 
 }

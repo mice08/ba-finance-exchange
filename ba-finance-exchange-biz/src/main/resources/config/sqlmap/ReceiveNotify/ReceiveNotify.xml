@@ -167,4 +167,71 @@
     </select>
 
 
+    <select id="findMatchedReceiveNotify" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+               ApplicationID,
+               BusinessType,
+               ReceiveAmount,
+               CustomerID,
+               PayChannel,
+               PayTime,
+               PayerName,
+               BizContent,
+               BankID,
+               Attachment,
+               Status,
+               ROMatcherID,
+               Memo,
+               AddTime,
+               AddLoginID,
+               UpdateTime,
+               UpdateLoginID
+        FROM   FC_ReceiveNotify
+        WHERE  Status = #status#
+           AND ROMatcherID = #roId#
+    </select>
+
+
+    <update id="removeReceiveNotifyMatchRelation" parameterClass="map">
+        UPDATE FC_ReceiveNotify
+        SET ROMatcherID = 0
+        WHERE ReceiveNotifyID = #rnId#
+        AND ROMatcherID = #roId#
+        AND status = #status#
+    </update>
+
+
+    <select id="loadMatchedReceiveNotify" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+               ApplicationID,
+               BusinessType,
+               ReceiveAmount,
+               CustomerID,
+               PayChannel,
+               PayTime,
+               PayerName,
+               BizContent,
+               BankID,
+               Attachment,
+               Status,
+               ROMatcherID,
+               Memo,
+               AddTime,
+               AddLoginID,
+               UpdateTime,
+               UpdateLoginID
+          FROM FC_ReceiveNotify
+         WHERE Status = #status#
+           and ReceiveNotifyID = #rnId#
+           AND ROMatcherID = #roId#
+    </select>
+
+
+    <update id="updateReceiveNotifyConfirm" parameterClass="map">
+        UPDATE FC_ReceiveNotify
+           SET status = #setStatus#
+         WHERE status = #preStatus#
+           AND ROMatcherID = #roId#
+           AND ReceiveNotifyID = #rnId#
+    </update>
 </sqlMap>

@@ -59,14 +59,32 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
         return receiveNotifyDao.loadUnmatchedReceiveNotifyByApplicationId(status.value(), businessType, applicationId);
     }
 
+    @Log(severity = 3, logBefore = true, logAfter = true)
+    @ReturnDefault
     @Override
     public List<ReceiveNotifyData> findMatchedReceiveNotify(int roId) {
-        return null;
+        return receiveNotifyDao.findMatchedReceiveNotify(ReceiveNotifyStatus.INIT.value(), roId);
+    }
+
+    @Log(severity = 1, logBefore = true, logAfter = true)
+    @ReturnDefault
+    @Override
+    public boolean removeReceiveNotifyMatchRelation(int rnId, int roMatcherId) {
+        int u = receiveNotifyDao.removeReceiveNotifyMatchRelation(rnId, roMatcherId, ReceiveNotifyStatus.INIT.value());
+        return u == 1;
+    }
+
+    @Log(severity = 3, logBefore = true, logAfter = true)
+    @ReturnDefault
+    @Override
+    public ReceiveNotifyData loadMatchedReceiveNotify(int rnId, int roId) {
+        return receiveNotifyDao.loadMatchedReceiveNotify(ReceiveNotifyStatus.INIT.value(), rnId, roId);
     }
 
     @Override
-    public boolean removeReceiveNotifyMatchRelation(int rnId, int roMatcherId) {
-        return false;
+    public boolean updateReceiveNotifyConfirm(int roId, int rnId) {
+        int u = receiveNotifyDao.updateReceiveNotifyConfirm(ReceiveNotifyStatus.CONFIRMED.value(), ReceiveNotifyStatus.INIT.value(), roId, rnId);
+        return u == 1;
     }
 
     public void setReceiveNotifyDao(ReceiveNotifyDao receiveNotifyDao) {

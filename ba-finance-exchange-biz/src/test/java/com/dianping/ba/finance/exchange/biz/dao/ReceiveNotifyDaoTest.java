@@ -79,4 +79,28 @@ public class ReceiveNotifyDaoTest {
         ReceiveNotifyData receiveNotifyData = receiveNotifyDao.loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus.INIT.value(), 5, "87871");
         Assert.assertNotNull(receiveNotifyData);
     }
+
+    @Test
+    public void testFindMatchedReceiveNotify() throws Exception {
+        List<ReceiveNotifyData> receiveNotifyDataList = receiveNotifyDao.findMatchedReceiveNotify(ReceiveNotifyStatus.INIT.value(), 467);
+        Assert.assertNotNull(receiveNotifyDataList);
+    }
+
+    @Test
+    public void testRemoveReceiveNotifyMatchRelation() throws Exception {
+        int u = receiveNotifyDao.removeReceiveNotifyMatchRelation(9, 467, ReceiveNotifyStatus.INIT.value());
+        Assert.assertTrue(u > 0);
+    }
+
+    @Test
+    public void testLoadMatchedReceiveNotify() throws Exception {
+        ReceiveNotifyData rnData = receiveNotifyDao.loadMatchedReceiveNotify(ReceiveNotifyStatus.INIT.value(), 9, 467);
+        Assert.assertNotNull(rnData);
+    }
+
+    @Test
+    public void testUpdateReceiveNotifyConfirm() throws Exception {
+        int u = receiveNotifyDao.updateReceiveNotifyConfirm(ReceiveNotifyStatus.CONFIRMED.value(), ReceiveNotifyStatus.INIT.value(), 467, 9);
+        Assert.assertTrue(u > 0);
+    }
 }
