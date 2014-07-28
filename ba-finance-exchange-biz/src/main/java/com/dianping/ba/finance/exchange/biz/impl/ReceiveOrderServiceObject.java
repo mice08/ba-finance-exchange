@@ -189,6 +189,11 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         return receiveOrderDao.findUnmatchAndUnconfirmedReceiveOrder(status.value());
     }
 
+    @Override
+    public boolean confirmReceiveOrderAndReceiveNotify(int roId, int rnId) {
+        return false;
+    }
+
     public void setReceiveOrderDao(ReceiveOrderDao receiveOrderDao) {
         this.receiveOrderDao = receiveOrderDao;
     }

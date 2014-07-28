@@ -59,6 +59,16 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
         return receiveNotifyDao.loadUnmatchedReceiveNotifyByApplicationId(status.value(), businessType, applicationId);
     }
 
+    @Override
+    public List<ReceiveNotifyData> findMatchedReceiveNotify(int roId) {
+        return null;
+    }
+
+    @Override
+    public boolean removeReceiveNotifyMatchRelation(int rnId, int roMatcherId) {
+        return false;
+    }
+
     public void setReceiveNotifyDao(ReceiveNotifyDao receiveNotifyDao) {
         this.receiveNotifyDao = receiveNotifyDao;
     }

@@ -1,7 +1,6 @@
 package com.dianping.ba.finance.exchange.api;
 
 
-import com.dianping.avatar.dao.annotation.DAOParam;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
@@ -84,5 +83,15 @@ public interface ReceiveOrderService {
      * @return
      */
     List<ReceiveOrderData> findUnmatchAndUnconfirmedReceiveOrder(ReceiveOrderStatus status);
+
+
+    /**
+     * 关联收款单及收款通知
+     * @param roId
+     * @param rnId
+     * @return
+     */
+    boolean confirmReceiveOrderAndReceiveNotify(int roId, int rnId);
+
 
 }
