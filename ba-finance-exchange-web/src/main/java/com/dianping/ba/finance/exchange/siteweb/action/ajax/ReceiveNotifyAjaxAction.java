@@ -50,8 +50,10 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 
         try {
             ReceiveNotifyData rnData = receiveNotifyService.loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus.INIT, businessType, applicationId);
-            ReceiveInfoBean receiveInfoBean = buildReceiveInfoBean(rnData);
-            msg.put("receiveInfo", receiveInfoBean);
+            if (rnData != null) {
+                ReceiveInfoBean receiveInfoBean = buildReceiveInfoBean(rnData);
+                msg.put("receiveInfo", receiveInfoBean);
+            }
             code = SUCCESS_CODE;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.jsonExecute error!", e);
