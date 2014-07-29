@@ -102,5 +102,4 @@ public interface ReceiveNotifyService {
      */
     boolean updateReceiveNotifyConfirm(int roId, int rnId);
 
-
 }

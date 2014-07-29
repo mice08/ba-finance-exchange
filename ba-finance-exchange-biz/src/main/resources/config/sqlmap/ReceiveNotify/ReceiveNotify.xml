@@ -179,6 +179,7 @@
                ReceiveAmount,
                CustomerID,
                PayChannel,
+               ReceiveType,
                PayTime,
                PayerName,
                BizContent,
@@ -206,9 +207,51 @@
                   PayTime &lt;= #payTimeEnd#
               </isNotEmpty>
               <isGreaterThan prepend="and" property="payChannel" compareValue="0">
-
+                  PayChannel = #payChannel#
+              </isGreaterThan>
+              <isGreaterThan prepend="and" property="receiveAmount" compareValue="0">
+                  ReceiveAmount = #receiveAmount#
+              </isGreaterThan>
+              <isGreaterThan prepend="and" property="bankId" compareValue="0">
+                  BankID = #bankId#
+              </isGreaterThan>
+              <isGreaterThan prepend="and" property="status" compareValue="0">
+                  Status =#status#
               </isGreaterThan>
           </dynamic>
+        ORDER BY Status,PayTime
+    </select>
+
+    <select id="paginateReceiveNotifyList_COUNT" resultClass="int" parameterClass="map">
+        SELECT COUNT(ReceiveNotifyID)
+        FROM FC_ReceiveNotify
+        <dynamic prepend="where">
+            <isGreaterThan property="businessType" compareValue="0">
+                BusinessType = #businessType#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="customerId" compareValue="0">
+                CustomerID = #customerId#
+            </isGreaterThan>
+            <isNotEmpty prepend="and" property="payTimeBegin">
+                PayTime &gt;= #payTimeBegin#
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="payTimeEnd">
+                PayTime &lt;= #payTimeEnd#
+            </isNotEmpty>
+            <isGreaterThan prepend="and" property="payChannel" compareValue="0">
+                PayChannel = #payChannel#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveAmount" compareValue="0">
+                ReceiveAmount = #receiveAmount#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="bankId" compareValue="0">
+                BankID = #bankId#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="status" compareValue="0">
+                Status =#status#
+            </isGreaterThan>
+        </dynamic>
+        ORDER BY Status,PayTime
     </select>
 
     <select id="findMatchedReceiveNotify" resultMap="receiveNotifyData" parameterClass="map">

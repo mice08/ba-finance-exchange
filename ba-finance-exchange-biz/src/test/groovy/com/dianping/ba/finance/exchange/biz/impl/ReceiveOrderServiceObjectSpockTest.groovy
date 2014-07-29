@@ -5,6 +5,7 @@ import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus
+import com.dianping.ba.finance.exchange.api.enums.ReceiveType
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderDao
 import com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify
 import spock.lang.Specification
@@ -48,14 +49,21 @@ class ReceiveOrderServiceObjectSpockTest extends Specification {
             if (args[0] == 87871) {
                 return null
             }
-            ReceiveNotifyData rnData = [receiveNotifyId: args[0], roMatcherId: args[1]]
+            ReceiveNotifyData rnData = [receiveNotifyId: args[0],
+                                        roMatcherId    : args[1],
+                                        bizContent     : "AD123",
+                                        customerId     : 123,
+                                        receiveType    : ReceiveType.AD_FEE.value()]
             rnData
         }
         receiveOrderDaoMock.loadReceiveOrderDataByRoId(_ as Integer) >> { Integer roId2 ->
             if (roId2 == 87872) {
                 return null
             }
-            ReceiveOrderData roData = [roId: roId2, status: ReceiveOrderStatus.UNCONFIRMED.value()]
+            ReceiveOrderData roData = [roId       : roId2,
+                                       status     : ReceiveOrderStatus.UNCONFIRMED.value(),
+                                       receiveTime: new Date(),
+                                       receiveType: ReceiveType.AD_FEE.value()]
             roData
         }
         receiveNotifyServiceMock.updateReceiveNotifyConfirm(_ as Integer, _ as Integer) >> { args ->

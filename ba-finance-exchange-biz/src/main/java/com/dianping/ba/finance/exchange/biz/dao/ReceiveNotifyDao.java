@@ -74,6 +74,5 @@ public interface ReceiveNotifyDao extends GenericDao {
                                    @DAOParam("roId") int roId,
                                    @DAOParam("rnId") int rnId);
 
-
 }
 
