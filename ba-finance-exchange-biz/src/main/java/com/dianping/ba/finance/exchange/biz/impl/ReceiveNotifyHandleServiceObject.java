@@ -69,15 +69,14 @@ public class ReceiveNotifyHandleServiceObject implements ReceiveNotifyHandleServ
         }
 
         ReceiveNotifyData receiveNotifyData = buildReceiveNotifyData(receiveNotifyDTO);
-        try {
-            int receiveNotifyId = receiveNotifyService.insertReceiveNotify(receiveNotifyData);
-            receiveNotifyData.setReceiveNotifyId(receiveNotifyId);
-            receiveNotifyResultBean.setReceiveNotifyId(receiveNotifyId);
-        } catch (Exception e) {
+        int receiveNotifyId = receiveNotifyService.insertReceiveNotify(receiveNotifyData);
+        if (receiveNotifyId == -1) {
             receiveNotifyResultBean.setStatus(ReceiveNotifyResultStatus.FAIL);
             receiveNotifyResultBean.setMemo(ReceiveNotifyCheckResult.DUPLICATE_APPLICATIONID.toString());
+        } else {
+            receiveNotifyData.setReceiveNotifyId(receiveNotifyId);
+            receiveNotifyResultBean.setReceiveNotifyId(receiveNotifyId);
         }
-
         resultNotify(receiveNotifyResultBean);
         rornMatchFireService.executeMatchingForNewReceiveNotify(receiveNotifyData);
     }

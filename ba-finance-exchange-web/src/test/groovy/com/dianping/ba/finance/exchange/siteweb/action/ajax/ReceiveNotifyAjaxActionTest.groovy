@@ -31,6 +31,61 @@ class ReceiveNotifyAjaxActionTest extends Specification {
     }
 
     @Unroll
+    def "testRornCancelLink" (Integer rnId, Integer roMatcherId, Integer actionCode) {
+        given:
+        receiveNotifyAjaxActionStub.rnId = rnId;
+        receiveNotifyAjaxActionStub.roMatcherId = roMatcherId;
+        receiveNotifyServiceMock.removeReceiveNotifyMatchRelation(1, 2) >> {
+            true;
+        };
+        receiveNotifyServiceMock.removeReceiveNotifyMatchRelation(1, 1) >> {
+            false;
+        };
+        receiveNotifyServiceMock.removeReceiveNotifyMatchRelation(2, 2) >> {
+            throw new Exception();
+            false;
+        };
+
+        expect:
+        receiveNotifyAjaxActionStub.rornCancelLink();
+        actionCode == receiveNotifyAjaxActionStub.code;
+
+        where:
+        rnId | roMatcherId | actionCode
+        1    | 2           | ReceiveNotifyAjaxAction.SUCCESS_CODE
+        1    | 1           | ReceiveNotifyAjaxAction.ERROR_CODE
+        2    | 2           | ReceiveNotifyAjaxAction.ERROR_CODE
+    }
+
+    @Unroll
+    def "testFindNotifiesByROId" (Integer roMatcherId, Integer actionCode) {
+        given:
+        receiveNotifyAjaxActionStub.roMatcherId = roMatcherId;
+        receiveNotifyServiceMock.findMatchedReceiveNotify(1) >> {
+            ReceiveNotifyData rnData = [receiveNotifyId: 123, payTime: new Date(), customerId: 123]
+            [rnData];
+        }
+        receiveNotifyServiceMock.findMatchedReceiveNotify(2) >> {
+            throw new Exception();
+            [];
+        }
+        customerNameServiceMock.getRORNCustomerName(_ as ArrayList, _ as Integer) >> {
+            def map = new HashMap()
+            map.put(123, "12")
+            map;
+        }
+
+        expect:
+        receiveNotifyAjaxActionStub.findNotifiesByROId();
+        actionCode == receiveNotifyAjaxActionStub.code;
+
+        where:
+        roMatcherId | actionCode
+        1           | ReceiveNotifyAjaxAction.SUCCESS_CODE
+        2           | ReceiveNotifyAjaxAction.ERROR_CODE
+    }
+
+    @Unroll
     def "LoadReceiveOrderInfo"(String applicationId, Integer businessType, Integer actionCode, Integer resultCustomerId) {
         given:
         receiveNotifyAjaxActionStub.applicationId = applicationId;

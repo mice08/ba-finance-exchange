@@ -89,7 +89,17 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 		}
 	}
 
-	private List<ReceiveNotifyBean> buildReceiveNotifyBeans(List<ReceiveNotifyData> records) {
+    @Override
+    public int getCode() {
+        return code;
+    }
+
+    @Override
+    public Map<String, Object> getMsg() {
+        return msg;
+    }
+
+    private List<ReceiveNotifyBean> buildReceiveNotifyBeans(List<ReceiveNotifyData> records) {
 		if (CollectionUtils.isEmpty(records)) {
 			return Collections.emptyList();
 		}
@@ -126,15 +136,7 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 	}
 
 
-	@Override
-	public int getCode() {
-		return code;
-	}
 
-	@Override
-	public Map<String, Object> getMsg() {
-		return msg;
-	}
 
 	private ReceiveNotifySearchBean buildRNSearchBean() throws ParseException {
 		ReceiveNotifySearchBean receiveNotifySearchBean = new ReceiveNotifySearchBean();
