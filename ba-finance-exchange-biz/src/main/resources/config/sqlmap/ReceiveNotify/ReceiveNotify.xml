@@ -9,6 +9,7 @@
         <result property="receiveAmount" column="ReceiveAmount"/>
         <result property="customerId" column="CustomerID"/>
         <result property="payChannel" column="PayChannel"/>
+        <result property="receiveType" column="ReceiveType"/>
         <result property="payTime" column="PayTime"/>
         <result property="payerName" column="PayerName"/>
         <result property="bizContent" column="BizContent"/>
@@ -31,6 +32,7 @@
                          ReceiveAmount,
                          CustomerID,
                          PayChannel,
+                         ReceiveType,
                          PayTime,
                          PayerName,
                          BizContent,
@@ -49,6 +51,7 @@
                          #receiveNotifyData.receiveAmount#,
                          #receiveNotifyData.customerId#,
                          #receiveNotifyData.payChannel#,
+                         #receiveNotifyData.receiveType#,
                          #receiveNotifyData.payTime#,
                          #receiveNotifyData.payerName#,
                          #receiveNotifyData.bizContent#,
@@ -87,6 +90,7 @@
                ReceiveAmount,
                CustomerID,
                PayChannel,
+               ReceiveType,
                PayTime,
                PayerName,
                BizContent,
@@ -112,6 +116,7 @@
                ReceiveAmount,
                CustomerID,
                PayChannel,
+               ReceiveType,
                PayTime,
                PayerName,
                BizContent,
@@ -126,7 +131,7 @@
                UpdateLoginID
           FROM FC_ReceiveNotify
          WHERE Status = #status#
-           AND ROMatcherID > 0
+           AND ROMatcherID = #roId#
            AND ApplicationID != #excludeApplicationId#
     </select>
 
@@ -147,6 +152,7 @@
                ReceiveAmount,
                CustomerID,
                PayChannel,
+               ReceiveType,
                PayTime,
                PayerName,
                BizContent,
@@ -174,6 +180,7 @@
                ReceiveAmount,
                CustomerID,
                PayChannel,
+               ReceiveType,
                PayTime,
                PayerName,
                BizContent,
@@ -208,6 +215,7 @@
                ReceiveAmount,
                CustomerID,
                PayChannel,
+               ReceiveType,
                PayTime,
                PayerName,
                BizContent,

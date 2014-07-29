@@ -40,7 +40,7 @@ public interface ReceiveNotifyService {
      * @param excludeApplicationId
      * @return
      */
-    List<ReceiveNotifyData> findUnmatchedLeftReceiveNotify(ReceiveNotifyStatus status, String excludeApplicationId);
+    List<ReceiveNotifyData> findUnmatchedLeftReceiveNotify(ReceiveNotifyStatus status, int roId, String excludeApplicationId);
 
     /**
      * 清除未匹配上的收款通知的匹配信息

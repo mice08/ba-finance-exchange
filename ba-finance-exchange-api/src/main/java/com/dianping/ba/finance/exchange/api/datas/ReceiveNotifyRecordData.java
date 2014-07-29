@@ -14,6 +14,7 @@ public class ReceiveNotifyRecordData implements Serializable{
     private BigDecimal receiveAmount;
     private int customerId;
     private int payChannel;
+    private int receiveType;
     private Date payTime;
     private String payerName;
     private String bizContent;
@@ -135,6 +136,14 @@ public class ReceiveNotifyRecordData implements Serializable{
         this.bankId = bankId;
     }
 
+    public int getReceiveType() {
+        return receiveType;
+    }
+
+    public void setReceiveType(int receiveType) {
+        this.receiveType = receiveType;
+    }
+
     @Override
     public String toString() {
         return "ReceiveNotifyRecordData{" +
@@ -144,6 +153,7 @@ public class ReceiveNotifyRecordData implements Serializable{
                 ", receiveAmount=" + receiveAmount +
                 ", customerId=" + customerId +
                 ", payChannel=" + payChannel +
+                ", receiveType=" + receiveType +
                 ", payTime=" + payTime +
                 ", payerName='" + payerName + '\'' +
                 ", bizContent='" + bizContent + '\'' +

@@ -1,6 +1,7 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyRecordData;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
 import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,13 +27,14 @@ public class ReceiveNotifyRecordDaoTest {
     @Test
     public void testInsertReceiveNotifyRecord(){
         ReceiveNotifyRecordData receiveNotifyRecordData = new ReceiveNotifyRecordData();
-        receiveNotifyRecordData.setApplicationId("123456");
+        receiveNotifyRecordData.setApplicationId("1234568787");
         receiveNotifyRecordData.setAttachment("");
         receiveNotifyRecordData.setBizContent("123456789");
         receiveNotifyRecordData.setBusinessType(5);
         receiveNotifyRecordData.setCustomerId(1);
         receiveNotifyRecordData.setMemo("");
         receiveNotifyRecordData.setPayChannel(1);
+        receiveNotifyRecordData.setReceiveType(ReceiveType.AD_FEE.value());
         receiveNotifyRecordData.setPayerName("someone");
         receiveNotifyRecordData.setPayTime(new Date());
         receiveNotifyRecordData.setRequestTime(new Date());

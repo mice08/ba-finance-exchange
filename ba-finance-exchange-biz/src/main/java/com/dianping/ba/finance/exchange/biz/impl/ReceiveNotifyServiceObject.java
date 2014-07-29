@@ -41,8 +41,8 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
     @Log(severity = 3, logBefore = true, logAfter = false)
     @ReturnDefault
     @Override
-    public List<ReceiveNotifyData> findUnmatchedLeftReceiveNotify(ReceiveNotifyStatus status, String excludeApplicationId) {
-        return receiveNotifyDao.findUnmatchedLeftReceiveNotify(status.value(), excludeApplicationId);
+    public List<ReceiveNotifyData> findUnmatchedLeftReceiveNotify(ReceiveNotifyStatus status, int roId, String excludeApplicationId) {
+        return receiveNotifyDao.findUnmatchedLeftReceiveNotify(status.value(), roId, excludeApplicationId);
     }
 
     @Log(severity = 1, logBefore = true, logAfter = false)

@@ -13,6 +13,7 @@ public class ReceiveNotifyData implements Serializable {
     private int businessType;
     private BigDecimal receiveAmount;
     private int payChannel;
+    private int receiveType;
     private Date payTime;
     private String payerName;
     private String bizContent;
@@ -171,6 +172,14 @@ public class ReceiveNotifyData implements Serializable {
         this.updateLoginId = updateLoginId;
     }
 
+    public int getReceiveType() {
+        return receiveType;
+    }
+
+    public void setReceiveType(int receiveType) {
+        this.receiveType = receiveType;
+    }
+
     @Override
     public String toString() {
         return "ReceiveNotifyData{" +
@@ -179,6 +188,7 @@ public class ReceiveNotifyData implements Serializable {
                 ", businessType=" + businessType +
                 ", receiveAmount=" + receiveAmount +
                 ", payChannel=" + payChannel +
+                ", receiveType=" + receiveType +
                 ", payTime=" + payTime +
                 ", payerName='" + payerName + '\'' +
                 ", bizContent='" + bizContent + '\'' +

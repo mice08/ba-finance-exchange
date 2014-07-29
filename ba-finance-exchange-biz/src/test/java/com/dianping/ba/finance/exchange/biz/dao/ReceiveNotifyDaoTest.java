@@ -1,7 +1,9 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
+import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
 import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,13 +30,14 @@ public class ReceiveNotifyDaoTest {
     @Test
     public void testInsertReceiveNotify(){
         ReceiveNotifyData receiveNotifyData = new ReceiveNotifyData();
-        receiveNotifyData.setApplicationId("12456");
+        receiveNotifyData.setApplicationId("124568787");
         receiveNotifyData.setAttachment("");
         receiveNotifyData.setBizContent("123456789");
         receiveNotifyData.setBusinessType(5);
         receiveNotifyData.setCustomerId(1);
         receiveNotifyData.setMemo("");
         receiveNotifyData.setPayChannel(1);
+        receiveNotifyData.setReceiveType(ReceiveType.AD_FEE.value());
         receiveNotifyData.setPayerName("someone");
         receiveNotifyData.setPayTime(new Date());
         receiveNotifyData.setReceiveAmount(new BigDecimal(1000.55));
@@ -64,7 +67,7 @@ public class ReceiveNotifyDaoTest {
 
     @Test
     public void testFindUnmatchedLeftReceiveNotify() throws Exception {
-        List<ReceiveNotifyData> receiveNotifyDataList = receiveNotifyDao.findUnmatchedLeftReceiveNotify(ReceiveNotifyStatus.MATCHED.value(), "87872");
+        List<ReceiveNotifyData> receiveNotifyDataList = receiveNotifyDao.findUnmatchedLeftReceiveNotify(ReceiveNotifyStatus.MATCHED.value(), 467, "87871");
         Assert.assertNotNull(receiveNotifyDataList);
     }
 
@@ -76,7 +79,7 @@ public class ReceiveNotifyDaoTest {
 
     @Test
     public void testLoadUnmatchedReceiveNotifyByApplicationId() throws Exception {
-        ReceiveNotifyData receiveNotifyData = receiveNotifyDao.loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus.INIT.value(), 5, "87871");
+        ReceiveNotifyData receiveNotifyData = receiveNotifyDao.loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus.INIT.value(), BusinessType.ADVERTISEMENT.value(), "87871");
         Assert.assertNotNull(receiveNotifyData);
     }
 
@@ -94,7 +97,7 @@ public class ReceiveNotifyDaoTest {
 
     @Test
     public void testLoadMatchedReceiveNotify() throws Exception {
-        ReceiveNotifyData rnData = receiveNotifyDao.loadMatchedReceiveNotify(ReceiveNotifyStatus.INIT.value(), 9, 467);
+        ReceiveNotifyData rnData = receiveNotifyDao.loadMatchedReceiveNotify(ReceiveNotifyStatus.INIT.value(), 11, 467);
         Assert.assertNotNull(rnData);
     }
 
