@@ -4,7 +4,9 @@ import com.dianping.avatar.dao.GenericDao;
 import com.dianping.avatar.dao.annotation.DAOAction;
 import com.dianping.avatar.dao.annotation.DAOActionType;
 import com.dianping.avatar.dao.annotation.DAOParam;
+import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
+import com.dianping.core.type.PageModel;
 
 import java.util.List;
 
@@ -60,13 +62,17 @@ public interface ReceiveNotifyDao extends GenericDao {
                                                @DAOParam("rnId") int rnId,
                                                @DAOParam("roId") int roId);
 
+    @DAOAction(action = DAOActionType.PAGE)
+    PageModel paginateReceiveNotifyList(@DAOParam("receiveNotifySearchBean") ReceiveNotifySearchBean receiveNotifySearchBean,
+                                        @DAOParam("page") int page,
+                                        @DAOParam("max") int max);
+
 
     @DAOAction(action = DAOActionType.UPDATE)
     int updateReceiveNotifyConfirm(@DAOParam("setStatus") int setStatus,
                                    @DAOParam("preStatus") int preStatus,
                                    @DAOParam("roId") int roId,
                                    @DAOParam("rnId") int rnId);
-
 
 }
 

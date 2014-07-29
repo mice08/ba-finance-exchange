@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.biz.impl
 
 import com.dianping.ba.finance.exchange.api.RORNMatchFireService
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
+import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData
 import com.dianping.ba.finance.exchange.api.enums.BusinessType
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus
@@ -184,5 +185,18 @@ class ReceiveNotifyServiceObjectTest extends Specification {
         where:
         roId | rnId | updated
         123  | 467  | true
+    }
+
+    @Unroll
+    def "paginateReceiveNotifyList"(){
+        setup:
+        ReceiveNotifySearchBean receiveNotifySearchBean = ["businessType":5,"bankId":11];
+
+        when:
+        receiveNotifyServiceStub.paginateReceiveNotifyList(receiveNotifySearchBean,1,20);
+
+        then:
+        1 * receiveNotifyDaoMock.paginateReceiveNotifyList(_ as ReceiveNotifySearchBean, _ as Integer, _ as Integer);
+
     }
 }

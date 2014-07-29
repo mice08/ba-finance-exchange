@@ -37,6 +37,12 @@ public class LoadOptionAction extends AjaxBaseAction {
         return SUCCESS;
     }
 
+	public String loadRNStatusOption(){
+		option.putAll(OptionConstant.RNSTATUS_OPTION);
+		code = SUCCESS_CODE;
+		return SUCCESS;
+	}
+
     public String loadBusinessTypeOption() {
         option.putAll(OptionConstant.BUSINESSTYPE_OPTION);
         code = SUCCESS_CODE;

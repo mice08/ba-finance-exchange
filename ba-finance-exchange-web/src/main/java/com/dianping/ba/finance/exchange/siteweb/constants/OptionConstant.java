@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.siteweb.constants;
 
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 
 import java.util.HashMap;
@@ -22,13 +23,23 @@ public class OptionConstant {
         }
     };
 
-    public final static Map<Integer, String> ROSTATUS_OPTION = new HashMap<Integer, String>() {
+    public final static Map<Integer, String> RNSTATUS_OPTION = new HashMap<Integer, String>() {
         {
-            put(ReceiveOrderStatus.DEFAULT.value(), "全部");
-            put(ReceiveOrderStatus.UNCONFIRMED.value(), ReceiveOrderStatus.UNCONFIRMED.toString());
-            put(ReceiveOrderStatus.CONFIRMED.value(), ReceiveOrderStatus.CONFIRMED.toString());
+            put(ReceiveNotifyStatus.DEFAULT.value(), "全部");
+            put(ReceiveNotifyStatus.INIT.value(), ReceiveNotifyStatus.INIT.toString());
+            put(ReceiveNotifyStatus.MATCHED.value(), ReceiveNotifyStatus.MATCHED.toString());
+            put(ReceiveNotifyStatus.REJECT.value(), ReceiveNotifyStatus.REJECT.toString());
+            put(ReceiveNotifyStatus.CONFIRMED.value(), ReceiveNotifyStatus.CONFIRMED.toString());
         }
     };
+
+	public final static Map<Integer, String> ROSTATUS_OPTION = new HashMap<Integer, String>() {
+		{
+			put(ReceiveOrderStatus.DEFAULT.value(), "全部");
+			put(ReceiveOrderStatus.UNCONFIRMED.value(), ReceiveOrderStatus.UNCONFIRMED.toString());
+			put(ReceiveOrderStatus.CONFIRMED.value(), ReceiveOrderStatus.CONFIRMED.toString());
+		}
+	};
 
     public final static Map<Integer, String> BUSINESSTYPE_OPTION = new HashMap<Integer, String>() {
         {

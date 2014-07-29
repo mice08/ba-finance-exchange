@@ -1,10 +1,11 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
-import com.dianping.ba.finance.exchange.api.RORNMatchFireService;
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService;
+import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveNotifyDao;
+import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 
@@ -59,6 +60,14 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
     public ReceiveNotifyData loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus status, int businessType, String applicationId) {
         return receiveNotifyDao.loadUnmatchedReceiveNotifyByApplicationId(status.value(), businessType, applicationId);
     }
+
+
+    @Log(severity = 3, logBefore = true, logAfter = false)
+    @ReturnDefault
+    @Override
+    public PageModel paginateReceiveNotifyList(ReceiveNotifySearchBean receiveNotifySearchBean, int page, int max) {
+		return receiveNotifyDao.paginateReceiveNotifyList(receiveNotifySearchBean, page, max);
+	}
 
     @Log(severity = 3, logBefore = true, logAfter = true)
     @ReturnDefault

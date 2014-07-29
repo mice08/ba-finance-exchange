@@ -21,5 +21,10 @@
         </action>
 
     </package>
+    <package name="receivenotify" namespace="/exchange/receivenotify" extends="default">
+        <action name="orderlist" class="com.dianping.ba.finance.exchange.siteweb.action.RedirectAction">
+            <result name="success" type="freemarker">/WEB-INF/pages/receivenotify.ftl</result>
+        </action>
+    </package>
 
 </struts>
