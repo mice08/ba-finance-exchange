@@ -78,12 +78,12 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
     @ReturnDefault
     @Override
     public ReceiveNotifyData loadMatchedReceiveNotify(int rnId, int roId) {
-        return receiveNotifyDao.loadMatchedReceiveNotify(ReceiveNotifyStatus.INIT.value(), rnId, roId);
+        return receiveNotifyDao.loadMatchedReceiveNotify(ReceiveNotifyStatus.MATCHED.value(), rnId, roId);
     }
 
     @Override
     public boolean updateReceiveNotifyConfirm(int roId, int rnId) {
-        int u = receiveNotifyDao.updateReceiveNotifyConfirm(ReceiveNotifyStatus.CONFIRMED.value(), ReceiveNotifyStatus.INIT.value(), roId, rnId);
+        int u = receiveNotifyDao.updateReceiveNotifyConfirm(ReceiveNotifyStatus.CONFIRMED.value(), ReceiveNotifyStatus.MATCHED.value(), roId, rnId);
         return u == 1;
     }
 
