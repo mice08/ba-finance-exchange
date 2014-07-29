@@ -47,24 +47,23 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 
     private CustomerNameService customerNameService;
 
-    public String rornCancelLink(){
+    public String rornCancelLink() {
         try {
-            receiveNotifyService.removeReceiveNotifyMatchRelation(rnId,roMatcherId);
-            code = SUCCESS_CODE;
-        } catch (Exception e){
+            boolean result = receiveNotifyService.removeReceiveNotifyMatchRelation(rnId, roMatcherId);
+            code = result ? SUCCESS_CODE : ERROR_CODE;
+        } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.rornCancelLink error!", e);
             code = ERROR_CODE;
         }
         return SUCCESS;
     }
 
-    public String findNotifiesByROId(){
+    public String findNotifiesByROId() {
         try {
             List<ReceiveNotifyData> list = receiveNotifyService.findMatchedReceiveNotify(roMatcherId);
-
             records = buildReceiveNotifyConfirmList(list);
             code = SUCCESS_CODE;
-        } catch (Exception e){
+        } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.findNotifiesByROId error!", e);
             code = ERROR_CODE;
         }
@@ -98,10 +97,10 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
         return SUCCESS;
     }
 
-    private List<ReceiveNotifyConfirmBean> buildReceiveNotifyConfirmList(List<ReceiveNotifyData> list){
+    private List<ReceiveNotifyConfirmBean> buildReceiveNotifyConfirmList(List<ReceiveNotifyData> list) {
         Map<Integer, String> customerIdNameMap = customerNameService.getRORNCustomerName(list, getLoginId());
         List<ReceiveNotifyConfirmBean> beans = new ArrayList<ReceiveNotifyConfirmBean>();
-        for (ReceiveNotifyData data : list){
+        for (ReceiveNotifyData data : list) {
             ReceiveNotifyConfirmBean bean = new ReceiveNotifyConfirmBean();
             bean.setReceiveAmount(data.getReceiveAmount());
             bean.setBizContent(data.getBizContent());

@@ -44,13 +44,24 @@ public class ReceiveOrderAjaxActionTest {
     }
 
     @Test
-    public void testUpdateReceiveOrder(){
+    public void testUpdateReceiveOrder() {
         receiveOrderAjaxActionStub.updateReceiveOrder();
         verify(receiveOrderServiceMock, times(1)).updateReceiveOrderConfirm(any(ReceiveOrderUpdateBean.class));
     }
 
     @Test
-    public void testGetReceiveOrderById(){
+    public void testConfirmNotify() {
+        when(receiveOrderServiceMock.confirmReceiveOrderAndReceiveNotify(anyInt(),anyInt(),anyInt())).thenReturn(false);
+        receiveOrderAjaxActionStub.confirmNotify();
+        Assert.assertEquals(receiveOrderAjaxActionStub.getCode(), ReceiveOrderAjaxAction.ERROR_CODE);
+
+        when(receiveOrderServiceMock.confirmReceiveOrderAndReceiveNotify(anyInt(),anyInt(),anyInt())).thenReturn(true);
+        receiveOrderAjaxActionStub.confirmNotify();
+        Assert.assertEquals(receiveOrderAjaxActionStub.getCode(), ReceiveOrderAjaxAction.SUCCESS_CODE);
+    }
+
+    @Test
+    public void testGetReceiveOrderById() {
         ReceiveOrderData receiveOrderData = new ReceiveOrderData();
         receiveOrderData.setReceiveAmount(BigDecimal.ONE);
         when(receiveOrderServiceMock.loadReceiveOrderDataByRoId(anyInt())).thenReturn(receiveOrderData);
@@ -61,9 +72,9 @@ public class ReceiveOrderAjaxActionTest {
     @Test
     public void testJsonExecute() throws Exception {
         PageModel pageModel = new PageModel();
-        ReceiveOrderData receiveOrderData=new ReceiveOrderData();
+        ReceiveOrderData receiveOrderData = new ReceiveOrderData();
         pageModel.setRecords(Arrays.asList(receiveOrderData));
-        when(receiveOrderServiceMock.paginateReceiveOrderList(new ReceiveOrderSearchBean(),1,1)).thenReturn(pageModel);
+        when(receiveOrderServiceMock.paginateReceiveOrderList(new ReceiveOrderSearchBean(), 1, 1)).thenReturn(pageModel);
         when(receiveOrderServiceMock.loadReceiveOrderTotalAmountByCondition(new ReceiveOrderSearchBean())).thenReturn(BigDecimal.ONE);
 
         receiveOrderAjaxActionStub.setBusinessType(0);
@@ -72,7 +83,7 @@ public class ReceiveOrderAjaxActionTest {
         receiveOrderAjaxActionStub.setBusinessType(1);
         receiveOrderAjaxActionStub.jsonExecute();
 
-        Assert.assertEquals(receiveOrderAjaxActionStub.getTotalAmount(),"0.00");
+        Assert.assertEquals(receiveOrderAjaxActionStub.getTotalAmount(), "0.00");
     }
 
     @Test
