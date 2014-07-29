@@ -165,6 +165,43 @@
            AND ROMatcherID = 0
            AND ApplicationID = #applicationId#
     </select>
-
-
+    
+    <select id="paginateReceiveNotifyList" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+               ApplicationID,
+               BusinessType,
+               ReceiveAmount,
+               CustomerID,
+               PayChannel,
+               PayTime,
+               PayerName,
+               BizContent,
+               BankID,
+               Attachment,
+               Status,
+               ROMatcherID,
+               Memo,
+               AddTime,
+               AddLoginID,
+               UpdateTime,
+               UpdateLoginID
+          FROM FC_ReceiveNotify
+          <dynamic prepend="where">
+              <isGreaterThan property="businessType" compareValue="0">
+                  BusinessType = #businessType#
+              </isGreaterThan>
+              <isGreaterThan prepend="and" property="customerId" compareValue="0">
+                  CustomerID = #customerId#
+              </isGreaterThan>
+              <isNotEmpty prepend="and" property="payTimeBegin">
+                  PayTime &gt;= #payTimeBegin#
+              </isNotEmpty>
+              <isNotEmpty prepend="and" property="payTimeEnd">
+                  PayTime &lt;= #payTimeEnd#
+              </isNotEmpty>
+              <isGreaterThan prepend="and" property="payChannel" compareValue="0">
+                  
+              </isGreaterThan>
+          </dynamic>
+    </select>
 </sqlMap>

@@ -1,7 +1,9 @@
 package com.dianping.ba.finance.exchange.api;
 
+import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
+import com.dianping.core.type.PageModel;
 
 import java.util.List;
 
@@ -58,5 +60,12 @@ public interface ReceiveNotifyService {
      */
     ReceiveNotifyData loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus status, int businessType, String applicationId);
 
-
+     /**
+     * 分页获取收款通知列表
+     * @param receiveNotifySearchBean
+     * @param page
+     * @param max
+     * @return
+     */
+    PageModel paginateReceiveNotifyList(ReceiveNotifySearchBean receiveNotifySearchBean, int page, int max);
 }
