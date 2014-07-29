@@ -21,9 +21,14 @@ public class RORNMatcherPos implements RORNMatcher {
                 && receiveOrderData.getBusinessType() == receiveNotifyData.getBusinessType()) {
             return timeDifferenceMatch(receiveOrderData, receiveNotifyData)
                     && amountMatch(receiveOrderData, receiveNotifyData)
-                    && bankMatch(receiveOrderData, receiveNotifyData);
+                    && bankMatch(receiveOrderData, receiveNotifyData)
+                    && receiveTypeMatch(receiveOrderData, receiveNotifyData);
         }
         return false;
+    }
+
+    private boolean receiveTypeMatch(ReceiveOrderData receiveOrderData, ReceiveNotifyData receiveNotifyData) {
+        return receiveOrderData.getReceiveType() == receiveNotifyData.getReceiveType();
     }
 
     private boolean bankMatch(ReceiveOrderData receiveOrderData, ReceiveNotifyData receiveNotifyData) {

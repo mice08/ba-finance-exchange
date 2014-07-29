@@ -9,6 +9,7 @@
         <result property="receiveAmount" column="ReceiveAmount"/>
         <result property="customerId" column="CustomerID"/>
         <result property="payChannel" column="PayChannel"/>
+        <result property="receiveType" column="ReceiveType"/>
         <result property="payTime" column="PayTime"/>
         <result property="payerName" column="PayerName"/>
         <result property="bizContent" column="BizContent"/>
@@ -27,6 +28,7 @@
                          ReceiveAmount,
                          CustomerID,
                          PayChannel,
+                         ReceiveType,
                          PayTime,
                          PayerName,
                          BizContent,
@@ -41,6 +43,7 @@
                          #receiveNotifyRecordData.receiveAmount#,
                          #receiveNotifyRecordData.customerId#,
                          #receiveNotifyRecordData.payChannel#,
+                         #receiveNotifyRecordData.receiveType#,
                          #receiveNotifyRecordData.payTime#,
                          #receiveNotifyRecordData.payerName#,
                          #receiveNotifyRecordData.bizContent#,

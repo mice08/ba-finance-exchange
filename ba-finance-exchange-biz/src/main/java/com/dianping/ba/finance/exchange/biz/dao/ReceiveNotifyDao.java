@@ -35,6 +35,7 @@ public interface ReceiveNotifyDao extends GenericDao {
 
     @DAOAction(action = DAOActionType.QUERY)
     List<ReceiveNotifyData> findUnmatchedLeftReceiveNotify(@DAOParam("status") int status,
+                                                           @DAOParam("roId") int roId,
                                                            @DAOParam("excludeApplicationId") String excludeApplicationId);
 
     @DAOAction(action = DAOActionType.UPDATE)
@@ -46,10 +47,33 @@ public interface ReceiveNotifyDao extends GenericDao {
                                                                 @DAOParam("businessType") int businessType,
                                                                 @DAOParam("applicationId") String applicationId);
 
+    @DAOAction(action = DAOActionType.QUERY)
+    List<ReceiveNotifyData> findMatchedReceiveNotify(@DAOParam("status") int status,
+                                                     @DAOParam("roId") int roId);
+
+    @DAOAction(action = DAOActionType.UPDATE)
+    int removeReceiveNotifyMatchRelation(@DAOParam("rnId") int rnId,
+                                                     @DAOParam("roId") int roId,
+                                                     @DAOParam("status") int status);
+
+
+    @DAOAction(action = DAOActionType.LOAD)
+    ReceiveNotifyData loadMatchedReceiveNotify(@DAOParam("status") int status,
+                                               @DAOParam("rnId") int rnId,
+                                               @DAOParam("roId") int roId);
 
     @DAOAction(action = DAOActionType.PAGE)
     PageModel paginateReceiveNotifyList(@DAOParam("receiveNotifySearchBean") ReceiveNotifySearchBean receiveNotifySearchBean,
                                         @DAOParam("page") int page,
                                         @DAOParam("max") int max);
+
+
+    @DAOAction(action = DAOActionType.UPDATE)
+    int updateReceiveNotifyConfirm(@DAOParam("setStatus") int setStatus,
+                                   @DAOParam("preStatus") int preStatus,
+                                   @DAOParam("roId") int roId,
+                                   @DAOParam("rnId") int rnId);
+
+
 }
 

@@ -1,6 +1,7 @@
 package com.dianping.ba.finance.exchange.siteweb.services;
 
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.siteweb.beans.CustomerInfoBean;
@@ -95,6 +96,26 @@ public class CustomerNameService {
         // 获取广告的客户名称
         fetchADCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
         return customerIdNameMap;
+    }
+
+    @Log(severity = 2, logBefore = true, logAfter = true)
+    @ReturnDefault
+    public Map<Integer, String> getRORNCustomerName(List<ReceiveNotifyData> receiveNotifyDataList, int loginId) {
+        Multimap<Integer, Integer> businessTypeCustomerIdMMap = rornGroupByBusinessType(receiveNotifyDataList);
+        Map<Integer, String> customerIdNameMap = Maps.newHashMap();
+        // 获取团购的客户名称
+        fetchTGCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
+        // 获取广告的客户名称
+        fetchADCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
+        return customerIdNameMap;
+    }
+
+    private Multimap<Integer, Integer> rornGroupByBusinessType(List<ReceiveNotifyData> receiveNotifyDataList) {
+        Multimap<Integer, Integer> businessTypeCustomerIdMMap = LinkedListMultimap.create(receiveNotifyDataList.size());
+        for (ReceiveNotifyData rnDate : receiveNotifyDataList) {
+            businessTypeCustomerIdMMap.put(rnDate.getBusinessType(), rnDate.getCustomerId());
+        }
+        return businessTypeCustomerIdMMap;
     }
 
     private Multimap<Integer, Integer> roGroupByBusinessType(List<ReceiveOrderData> receiveOrderDataList) {

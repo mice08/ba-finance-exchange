@@ -72,7 +72,7 @@ public class RORNMatchFireServiceObject implements RORNMatchFireService {
             return;
         }
         // 先获取，
-        List<ReceiveNotifyData> receiveNotifyDataList = receiveNotifyService.findUnmatchedLeftReceiveNotify(ReceiveNotifyStatus.MATCHED, applicationId);
+        List<ReceiveNotifyData> receiveNotifyDataList = receiveNotifyService.findUnmatchedLeftReceiveNotify(ReceiveNotifyStatus.MATCHED, confirmedROData.getRoId(), applicationId);
         // 再清空MatchID修改状态
         List<Integer> rnIdList = buildRNIDList(receiveNotifyDataList);
         receiveNotifyService.clearReceiveNotifyMatchInfo(ReceiveNotifyStatus.INIT, rnIdList);

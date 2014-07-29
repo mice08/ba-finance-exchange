@@ -3,7 +3,7 @@
 <#setting number_format="#.##"/>
 
 <head>
-    <title>收款单</title>
+    <title>收款通知</title>
     <link rel="stylesheet" href="<@ava.extStaticResource resource='/build/base-css.min.css'/>" type="text/css">
     <link rel="stylesheet" href="<@ava.extStaticResource resource='/build/common-css.css'/>" type="text/css">
     <link rel="stylesheet" href="<@ava.extStaticResource resource='/build/jquery.autocomplete.css'/>" type="text/css">
@@ -11,17 +11,12 @@
 
 <body>
 <#include "/WEB-INF/pages/common/tips.ftl">
-<#include "/WEB-INF/pages/addreceiveorder.ftl">
-<#include "/WEB-INF/pages/teltransfer.ftl">
-<#include "/WEB-INF/pages/modifyro.ftl">
-<#include "/WEB-INF/pages/ronotify.ftl">
     <!-- @ main -->
     <!--内容-->
     <div class="content">
         <div class="padding">
-            <#include "/WEB-INF/pages/queryro.ftl">
-            <#include "/WEB-INF/pages/rolist.ftl">
-
+            <#include "/WEB-INF/pages/queryrn.ftl">
+            <#include "/WEB-INF/pages/rnlist.ftl">
         </div>
     </div>
 
@@ -30,9 +25,9 @@
             <script>
                 // 加载入口模块
                 if (ENV.debug) {
-                    seajs.use("<@ava.extStaticResource resource='/js/receiveorder'/>");
+                    seajs.use("<@ava.extStaticResource resource='/js/receivenotify'/>");
                 } else {
-                    seajs.use("<@ava.extStaticResource resource='/build/receiveorder.min'/>");
+                    seajs.use("<@ava.extStaticResource resource='/build/receivenotify.min'/>");
                 }
             </script>
 

@@ -75,6 +75,8 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     private int roId;
 
+    private int rnId;
+
 
     //查询结果，付款计划列表
     private PageModel receiveOrderModel = new PageModel();
@@ -106,6 +108,17 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
             MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.jsonExecute error!", e);
             code=ERROR_CODE;
         }
+    }
+
+    public String confirmNotify(){
+        try {
+            receiveOrderService.confirmReceiveOrderAndReceiveNotify(roId,rnId,getLoginId());
+            code = SUCCESS_CODE;
+        } catch (Exception e){
+            MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.confirmNotify error!", e);
+            code=ERROR_CODE;
+        }
+        return SUCCESS;
     }
 
     @Override
@@ -468,5 +481,13 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     public void setCustomerNameService(CustomerNameService customerNameService) {
         this.customerNameService = customerNameService;
+    }
+
+    public int getRnId() {
+        return rnId;
+    }
+
+    public void setRnId(int rnId) {
+        this.rnId = rnId;
     }
 }
