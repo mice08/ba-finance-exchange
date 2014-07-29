@@ -234,7 +234,7 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         updateBean.setReceiveType(ReceiveType.valueOf(roData.getReceiveType()));
         updateBean.setRoId(roData.getRoId());
         updateBean.setShopId(roData.getShopId());
-        updateBean.setStatus(roData.getStatus());
+        updateBean.setStatus(ReceiveOrderStatus.CONFIRMED.value());
         updateBean.setUpdateLoginId(loginId);
         return updateBean;
     }
