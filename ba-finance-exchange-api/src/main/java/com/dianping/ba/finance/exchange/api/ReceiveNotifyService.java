@@ -60,7 +60,6 @@ public interface ReceiveNotifyService {
      */
     ReceiveNotifyData loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus status, int businessType, String applicationId);
 
-<<<<<<< HEAD
      /**
      * 分页获取收款通知列表
      * @param receiveNotifySearchBean
@@ -69,7 +68,7 @@ public interface ReceiveNotifyService {
      * @return
      */
     PageModel paginateReceiveNotifyList(ReceiveNotifySearchBean receiveNotifySearchBean, int page, int max);
-=======
+
     /**
      * 获取与某个收款单匹配的收款通知
      * @param roId
@@ -103,6 +102,4 @@ public interface ReceiveNotifyService {
      */
     boolean updateReceiveNotifyConfirm(int roId, int rnId);
 
-
->>>>>>> 60d39ce5d6942e2829867214b12808be7b3cebcf
 }

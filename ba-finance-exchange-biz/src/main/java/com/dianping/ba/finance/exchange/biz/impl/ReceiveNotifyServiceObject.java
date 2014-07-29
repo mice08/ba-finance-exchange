@@ -61,13 +61,13 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
         return receiveNotifyDao.loadUnmatchedReceiveNotifyByApplicationId(status.value(), businessType, applicationId);
     }
 
-<<<<<<< HEAD
     @Log(severity = 3, logBefore = true, logAfter = false)
     @ReturnDefault
     @Override
     public PageModel paginateReceiveNotifyList(ReceiveNotifySearchBean receiveNotifySearchBean, int page, int max) {
-        return receiveNotifyDao.paginateReceiveNotifyList(receiveNotifySearchBean,page,max);
-=======
+        return receiveNotifyDao.paginateReceiveNotifyList(receiveNotifySearchBean, page, max);
+    }
+
     @Log(severity = 3, logBefore = true, logAfter = true)
     @ReturnDefault
     @Override
@@ -94,7 +94,6 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
     public boolean updateReceiveNotifyConfirm(int roId, int rnId) {
         int u = receiveNotifyDao.updateReceiveNotifyConfirm(ReceiveNotifyStatus.CONFIRMED.value(), ReceiveNotifyStatus.INIT.value(), roId, rnId);
         return u == 1;
->>>>>>> 60d39ce5d6942e2829867214b12808be7b3cebcf
     }
 
     public void setReceiveNotifyDao(ReceiveNotifyDao receiveNotifyDao) {

@@ -1,9 +1,11 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
+import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
+import com.dianping.core.type.PageModel;
 import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -105,5 +107,13 @@ public class ReceiveNotifyDaoTest {
     public void testUpdateReceiveNotifyConfirm() throws Exception {
         int u = receiveNotifyDao.updateReceiveNotifyConfirm(ReceiveNotifyStatus.CONFIRMED.value(), ReceiveNotifyStatus.INIT.value(), 467, 9);
         Assert.assertTrue(u > 0);
+    }
+
+    @Test
+    public void testPaginateReceiveNotifyList() throws Exception {
+        ReceiveNotifySearchBean receiveNotifySearchBean = new ReceiveNotifySearchBean();
+        receiveNotifySearchBean.setBusinessType(5);
+        PageModel pageModel = receiveNotifyDao.paginateReceiveNotifyList(receiveNotifySearchBean,1,20);
+        Assert.assertTrue(pageModel.getRecordCount()>0);
     }
 }

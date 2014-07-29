@@ -62,12 +62,12 @@ public interface ReceiveNotifyDao extends GenericDao {
                                                @DAOParam("rnId") int rnId,
                                                @DAOParam("roId") int roId);
 
-<<<<<<< HEAD
+
     @DAOAction(action = DAOActionType.PAGE)
     PageModel paginateReceiveNotifyList(@DAOParam("receiveNotifySearchBean") ReceiveNotifySearchBean receiveNotifySearchBean,
                                         @DAOParam("page") int page,
                                         @DAOParam("max") int max);
-=======
+
 
     @DAOAction(action = DAOActionType.UPDATE)
     int updateReceiveNotifyConfirm(@DAOParam("setStatus") int setStatus,
@@ -75,7 +75,5 @@ public interface ReceiveNotifyDao extends GenericDao {
                                    @DAOParam("roId") int roId,
                                    @DAOParam("rnId") int rnId);
 
-
->>>>>>> 60d39ce5d6942e2829867214b12808be7b3cebcf
 }
 
