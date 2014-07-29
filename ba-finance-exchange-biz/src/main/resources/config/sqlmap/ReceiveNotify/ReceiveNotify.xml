@@ -9,6 +9,7 @@
         <result property="receiveAmount" column="ReceiveAmount"/>
         <result property="customerId" column="CustomerID"/>
         <result property="payChannel" column="PayChannel"/>
+        <result property="receiveType" column="ReceiveType"/>
         <result property="payTime" column="PayTime"/>
         <result property="payerName" column="PayerName"/>
         <result property="bizContent" column="BizContent"/>
@@ -31,6 +32,7 @@
                          ReceiveAmount,
                          CustomerID,
                          PayChannel,
+                         ReceiveType,
                          PayTime,
                          PayerName,
                          BizContent,
@@ -49,6 +51,7 @@
                          #receiveNotifyData.receiveAmount#,
                          #receiveNotifyData.customerId#,
                          #receiveNotifyData.payChannel#,
+                         #receiveNotifyData.receiveType#,
                          #receiveNotifyData.payTime#,
                          #receiveNotifyData.payerName#,
                          #receiveNotifyData.bizContent#,
@@ -87,6 +90,7 @@
                ReceiveAmount,
                CustomerID,
                PayChannel,
+               ReceiveType,
                PayTime,
                PayerName,
                BizContent,
@@ -112,6 +116,7 @@
                ReceiveAmount,
                CustomerID,
                PayChannel,
+               ReceiveType,
                PayTime,
                PayerName,
                BizContent,
@@ -126,7 +131,7 @@
                UpdateLoginID
           FROM FC_ReceiveNotify
          WHERE Status = #status#
-           AND ROMatcherID > 0
+           AND ROMatcherID = #roId#
            AND ApplicationID != #excludeApplicationId#
     </select>
 
@@ -147,6 +152,7 @@
                ReceiveAmount,
                CustomerID,
                PayChannel,
+               ReceiveType,
                PayTime,
                PayerName,
                BizContent,
@@ -173,6 +179,7 @@
                ReceiveAmount,
                CustomerID,
                PayChannel,
+               ReceiveType,
                PayTime,
                PayerName,
                BizContent,
@@ -212,6 +219,77 @@
                   Status =#status#
               </isGreaterThan>
           </dynamic>
-
+        ORDER BY Status,PayTime
     </select>
+
+
+    <select id="findMatchedReceiveNotify" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+               ApplicationID,
+               BusinessType,
+               ReceiveAmount,
+               CustomerID,
+               PayChannel,
+               ReceiveType,
+               PayTime,
+               PayerName,
+               BizContent,
+               BankID,
+               Attachment,
+               Status,
+               ROMatcherID,
+               Memo,
+               AddTime,
+               AddLoginID,
+               UpdateTime,
+               UpdateLoginID
+        FROM   FC_ReceiveNotify
+        WHERE  Status = #status#
+           AND ROMatcherID = #roId#
+    </select>
+
+
+    <update id="removeReceiveNotifyMatchRelation" parameterClass="map">
+        UPDATE FC_ReceiveNotify
+        SET ROMatcherID = 0
+        WHERE ReceiveNotifyID = #rnId#
+        AND ROMatcherID = #roId#
+        AND status = #status#
+    </update>
+
+
+    <select id="loadMatchedReceiveNotify" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+               ApplicationID,
+               BusinessType,
+               ReceiveAmount,
+               CustomerID,
+               PayChannel,
+               ReceiveType,
+               PayTime,
+               PayerName,
+               BizContent,
+               BankID,
+               Attachment,
+               Status,
+               ROMatcherID,
+               Memo,
+               AddTime,
+               AddLoginID,
+               UpdateTime,
+               UpdateLoginID
+          FROM FC_ReceiveNotify
+         WHERE Status = #status#
+           and ReceiveNotifyID = #rnId#
+           AND ROMatcherID = #roId#
+    </select>
+
+
+    <update id="updateReceiveNotifyConfirm" parameterClass="map">
+        UPDATE FC_ReceiveNotify
+           SET status = #setStatus#
+         WHERE status = #preStatus#
+           AND ROMatcherID = #roId#
+           AND ReceiveNotifyID = #rnId#
+    </update>
 </sqlMap>

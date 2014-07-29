@@ -14,12 +14,14 @@
 <#include "/WEB-INF/pages/addreceiveorder.ftl">
 <#include "/WEB-INF/pages/teltransfer.ftl">
 <#include "/WEB-INF/pages/modifyro.ftl">
+<#include "/WEB-INF/pages/ronotify.ftl">
     <!-- @ main -->
     <!--内容-->
     <div class="content">
         <div class="padding">
             <#include "/WEB-INF/pages/queryro.ftl">
             <#include "/WEB-INF/pages/rolist.ftl">
+
         </div>
     </div>
 

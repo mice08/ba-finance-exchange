@@ -73,8 +73,7 @@ public class ReceiveNotifyHandleServiceObject implements ReceiveNotifyHandleServ
             int receiveNotifyId = receiveNotifyService.insertReceiveNotify(receiveNotifyData);
             receiveNotifyData.setReceiveNotifyId(receiveNotifyId);
             receiveNotifyResultBean.setReceiveNotifyId(receiveNotifyId);
-
-        }catch (Exception e ){
+        } catch (Exception e) {
             receiveNotifyResultBean.setStatus(ReceiveNotifyResultStatus.FAIL);
             receiveNotifyResultBean.setMemo(ReceiveNotifyCheckResult.DUPLICATE_APPLICATIONID.toString());
         }
@@ -141,6 +140,7 @@ public class ReceiveNotifyHandleServiceObject implements ReceiveNotifyHandleServ
         receiveNotifyRecordData.setReceiveAmount(receiveNotifyDTO.getReceiveAmount());
         receiveNotifyRecordData.setCustomerId(receiveNotifyDTO.getCustomerId());
         receiveNotifyRecordData.setPayChannel(receiveNotifyDTO.getPayChannel());
+        receiveNotifyRecordData.setReceiveType(receiveNotifyDTO.getReceiveType());
         receiveNotifyRecordData.setPayTime(receiveNotifyDTO.getPayTime());
         receiveNotifyRecordData.setPayerName(receiveNotifyDTO.getPayerName());
         receiveNotifyRecordData.setBizContent(receiveNotifyDTO.getBizContent());
@@ -167,6 +167,7 @@ public class ReceiveNotifyHandleServiceObject implements ReceiveNotifyHandleServ
         receiveNotifyData.setBusinessType(receiveNotifyDTO.getBusinessType());
         receiveNotifyData.setReceiveAmount(receiveNotifyDTO.getReceiveAmount());
         receiveNotifyData.setPayChannel(receiveNotifyDTO.getPayChannel());
+        receiveNotifyData.setReceiveType(receiveNotifyDTO.getReceiveType());
         receiveNotifyData.setPayTime(receiveNotifyDTO.getPayTime());
         receiveNotifyData.setPayerName(receiveNotifyDTO.getPayerName());
         receiveNotifyData.setBizContent(receiveNotifyDTO.getBizContent());

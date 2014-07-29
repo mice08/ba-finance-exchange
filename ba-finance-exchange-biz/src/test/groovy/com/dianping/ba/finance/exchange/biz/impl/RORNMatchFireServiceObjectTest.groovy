@@ -144,7 +144,7 @@ class RORNMatchFireServiceObjectTest extends Specification {
         rornMatchFireServiceObjectStub.doExecuteMatchingForReceiveOrderConfirmed(roData);
 
         then:
-        0 * receiveNotifyServiceMock.findUnmatchedLeftReceiveNotify(_ as ReceiveNotifyStatus, _ as String) >> {
+        0 * receiveNotifyServiceMock.findUnmatchedLeftReceiveNotify(_ as ReceiveNotifyStatus, _ as Integer, _ as String) >> {
             ReceiveNotifyData rnData = [receiveNotifyId: 123]
             [rnData]
         }
@@ -168,7 +168,7 @@ class RORNMatchFireServiceObjectTest extends Specification {
         rornMatchFireServiceObjectStub.doExecuteMatchingForReceiveOrderConfirmed(roData);
 
         then:
-        1 * receiveNotifyServiceMock.findUnmatchedLeftReceiveNotify(_ as ReceiveNotifyStatus, _ as String) >> {
+        1 * receiveNotifyServiceMock.findUnmatchedLeftReceiveNotify(_ as ReceiveNotifyStatus, _ as Integer, _ as String) >> {
             ReceiveNotifyData rnData = [receiveNotifyId: 123]
             [rnData]
         }
