@@ -11,6 +11,7 @@ import com.dianping.ba.finance.exchange.siteweb.beans.CustomerInfoBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveInfoBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveNotifyConfirmBean;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
+import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 
@@ -113,7 +114,7 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
             bean.setMemo(data.getMemo());
             bean.setPayChannel(ReceiveOrderPayChannel.valueOf(data.getPayChannel()).toString());
             bean.setPayerName(data.getPayerName());
-            bean.setPayTime(data.getPayTime());
+            bean.setPayTime(DateUtil.formatDateToString(data.getPayTime(), "yyyy-MM-dd"));
             bean.setReceiveNotifyId(data.getReceiveNotifyId());
             bean.setRoMatcherId(data.getRoMatcherId());
             bean.setStatus(ReceiveNotifyStatus.valueOf(data.getStatus()).toString());
