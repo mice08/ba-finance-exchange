@@ -200,7 +200,7 @@
                   PayTime &lt;= #payTimeEnd#
               </isNotEmpty>
               <isGreaterThan prepend="and" property="payChannel" compareValue="0">
-                  
+
               </isGreaterThan>
           </dynamic>
     </select>
