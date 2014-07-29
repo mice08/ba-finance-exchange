@@ -59,7 +59,7 @@
         <td class="fs tb-item auto-break">{{= record.memo}}</td>
         <td class="fs tb-item auto-break">{{= record.attachment}}</td>
         <td class="fs tb-item auto-break">
-        <a href="javascript:void(0)" rnId="{{= record.receiveNotifyId}}" class="rorn-confirm-link">确定</a>
+        <a href="javascript:void(0)" rnId="{{= record.receiveNotifyId}}" class="rorn-confirm-link">确认</a>
         <a href="javascript:void(0)" rnId="{{= record.receiveNotifyId}}" class="rorn-cancel-link">取消关联</a>
         </td>
     </tr>
