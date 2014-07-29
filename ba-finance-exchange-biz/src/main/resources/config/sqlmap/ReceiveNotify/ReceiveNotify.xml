@@ -201,12 +201,12 @@
 
     <update id="removeReceiveNotifyMatchRelation" parameterClass="map">
         UPDATE FC_ReceiveNotify
-        SET ROMatcherID = 0
+        SET Status = 1,
+            ROMatcherID = 0
         WHERE ReceiveNotifyID = #rnId#
         AND ROMatcherID = #roId#
         AND status = #status#
     </update>
-
 
     <select id="loadMatchedReceiveNotify" resultMap="receiveNotifyData" parameterClass="map">
         SELECT ReceiveNotifyID,

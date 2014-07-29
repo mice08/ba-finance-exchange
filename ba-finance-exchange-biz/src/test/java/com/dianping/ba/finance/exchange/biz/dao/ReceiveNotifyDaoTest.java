@@ -91,7 +91,7 @@ public class ReceiveNotifyDaoTest {
 
     @Test
     public void testRemoveReceiveNotifyMatchRelation() throws Exception {
-        int u = receiveNotifyDao.removeReceiveNotifyMatchRelation(9, 467, ReceiveNotifyStatus.INIT.value());
+        int u = receiveNotifyDao.removeReceiveNotifyMatchRelation(9, 269, ReceiveNotifyStatus.MATCHED.value());
         Assert.assertTrue(u > 0);
     }
 

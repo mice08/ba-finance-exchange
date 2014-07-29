@@ -1,4 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.impl
+
+import com.dianping.ba.finance.exchange.api.RORNMatchFireService
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData
 import com.dianping.ba.finance.exchange.api.enums.BusinessType
@@ -12,10 +14,12 @@ import spock.lang.Unroll
 class ReceiveNotifyServiceObjectTest extends Specification {
     ReceiveNotifyService receiveNotifyServiceStub;
     ReceiveNotifyDao receiveNotifyDaoMock;
+    RORNMatchFireService rornMatchFireServiceMock;
 
     def setup(){
         receiveNotifyServiceStub = new ReceiveNotifyServiceObject();
         receiveNotifyDaoMock = Mock();
+        rornMatchFireServiceMock = Mock();
         receiveNotifyServiceStub.receiveNotifyDao = receiveNotifyDaoMock;
     }
 
@@ -139,7 +143,7 @@ class ReceiveNotifyServiceObjectTest extends Specification {
     @Unroll
     def "removeReceiveNotifyMatchRelation"(Integer rnId, Integer roId, Boolean updated) {
         given:
-        receiveNotifyDaoMock.removeReceiveNotifyMatchRelation(_ as Integer, _ as Integer, ReceiveNotifyStatus.INIT.value()) >> {
+        receiveNotifyDaoMock.removeReceiveNotifyMatchRelation(_ as Integer, _ as Integer, ReceiveNotifyStatus.MATCHED.value()) >> {
             1
         }
 

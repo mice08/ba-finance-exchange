@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
+import com.dianping.ba.finance.exchange.api.RORNMatchFireService;
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
@@ -70,7 +71,7 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
     @ReturnDefault
     @Override
     public boolean removeReceiveNotifyMatchRelation(int rnId, int roMatcherId) {
-        int u = receiveNotifyDao.removeReceiveNotifyMatchRelation(rnId, roMatcherId, ReceiveNotifyStatus.INIT.value());
+        int u = receiveNotifyDao.removeReceiveNotifyMatchRelation(rnId, roMatcherId, ReceiveNotifyStatus.MATCHED.value());
         return u == 1;
     }
 
@@ -90,4 +91,5 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
     public void setReceiveNotifyDao(ReceiveNotifyDao receiveNotifyDao) {
         this.receiveNotifyDao = receiveNotifyDao;
     }
+
 }
