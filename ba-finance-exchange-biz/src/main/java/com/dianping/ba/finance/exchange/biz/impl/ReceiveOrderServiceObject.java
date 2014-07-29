@@ -227,7 +227,7 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
     private ReceiveOrderUpdateBean buildReceiveOrderUpdateBean(ReceiveOrderData roData, ReceiveNotifyData rnData, int loginId) {
         ReceiveOrderUpdateBean updateBean = new ReceiveOrderUpdateBean();
         updateBean.setApplicationId(rnData.getApplicationId());
-        updateBean.setBizContent(StringUtils.isBlank(roData.getBizContent()) ? roData.getBizContent() : rnData.getBizContent());
+        updateBean.setBizContent(StringUtils.isNotBlank(roData.getBizContent()) ? roData.getBizContent() : rnData.getBizContent());
         updateBean.setCustomerId(roData.getCustomerId() > 0 ? roData.getCustomerId() : rnData.getCustomerId());
         updateBean.setMemo(roData.getMemo());
         updateBean.setReceiveTime(roData.getReceiveTime());
