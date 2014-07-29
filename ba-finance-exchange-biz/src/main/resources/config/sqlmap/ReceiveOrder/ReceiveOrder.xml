@@ -30,6 +30,35 @@
         <result property="memo" column="Memo"/>
     </resultMap>
 
+    <typeAlias alias="ReceiveOrderPaginateData" type="com.dianping.ba.finance.exchange.api.datas.ReceiveOrderPaginateData"/>
+    <resultMap id="receiveOrderPaginateData" class="ReceiveOrderPaginateData">
+        <result property="roId" column="ROID"/>
+        <result property="customerId" column="CustomerID"/>
+        <result property="shopId" column="ShopID"/>
+        <result property="businessType" column="BusinessType"/>
+        <result property="receiveAmount" column="ReceiveAmount"/>
+        <result property="receiveTime" column="ReceiveTime"/>
+        <result property="payTime" column="PayTime"/>
+        <result property="payerAccountNo" column="PayerAccountNo"/>
+        <result property="payerBankName" column="PayerBankName"/>
+        <result property="bankReceiveTime" column="BankReceiveTime"/>
+        <result property="payChannel" column="PayChannel"/>
+        <result property="receiveType" column="ReceiveType"/>
+        <result property="bizContent" column="BizContent"/>
+        <result property="tradeNo" column="TradeNo"/>
+        <result property="bankID" column="BankID"/>
+        <result property="status" column="Status"/>
+        <result property="addTime" column="AddTime"/>
+        <result property="addLoginId" column="AddLoginID"/>
+        <result property="updateTime" column="UpdateTime"/>
+        <result property="updateLoginId" column="UpdateLoginID"/>
+        <result property="reverseRoId" column="ReverseROID"/>
+        <result property="payerAccountName" column="PayerAccountName"/>
+        <result property="applicationId" column="ApplicationID"/>
+        <result property="memo" column="Memo"/>
+        <result property="matchedCount" column="MatchedCount"/>
+    </resultMap>
+
     <insert id="insertReceiveOrderData" parameterClass="map">
         <![CDATA[
             INSERT INTO FC_ReceiveOrder
@@ -88,8 +117,9 @@
         </selectKey>
     </insert>
 
-    <select id="paginateReceiveOrderList" resultMap="receiveOrderData" parameterClass="map">
-     SELECT ro.ROID,
+    <select id="paginateReceiveOrderList" resultMap="receiveOrderPaginateData" parameterClass="map">
+        SELECT *
+        FROM (SELECT ro.ROID,
             ro.CustomerID,
             ro.ShopID,
             ro.BusinessType,
@@ -112,43 +142,48 @@
             ro.ReverseROID,
             ro.Memo,
             ro.PayerAccountName,
-            ro.ApplicationID
-       FROM FC_ReceiveOrder ro
+            ro.ApplicationID,
+            (SELECT Count(1)
+                FROM FC_ReceiveNotify rn
+                WHERE rn.ROMatcherID = ro.roId
+                AND rn.Status = 4) AS MatchedCount
+            FROM FC_ReceiveOrder ro
         <dynamic prepend="WHERE">
             <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
-                BusinessType = #receiveOrderSearchBean.businessType#
+                ro.BusinessType = #receiveOrderSearchBean.businessType#
             </isGreaterThan>
             <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
-                CustomerID = #receiveOrderSearchBean.customerId#
+                ro.CustomerID = #receiveOrderSearchBean.customerId#
             </isGreaterThan>
             <isGreaterThan property="receiveOrderSearchBean.receiveType" prepend="and" compareValue="0">
-                ReceiveType = #receiveOrderSearchBean.receiveType#
+                ro.ReceiveType = #receiveOrderSearchBean.receiveType#
             </isGreaterThan>
             <isNotNull property="receiveOrderSearchBean.receiveTimeBegin" prepend="and">
-                ReceiveTime &gt;= #receiveOrderSearchBean.receiveTimeBegin#
+                ro.ReceiveTime &gt;= #receiveOrderSearchBean.receiveTimeBegin#
             </isNotNull>
             <isNotNull property="receiveOrderSearchBean.receiveTimeEnd" prepend="and">
-                ReceiveTime &lt;= #receiveOrderSearchBean.receiveTimeEnd#
+                ro.ReceiveTime &lt;= #receiveOrderSearchBean.receiveTimeEnd#
             </isNotNull>
             <isGreaterThan property="receiveOrderSearchBean.payChannel" prepend="and" compareValue="0">
-                PayChannel = #receiveOrderSearchBean.payChannel#
+                ro.PayChannel = #receiveOrderSearchBean.payChannel#
             </isGreaterThan>
             <isGreaterThan property="receiveOrderSearchBean.status" compareValue="0" prepend="and">
-                Status = #receiveOrderSearchBean.status#
+                ro.Status = #receiveOrderSearchBean.status#
             </isGreaterThan>
             <isNotNull property="receiveOrderSearchBean.bankReceiveTimeBegin" prepend="and">
-                BankReceiveTime &gt;= #receiveOrderSearchBean.bankReceiveTimeBegin#
+                ro.BankReceiveTime &gt;= #receiveOrderSearchBean.bankReceiveTimeBegin#
             </isNotNull>
             <isNotNull property="receiveOrderSearchBean.bankReceiveTimeEnd" prepend="and">
-                BankReceiveTime &lt;= #receiveOrderSearchBean.bankReceiveTimeEnd#
+                ro.BankReceiveTime &lt;= #receiveOrderSearchBean.bankReceiveTimeEnd#
             </isNotNull>
             <isGreaterThan property="receiveOrderSearchBean.bankId" prepend="and" compareValue="0">
-                BankID = #receiveOrderSearchBean.bankId#
+                ro.BankID = #receiveOrderSearchBean.bankId#
             </isGreaterThan>
         </dynamic>
-        ORDER BY
-        ro.AddTime DESC,
-        ro.ROID ASC
+        ) AS t
+        ORDER BY MatchedCount DESC,
+        AddTime DESC,
+        ROID ASC;
     </select>
 
     <select id="paginateReceiveOrderList_COUNT" resultClass="int" parameterClass="map">

@@ -4,6 +4,7 @@ import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderPaginateData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
@@ -89,7 +90,7 @@ public class ReceiveOrderAjaxActionTest {
     @Test
     public void testJsonExecuteSuccess() throws Exception {
         PageModel pageModel = new PageModel();
-        ReceiveOrderData receiveOrderData = new ReceiveOrderData();
+        ReceiveOrderPaginateData receiveOrderData = new ReceiveOrderPaginateData();
         receiveOrderData.setCustomerId(123);
         receiveOrderData.setBusinessType(BusinessType.GROUP_PURCHASE.value());
         receiveOrderData.setPayChannel(ReceiveOrderPayChannel.POS_MACHINE.value());
@@ -97,6 +98,7 @@ public class ReceiveOrderAjaxActionTest {
         receiveOrderData.setReceiveAmount(BigDecimal.TEN);
         receiveOrderData.setReceiveTime(new Date());
         receiveOrderData.setStatus(ReceiveOrderStatus.UNCONFIRMED.value());
+        receiveOrderData.setMatchedCount(10);
         pageModel.setRecords(Arrays.asList(receiveOrderData));
         when(receiveOrderServiceMock.paginateReceiveOrderList(any(ReceiveOrderSearchBean.class), anyInt(), anyInt())).thenReturn(pageModel);
         when(receiveOrderServiceMock.loadReceiveOrderTotalAmountByCondition(any(ReceiveOrderSearchBean.class))).thenReturn(BigDecimal.ONE);

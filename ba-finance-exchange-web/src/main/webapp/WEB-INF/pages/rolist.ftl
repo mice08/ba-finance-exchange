@@ -34,6 +34,7 @@
                     <th width="8%" class="fs tb-header">合同号</th>
                     <th width="12%" class="fs tb-header">付款方户名</th>
                     <th width="6%" class="fs tb-header">状态</th>
+                    <th width="5%" class="fs tb-header">匹配条数</th>
                     <th width="12%" class="fs tb-header">操作</th>
                 </tr>
                 </thead>
@@ -74,6 +75,7 @@
         <td class="fs tb-item auto-break">{{= record.bizContent}}</td>
         <td class="fs tb-item auto-break">{{= record.payerName}}</td>
         <td class="fs tb-item auto-break">{{= record.status}}</td>
+        <td class="fs tb-item auto-break">{{= record.matchedCount}}</td>
         <td class="fs tb-item auto-break">
         <a href="javascript:void(0);" data-toggle="popover" data-placement="top"
         tradeNo="{{= record.tradeNo}}" payerAccountNo="{{= record.payerAccountNo}}"
@@ -81,9 +83,15 @@
         applicationId="{{= record.applicationId}}"
         class="ro-show"  rel="popover-medium">查看</a>
         {{if record.status=="待确认"}}
-        <a href="javascript:void(0)" roId="{{= record.roId}}" class="modify-link">修改</a> {{/if}}
-        {{if record.status=="待确认" && record.businessType =="广告" && record.payChannel == "电汇" || record.payChannel == "POS机-快钱"  }}
-        <a href="javascript:void(0)" roId="{{= record.roId}}" class="confirm-link">关联</a> {{/if}}
+            <a href="javascript:void(0)" roId="{{= record.roId}}" class="modify-link">修改</a>
+        {{/if}}
+        {{if record.status=="待确认"
+             && record.businessType =="广告"
+             && record.payChannel == "电汇"
+             && record.matchedCount > 0
+             || record.payChannel == "POS机-快钱"  }}
+            <a href="javascript:void(0)" roId="{{= record.roId}}" class="confirm-link">关联</a>
+        {{/if}}
         <a href="#">作废</a>
         </td>
     </tr>

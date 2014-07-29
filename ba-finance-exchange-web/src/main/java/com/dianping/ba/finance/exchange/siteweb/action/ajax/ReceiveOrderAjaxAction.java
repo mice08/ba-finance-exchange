@@ -6,6 +6,7 @@ import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderPaginateData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
@@ -252,6 +253,11 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderBean.setRoId(receiveOrderData.getRoId());
         receiveOrderBean.setStatus(ReceiveOrderStatus.valueOf(receiveOrderData.getStatus()).toString());
         receiveOrderBean.setApplicationId(receiveOrderData.getApplicationId());
+
+        if (receiveOrderData instanceof ReceiveOrderPaginateData) {
+            ReceiveOrderPaginateData ropData = (ReceiveOrderPaginateData) receiveOrderData;
+            receiveOrderBean.setMatchedCount(ropData.getMatchedCount());
+        }
         return receiveOrderBean;
     }
 

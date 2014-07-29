@@ -56,30 +56,30 @@ public class ReceiveOrderDaoTest {
 	@Test
 	public void testPaginateReceiveOrderList() throws Exception {
 		ReceiveOrderSearchBean searchBean = new ReceiveOrderSearchBean();
-		searchBean.setCustomerId(8787);
-		searchBean.setBusinessType(4);
-
-		Calendar receiveTimeBeginCal = Calendar.getInstance();
-		receiveTimeBeginCal.set(Calendar.MONTH, 05);
-		receiveTimeBeginCal.set(Calendar.DAY_OF_MONTH, 16);
-		searchBean.setReceiveTimeBegin(receiveTimeBeginCal.getTime());
-
-		Calendar receiveTimeEndCal = Calendar.getInstance();
-		receiveTimeEndCal.set(Calendar.MONTH, 05);
-		receiveTimeEndCal.set(Calendar.DAY_OF_MONTH, 18);
-		searchBean.setReceiveTimeEnd(receiveTimeEndCal.getTime());
-
-		searchBean.setPayChannel(1);
-
-		Calendar bankReceiveTimeBeginCal = Calendar.getInstance();
-		bankReceiveTimeBeginCal.set(Calendar.MONTH, 05);
-		bankReceiveTimeBeginCal.set(Calendar.DAY_OF_MONTH, 16);
-		searchBean.setBankReceiveTimeBegin(bankReceiveTimeBeginCal.getTime());
-
-		Calendar bankReceiveTimeEndCal = Calendar.getInstance();
-		bankReceiveTimeEndCal.set(Calendar.MONTH, 05);
-		bankReceiveTimeEndCal.set(Calendar.DAY_OF_MONTH, 18);
-		searchBean.setBankReceiveTimeEnd(bankReceiveTimeEndCal.getTime());
+//		searchBean.setCustomerId(8787);
+		searchBean.setBusinessType(5);
+//
+//		Calendar receiveTimeBeginCal = Calendar.getInstance();
+//		receiveTimeBeginCal.set(Calendar.MONTH, 05);
+//		receiveTimeBeginCal.set(Calendar.DAY_OF_MONTH, 16);
+//		searchBean.setReceiveTimeBegin(receiveTimeBeginCal.getTime());
+//
+//		Calendar receiveTimeEndCal = Calendar.getInstance();
+//		receiveTimeEndCal.set(Calendar.MONTH, 05);
+//		receiveTimeEndCal.set(Calendar.DAY_OF_MONTH, 18);
+//		searchBean.setReceiveTimeEnd(receiveTimeEndCal.getTime());
+//
+//		searchBean.setPayChannel(1);
+//
+//		Calendar bankReceiveTimeBeginCal = Calendar.getInstance();
+//		bankReceiveTimeBeginCal.set(Calendar.MONTH, 05);
+//		bankReceiveTimeBeginCal.set(Calendar.DAY_OF_MONTH, 16);
+//		searchBean.setBankReceiveTimeBegin(bankReceiveTimeBeginCal.getTime());
+//
+//		Calendar bankReceiveTimeEndCal = Calendar.getInstance();
+//		bankReceiveTimeEndCal.set(Calendar.MONTH, 05);
+//		bankReceiveTimeEndCal.set(Calendar.DAY_OF_MONTH, 18);
+//		searchBean.setBankReceiveTimeEnd(bankReceiveTimeEndCal.getTime());
 
 		PageModel pm = receiveOrderDao.paginateReceiveOrderList(searchBean, 1, 20);
 		Assert.assertNotNull(pm);

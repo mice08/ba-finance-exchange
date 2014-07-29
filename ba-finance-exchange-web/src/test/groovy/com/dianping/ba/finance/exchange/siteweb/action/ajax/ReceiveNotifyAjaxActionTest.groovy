@@ -53,7 +53,7 @@ class ReceiveNotifyAjaxActionTest extends Specification {
         where:
         rnId | roMatcherId | actionCode
         1    | 2           | ReceiveNotifyAjaxAction.SUCCESS_CODE
-        1    | 1           | ReceiveNotifyAjaxAction.ERROR_CODE
+        1    | 1           | ReceiveNotifyAjaxAction.SUCCESS_CODE
         2    | 2           | ReceiveNotifyAjaxAction.ERROR_CODE
     }
 
