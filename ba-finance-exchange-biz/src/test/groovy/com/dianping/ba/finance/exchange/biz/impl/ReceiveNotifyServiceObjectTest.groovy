@@ -127,7 +127,7 @@ class ReceiveNotifyServiceObjectTest extends Specification {
     @Unroll
     def "findMatchedReceiveNotify"(Integer roId, Integer rnId) {
         given:
-        receiveNotifyDaoMock.findMatchedReceiveNotify(ReceiveNotifyStatus.INIT.value(), _ as Integer) >> { args ->
+        receiveNotifyDaoMock.findMatchedReceiveNotify(ReceiveNotifyStatus.MATCHED.value(), _ as Integer) >> { args ->
             ReceiveNotifyData rnData = [receiveNotifyId: 123, status: args[0], roMatcherId: args[1]]
             [rnData]
         }
@@ -158,7 +158,7 @@ class ReceiveNotifyServiceObjectTest extends Specification {
     @Unroll
     def "loadMatchedReceiveNotify"(Integer rnId, Integer roId, Integer rnIdResult) {
         given:
-        receiveNotifyDaoMock.loadMatchedReceiveNotify(ReceiveNotifyStatus.INIT.value(), _ as Integer, _ as Integer) >> { args ->
+        receiveNotifyDaoMock.loadMatchedReceiveNotify(ReceiveNotifyStatus.MATCHED.value(), _ as Integer, _ as Integer) >> { args ->
             ReceiveNotifyData rnData = [receiveNotifyId: args[1], roMatcherId: args[2]]
             rnData
         }
@@ -174,7 +174,7 @@ class ReceiveNotifyServiceObjectTest extends Specification {
     @Unroll
     def "updateReceiveNotifyConfirm"(Integer roId, Integer rnId, Boolean updated) {
         given:
-        receiveNotifyDaoMock.updateReceiveNotifyConfirm(ReceiveNotifyStatus.CONFIRMED.value(), ReceiveNotifyStatus.INIT.value(), _ as Integer, _ as Integer) >> { args ->
+        receiveNotifyDaoMock.updateReceiveNotifyConfirm(ReceiveNotifyStatus.CONFIRMED.value(), ReceiveNotifyStatus.MATCHED.value(), _ as Integer, _ as Integer) >> { args ->
             1
         }
 
