@@ -119,4 +119,66 @@ class ReceiveNotifyServiceObjectTest extends Specification {
         status                   | businessType                       | applicationIdParam | rnId | applicationId
         ReceiveNotifyStatus.INIT | BusinessType.ADVERTISEMENT.value() | "123"              | 123  | "123"
     }
+
+    @Unroll
+    def "findMatchedReceiveNotify"(Integer roId, Integer rnId) {
+        given:
+        receiveNotifyDaoMock.findMatchedReceiveNotify(ReceiveNotifyStatus.INIT.value(), _ as Integer) >> { args ->
+            ReceiveNotifyData rnData = [receiveNotifyId: 123, status: args[0], roMatcherId: args[1]]
+            [rnData]
+        }
+
+        expect:
+        rnId == receiveNotifyServiceStub.findMatchedReceiveNotify(roId)[0].receiveNotifyId;
+
+        where:
+        roId | rnId
+        123  | 123
+    }
+
+    @Unroll
+    def "removeReceiveNotifyMatchRelation"(Integer rnId, Integer roId, Boolean updated) {
+        given:
+        receiveNotifyDaoMock.removeReceiveNotifyMatchRelation(_ as Integer, _ as Integer, ReceiveNotifyStatus.INIT.value()) >> {
+            1
+        }
+
+        expect:
+        updated == receiveNotifyServiceStub.removeReceiveNotifyMatchRelation(rnId, roId);
+
+        where:
+        rnId | roId | updated
+        123  | 123  | true
+    }
+
+    @Unroll
+    def "loadMatchedReceiveNotify"(Integer rnId, Integer roId, Integer rnIdResult) {
+        given:
+        receiveNotifyDaoMock.loadMatchedReceiveNotify(ReceiveNotifyStatus.INIT.value(), _ as Integer, _ as Integer) >> { args ->
+            ReceiveNotifyData rnData = [receiveNotifyId: args[1], roMatcherId: args[2]]
+            rnData
+        }
+
+        expect:
+        rnIdResult == receiveNotifyServiceStub.loadMatchedReceiveNotify(rnId, roId).receiveNotifyId;
+
+        where:
+        rnId | roId | rnIdResult
+        123  | 467  | 123
+    }
+
+    @Unroll
+    def "updateReceiveNotifyConfirm"(Integer roId, Integer rnId, Boolean updated) {
+        given:
+        receiveNotifyDaoMock.updateReceiveNotifyConfirm(ReceiveNotifyStatus.CONFIRMED.value(), ReceiveNotifyStatus.INIT.value(), _ as Integer, _ as Integer) >> { args ->
+            1
+        }
+
+        expect:
+        updated == receiveNotifyServiceStub.updateReceiveNotifyConfirm(roId, rnId);
+
+        where:
+        roId | rnId | updated
+        123  | 467  | true
+    }
 }
