@@ -1,12 +1,13 @@
 package com.dianping.ba.finance.exchange.api.beans;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * Created by adam.huang on 2014/7/29.
  */
-public class ReceiveNotifySearchBean {
+public class ReceiveNotifySearchBean implements Serializable{
     private int businessType;
     private int customerId;
     private Date payTimeBegin;

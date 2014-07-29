@@ -41,7 +41,7 @@
                 </thead>
 
                 <tbody id="receivenotify_list" namespace="receiveNotifyModel" page_size="20"
-                       table_url="/exchange/ajax/receivenotifylist">
+                       table_url="/exchange/ajax/receiveNotifyList">
                 </tbody>
 
             </table>
@@ -65,9 +65,9 @@
     {{else}}
     <tr>
     {{/if}}
-    <td class="fs tb-item">{{= record.rnId}}</td>
+    <td class="fs tb-item">{{= record.receiveNotifyId}}</td>
 
-    <td class="fs tb-item auto-break">{{= record.customerName}}</td>
+    <td class="fs tb-item auto-break">{{= record.customerId}}</td>
     <td class="fs tb-item auto-break">{{= record.receiveAmount}}</td>
     <td class="fs tb-item auto-break">{{= record.payTime}}</td>
     <td class="fs tb-item auto-break">{{= record.payerName}}</td>

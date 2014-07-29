@@ -200,12 +200,12 @@
             <isGreaterThan prepend="and" property="receiveNotifySearchBean.customerId" compareValue="0">
                 CustomerID = #receiveNotifySearchBean.customerId#
             </isGreaterThan>
-            <isNotEmpty prepend="and" property="receiveNotifySearchBean.payTimeBegin">
+            <isNotNull prepend="and" property="receiveNotifySearchBean.payTimeBegin">
                 PayTime &gt;= #receiveNotifySearchBean.payTimeBegin#
-            </isNotEmpty>
-            <isNotEmpty prepend="and" property="receiveNotifySearchBean.payTimeEnd">
+            </isNotNull>
+            <isNotNull prepend="and" property="receiveNotifySearchBean.payTimeEnd">
                 PayTime &lt;= #receiveNotifySearchBean.payTimeEnd#
-            </isNotEmpty>
+            </isNotNull>
             <isGreaterThan prepend="and" property="receiveNotifySearchBean.payChannel" compareValue="0">
                 PayChannel = #receiveNotifySearchBean.payChannel#
             </isGreaterThan>

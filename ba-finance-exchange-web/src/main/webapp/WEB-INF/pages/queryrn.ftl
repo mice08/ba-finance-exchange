@@ -74,7 +74,7 @@
                         </select>
 
                         <div class="input-append">
-                            <input type="text" id="q-br-begin-time" datatype="date" name="bankReceiveTimeBegin"
+                            <input type="text" id="q-br-begin-time" datatype="date" name="receiveTimeBegin"
                                    class="input-small form_value">
                                             <span class="add-on">
                                                 <i class="icon-calendar">
@@ -84,7 +84,7 @@
                         至
                         <div class="input-append">
                             <input type="text" id="q-br-end-time" validate="ge[q-br-begin-time]" datatype="date"
-                                   name="bankReceiveTimeEnd" error_msg="ge[q-br-begin-time]:起始日期大于结束日期"
+                                   name="receiveTimeEnd" error_msg="ge[q-br-begin-time]:起始日期大于结束日期"
                                    class="input-small form_value">
                                             <span class="add-on">
                                                 <i class="icon-calendar">
