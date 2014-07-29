@@ -61,12 +61,13 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
         return receiveNotifyDao.loadUnmatchedReceiveNotifyByApplicationId(status.value(), businessType, applicationId);
     }
 
+
     @Log(severity = 3, logBefore = true, logAfter = false)
     @ReturnDefault
     @Override
     public PageModel paginateReceiveNotifyList(ReceiveNotifySearchBean receiveNotifySearchBean, int page, int max) {
-        return receiveNotifyDao.paginateReceiveNotifyList(receiveNotifySearchBean, page, max);
-    }
+		return receiveNotifyDao.paginateReceiveNotifyList(receiveNotifySearchBean, page, max);
+	}
 
     @Log(severity = 3, logBefore = true, logAfter = true)
     @ReturnDefault

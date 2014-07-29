@@ -62,7 +62,6 @@ public interface ReceiveNotifyDao extends GenericDao {
                                                @DAOParam("rnId") int rnId,
                                                @DAOParam("roId") int roId);
 
-
     @DAOAction(action = DAOActionType.PAGE)
     PageModel paginateReceiveNotifyList(@DAOParam("receiveNotifySearchBean") ReceiveNotifySearchBean receiveNotifySearchBean,
                                         @DAOParam("page") int page,

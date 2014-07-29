@@ -254,7 +254,6 @@
         ORDER BY Status,PayTime
     </select>
 
-
     <select id="findMatchedReceiveNotify" resultMap="receiveNotifyData" parameterClass="map">
         SELECT ReceiveNotifyID,
                ApplicationID,

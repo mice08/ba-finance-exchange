@@ -3,6 +3,8 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService;
+import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
+import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
@@ -12,9 +14,13 @@ import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveInfoBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveNotifyConfirmBean;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
+import com.dianping.core.type.PageModel;
 import com.google.common.collect.Maps;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,28 +30,197 @@ import java.util.Map;
  */
 public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 
-    /**
-     * 记录需要监控的业务日志
-     */
-    private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.web.monitor.ReceiveNotifyAjaxAction");
+	/**
+	 * 记录需要监控的业务日志
+	 */
+	private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.web.monitor.ReceiveNotifyAjaxAction");
 
-    private String applicationId;
+	private String applicationId;
 
-    private int roMatcherId;
+	private int roMatcherId;
 
-    private List<ReceiveNotifyConfirmBean> records;
+	private List<ReceiveNotifyConfirmBean> records;
 
-    private int businessType;
+	private int businessType;
 
-    private int code;
+	private int code;
 
-    private int rnId;
+	private int rnId;
 
-    private Map<String, Object> msg = Maps.newHashMap();
+	private Map<String, Object> msg = Maps.newHashMap();
 
-    private ReceiveNotifyService receiveNotifyService;
+	private ReceiveNotifyService receiveNotifyService;
 
-    private CustomerNameService customerNameService;
+	private CustomerNameService customerNameService;
+	private int customerId;
+	private String receiveTimeBegin;
+	private String receiveTimeEnd;
+	private int payChannel;
+	private int bankId;
+	private int status;
+	private String totalAmount;
+
+
+	//查询结果，收款通知列表
+	private PageModel receiveNotifyModel = new PageModel();
+	//第几页
+	private Integer page = 1;
+	//分页大小
+	private Integer pageSize = 20;
+
+
+	private ReceiveOrderService receiveOrderService;
+
+
+	@Override
+	protected void jsonExecute() {
+		if (businessType == BusinessType.DEFAULT.value()) {
+			totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO);
+			return;
+		}
+
+		try {
+			code = SUCCESS_CODE;
+		} catch (Exception e) {
+			MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.jsonExecute error!", e);
+			code = ERROR_CODE;
+		}
+	}
+
+	@Override
+	public int getCode() {
+		return code;
+	}
+
+	@Override
+	public Map<String, Object> getMsg() {
+		return msg;
+	}
+
+	private ReceiveNotifySearchBean buildRNSearchBean() throws ParseException {
+		ReceiveNotifySearchBean receiveNotifySearchBean = new ReceiveNotifySearchBean();
+		receiveNotifySearchBean.setStatus(status);
+		receiveNotifySearchBean.setBusinessType(businessType);
+		receiveNotifySearchBean.setPayTimeBegin(DateUtil.isValidDate(receiveTimeBegin) ? DateUtil.formatDate(receiveTimeBegin, false) : null);
+		receiveNotifySearchBean.setPayTimeEnd(DateUtil.isValidDate(receiveTimeEnd) ? DateUtil.formatDate(receiveTimeEnd, true) : null);
+		receiveNotifySearchBean.setCustomerId(customerId);
+		receiveNotifySearchBean.setPayChannel(payChannel);
+		//receiveNotifySearchBean.setBankId(bankId);
+		return receiveNotifySearchBean;
+	}
+
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
+
+	public int getBusinessType() {
+		return businessType;
+	}
+
+	public void setBusinessType(int businessType) {
+		this.businessType = businessType;
+	}
+
+	public String getReceiveTimeBegin() {
+		return receiveTimeBegin;
+	}
+
+	public void setReceiveTimeBegin(String receiveTimeBegin) {
+		this.receiveTimeBegin = receiveTimeBegin;
+	}
+
+	public String getReceiveTimeEnd() {
+		return receiveTimeEnd;
+	}
+
+	public void setReceiveTimeEnd(String receiveTimeEnd) {
+		this.receiveTimeEnd = receiveTimeEnd;
+	}
+
+	public int getPayChannel() {
+		return payChannel;
+	}
+
+	public void setPayChannel(int payChannel) {
+		this.payChannel = payChannel;
+	}
+
+	public int getBankId() {
+		return bankId;
+	}
+
+	public void setBankId(int bankId) {
+		this.bankId = bankId;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public String getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(String totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
+	}
+
+	public PageModel getReceiveNotifyModel() {
+		return receiveNotifyModel;
+	}
+
+	public void setReceiveNotifyModel(PageModel receiveNotifyModel) {
+		this.receiveNotifyModel = receiveNotifyModel;
+	}
+
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}
+
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public void setMsg(Map<String, Object> msg) {
+		this.msg = msg;
+	}
+
+	public ReceiveOrderService getReceiveOrderService() {
+		return receiveOrderService;
+	}
+
+	public void setReceiveOrderService(ReceiveOrderService receiveOrderService) {
+		this.receiveOrderService = receiveOrderService;
+	}
+
+	public CustomerNameService getCustomerNameService() {
+		return customerNameService;
+	}
+
+	public void setCustomerNameService(CustomerNameService customerNameService) {
+		this.customerNameService = customerNameService;
+	}
+
 
     public String rornCancelLink(){
         try {
@@ -140,35 +315,16 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
         return receiveInfoBean;
     }
 
-    @Override
-    protected void jsonExecute() throws Exception {
 
-    }
 
-    @Override
-    public int getCode() {
-        return code;
-    }
-
-    @Override
-    public Map<String, Object> getMsg() {
-        return msg;
-    }
 
     public void setApplicationId(String applicationId) {
         this.applicationId = applicationId;
     }
 
-    public void setBusinessType(int businessType) {
-        this.businessType = businessType;
-    }
 
     public void setReceiveNotifyService(ReceiveNotifyService receiveNotifyService) {
         this.receiveNotifyService = receiveNotifyService;
-    }
-
-    public void setCustomerNameService(CustomerNameService customerNameService) {
-        this.customerNameService = customerNameService;
     }
 
     public int getRoMatcherId() {
