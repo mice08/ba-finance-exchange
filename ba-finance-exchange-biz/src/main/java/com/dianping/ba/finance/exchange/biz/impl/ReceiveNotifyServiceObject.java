@@ -63,7 +63,7 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
     @ReturnDefault
     @Override
     public List<ReceiveNotifyData> findMatchedReceiveNotify(int roId) {
-        return receiveNotifyDao.findMatchedReceiveNotify(ReceiveNotifyStatus.INIT.value(), roId);
+        return receiveNotifyDao.findMatchedReceiveNotify(ReceiveNotifyStatus.MATCHED.value(), roId);
     }
 
     @Log(severity = 1, logBefore = true, logAfter = true)

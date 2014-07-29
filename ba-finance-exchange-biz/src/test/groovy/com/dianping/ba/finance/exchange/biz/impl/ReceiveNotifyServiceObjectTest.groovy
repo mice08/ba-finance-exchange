@@ -123,7 +123,7 @@ class ReceiveNotifyServiceObjectTest extends Specification {
     @Unroll
     def "findMatchedReceiveNotify"(Integer roId, Integer rnId) {
         given:
-        receiveNotifyDaoMock.findMatchedReceiveNotify(ReceiveNotifyStatus.INIT.value(), _ as Integer) >> { args ->
+        receiveNotifyDaoMock.findMatchedReceiveNotify(ReceiveNotifyStatus.MATCHED.value(), _ as Integer) >> { args ->
             ReceiveNotifyData rnData = [receiveNotifyId: 123, status: args[0], roMatcherId: args[1]]
             [rnData]
         }
