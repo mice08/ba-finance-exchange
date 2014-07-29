@@ -14,7 +14,7 @@ public class ReceiveNotifyConfirmBean implements Serializable {
     private String businessType;
     private BigDecimal receiveAmount;
     private String payChannel;
-    private Date payTime;
+    private String payTime;
     private String payerName;
     private String bizContent;
     private int customerId;
@@ -65,11 +65,11 @@ public class ReceiveNotifyConfirmBean implements Serializable {
         this.payChannel = payChannel;
     }
 
-    public Date getPayTime() {
+    public String getPayTime() {
         return payTime;
     }
 
-    public void setPayTime(Date payTime) {
+    public void setPayTime(String payTime) {
         this.payTime = payTime;
     }
 
