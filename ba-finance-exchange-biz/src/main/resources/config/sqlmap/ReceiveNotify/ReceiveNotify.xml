@@ -193,32 +193,32 @@
                UpdateTime,
                UpdateLoginID
           FROM FC_ReceiveNotify
-          <dynamic prepend="where">
-              <isGreaterThan property="businessType" compareValue="0">
-                  BusinessType = #businessType#
-              </isGreaterThan>
-              <isGreaterThan prepend="and" property="customerId" compareValue="0">
-                  CustomerID = #customerId#
-              </isGreaterThan>
-              <isNotEmpty prepend="and" property="payTimeBegin">
-                  PayTime &gt;= #payTimeBegin#
-              </isNotEmpty>
-              <isNotEmpty prepend="and" property="payTimeEnd">
-                  PayTime &lt;= #payTimeEnd#
-              </isNotEmpty>
-              <isGreaterThan prepend="and" property="payChannel" compareValue="0">
-                  PayChannel = #payChannel#
-              </isGreaterThan>
-              <isGreaterThan prepend="and" property="receiveAmount" compareValue="0">
-                  ReceiveAmount = #receiveAmount#
-              </isGreaterThan>
-              <isGreaterThan prepend="and" property="bankId" compareValue="0">
-                  BankID = #bankId#
-              </isGreaterThan>
-              <isGreaterThan prepend="and" property="status" compareValue="0">
-                  Status =#status#
-              </isGreaterThan>
-          </dynamic>
+        <dynamic prepend="where">
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.businessType" compareValue="0">
+                BusinessType = #receiveNotifySearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.customerId" compareValue="0">
+                CustomerID = #receiveNotifySearchBean.customerId#
+            </isGreaterThan>
+            <isNotEmpty prepend="and" property="receiveNotifySearchBean.payTimeBegin">
+                PayTime &gt;= #receiveNotifySearchBean.payTimeBegin#
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="receiveNotifySearchBean.payTimeEnd">
+                PayTime &lt;= #receiveNotifySearchBean.payTimeEnd#
+            </isNotEmpty>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.payChannel" compareValue="0">
+                PayChannel = #receiveNotifySearchBean.payChannel#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.receiveAmount" compareValue="0">
+                ReceiveAmount = #receiveNotifySearchBean.receiveAmount#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.bankId" compareValue="0">
+                BankID = #receiveNotifySearchBean.bankId#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.status" compareValue="0">
+                Status =#receiveNotifySearchBean.status#
+            </isGreaterThan>
+        </dynamic>
         ORDER BY Status,PayTime
     </select>
 
@@ -226,29 +226,29 @@
         SELECT COUNT(ReceiveNotifyID)
         FROM FC_ReceiveNotify
         <dynamic prepend="where">
-            <isGreaterThan property="businessType" compareValue="0">
-                BusinessType = #businessType#
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.businessType" compareValue="0">
+                BusinessType = #receiveNotifySearchBean.businessType#
             </isGreaterThan>
-            <isGreaterThan prepend="and" property="customerId" compareValue="0">
-                CustomerID = #customerId#
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.customerId" compareValue="0">
+                CustomerID = #receiveNotifySearchBean.customerId#
             </isGreaterThan>
-            <isNotEmpty prepend="and" property="payTimeBegin">
-                PayTime &gt;= #payTimeBegin#
+            <isNotEmpty prepend="and" property="receiveNotifySearchBean.payTimeBegin">
+                PayTime &gt;= #receiveNotifySearchBean.payTimeBegin#
             </isNotEmpty>
-            <isNotEmpty prepend="and" property="payTimeEnd">
-                PayTime &lt;= #payTimeEnd#
+            <isNotEmpty prepend="and" property="receiveNotifySearchBean.payTimeEnd">
+                PayTime &lt;= #receiveNotifySearchBean.payTimeEnd#
             </isNotEmpty>
-            <isGreaterThan prepend="and" property="payChannel" compareValue="0">
-                PayChannel = #payChannel#
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.payChannel" compareValue="0">
+                PayChannel = #receiveNotifySearchBean.payChannel#
             </isGreaterThan>
-            <isGreaterThan prepend="and" property="receiveAmount" compareValue="0">
-                ReceiveAmount = #receiveAmount#
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.receiveAmount" compareValue="0">
+                ReceiveAmount = #receiveNotifySearchBean.receiveAmount#
             </isGreaterThan>
-            <isGreaterThan prepend="and" property="bankId" compareValue="0">
-                BankID = #bankId#
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.bankId" compareValue="0">
+                BankID = #receiveNotifySearchBean.bankId#
             </isGreaterThan>
-            <isGreaterThan prepend="and" property="status" compareValue="0">
-                Status =#status#
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.status" compareValue="0">
+                Status =#receiveNotifySearchBean.status#
             </isGreaterThan>
         </dynamic>
         ORDER BY Status,PayTime

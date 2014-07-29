@@ -113,6 +113,8 @@ public class ReceiveNotifyDaoTest {
     public void testPaginateReceiveNotifyList() throws Exception {
         ReceiveNotifySearchBean receiveNotifySearchBean = new ReceiveNotifySearchBean();
         receiveNotifySearchBean.setBusinessType(5);
+        receiveNotifySearchBean.setReceiveAmount(BigDecimal.valueOf(10.03));
+        receiveNotifySearchBean.setBankId(11);
         PageModel pageModel = receiveNotifyDao.paginateReceiveNotifyList(receiveNotifySearchBean,1,20);
         Assert.assertTrue(pageModel.getRecordCount()>0);
     }
