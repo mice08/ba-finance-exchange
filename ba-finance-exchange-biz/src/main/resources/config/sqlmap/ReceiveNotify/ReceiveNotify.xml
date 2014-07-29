@@ -200,8 +200,18 @@
                   PayTime &lt;= #payTimeEnd#
               </isNotEmpty>
               <isGreaterThan prepend="and" property="payChannel" compareValue="0">
-
+                  PayChannel = #payChannel#
+              </isGreaterThan>
+              <isGreaterThan prepend="and" property="receiveAmount" compareValue="0">
+                  ReceiveAmount = #receiveAmount#
+              </isGreaterThan>
+              <isGreaterThan prepend="and" property="bankId" compareValue="0">
+                  BankID = #bankId#
+              </isGreaterThan>
+              <isGreaterThan prepend="and" property="status" compareValue="0">
+                  Status =#status#
               </isGreaterThan>
           </dynamic>
+
     </select>
 </sqlMap>

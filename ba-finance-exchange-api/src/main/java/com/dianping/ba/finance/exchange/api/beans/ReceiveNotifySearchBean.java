@@ -13,7 +13,7 @@ public class ReceiveNotifySearchBean {
     private Date payTimeEnd;
     private int payChannel;
     private BigDecimal receiveAmount;
-    private int companyId;
+    private int bankId;
     private int status;
 
     public int getBusinessType() {
@@ -72,12 +72,12 @@ public class ReceiveNotifySearchBean {
         this.receiveAmount = receiveAmount;
     }
 
-    public int getCompanyId() {
-        return companyId;
+    public int getBankId() {
+        return bankId;
     }
 
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
+    public void setBankId(int bankId) {
+        this.bankId = bankId;
     }
 
 
@@ -90,7 +90,7 @@ public class ReceiveNotifySearchBean {
                 ", payTimeEnd=" + payTimeEnd +
                 ", payChannel=" + payChannel +
                 ", receiveAmount=" + receiveAmount +
-                ", companyId=" + companyId +
+                ", bankId=" + bankId +
                 ", status=" + status +
                 '}';
     }
