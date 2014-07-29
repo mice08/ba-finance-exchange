@@ -230,7 +230,7 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         updateBean.setBizContent(StringUtils.isNotBlank(roData.getBizContent()) ? roData.getBizContent() : rnData.getBizContent());
         updateBean.setCustomerId(roData.getCustomerId() > 0 ? roData.getCustomerId() : rnData.getCustomerId());
         updateBean.setMemo(roData.getMemo());
-        updateBean.setReceiveTime(roData.getReceiveTime());
+        updateBean.setReceiveTime(new Date());
         updateBean.setReceiveType(ReceiveType.valueOf(roData.getReceiveType()));
         updateBean.setRoId(roData.getRoId());
         updateBean.setShopId(roData.getShopId());
