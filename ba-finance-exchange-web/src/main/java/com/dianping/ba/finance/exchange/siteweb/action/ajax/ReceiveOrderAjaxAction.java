@@ -6,6 +6,7 @@ import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderPaginateData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
@@ -75,6 +76,8 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     private int roId;
 
+    private int rnId;
+
 
     //查询结果，付款计划列表
     private PageModel receiveOrderModel = new PageModel();
@@ -100,12 +103,23 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
             ReceiveOrderSearchBean receiveOrderSearchBean = buildROSearchBean();
             receiveOrderModel = receiveOrderService.paginateReceiveOrderList(receiveOrderSearchBean, page, pageSize);
             receiveOrderModel.setRecords(buildReceiveOrderBeans((List<ReceiveOrderData>) receiveOrderModel.getRecords()));
-            totalAmount=new DecimalFormat("##,###,###,###,##0.00").format(receiveOrderService.loadReceiveOrderTotalAmountByCondition(receiveOrderSearchBean));
-            code=SUCCESS_CODE;
+            totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(receiveOrderService.loadReceiveOrderTotalAmountByCondition(receiveOrderSearchBean));
+            code = SUCCESS_CODE;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.jsonExecute error!", e);
-            code=ERROR_CODE;
+            code = ERROR_CODE;
         }
+    }
+
+    public String confirmNotify() {
+        try {
+            boolean result = receiveOrderService.confirmReceiveOrderAndReceiveNotify(roId, rnId, getLoginId());
+            code = result ? SUCCESS_CODE : ERROR_CODE;
+        } catch (Exception e) {
+            MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.confirmNotify error!", e);
+            code = ERROR_CODE;
+        }
+        return SUCCESS;
     }
 
     @Override
@@ -145,7 +159,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         }
     }
 
-    public String loadReceiveOrderById(){
+    public String loadReceiveOrderById() {
         try {
             receiveOrderData = receiveOrderService.loadReceiveOrderDataByRoId(roId);
             Map<Integer, String> customerIdNameMap = customerNameService.getROCustomerName(Arrays.asList(receiveOrderData), getLoginId());
@@ -159,7 +173,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         return SUCCESS;
     }
 
-    public String updateReceiveOrder(){
+    public String updateReceiveOrder() {
         int result = -1;
         try {
             ReceiveOrderUpdateBean receiveOrderUpdateBean = buildUpdateReceiveOrder();
@@ -169,7 +183,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
             code = ERROR_CODE;
             return SUCCESS;
         }
-        if (result == -1){
+        if (result == -1) {
             code = ERROR_CODE;
         } else {
             code = SUCCESS_CODE;
@@ -178,7 +192,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
     }
 
     private ReceiveOrderUpdateBean buildUpdateReceiveOrder() throws ParseException {
-        ReceiveOrderUpdateBean receiveOrderUpdateBean=new ReceiveOrderUpdateBean();
+        ReceiveOrderUpdateBean receiveOrderUpdateBean = new ReceiveOrderUpdateBean();
         receiveOrderUpdateBean.setRoId(roId);
         Date receiveTimeDate = DateUtil.isValidDate(receiveTime) ? DateUtil.formatDate(receiveTime, false) : null;
         receiveOrderUpdateBean.setReceiveTime(receiveTimeDate);
@@ -239,10 +253,15 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderBean.setRoId(receiveOrderData.getRoId());
         receiveOrderBean.setStatus(ReceiveOrderStatus.valueOf(receiveOrderData.getStatus()).toString());
         receiveOrderBean.setApplicationId(receiveOrderData.getApplicationId());
+
+        if (receiveOrderData instanceof ReceiveOrderPaginateData) {
+            ReceiveOrderPaginateData ropData = (ReceiveOrderPaginateData) receiveOrderData;
+            receiveOrderBean.setMatchedCount(ropData.getMatchedCount());
+        }
         return receiveOrderBean;
     }
 
-    private String getCustomerNameById(int id, Map<Integer, String> customerIdNameMap){
+    private String getCustomerNameById(int id, Map<Integer, String> customerIdNameMap) {
         String customerName = customerIdNameMap.get(id);
         if (StringUtils.isNotEmpty(customerName)) {
             return customerName;
@@ -314,7 +333,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         roData.setStatus(ReceiveOrderStatus.CONFIRMED.value());
         roData.setAddLoginId(loginId);
         roData.setUpdateLoginId(loginId);
-		roData.setReverseRoId(0);
+        roData.setReverseRoId(0);
         return roData;
     }
 
@@ -468,5 +487,13 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     public void setCustomerNameService(CustomerNameService customerNameService) {
         this.customerNameService = customerNameService;
+    }
+
+    public int getRnId() {
+        return rnId;
+    }
+
+    public void setRnId(int rnId) {
+        this.rnId = rnId;
     }
 }

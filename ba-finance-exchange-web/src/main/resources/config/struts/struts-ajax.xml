@@ -24,6 +24,12 @@
             <result type="json"></result>
         </action>
 
+        <action name="loadRNStatusOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadRNStatusOption">
+            <result type="json"></result>
+        </action>
+
         <action name="loadBusinessTypeOption"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
                 method="loadBusinessTypeOption">
@@ -134,6 +140,35 @@
         <action name="fetchCustomerInfo"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.CustomerNameSuggestionAction"
                 method="fetchCustomerInfo">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadReceiveOrderInfo"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveNotifyAjaxAction"
+                method="loadReceiveOrderInfo">
+            <result type="json"></result>
+        </action>
+
+        <action name="findNotifiesByROId"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveNotifyAjaxAction"
+                method="findNotifiesByROId">
+            <result type="json"></result>
+        </action>
+
+        <action name="rornCancelLink"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveNotifyAjaxAction"
+                method="rornCancelLink">
+            <result type="json"></result>
+        </action>
+
+        <action name="confirmNotify"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction"
+                method="confirmNotify">
+            <result type="json"></result>
+        </action>
+
+        <action name="receiveNotifyList"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveNotifyAjaxAction">
             <result type="json"></result>
         </action>
     </package>

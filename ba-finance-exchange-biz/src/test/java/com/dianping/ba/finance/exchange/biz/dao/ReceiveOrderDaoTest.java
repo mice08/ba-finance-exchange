@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.biz.dao;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.core.type.PageModel;
 import junit.framework.Assert;
 import org.junit.Test;
@@ -55,30 +56,30 @@ public class ReceiveOrderDaoTest {
 	@Test
 	public void testPaginateReceiveOrderList() throws Exception {
 		ReceiveOrderSearchBean searchBean = new ReceiveOrderSearchBean();
-		searchBean.setCustomerId(8787);
-		searchBean.setBusinessType(4);
-
-		Calendar receiveTimeBeginCal = Calendar.getInstance();
-		receiveTimeBeginCal.set(Calendar.MONTH, 05);
-		receiveTimeBeginCal.set(Calendar.DAY_OF_MONTH, 16);
-		searchBean.setReceiveTimeBegin(receiveTimeBeginCal.getTime());
-
-		Calendar receiveTimeEndCal = Calendar.getInstance();
-		receiveTimeEndCal.set(Calendar.MONTH, 05);
-		receiveTimeEndCal.set(Calendar.DAY_OF_MONTH, 18);
-		searchBean.setReceiveTimeEnd(receiveTimeEndCal.getTime());
-
-		searchBean.setPayChannel(1);
-
-		Calendar bankReceiveTimeBeginCal = Calendar.getInstance();
-		bankReceiveTimeBeginCal.set(Calendar.MONTH, 05);
-		bankReceiveTimeBeginCal.set(Calendar.DAY_OF_MONTH, 16);
-		searchBean.setBankReceiveTimeBegin(bankReceiveTimeBeginCal.getTime());
-
-		Calendar bankReceiveTimeEndCal = Calendar.getInstance();
-		bankReceiveTimeEndCal.set(Calendar.MONTH, 05);
-		bankReceiveTimeEndCal.set(Calendar.DAY_OF_MONTH, 18);
-		searchBean.setBankReceiveTimeEnd(bankReceiveTimeEndCal.getTime());
+//		searchBean.setCustomerId(8787);
+		searchBean.setBusinessType(5);
+//
+//		Calendar receiveTimeBeginCal = Calendar.getInstance();
+//		receiveTimeBeginCal.set(Calendar.MONTH, 05);
+//		receiveTimeBeginCal.set(Calendar.DAY_OF_MONTH, 16);
+//		searchBean.setReceiveTimeBegin(receiveTimeBeginCal.getTime());
+//
+//		Calendar receiveTimeEndCal = Calendar.getInstance();
+//		receiveTimeEndCal.set(Calendar.MONTH, 05);
+//		receiveTimeEndCal.set(Calendar.DAY_OF_MONTH, 18);
+//		searchBean.setReceiveTimeEnd(receiveTimeEndCal.getTime());
+//
+//		searchBean.setPayChannel(1);
+//
+//		Calendar bankReceiveTimeBeginCal = Calendar.getInstance();
+//		bankReceiveTimeBeginCal.set(Calendar.MONTH, 05);
+//		bankReceiveTimeBeginCal.set(Calendar.DAY_OF_MONTH, 16);
+//		searchBean.setBankReceiveTimeBegin(bankReceiveTimeBeginCal.getTime());
+//
+//		Calendar bankReceiveTimeEndCal = Calendar.getInstance();
+//		bankReceiveTimeEndCal.set(Calendar.MONTH, 05);
+//		bankReceiveTimeEndCal.set(Calendar.DAY_OF_MONTH, 18);
+//		searchBean.setBankReceiveTimeEnd(bankReceiveTimeEndCal.getTime());
 
 		PageModel pm = receiveOrderDao.paginateReceiveOrderList(searchBean, 1, 20);
 		Assert.assertNotNull(pm);
@@ -171,5 +172,10 @@ public class ReceiveOrderDaoTest {
     public void testLoadReceiveOrderByRoId() throws Exception {
         ReceiveOrderData orderData = receiveOrderDao.loadReceiveOrderDataByRoId(449);
         Assert.assertNotNull(orderData);
+    }
+    @Test
+    public void testFindUnmatchAndUnconfirmedReceiveOrder() throws Exception {
+        List<ReceiveOrderData> orderDataList = receiveOrderDao.findUnmatchAndUnconfirmedReceiveOrder(ReceiveOrderStatus.UNCONFIRMED.value());
+        Assert.assertNotNull(orderDataList);
     }
 }

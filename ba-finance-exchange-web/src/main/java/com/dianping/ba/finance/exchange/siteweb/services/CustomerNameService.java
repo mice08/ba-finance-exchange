@@ -1,13 +1,14 @@
 package com.dianping.ba.finance.exchange.siteweb.services;
 
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.siteweb.beans.CustomerInfoBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.CustomerNameSuggestionBean;
 import com.dianping.customerinfo.api.CustomerInfoService;
-import com.dianping.customerinfo.dto.Customer;
 import com.dianping.customerinfo.dto.CustomerLite;
+import com.dianping.customerinfo.dto.CustomerShopLite;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 import com.dianping.midas.finance.api.dto.CorporationDTO;
@@ -57,7 +58,9 @@ public class CustomerNameService {
         }
         for (int customerId : adCustomerIdList) {
             CorporationDTO corporationDTO = corporationService.queryCorporationById(customerId);
-            customerIdNameMap.put(corporationDTO.getId(), corporationDTO.getName());
+            if (corporationDTO != null) {
+                customerIdNameMap.put(corporationDTO.getId(), corporationDTO.getName());
+            }
         }
 
     }
@@ -95,6 +98,26 @@ public class CustomerNameService {
         // 获取广告的客户名称
         fetchADCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
         return customerIdNameMap;
+    }
+
+    @Log(severity = 2, logBefore = true, logAfter = true)
+    @ReturnDefault
+    public Map<Integer, String> getRORNCustomerName(List<ReceiveNotifyData> receiveNotifyDataList, int loginId) {
+        Multimap<Integer, Integer> businessTypeCustomerIdMMap = rornGroupByBusinessType(receiveNotifyDataList);
+        Map<Integer, String> customerIdNameMap = Maps.newHashMap();
+        // 获取团购的客户名称
+        fetchTGCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
+        // 获取广告的客户名称
+        fetchADCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
+        return customerIdNameMap;
+    }
+
+    private Multimap<Integer, Integer> rornGroupByBusinessType(List<ReceiveNotifyData> receiveNotifyDataList) {
+        Multimap<Integer, Integer> businessTypeCustomerIdMMap = LinkedListMultimap.create(receiveNotifyDataList.size());
+        for (ReceiveNotifyData rnDate : receiveNotifyDataList) {
+            businessTypeCustomerIdMMap.put(rnDate.getBusinessType(), rnDate.getCustomerId());
+        }
+        return businessTypeCustomerIdMMap;
     }
 
     private Multimap<Integer, Integer> roGroupByBusinessType(List<ReceiveOrderData> receiveOrderDataList) {
@@ -140,18 +163,46 @@ public class CustomerNameService {
     }
 
     private List<CustomerNameSuggestionBean> fetchTGCustomerSuggestion(String customerName, int maxSize, int loginId) {
-        List<Customer> customerList = customerInfoService.searchByCustomerName(customerName, 0, maxSize, loginId);
+        List<CustomerShopLite> customerList = customerInfoService.searchByCustomerAndShopInfo(customerName, null, true, 0, maxSize).getY();
         if (CollectionUtils.isEmpty(customerList)) {
             return Collections.emptyList();
         }
         List<CustomerNameSuggestionBean> suggestionBeanList = Lists.newLinkedList();
-        for (Customer customer : customerList) {
+        for (CustomerShopLite customer : customerList) {
             CustomerNameSuggestionBean suggestionBean = new CustomerNameSuggestionBean();
             suggestionBean.setCustomerId(customer.getCustomerID());
-            suggestionBean.setCustomerName(customer.getCustomerName());
+            suggestionBean.setCustomerName(customer.getCustomreName());
             suggestionBeanList.add(suggestionBean);
         }
         return suggestionBeanList;
+    }
+
+    @Log(severity = 2, logBefore = true, logAfter = true)
+    @ReturnDefault
+    public CustomerInfoBean getCustomerInfoById(int businessType, int customerId, int loginId) {
+        if (businessType == BusinessType.GROUP_PURCHASE.value()) {
+            return fetchTGCustomerInfoById(customerId, loginId);
+        }
+        if (businessType == BusinessType.ADVERTISEMENT.value()) {
+            return fetchADCustomerInfoById(customerId, loginId);
+        }
+        return null;
+    }
+
+    private CustomerInfoBean fetchADCustomerInfoById(int customerId, int loginId) {
+        CorporationDTO corporationDTO = corporationService.queryCorporationById(customerId);
+        if (corporationDTO != null) {
+            CustomerInfoBean customerInfoBean = new CustomerInfoBean();
+            customerInfoBean.setCustomerId(corporationDTO.getId());
+            customerInfoBean.setCustomerName(corporationDTO.getName());
+            return customerInfoBean;
+        }
+        return null;
+    }
+
+    private CustomerInfoBean fetchTGCustomerInfoById(int customerId, int loginId) {
+        // TODO 待阿波罗团购提供接口
+        return null;
     }
 
     @Log(severity = 2, logBefore = true, logAfter = true)

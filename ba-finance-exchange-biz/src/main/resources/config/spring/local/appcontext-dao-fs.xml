@@ -69,4 +69,31 @@
         </property>
     </bean>
 
+    <bean id="authTokenDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.AuthTokenDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="AuthToken"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="receiveNotifyRecordDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ReceiveNotifyRecordDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="ReceiveNotifyRecord"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="receiveNotifyDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ReceiveNotifyDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="ReceiveNotify"/>
+            </bean>
+        </property>
+    </bean>
+
 </beans>

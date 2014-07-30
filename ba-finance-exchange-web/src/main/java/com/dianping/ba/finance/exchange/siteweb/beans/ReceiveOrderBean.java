@@ -27,6 +27,7 @@ public class ReceiveOrderBean {
     private int customerId;
     private String status;
     private String memo;
+    private int matchedCount;
 
     public int getRoId() {
         return roId;
@@ -202,5 +203,42 @@ public class ReceiveOrderBean {
 
     public void setPayTime(String payTime) {
         this.payTime = payTime;
+    }
+
+    public int getMatchedCount() {
+        return matchedCount;
+    }
+
+    public void setMatchedCount(int matchedCount) {
+        this.matchedCount = matchedCount;
+    }
+
+    @Override
+    public String toString() {
+        return "ReceiveOrderBean{" +
+                "roId=" + roId +
+                ", businessType='" + businessType + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", receiveAmount='" + receiveAmount + '\'' +
+                ", bankReceiveTime='" + bankReceiveTime + '\'' +
+                ", receiveTime='" + receiveTime + '\'' +
+                ", receiveType='" + receiveType + '\'' +
+                ", bizContent='" + bizContent + '\'' +
+                ", payerAccountName='" + payerAccountName + '\'' +
+                ", payerAccountNo='" + payerAccountNo + '\'' +
+                ", payerBankName='" + payerBankName + '\'' +
+                ", tradeNo='" + tradeNo + '\'' +
+                ", bankID=" + bankID +
+                ", reverseRoId=" + reverseRoId +
+                ", shopId=" + shopId +
+                ", payTime='" + payTime + '\'' +
+                ", payChannel='" + payChannel + '\'' +
+                ", applicationId='" + applicationId + '\'' +
+                ", payerName='" + payerName + '\'' +
+                ", customerId=" + customerId +
+                ", status='" + status + '\'' +
+                ", memo='" + memo + '\'' +
+                ", matchedCount=" + matchedCount +
+                '}';
     }
 }

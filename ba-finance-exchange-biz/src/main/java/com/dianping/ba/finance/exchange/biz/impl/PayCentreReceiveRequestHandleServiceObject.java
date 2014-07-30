@@ -5,6 +5,7 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.PayCentreReceiveRequestHandleService;
 import com.dianping.ba.finance.exchange.api.PayCentreReceiveRequestService;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
+import com.dianping.ba.finance.exchange.api.beans.BizInfoBean;
 import com.dianping.ba.finance.exchange.api.datas.PayCentreReceiveRequestData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.dtos.PayCentreReceiveRequestDTO;
@@ -12,11 +13,11 @@ import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
+import com.dianping.ba.finance.exchange.biz.service.BizInfoService;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 import com.dianping.finance.common.util.ConvertUtils;
 import com.dianping.finance.common.util.DateUtils;
-
 import java.math.BigDecimal;
 import java.util.concurrent.ExecutorService;
 
@@ -25,43 +26,45 @@ import java.util.concurrent.ExecutorService;
  */
 public class PayCentreReceiveRequestHandleServiceObject implements PayCentreReceiveRequestHandleService {
 
-    private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.biz.monitor.PayCentreReceiveRequestHandleServiceObject");
+	private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.biz.monitor.PayCentreReceiveRequestHandleServiceObject");
 
-    private ReceiveOrderService receiveOrderService;
+	private ReceiveOrderService receiveOrderService;
 
-    private PayCentreReceiveRequestService payCentreReceiveRequestService;
+	private PayCentreReceiveRequestService payCentreReceiveRequestService;
 
-    private ExecutorService executorService;
+	private ExecutorService executorService;
 
-    @Log(logBefore = true, logAfter = true, severity = 1)
-    @ReturnDefault
-    @Override
-    public boolean handleReceiveRequest(final PayCentreReceiveRequestDTO payCentreReceiveRequestDTO) {
-        final PayCentreReceiveRequestData payCentreReceiveRequestData = buildPayCentreReceiveRequestData(payCentreReceiveRequestDTO);
-        payCentreReceiveRequestService.insertPayCentreReceiveRequest(payCentreReceiveRequestData);
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                doHandle(payCentreReceiveRequestDTO);
-            }
-        });
-        return true;
-    }
+	private BizInfoService bizInfoService;
+	@Log(logBefore = true, logAfter = true, severity = 1)
+	@ReturnDefault
+	@Override
+	public boolean handleReceiveRequest(final PayCentreReceiveRequestDTO payCentreReceiveRequestDTO) {
+		final PayCentreReceiveRequestData payCentreReceiveRequestData = buildPayCentreReceiveRequestData(payCentreReceiveRequestDTO);
+		payCentreReceiveRequestService.insertPayCentreReceiveRequest(payCentreReceiveRequestData);
+		executorService.execute(new Runnable() {
+			@Override
+			public void run() {
+				doHandle(payCentreReceiveRequestDTO);
+			}
+		});
+		return true;
+	}
 
 	private PayCentreReceiveRequestData buildPayCentreReceiveRequestData(PayCentreReceiveRequestDTO payCentreReceiveRequestDTO) {
-		try{
+		try {
 			PayCentreReceiveRequestData payCentreReceiveRequestData = ConvertUtils.copy(payCentreReceiveRequestDTO, PayCentreReceiveRequestData.class);
 			payCentreReceiveRequestData.setAddTime(DateUtils.getCurrentTime());
 			return payCentreReceiveRequestData;
-		}catch (Exception e){
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-    /**
-     * 处理支付中心收款请求
-     * @param requestDTO
-     */
+	/**
+	 * 处理支付中心收款请求
+	 *
+	 * @param requestDTO
+	 */
 	private void doHandle(PayCentreReceiveRequestDTO requestDTO) {
 		if (requestDTO.getTradeType() == 1) {
 			doHandleReceive(requestDTO);
@@ -72,22 +75,23 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 
 	/**
 	 * 处理支付中心收款请求-冲销 (可考虑将此逻辑移至ReceiveOrder)
+	 *
 	 * @param requestDTO
 	 * @return
 	 */
 	private boolean doHandleReverse(PayCentreReceiveRequestDTO requestDTO) {
 		ReceiveOrderData originReceiveOrder = receiveOrderService.loadReceiveOrderByTradeNo(requestDTO.getOriTradeNo());
-		if (originReceiveOrder == null){
+		if (originReceiveOrder == null) {
 			MONITOR_LOGGER.error("severity=[1] reverse not find origin receive order");
 			return false;
 		}
 
-		if (ReceiveOrderStatus.CONFIRMED.value() == originReceiveOrder.getStatus()){
+		if (ReceiveOrderStatus.CONFIRMED.value() == originReceiveOrder.getStatus()) {
 			requestDTO.setReceiveAmount(BigDecimal.ZERO.subtract(requestDTO.getReceiveAmount()));
 			ReceiveOrderData receiveOrderData = buildReceiveOrderData(requestDTO, originReceiveOrder.getReverseRoId());
 			int reverseRoId = receiveOrderService.createReceiveOrder(receiveOrderData);
 			receiveOrderService.updateReverseRoId(originReceiveOrder.getRoId(), reverseRoId);
-		}else{
+		} else {
 			receiveOrderService.dropReceiveOrder(originReceiveOrder.getRoId(), requestDTO.getTradeNo());
 		}
 		return true;
@@ -95,6 +99,7 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 
 	/**
 	 * 处理支付中心收款请求-收款
+	 *
 	 * @param requestDTO
 	 * @return
 	 */
@@ -104,10 +109,13 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 	}
 
 	private ReceiveOrderData buildReceiveOrderData(PayCentreReceiveRequestDTO requestDTO, int reverseRoId) {
-		ReceiveOrderData roData = new ReceiveOrderData();
-		int customerId = getAdCustomerIdByBizContent(requestDTO.getBizContent());
-		roData.setCustomerId(customerId);
-		roData.setTradeNo(requestDTO.getTradeNo());
+        ReceiveOrderData roData = new ReceiveOrderData();
+        BizInfoBean bean = bizInfoService.getBizInfo(requestDTO);
+        if (bean != null) {
+            int customerId = bean.getCustomerId();
+            roData.setCustomerId(customerId);
+        }
+        roData.setTradeNo(requestDTO.getTradeNo());
 		roData.setBusinessType(BusinessType.valueOfPayCentre(requestDTO.getBusinessType()).value());
 		roData.setReceiveAmount(requestDTO.getReceiveAmount());
 		roData.setBankReceiveTime(requestDTO.getReceiveDate());
@@ -116,7 +124,7 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 		roData.setBizContent(requestDTO.getBizContent());
 		roData.setBankID(requestDTO.getBankId());
 		roData.setMemo(requestDTO.getMemo());
-		int status = (customerId > 0 || reverseRoId > 0) ? ReceiveOrderStatus.CONFIRMED.value():ReceiveOrderStatus.UNCONFIRMED.value();
+		int status = (roData.getCustomerId() > 0 || reverseRoId > 0) ? ReceiveOrderStatus.CONFIRMED.value() : ReceiveOrderStatus.UNCONFIRMED.value();
 		roData.setStatus(status);
 		roData.setAddLoginId(0);
 		roData.setUpdateLoginId(0);
@@ -124,20 +132,19 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 		return roData;
 	}
 
-	private int getAdCustomerIdByBizContent(String bizContent){
-		//Todo:替换为接口
-		return 100;
+	public void setReceiveOrderService(ReceiveOrderService receiveOrderService) {
+		this.receiveOrderService = receiveOrderService;
 	}
 
-    public void setReceiveOrderService(ReceiveOrderService receiveOrderService) {
-        this.receiveOrderService = receiveOrderService;
-    }
+	public void setExecutorService(ExecutorService executorService) {
+		this.executorService = executorService;
+	}
 
-    public void setExecutorService(ExecutorService executorService) {
-        this.executorService = executorService;
-    }
+	public void setPayCentreReceiveRequestService(PayCentreReceiveRequestService payCentreReceiveRequestService) {
+		this.payCentreReceiveRequestService = payCentreReceiveRequestService;
+	}
 
-    public void setPayCentreReceiveRequestService(PayCentreReceiveRequestService payCentreReceiveRequestService) {
-        this.payCentreReceiveRequestService = payCentreReceiveRequestService;
-    }
+	public void setBizInfoService(BizInfoService bizInfoService) {
+		this.bizInfoService = bizInfoService;
+	}
 }

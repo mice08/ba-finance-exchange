@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ReceiveNotifyRecord">
+    <typeAlias alias="ReceiveNotifyRecordData" type="com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyRecordData"></typeAlias>
+    <resultMap id="receiveNotifyRecordData" class="ReceiveNotifyRecordData">
+        <result property="recordId" column="RecordID"/>
+        <result property="applicationId" column="ApplicationID"/>
+        <result property="businessType" column="BusinessType"/>
+        <result property="receiveAmount" column="ReceiveAmount"/>
+        <result property="customerId" column="CustomerID"/>
+        <result property="payChannel" column="PayChannel"/>
+        <result property="receiveType" column="ReceiveType"/>
+        <result property="payTime" column="PayTime"/>
+        <result property="payerName" column="PayerName"/>
+        <result property="bizContent" column="BizContent"/>
+        <result property="attachment" column="Attachment"/>
+        <result property="memo" column="Memo"/>
+        <result property="requestTime" column="RequestTime"/>
+        <result property="token" column="Token"/>
+        <result property="bankId" column="BankID"/>
+    </resultMap>
+
+    <insert id="insertReceiveNotifyRecord" parameterClass="map">
+        <![CDATA[
+            INSERT INTO FC_ReceiveNotifyRecord
+                        (ApplicationID,
+                         BusinessType,
+                         ReceiveAmount,
+                         CustomerID,
+                         PayChannel,
+                         ReceiveType,
+                         PayTime,
+                         PayerName,
+                         BizContent,
+                         Attachment,
+                         Memo,
+                         RequestTime,
+                         Token,
+                         BankID
+                         )
+            VALUES      (#receiveNotifyRecordData.applicationId#,
+                         #receiveNotifyRecordData.businessType#,
+                         #receiveNotifyRecordData.receiveAmount#,
+                         #receiveNotifyRecordData.customerId#,
+                         #receiveNotifyRecordData.payChannel#,
+                         #receiveNotifyRecordData.receiveType#,
+                         #receiveNotifyRecordData.payTime#,
+                         #receiveNotifyRecordData.payerName#,
+                         #receiveNotifyRecordData.bizContent#,
+                         #receiveNotifyRecordData.attachment#,
+                         #receiveNotifyRecordData.memo#,
+                         #receiveNotifyRecordData.requestTime#,
+                         #receiveNotifyRecordData.token#,
+                         #receiveNotifyRecordData.bankId#)
+
+        ]]>
+        <selectKey resultClass="java.lang.Integer" keyProperty="recordId">
+            <![CDATA[
+			SELECT @@IDENTITY AS id
+		]]>
+        </selectKey>
+    </insert>
+</sqlMap>

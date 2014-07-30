@@ -1,16 +1,14 @@
 package com.dianping.ba.finance.exchange.siteweb.services
-
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData
 import com.dianping.ba.finance.exchange.api.enums.BusinessType
 import com.dianping.customerinfo.api.CustomerInfoService
-import com.dianping.customerinfo.dto.Customer
 import com.dianping.customerinfo.dto.CustomerLite
+import com.dianping.customerinfo.dto.CustomerShopLite
 import com.dianping.midas.finance.api.dto.CorporationDTO
 import com.dianping.midas.finance.api.service.CorporationService
 import spock.lang.Specification
 import spock.lang.Unroll
-
 /**
  * Created by noahshen on 14-7-7.
  */
@@ -92,9 +90,10 @@ class CustomerNameServiceTest extends Specification {
     @Unroll
     def "get customer name suggestions"(String customerNameParam, Integer businessType, Integer customerId, String customerName) {
         given:
-        customerInfoServiceMock.searchByCustomerName(_ as String, 0, _ as Integer, _ as Integer) >> { args ->
-            Customer customer = [customerID: 123, customerName: args[0] + "-客户名称"];
-            [customer]
+        customerInfoServiceMock.searchByCustomerAndShopInfo(_ as String, null, true, _ as Integer, _ as Integer) >> { args ->
+            CustomerShopLite customer = [customerID: 123, customreName: args[0] + "-客户名称"];
+            com.dianping.customerinfo.dto.Tuple t = new com.dianping.customerinfo.dto.Tuple(null, [customer])
+            t
         }
         corporationServiceMock.queryCorporationByName(_ as String, _ as Integer) >> { String name, Integer maxSize ->
             CorporationDTO corporationDTO = [id: 125, name: name + "-客户名称-广告"]
@@ -130,6 +129,26 @@ class CustomerNameServiceTest extends Specification {
         bizContent | businessType                        | customerId | customerName
         "AD123123" | BusinessType.ADVERTISEMENT.value()  | 125        | "AD123123-客户名称-广告"
         "TG123456" | BusinessType.GROUP_PURCHASE.value() | null       | null
+
+    }
+
+    @Unroll
+    def "get Customer Info by Id"(Integer customerIdParam, Integer businessType, Integer customerId, String customerName) {
+        given:
+        corporationServiceMock.queryCorporationById(_ as Integer) >> { Integer custId ->
+            CorporationDTO corporationDTO = [id: custId, name: "客户名称-广告"]
+            corporationDTO
+        }
+
+        expect:
+        def customerInfoBean = customerNameServiceStub.getCustomerInfoById(businessType, customerIdParam, -1);
+        customerId == customerInfoBean?.customerId;
+        customerName == customerInfoBean?.customerName;
+
+        where:
+        customerIdParam | businessType                        | customerId | customerName
+        123             | BusinessType.ADVERTISEMENT.value()  | 123        | "客户名称-广告"
+        789             | BusinessType.GROUP_PURCHASE.value() | null       | null
 
     }
 }
