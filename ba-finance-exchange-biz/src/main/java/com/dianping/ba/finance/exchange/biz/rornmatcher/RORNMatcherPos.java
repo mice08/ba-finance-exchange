@@ -41,7 +41,7 @@ public class RORNMatcherPos implements RORNMatcher {
         BigDecimal roAmount = receiveOrderData.getReceiveAmount();
         BigDecimal rnAmount = receiveNotifyData.getReceiveAmount();
         if (roAmount != null && rnAmount != null) {
-            return rnAmount.compareTo(rnAmount) == 0;
+            return rnAmount.compareTo(roAmount) == 0;
         }
         return false;
     }
