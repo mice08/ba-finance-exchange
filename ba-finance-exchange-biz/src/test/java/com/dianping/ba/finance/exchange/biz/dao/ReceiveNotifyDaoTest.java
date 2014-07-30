@@ -127,12 +127,4 @@ public class ReceiveNotifyDaoTest {
         BigDecimal totalAmount = receiveNotifyDao.loadTotalReceiveAmountByCondition(receiveNotifySearchBean);
         Assert.assertTrue(totalAmount.doubleValue() == 100.3);
     }
-
-    @Test
-    public void testLoadTotalCountByCondition() throws Exception {
-        ReceiveNotifySearchBean receiveNotifySearchBean = new ReceiveNotifySearchBean();
-        receiveNotifySearchBean.setReceiveAmount(BigDecimal.valueOf(10.03));
-        int totalCount = receiveNotifyDao.loadTotalCountByCondition(receiveNotifySearchBean);
-        Assert.assertTrue(totalCount == 10);
-    }
 }

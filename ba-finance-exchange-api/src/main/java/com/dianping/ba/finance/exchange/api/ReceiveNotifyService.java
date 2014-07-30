@@ -78,13 +78,6 @@ public interface ReceiveNotifyService {
     BigDecimal loadTotalReceiveAmountByCondition(ReceiveNotifySearchBean receiveNotifySearchBean);
 
     /**
-     * 查询满足条件的收款通知
-     * @param receiveNotifySearchBean
-     * @return
-     */
-    int loadTotalCountByCondition(ReceiveNotifySearchBean receiveNotifySearchBean);
-
-    /**
      * 获取与某个收款单匹配的收款通知
      * @param roId
      * @return
