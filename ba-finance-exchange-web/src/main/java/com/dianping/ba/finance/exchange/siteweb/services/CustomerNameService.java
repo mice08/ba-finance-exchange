@@ -58,7 +58,9 @@ public class CustomerNameService {
         }
         for (int customerId : adCustomerIdList) {
             CorporationDTO corporationDTO = corporationService.queryCorporationById(customerId);
-            customerIdNameMap.put(corporationDTO.getId(), corporationDTO.getName());
+            if (corporationDTO != null) {
+                customerIdNameMap.put(corporationDTO.getId(), corporationDTO.getName());
+            }
         }
 
     }
