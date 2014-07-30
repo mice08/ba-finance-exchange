@@ -90,17 +90,17 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 		}
 	}
 
-    @Override
-    public int getCode() {
-        return code;
-    }
+	@Override
+	public int getCode() {
+		return code;
+	}
 
-    @Override
-    public Map<String, Object> getMsg() {
-        return msg;
-    }
+	@Override
+	public Map<String, Object> getMsg() {
+		return msg;
+	}
 
-    private List<ReceiveNotifyBean> buildReceiveNotifyBeans(List<ReceiveNotifyData> records) {
+	private List<ReceiveNotifyBean> buildReceiveNotifyBeans(List<ReceiveNotifyData> records) {
 		if (CollectionUtils.isEmpty(records)) {
 			return Collections.emptyList();
 		}
@@ -117,7 +117,11 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 	private ReceiveNotifyBean convertRNDataToRNBean(ReceiveNotifyData receiveNotifyData, Map<Integer, String> customerIdNameMap) {
 		ReceiveNotifyBean bean = new ReceiveNotifyBean();
 		bean.setReceiveNotifyId(receiveNotifyData.getApplicationId());
-		bean.setAttachment(receiveNotifyData.getAttachment());
+		if (receiveNotifyData.getAttachment().trim().equals("")) {
+			bean.setAttachment("nourl");
+		} else {
+			bean.setAttachment(receiveNotifyData.getAttachment());
+		}
 		bean.setBizContent(receiveNotifyData.getBizContent());
 		bean.setMemo(receiveNotifyData.getMemo());
 		bean.setPayerName(receiveNotifyData.getPayerName());
@@ -135,8 +139,6 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 		}
 		return bean;
 	}
-
-
 
 
 	private ReceiveNotifySearchBean buildRNSearchBean() throws ParseException {
