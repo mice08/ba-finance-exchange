@@ -1,6 +1,7 @@
 <tags>
     <set name="收款管理">
         <link name="收款单查询" url="http://${ba-finance-exchange-web.Domain}/exchange/receiveorder/orderlist"/>
+        <link name="收款通知单查询" url="http://${ba-finance-exchange-web.Domain}/exchange/receiveNotify/orderlist"/>
     </set>
     <set name="付款管理">
         <link name="付款计划查询" url="http://${ba-finance-settle-web.Domain}/settle/payplan/payplanlist"/>
