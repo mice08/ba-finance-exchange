@@ -43,6 +43,7 @@
         <property name="receiveOrderResultNotify" ref="receiveOrderResultNotify"/>
         <property name="rornMatchFireService" ref="rornMatchFireService"/>
         <property name="receiveNotifyService" ref="receiveNotifyService"/>
+        <property name="rornMatchService" ref="rornMatchService"/>
     </bean>
 
     <bean id="receiveBankService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveBankServiceObject">

@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.RORNMatchFireService;
+import com.dianping.ba.finance.exchange.api.RORNMatchService;
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderResultBean;
@@ -10,10 +11,7 @@ import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
-import com.dianping.ba.finance.exchange.api.enums.BusinessType;
-import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
-import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
-import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
+import com.dianping.ba.finance.exchange.api.enums.*;
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify;
 import com.dianping.core.type.PageModel;
@@ -35,6 +33,8 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
     private ReceiveOrderDao receiveOrderDao;
 
     private RORNMatchFireService rornMatchFireService;
+
+    private RORNMatchService rornMatchService;
 
     private ReceiveOrderResultNotify receiveOrderResultNotify;
 
@@ -61,7 +61,7 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
             receiveOrderResultNotify.receiveResultNotify(receiveOrderResultBean);
             String applicationId = receiveOrderData.getApplicationId();
             if (StringUtils.isNotBlank(applicationId)) {
-                rornMatchFireService.executeMatchingForReceiveOrderConfirmed(receiveOrderData);
+                relateRORN(roId,applicationId);
             }
         } else {
             rornMatchFireService.executeMatchingForNewReceiveOrder(receiveOrderData);
@@ -224,6 +224,38 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         return u == 1;
     }
 
+    @Override
+    public boolean manuallyUpdateReceiveOrder(ReceiveOrderUpdateBean receiveOrderUpdateBean) {
+        if (receiveOrderUpdateBean.getStatus() == ReceiveOrderStatus.CONFIRMED.value() && !StringUtils.isEmpty(receiveOrderUpdateBean.getApplicationId()) && relateRORN(receiveOrderUpdateBean.getRoId(),receiveOrderUpdateBean.getApplicationId())) {
+            int u = updateReceiveOrderConfirm(receiveOrderUpdateBean);
+            return u == 1;
+        }
+        return false;
+    }
+
+    private boolean relateRORN(int roId, String applicationId){
+        ReceiveOrderData roData = receiveOrderDao.loadReceiveOrderDataByRoId(roId);
+        ReceiveNotifyData rnData = receiveNotifyService.loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus.INIT, roData.getBusinessType(), applicationId);
+        if (roData == null) {
+            MONITOR_LOGGER.error(String.format("severity=[1] ReceiveOrderServiceObject.manuallyUpdateReceiveOrder ReceiveOrderData no found! roId=%s", roId));
+            return false;
+        }
+        if (rnData == null) {
+            MONITOR_LOGGER.error(String.format("severity=[1] ReceiveOrderServiceObject.manuallyUpdateReceiveOrder ReceiveNotifyData no found! biz=%s, applicationId=%s", roData.getBusinessType(), roData.getApplicationId()));
+            return false;
+        }
+        if (!rornMatchService.doMatch(roData, rnData)) {
+            MONITOR_LOGGER.error(String.format("severity=[1] ReceiveOrderServiceObject.manuallyUpdateReceiveOrder ReceiveNotifyData and ReceiveOrderData no match! roId=%s, rnId=%s", roData.getRoId(), rnData.getReceiveNotifyId()));
+            return false;
+        }
+        boolean update = receiveNotifyService.updateReceiveNotifyConfirm(roData.getRoId(), rnData.getReceiveNotifyId());
+        if (!update) {
+            MONITOR_LOGGER.error(String.format("severity=[1] ReceiveOrderServiceObject.manuallyUpdateReceiveOrder updateReceiveNotifyConfirm error! roId=%s, rnId=%s", roData.getRoId(), rnData.getReceiveNotifyId()));
+            return false;
+        }
+        return true;
+    }
+
     private ReceiveOrderUpdateBean buildReceiveOrderUpdateBean(ReceiveOrderData roData, ReceiveNotifyData rnData, int loginId) {
         ReceiveOrderUpdateBean updateBean = new ReceiveOrderUpdateBean();
         updateBean.setApplicationId(rnData.getApplicationId());
@@ -253,5 +285,9 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
 
     public void setReceiveNotifyService(ReceiveNotifyService receiveNotifyService) {
         this.receiveNotifyService = receiveNotifyService;
+    }
+
+    public void setRornMatchService(RORNMatchService rornMatchService) {
+        this.rornMatchService = rornMatchService;
     }
 }

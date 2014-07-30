@@ -17,4 +17,11 @@ public interface RORNMatchService {
      * @param receiveNotifyDataList
      */
     RORNMatchingResultBean matching(List<ReceiveOrderData> receiveOrderDataList, List<ReceiveNotifyData> receiveNotifyDataList);
+
+    /**
+     * get single rnData and roData matching result;
+     * @param rnData
+     * @param roData
+     */
+    boolean doMatch(ReceiveOrderData roData, ReceiveNotifyData rnData);
 }
