@@ -75,7 +75,11 @@
     <td class="fs tb-item auto-break">{{= record.bizContent}}</td>
     <td class="fs tb-item auto-break">{{= record.payChannel}}</td>
     <td class="fs tb-item auto-break">{{= record.memo}}</td>
-    <td class="fs tb-item auto-break"><a href="{{= record.attachment}}" target="_blank">附件</a></td>
+    <td class="fs tb-item auto-break">
+    {{if record.attachment!="nourl"}}
+    <a href="{{= record.attachment}}" target="_blank">附件</a>
+    {{/if}}
+    </td>
     <td class="fs tb-item auto-break">{{= record.bankId}}</td>
     <td class="fs tb-item auto-break">{{= record.status}}</td>
     </tr>
