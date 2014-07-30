@@ -212,16 +212,4 @@ class ReceiveNotifyServiceObjectTest extends Specification {
 
     }
 
-    @Unroll
-    def "loadTotalCountByCondition"(){
-        setup:
-        ReceiveNotifySearchBean receiveNotifySearchBean = ["businessType":5,"bankId":11];
-
-        when:
-        receiveNotifyServiceStub.loadTotalCountByCondition(receiveNotifySearchBean);
-
-        then:
-        1 * receiveNotifyDaoMock.loadTotalCountByCondition(_ as ReceiveNotifySearchBean);
-
-    }
 }

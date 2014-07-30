@@ -75,11 +75,6 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
         return receiveNotifyDao.loadTotalReceiveAmountByCondition(receiveNotifySearchBean);
     }
 
-    @Override
-    public int loadTotalCountByCondition(ReceiveNotifySearchBean receiveNotifySearchBean) {
-        return receiveNotifyDao.loadTotalCountByCondition(receiveNotifySearchBean);
-    }
-
     @Log(severity = 3, logBefore = true, logAfter = true)
     @ReturnDefault
     @Override
