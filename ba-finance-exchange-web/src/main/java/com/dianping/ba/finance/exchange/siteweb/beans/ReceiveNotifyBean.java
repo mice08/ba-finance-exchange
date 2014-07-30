@@ -12,7 +12,7 @@ import java.util.Date;
  * 返回给前端页面的收款通知
  */
 public class ReceiveNotifyBean {
-	private int receiveNotifyId;
+	private String receiveNotifyId;
 	private String businessType;
 	private BigDecimal receiveAmount;
 	private String payChannel;
@@ -26,11 +26,11 @@ public class ReceiveNotifyBean {
 	private String status;
 	private String memo;
 
-	public int getReceiveNotifyId() {
+	public String getReceiveNotifyId() {
 		return receiveNotifyId;
 	}
 
-	public void setReceiveNotifyId(int receiveNotifyId) {
+	public void setReceiveNotifyId(String receiveNotifyId) {
 		this.receiveNotifyId = receiveNotifyId;
 	}
 

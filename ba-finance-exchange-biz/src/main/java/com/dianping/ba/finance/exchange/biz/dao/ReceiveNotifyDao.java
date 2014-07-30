@@ -8,6 +8,7 @@ import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.core.type.PageModel;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -74,5 +75,7 @@ public interface ReceiveNotifyDao extends GenericDao {
                                    @DAOParam("roId") int roId,
                                    @DAOParam("rnId") int rnId);
 
+    @DAOAction(action = DAOActionType.LOAD)
+    BigDecimal loadTotalReceiveAmountByCondition(@DAOParam("receiveNotifySearchBean")ReceiveNotifySearchBean receiveNotifySearchBean);
 }
 

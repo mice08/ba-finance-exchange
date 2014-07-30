@@ -1,5 +1,4 @@
 package com.dianping.ba.finance.exchange.biz.impl
-
 import com.dianping.ba.finance.exchange.api.RORNMatchFireService
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
 import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean
@@ -199,4 +198,18 @@ class ReceiveNotifyServiceObjectTest extends Specification {
         1 * receiveNotifyDaoMock.paginateReceiveNotifyList(_ as ReceiveNotifySearchBean, _ as Integer, _ as Integer);
 
     }
+
+    @Unroll
+    def "loadTotalReceiveAmountByCondition"(){
+        setup:
+        ReceiveNotifySearchBean receiveNotifySearchBean = ["businessType":5,"bankId":11];
+
+        when:
+        receiveNotifyServiceStub.loadTotalReceiveAmountByCondition(receiveNotifySearchBean);
+
+        then:
+        1 * receiveNotifyDaoMock.loadTotalReceiveAmountByCondition(_ as ReceiveNotifySearchBean);
+
+    }
+
 }

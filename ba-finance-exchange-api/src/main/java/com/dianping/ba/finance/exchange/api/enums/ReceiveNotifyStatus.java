@@ -10,7 +10,7 @@ public enum ReceiveNotifyStatus {
 	 */
 	DEFAULT(0, "异常"),
 
-    INIT(1, "初始"),
+    INIT(1, "待确认"),
 
     // 2为处理失败，见ReceiveNotifyResultStatus
 
@@ -18,7 +18,7 @@ public enum ReceiveNotifyStatus {
 
     MATCHED(4, "已匹配"),
 
-    CONFIRMED(5, "已关联");
+    CONFIRMED(5, "已确认");
 
     private int status;
 

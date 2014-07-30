@@ -82,6 +82,7 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 			ReceiveNotifySearchBean searchBean = buildRNSearchBean();
 			receiveNotifyModel = receiveNotifyService.paginateReceiveNotifyList(searchBean, page, pageSize);
 			receiveNotifyModel.setRecords(buildReceiveNotifyBeans((List<ReceiveNotifyData>) receiveNotifyModel.getRecords()));
+			totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(receiveNotifyService.loadTotalReceiveAmountByCondition(searchBean));
 			code = SUCCESS_CODE;
 		} catch (Exception e) {
 			MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.jsonExecute error!", e);
@@ -115,7 +116,7 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 
 	private ReceiveNotifyBean convertRNDataToRNBean(ReceiveNotifyData receiveNotifyData, Map<Integer, String> customerIdNameMap) {
 		ReceiveNotifyBean bean = new ReceiveNotifyBean();
-		bean.setReceiveNotifyId(receiveNotifyData.getReceiveNotifyId());
+		bean.setReceiveNotifyId(receiveNotifyData.getApplicationId());
 		bean.setAttachment(receiveNotifyData.getAttachment());
 		bean.setBizContent(receiveNotifyData.getBizContent());
 		bean.setMemo(receiveNotifyData.getMemo());
@@ -126,8 +127,8 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 		bean.setBusinessType(BusinessType.valueOf(receiveNotifyData.getBusinessType()).toString());
 		bean.setPayChannel(ReceiveOrderPayChannel.valueOf(receiveNotifyData.getPayChannel()).toString());
 		bean.setCustomerId(customerIdNameMap.get(receiveNotifyData.getCustomerId()));
-		bean.setReceiveNotifyId(receiveNotifyData.getReceiveNotifyId());
 		bean.setReceiveType(ReceiveType.valueOf(receiveNotifyData.getReceiveType()).toString());
+		bean.setStatus(ReceiveNotifyStatus.valueOf(receiveNotifyData.getStatus()).toString());
 		ReceiveBankData bankData = receiveBankService.loadReceiveBankByBankId(receiveNotifyData.getBankId());
 		if (bankData != null) {
 			bean.setBankId(CompanyIDName.valueOf(bankData.getCompanyId()).toString());

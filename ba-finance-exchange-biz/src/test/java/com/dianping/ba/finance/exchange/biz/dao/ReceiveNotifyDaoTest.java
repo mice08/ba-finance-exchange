@@ -118,4 +118,13 @@ public class ReceiveNotifyDaoTest {
         PageModel pageModel = receiveNotifyDao.paginateReceiveNotifyList(receiveNotifySearchBean,1,20);
         Assert.assertTrue(pageModel.getRecordCount()>0);
     }
+
+    @Test
+    public void testLoadTotalReceiveAmountByCondition() throws Exception {
+        ReceiveNotifySearchBean receiveNotifySearchBean = new ReceiveNotifySearchBean();
+        receiveNotifySearchBean.setBusinessType(5);
+        receiveNotifySearchBean.setReceiveAmount(BigDecimal.valueOf(10.03));
+        BigDecimal totalAmount = receiveNotifyDao.loadTotalReceiveAmountByCondition(receiveNotifySearchBean);
+        Assert.assertTrue(totalAmount.doubleValue() == 100.3);
+    }
 }
