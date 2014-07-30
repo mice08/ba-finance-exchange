@@ -174,7 +174,7 @@ class ReceiveNotifyServiceObjectTest extends Specification {
     @Unroll
     def "updateReceiveNotifyConfirm"(Integer roId, Integer rnId, Boolean updated) {
         given:
-        receiveNotifyDaoMock.updateReceiveNotifyConfirm(ReceiveNotifyStatus.CONFIRMED.value(), ReceiveNotifyStatus.MATCHED.value(), _ as Integer, _ as Integer) >> { args ->
+        receiveNotifyDaoMock.updateReceiveNotifyConfirm(ReceiveNotifyStatus.CONFIRMED.value(), _ as Integer, _ as Integer) >> { args ->
             1
         }
 

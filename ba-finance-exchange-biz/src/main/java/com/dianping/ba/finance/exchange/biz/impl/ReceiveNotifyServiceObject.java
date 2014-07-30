@@ -99,7 +99,7 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
 
     @Override
     public boolean updateReceiveNotifyConfirm(int roId, int rnId) {
-        int u = receiveNotifyDao.updateReceiveNotifyConfirm(ReceiveNotifyStatus.CONFIRMED.value(), ReceiveNotifyStatus.MATCHED.value(), roId, rnId);
+        int u = receiveNotifyDao.updateReceiveNotifyConfirm(ReceiveNotifyStatus.CONFIRMED.value(), roId, rnId);
         return u == 1;
     }
 
