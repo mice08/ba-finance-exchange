@@ -5,6 +5,7 @@ import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
 import com.dianping.core.type.PageModel;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -68,6 +69,13 @@ public interface ReceiveNotifyService {
      * @return
      */
     PageModel paginateReceiveNotifyList(ReceiveNotifySearchBean receiveNotifySearchBean, int page, int max);
+
+    /**
+     * 查询满足条件的收款总金额
+     * @param receiveNotifySearchBean
+     * @return
+     */
+    BigDecimal loadTotalReceiveAmountByCondition(ReceiveNotifySearchBean receiveNotifySearchBean);
 
     /**
      * 获取与某个收款单匹配的收款通知

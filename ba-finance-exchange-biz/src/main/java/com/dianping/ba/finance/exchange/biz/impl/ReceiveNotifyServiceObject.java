@@ -9,6 +9,7 @@ import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -68,6 +69,11 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
     public PageModel paginateReceiveNotifyList(ReceiveNotifySearchBean receiveNotifySearchBean, int page, int max) {
 		return receiveNotifyDao.paginateReceiveNotifyList(receiveNotifySearchBean, page, max);
 	}
+
+    @Override
+    public BigDecimal loadTotalReceiveAmountByCondition(ReceiveNotifySearchBean receiveNotifySearchBean) {
+        return receiveNotifyDao.loadTotalReceiveAmountByCondition(receiveNotifySearchBean);
+    }
 
     @Log(severity = 3, logBefore = true, logAfter = true)
     @ReturnDefault
