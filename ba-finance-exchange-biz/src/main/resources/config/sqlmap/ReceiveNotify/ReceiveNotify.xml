@@ -315,6 +315,67 @@
            AND ROMatcherID = #roId#
     </select>
 
+    <select id="loadTotalCountByCondition" resultClass="int" parameterClass="map">
+        SELECT COUNT(ReceiveNotifyID)
+        FROM FC_ReceiveNotify
+        <dynamic prepend="where">
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.businessType" compareValue="0">
+                BusinessType = #receiveNotifySearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.customerId" compareValue="0">
+                CustomerID = #receiveNotifySearchBean.customerId#
+            </isGreaterThan>
+            <isNotEmpty prepend="and" property="receiveNotifySearchBean.payTimeBegin">
+                PayTime &gt;= #receiveNotifySearchBean.payTimeBegin#
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="receiveNotifySearchBean.payTimeEnd">
+                PayTime &lt;= #receiveNotifySearchBean.payTimeEnd#
+            </isNotEmpty>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.payChannel" compareValue="0">
+                PayChannel = #receiveNotifySearchBean.payChannel#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.receiveAmount" compareValue="0">
+                ReceiveAmount = #receiveNotifySearchBean.receiveAmount#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.bankId" compareValue="0">
+                BankID = #receiveNotifySearchBean.bankId#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.status" compareValue="0">
+                Status =#receiveNotifySearchBean.status#
+            </isGreaterThan>
+        </dynamic>
+    </select>
+
+    <select id="loadTotalReceiveAmountByCondition" resultClass="java.math.BigDecimal" parameterClass="map">
+        SELECT IFNULL(SUM(ReceiveAmount), 0) AS totalAmount
+        FROM FC_ReceiveNotify
+        <dynamic prepend="where">
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.businessType" compareValue="0">
+                BusinessType = #receiveNotifySearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.customerId" compareValue="0">
+                CustomerID = #receiveNotifySearchBean.customerId#
+            </isGreaterThan>
+            <isNotEmpty prepend="and" property="receiveNotifySearchBean.payTimeBegin">
+                PayTime &gt;= #receiveNotifySearchBean.payTimeBegin#
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="receiveNotifySearchBean.payTimeEnd">
+                PayTime &lt;= #receiveNotifySearchBean.payTimeEnd#
+            </isNotEmpty>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.payChannel" compareValue="0">
+                PayChannel = #receiveNotifySearchBean.payChannel#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.receiveAmount" compareValue="0">
+                ReceiveAmount = #receiveNotifySearchBean.receiveAmount#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.bankId" compareValue="0">
+                BankID = #receiveNotifySearchBean.bankId#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.status" compareValue="0">
+                Status =#receiveNotifySearchBean.status#
+            </isGreaterThan>
+        </dynamic>
+    </select>
 
     <update id="updateReceiveNotifyConfirm" parameterClass="map">
         UPDATE FC_ReceiveNotify
