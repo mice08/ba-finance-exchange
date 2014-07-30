@@ -1,9 +1,12 @@
 package com.dianping.ba.finance.exchange.biz.impl
 
 import com.dianping.ba.finance.exchange.api.RORNMatchFireService
+import com.dianping.ba.finance.exchange.api.RORNMatchService
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
+import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData
+import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderDao
@@ -26,6 +29,9 @@ class ReceiveOrderServiceObjectSpockTest extends Specification {
 
     private ReceiveNotifyService receiveNotifyServiceMock;
 
+    private RORNMatchService rornMatchServiceMock;
+
+
     void setup() {
         receiveOrderServiceObjectStub = []
 
@@ -40,6 +46,9 @@ class ReceiveOrderServiceObjectSpockTest extends Specification {
 
         receiveNotifyServiceMock = Mock()
         receiveOrderServiceObjectStub.receiveNotifyService = receiveNotifyServiceMock;
+
+        rornMatchServiceMock = Mock();
+        receiveOrderServiceObjectStub.rornMatchService = rornMatchServiceMock;
     }
 
     @Unroll
@@ -82,5 +91,47 @@ class ReceiveOrderServiceObjectSpockTest extends Specification {
         87872 | 123    | false
         87874 | 123    | false
         87873 | 123456 | true
+    }
+
+    @Unroll
+    def "manuallyUpdateReceiveOrder"(ReceiveOrderStatus status, String applicationId, Boolean updated) {
+        given:
+        ReceiveOrderUpdateBean receiveOrderUpdateBean = [status       : status.value(),
+                                                         applicationId: applicationId,
+                                                         receiveTime  : new Date(),
+                                                         customerId   : 10,
+                                                         bizContent   : "bizContent",
+                                                         receiveType  : ReceiveType.AD_FEE]
+
+        receiveOrderDaoMock.loadReceiveOrderDataByRoId(_ as Integer) >> { Integer roId2 ->
+            if (roId2 == 87872) {
+                return null
+            }
+            ReceiveOrderData roData = [roId       : roId2,
+                                       status     : ReceiveOrderStatus.UNCONFIRMED.value(),
+                                       receiveTime: new Date(),
+                                       receiveType: ReceiveType.AD_FEE.value()]
+            roData
+        }
+        receiveNotifyServiceMock.loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus.INIT , _ as Integer, _ as String) >> {
+            ReceiveNotifyData receiveNotifyData = []
+            receiveNotifyData
+        }
+
+        rornMatchServiceMock.doMatch(_ as ReceiveOrderData, _ as ReceiveNotifyData) >> true;
+
+        receiveNotifyServiceMock.updateReceiveNotifyConfirm(_ as Integer, _ as Integer) >> true;
+
+        receiveOrderDaoMock.updateReceiveOrder(_ as ReceiveOrderData) >> 1
+
+        expect:
+        updated == receiveOrderServiceObjectStub.manuallyUpdateReceiveOrder(receiveOrderUpdateBean)
+
+        where:
+        status                         | applicationId | updated
+        ReceiveOrderStatus.UNCONFIRMED | ""            | true
+        ReceiveOrderStatus.CONFIRMED   | ""            | true
+        ReceiveOrderStatus.CONFIRMED   | "123"         | true
+
     }
 }

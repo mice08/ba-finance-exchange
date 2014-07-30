@@ -47,7 +47,7 @@ public class ReceiveOrderAjaxActionTest {
     @Test
     public void testUpdateReceiveOrder() {
         receiveOrderAjaxActionStub.updateReceiveOrder();
-        verify(receiveOrderServiceMock, times(1)).updateReceiveOrderConfirm(any(ReceiveOrderUpdateBean.class));
+        verify(receiveOrderServiceMock, times(1)).manuallyUpdateReceiveOrder(any(ReceiveOrderUpdateBean.class));
     }
 
     @Test

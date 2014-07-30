@@ -226,7 +226,17 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
 
     @Override
     public boolean manuallyUpdateReceiveOrder(ReceiveOrderUpdateBean receiveOrderUpdateBean) {
-        if (receiveOrderUpdateBean.getStatus() == ReceiveOrderStatus.CONFIRMED.value() && !StringUtils.isEmpty(receiveOrderUpdateBean.getApplicationId()) && relateRORN(receiveOrderUpdateBean.getRoId(),receiveOrderUpdateBean.getApplicationId())) {
+        if (receiveOrderUpdateBean.getStatus() != ReceiveOrderStatus.CONFIRMED.value()) {
+            int u = updateReceiveOrderConfirm(receiveOrderUpdateBean);
+            return u == 1;
+        }
+        String applicationId = receiveOrderUpdateBean.getApplicationId();
+        if (StringUtils.isEmpty(applicationId)) {
+            int u = updateReceiveOrderConfirm(receiveOrderUpdateBean);
+            return u == 1;
+        }
+        // 带有applicationId，及确认的收款单
+        if (relateRORN(receiveOrderUpdateBean.getRoId(),receiveOrderUpdateBean.getApplicationId())) {
             int u = updateReceiveOrderConfirm(receiveOrderUpdateBean);
             return u == 1;
         }
@@ -235,11 +245,11 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
 
     private boolean relateRORN(int roId, String applicationId){
         ReceiveOrderData roData = receiveOrderDao.loadReceiveOrderDataByRoId(roId);
-        ReceiveNotifyData rnData = receiveNotifyService.loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus.INIT, roData.getBusinessType(), applicationId);
         if (roData == null) {
             MONITOR_LOGGER.error(String.format("severity=[1] ReceiveOrderServiceObject.manuallyUpdateReceiveOrder ReceiveOrderData no found! roId=%s", roId));
             return false;
         }
+        ReceiveNotifyData rnData = receiveNotifyService.loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus.INIT, roData.getBusinessType(), applicationId);
         if (rnData == null) {
             MONITOR_LOGGER.error(String.format("severity=[1] ReceiveOrderServiceObject.manuallyUpdateReceiveOrder ReceiveNotifyData no found! biz=%s, applicationId=%s", roData.getBusinessType(), roData.getApplicationId()));
             return false;
