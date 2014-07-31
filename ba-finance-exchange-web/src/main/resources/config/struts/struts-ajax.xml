@@ -171,6 +171,11 @@
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveNotifyAjaxAction">
             <result type="json"></result>
         </action>
+
+        <action name="DPCSReceiveNotify"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.PayCentreReceiveHttpAjaxAction">
+            <result type="json"></result>
+        </action>
     </package>
 
 </struts>
