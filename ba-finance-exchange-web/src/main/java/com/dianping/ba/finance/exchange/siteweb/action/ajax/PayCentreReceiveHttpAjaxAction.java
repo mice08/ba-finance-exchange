@@ -106,7 +106,7 @@ public class PayCentreReceiveHttpAjaxAction extends AjaxBaseAction{
 		dtoBean.setPayChannel(payChannel);
 		dtoBean.setPayMethod(payMethod);
 		dtoBean.setReceiveDate(DateUtil.isValidDate(receiveDate) ? DateUtil.formatDate(receiveDate, true) : null);
-		return null;
+		return dtoBean;
 	}
 
 	@Override
