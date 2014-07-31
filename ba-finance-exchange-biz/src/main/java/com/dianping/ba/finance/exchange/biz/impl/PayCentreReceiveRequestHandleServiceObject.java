@@ -121,7 +121,7 @@ public class PayCentreReceiveRequestHandleServiceObject implements PayCentreRece
 		roData.setBankID(requestDTO.getBankId());
 		roData.setMemo(requestDTO.getMemo());
 
-        BizInfoBean bean = bizInfoService.getBizInfo(requestDTO);
+        BizInfoBean bean = bizInfoService.getBizInfo(roData);
         if (bean != null) {
             int customerId = bean.getCustomerId();
             roData.setCustomerId(customerId);

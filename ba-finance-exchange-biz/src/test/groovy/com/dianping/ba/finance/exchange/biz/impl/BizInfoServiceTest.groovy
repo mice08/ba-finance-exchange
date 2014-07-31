@@ -1,5 +1,5 @@
 package com.dianping.ba.finance.exchange.biz.impl
-import com.dianping.ba.finance.exchange.api.dtos.PayCentreReceiveRequestDTO
+import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData
 import com.dianping.ba.finance.exchange.api.enums.BusinessType
 import com.dianping.ba.finance.exchange.biz.service.BizInfoService
 import com.dianping.midas.finance.api.dto.CorporationDTO
@@ -25,14 +25,14 @@ class BizInfoServiceTest extends Specification {
 
     def "GetBizInfoReturn"(Integer businessType, String bizContentParam, Integer customerId) {
         given:
-        PayCentreReceiveRequestDTO requestDTO = [businessType: businessType, bizContent: bizContentParam]
+        ReceiveOrderData roData = [businessType: businessType, bizContent: bizContentParam]
         corporationServiceMock.queryCorporationByBizContent(_ as String) >> { String bizContent ->
             CorporationDTO corporationDTO = [id: 100, name: bizContent + "-客户名称"]
             corporationDTO
         }
 
         expect:
-        customerId == bizInfoServiceStub.getBizInfo(requestDTO)?.customerId
+        customerId == bizInfoServiceStub.getBizInfo(roData)?.customerId
 
         where:
         businessType                        | bizContentParam | customerId
