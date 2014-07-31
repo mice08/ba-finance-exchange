@@ -93,7 +93,7 @@ public class PayCentreReceiveHttpAjaxAction extends WebBaseAction {
 		}
 		dtoBean.setBizContent(contractNo);
 		dtoBean.setBankId(bankId);
-		dtoBean.setBusinessType(businessType);
+		dtoBean.setBusinessType(BusinessType.ADVERTISEMENT.value());
 		dtoBean.setOriTradeNo(oriTradeNo);
 		dtoBean.setTradeNo(tradeNo);
 		dtoBean.setTradeType(txtType);
