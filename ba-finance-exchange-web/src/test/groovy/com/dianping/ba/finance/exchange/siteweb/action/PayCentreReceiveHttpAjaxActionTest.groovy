@@ -24,7 +24,7 @@ class PayCentreReceiveHttpAjaxActionTest extends Specification {
         setup:
         payCentreReceiveHttpAjaxActionStub.tradeNo = "tradeNo"
         payCentreReceiveHttpAjaxActionStub.payMethod = ReceiveOrderPayChannel.POS_MACHINE.value()
-        payCentreReceiveHttpAjaxActionStub.payChannel = 10;
+        payCentreReceiveHttpAjaxActionStub.paymentChannel = 10;
         payCentreReceiveHttpAjaxActionStub.bankId = 11
         payCentreReceiveHttpAjaxActionStub.receiveAmount = "11.87"
         payCentreReceiveHttpAjaxActionStub.businessType = 6;
@@ -41,7 +41,7 @@ class PayCentreReceiveHttpAjaxActionTest extends Specification {
         setup:
         payCentreReceiveHttpAjaxActionStub.tradeNo = "tradeNo"
         payCentreReceiveHttpAjaxActionStub.payMethod = ReceiveOrderPayChannel.POS_MACHINE.value()
-        payCentreReceiveHttpAjaxActionStub.payChannel = 10;
+        payCentreReceiveHttpAjaxActionStub.paymentChannel = 10;
         payCentreReceiveHttpAjaxActionStub.bankId = 11
         payCentreReceiveHttpAjaxActionStub.receiveAmount = "11.87"
         payCentreReceiveHttpAjaxActionStub.businessType = 6;

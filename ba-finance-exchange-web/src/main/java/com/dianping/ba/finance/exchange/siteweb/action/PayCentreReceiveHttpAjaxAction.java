@@ -4,6 +4,7 @@ import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.PayCentreReceiveRequestHandleService;
 import com.dianping.ba.finance.exchange.api.dtos.PayCentreReceiveRequestDTO;
+import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 
 import java.math.BigDecimal;
@@ -45,13 +46,13 @@ public class PayCentreReceiveHttpAjaxAction extends WebBaseAction {
 	 */
 	private String receiveDate;
 	/**
-	 * 1, "团购" 2, "预订" 6, "广告" 7, "结婚"  8,"储值卡"
+	 * 默认是广告
 	 */
-	private int businessType;
+	private int businessType = BusinessType.ADVERTISEMENT.value();
 	/**
 	 * 对方付款渠道：10是快钱渠道
 	 */
-	private int payChannel;
+	private int paymentChannel;
 	/**
 	 * 对方付款方式：5是POS机
 	 */
@@ -59,7 +60,7 @@ public class PayCentreReceiveHttpAjaxAction extends WebBaseAction {
 	/**
 	 * 业务文本（广告：合同号）
 	 */
-	private String bizContent;
+	private String contractNo;
 
 	/**
 	 * 原始交易号 冲销必须有
@@ -90,13 +91,13 @@ public class PayCentreReceiveHttpAjaxAction extends WebBaseAction {
 			BigDecimal receiveAmountBig = new BigDecimal(receiveAmount);
 			dtoBean.setReceiveAmount(receiveAmountBig);
 		}
-		dtoBean.setBizContent(bizContent);
+		dtoBean.setBizContent(contractNo);
 		dtoBean.setBankId(bankId);
 		dtoBean.setBusinessType(businessType);
 		dtoBean.setOriTradeNo(oriTradeNo);
 		dtoBean.setTradeNo(tradeNo);
 		dtoBean.setTradeType(txtType);
-		dtoBean.setPayChannel(payChannel);
+		dtoBean.setPayChannel(paymentChannel);
 		dtoBean.setPayMethod(payMethod);
         //yyyyMMddhhmmss
 		dtoBean.setReceiveDate(DateUtil.parseDate(receiveDate, "yyyyMMddhhmmss"));
@@ -127,16 +128,16 @@ public class PayCentreReceiveHttpAjaxAction extends WebBaseAction {
         this.businessType = businessType;
     }
 
-    public void setPayChannel(int payChannel) {
-        this.payChannel = payChannel;
+    public void setPaymentChannel(int paymentChannel) {
+        this.paymentChannel = paymentChannel;
     }
 
     public void setPayMethod(int payMethod) {
         this.payMethod = payMethod;
     }
 
-    public void setBizContent(String bizContent) {
-        this.bizContent = bizContent;
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
     }
 
     public void setOriTradeNo(String oriTradeNo) {
