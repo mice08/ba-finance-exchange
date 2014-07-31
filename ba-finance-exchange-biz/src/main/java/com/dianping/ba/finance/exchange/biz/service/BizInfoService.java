@@ -1,7 +1,7 @@
 package com.dianping.ba.finance.exchange.biz.service;
 
 import com.dianping.ba.finance.exchange.api.beans.BizInfoBean;
-import com.dianping.ba.finance.exchange.api.dtos.PayCentreReceiveRequestDTO;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
@@ -20,16 +20,16 @@ public class BizInfoService {
 	/**
 	 * 根据bizContent去调推广（广告）接口查询客户ID
 	 *
-	 * @param requestDTO
+	 * @param roData
 	 * @return
 	 */
 	@Log(logBefore = true, logAfter = true, severity = 1)
 	@ReturnDefault
-    public BizInfoBean getBizInfo(PayCentreReceiveRequestDTO requestDTO) {
+    public BizInfoBean getBizInfo(ReceiveOrderData roData) {
         //判断businessType是不是广告
-        if (requestDTO.getBusinessType() == BusinessType.ADVERTISEMENT.value()) {
+        if (roData.getBusinessType() == BusinessType.ADVERTISEMENT.value()) {
             //RPC调用
-            CorporationDTO corporationDTO = corporationService.queryCorporationByBizContent(requestDTO.getBizContent());
+            CorporationDTO corporationDTO = corporationService.queryCorporationByBizContent(roData.getBizContent());
             if (corporationDTO != null) {
                 BizInfoBean bean = new BizInfoBean();
                 bean.setCustomerId(corporationDTO.getId());
