@@ -1,4 +1,5 @@
-package com.dianping.ba.finance.exchange.siteweb.action.ajax
+package com.dianping.ba.finance.exchange.siteweb.action;
+
 import com.dianping.ba.finance.exchange.api.PayCentreReceiveRequestHandleService
 import com.dianping.ba.finance.exchange.api.dtos.PayCentreReceiveRequestDTO
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel
@@ -30,7 +31,7 @@ class PayCentreReceiveHttpAjaxActionTest extends Specification {
         payCentreReceiveHttpAjaxActionStub.receiveDate = "20140731131313"
 
         when:
-        payCentreReceiveHttpAjaxActionStub.receiveFromPayCentre();
+        payCentreReceiveHttpAjaxActionStub.webExecute();
 
         then:
         1 * payCentreReceiveRequestHandleServiceMock.handleReceiveRequest(_ as PayCentreReceiveRequestDTO)
@@ -47,7 +48,7 @@ class PayCentreReceiveHttpAjaxActionTest extends Specification {
         payCentreReceiveHttpAjaxActionStub.receiveDate = "20140731131313"
 
         when:
-        payCentreReceiveHttpAjaxActionStub.receiveFromPayCentre();
+        payCentreReceiveHttpAjaxActionStub.webExecute();
 
         then:
         1 * payCentreReceiveRequestHandleServiceMock.handleReceiveRequest(_ as PayCentreReceiveRequestDTO) >> {

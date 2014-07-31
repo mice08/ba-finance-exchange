@@ -1,15 +1,13 @@
-package com.dianping.ba.finance.exchange.siteweb.action.ajax;
+package com.dianping.ba.finance.exchange.siteweb.action;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.PayCentreReceiveRequestHandleService;
 import com.dianping.ba.finance.exchange.api.dtos.PayCentreReceiveRequestDTO;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
-import com.google.common.collect.Maps;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,19 +17,13 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  * 支付中心请求http接口
  */
-public class PayCentreReceiveHttpAjaxAction extends AjaxBaseAction{
+public class PayCentreReceiveHttpAjaxAction extends WebBaseAction {
 
-    private static final String PAY_CENTRE_SUCCESS_RESPONSE = "SUCCESS";
-
-    private static final String PAY_CENTRE_ERROR_RESPONSE = "ERROR";
     /**
 	 * 记录需要监控的业务日志
 	 */
 	private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger
 			("com.dianping.ba.finance.exchange.web.monitor.PayCentreAjaxAction");
-
-	private int code;
-	private Map<String, Object> msg = Maps.newHashMap();
 
 	//PayCentreReceiveRequestDTO的字段
 	/**
@@ -76,23 +68,19 @@ public class PayCentreReceiveHttpAjaxAction extends AjaxBaseAction{
 
 	private PayCentreReceiveRequestHandleService payCentreReceiveRequestHandleService;
 
-	@Override
-	protected void jsonExecute() throws Exception {
 
-	}
-
-    public String receiveFromPayCentre() {
+    @Override
+    protected String webExecute() throws Exception {
         try {
             PayCentreReceiveRequestDTO payCentreReceiveRequestDTO = buildPayCentreReceiveRequestDTO();
             payCentreReceiveRequestHandleService.handleReceiveRequest(payCentreReceiveRequestDTO);
-            code = SUCCESS_CODE;
-            return PAY_CENTRE_SUCCESS_RESPONSE;
+            return SUCCESS;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] PayCentreReceiveHttpAjaxAction.jsonExecute error!", e);
-            code = ERROR_CODE;
-            return PAY_CENTRE_ERROR_RESPONSE;
+            return ERROR;
         }
     }
+
 
     private PayCentreReceiveRequestDTO buildPayCentreReceiveRequestDTO() throws ParseException {
         PayCentreReceiveRequestDTO dtoBean = new PayCentreReceiveRequestDTO();
@@ -113,16 +101,6 @@ public class PayCentreReceiveHttpAjaxAction extends AjaxBaseAction{
         //yyyyMMddhhmmss
 		dtoBean.setReceiveDate(DateUtil.parseDate(receiveDate, "yyyyMMddhhmmss"));
 		return dtoBean;
-	}
-
-	@Override
-	public int getCode() {
-		return code;
-	}
-
-	@Override
-	public Map<String, Object> getMsg() {
-		return msg;
 	}
 
     public void setTradeNo(String tradeNo) {
@@ -168,4 +146,5 @@ public class PayCentreReceiveHttpAjaxAction extends AjaxBaseAction{
     public void setPayCentreReceiveRequestHandleService(PayCentreReceiveRequestHandleService payCentreReceiveRequestHandleService) {
 		this.payCentreReceiveRequestHandleService = payCentreReceiveRequestHandleService;
 	}
+
 }
