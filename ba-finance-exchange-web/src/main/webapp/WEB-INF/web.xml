@@ -53,6 +53,10 @@
             <param-name>needLoginFromLion</param-name>
             <param-value>ba-finance-exchange-web.isTest</param-value>
         </init-param>
+        <init-param>
+            <param-name>exceptedUrls</param-name>
+            <param-value>ba-finance-exchange-web.exceptedUrls</param-value>
+        </init-param>
     </filter>
     <filter>
         <filter-name>CAS Validation Filter</filter-name>

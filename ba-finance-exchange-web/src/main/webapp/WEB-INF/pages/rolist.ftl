@@ -83,11 +83,10 @@
         {{if record.status=="待确认"}}
             <a href="javascript:void(0)" roId="{{= record.roId}}" class="modify-link">修改</a>
         {{/if}}
-        {{if record.status=="待确认"
-             && record.businessType =="广告"
-             && record.payChannel == "电汇"
-             && record.matchedCount > 0
-             || record.payChannel == "POS机-快钱"  }}
+        {{if record.status == "待确认"
+             && record.businessType == "广告"
+             && (record.payChannel == "电汇" || record.payChannel == "POS机-快钱")
+             && record.matchedCount > 0}}
             <a href="javascript:void(0)" roId="{{= record.roId}}" class="confirm-link">关联</a>
         {{/if}}
         <a href="#">作废</a>

@@ -66,10 +66,10 @@ public class RORNMatchServiceObject implements RORNMatchService {
         }
     }
 
-    private boolean doMatch(ReceiveOrderData roData, ReceiveNotifyData rnData) {
+    @Override
+    public boolean doMatch(ReceiveOrderData roData, ReceiveNotifyData rnData) {
         for (RORNMatcher matcher : matchers) {
-            boolean tmp = matcher.match(roData, rnData);
-            if (tmp) {
+            if (matcher.match(roData, rnData)) {
                 return true;
             }
         }

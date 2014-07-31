@@ -9,6 +9,14 @@
         <action name="orderlist" class="com.dianping.ba.finance.exchange.siteweb.action.RedirectAction">
             <result name="success" type="freemarker">/WEB-INF/pages/receiveorder.ftl</result>
         </action>
+
+        <!-- 广告 POS 支付中心 http接口-->
+        <action name="DPCSReceiveNotify"
+                class="com.dianping.ba.finance.exchange.siteweb.action.PayCentreReceiveHttpAjaxAction">
+            <result name="success" type="freemarker">/WEB-INF/pages/paycentresuccess.ftl</result>
+            <result name="error" type="freemarker">/WEB-INF/pages/paycentreerror.ftl</result>
+        </action>
+
     </package>
     <package name="payorder" namespace="/exchange/payorder" extends="default">
         <action name="orderlist" class="com.dianping.ba.finance.exchange.siteweb.action.RedirectAction">

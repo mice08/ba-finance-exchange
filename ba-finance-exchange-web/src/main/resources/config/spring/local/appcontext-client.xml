@@ -54,4 +54,12 @@
         <property name="timeout" value="1000"/>
     </bean>
 
+    <bean id="payCentreReceiveRequestHandleService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName" value="http://service.dianping.com/baFinanceExchangeService/payCentreReceiveRequestHandleService_1.0.0"/>
+        <property name="iface" value="com.dianping.ba.finance.exchange.api.PayCentreReceiveRequestHandleService"/>
+        <property name="serialize" value="hessian"/>
+        <property name="callMethod" value="sync"/>
+        <property name="timeout" value="5000"/>
+    </bean>
+
 </beans>

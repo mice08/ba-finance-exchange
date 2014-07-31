@@ -71,7 +71,6 @@ public interface ReceiveNotifyDao extends GenericDao {
 
     @DAOAction(action = DAOActionType.UPDATE)
     int updateReceiveNotifyConfirm(@DAOParam("setStatus") int setStatus,
-                                   @DAOParam("preStatus") int preStatus,
                                    @DAOParam("roId") int roId,
                                    @DAOParam("rnId") int rnId);
 

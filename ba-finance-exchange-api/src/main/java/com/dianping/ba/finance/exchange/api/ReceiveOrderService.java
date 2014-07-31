@@ -93,5 +93,12 @@ public interface ReceiveOrderService {
      */
     boolean confirmReceiveOrderAndReceiveNotify(int roId, int rnId, int loginId);
 
+    /**
+     * 关联收款单及收款通知
+     * @param receiveOrderUpdateBean
+     * @return
+     */
+    boolean manuallyUpdateReceiveOrder(ReceiveOrderUpdateBean receiveOrderUpdateBean);
+
 
 }

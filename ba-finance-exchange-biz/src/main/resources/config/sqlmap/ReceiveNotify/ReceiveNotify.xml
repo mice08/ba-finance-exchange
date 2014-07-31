@@ -348,9 +348,8 @@
 
     <update id="updateReceiveNotifyConfirm" parameterClass="map">
         UPDATE FC_ReceiveNotify
-           SET status = #setStatus#
-         WHERE status = #preStatus#
-           AND ROMatcherID = #roId#
-           AND ReceiveNotifyID = #rnId#
+           SET status = #setStatus#,
+               ROMatcherID = #roId#
+         WHERE ReceiveNotifyID = #rnId#
     </update>
 </sqlMap>

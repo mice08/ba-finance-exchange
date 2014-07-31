@@ -105,7 +105,7 @@ public class ReceiveNotifyDaoTest {
 
     @Test
     public void testUpdateReceiveNotifyConfirm() throws Exception {
-        int u = receiveNotifyDao.updateReceiveNotifyConfirm(ReceiveNotifyStatus.CONFIRMED.value(), ReceiveNotifyStatus.INIT.value(), 467, 9);
+        int u = receiveNotifyDao.updateReceiveNotifyConfirm(ReceiveNotifyStatus.CONFIRMED.value(), 269, 10);
         Assert.assertTrue(u > 0);
     }
 
