@@ -4,8 +4,8 @@ import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.PayCentreReceiveRequestHandleService;
 import com.dianping.ba.finance.exchange.api.dtos.PayCentreReceiveRequestDTO;
-import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
+import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -40,15 +40,12 @@ public class PayCentreReceiveHttpAjaxAction extends WebBaseAction {
 	 */
 	private int bankId;
 
-	private String receiveAmount;
+	private String amount;
 	/**
 	 * 收款日期
 	 */
 	private String receiveDate;
-	/**
-	 * 默认是广告
-	 */
-	private int businessType = BusinessType.ADVERTISEMENT.value();
+
 	/**
 	 * 对方付款渠道：10是快钱渠道
 	 */
@@ -85,15 +82,14 @@ public class PayCentreReceiveHttpAjaxAction extends WebBaseAction {
 
     private PayCentreReceiveRequestDTO buildPayCentreReceiveRequestDTO() throws ParseException {
         PayCentreReceiveRequestDTO dtoBean = new PayCentreReceiveRequestDTO();
-		if (receiveAmount == null || receiveAmount.equals("")) {
+		if (StringUtils.isBlank(amount)) {
 			dtoBean.setReceiveAmount(BigDecimal.ZERO);
 		} else {
-			BigDecimal receiveAmountBig = new BigDecimal(receiveAmount);
-			dtoBean.setReceiveAmount(receiveAmountBig);
+			dtoBean.setReceiveAmount(new BigDecimal(amount));
 		}
 		dtoBean.setBizContent(contractNo);
 		dtoBean.setBankId(bankId);
-		dtoBean.setBusinessType(BusinessType.ADVERTISEMENT.value());
+		dtoBean.setBusinessType(6);// 支付中心的，广告业务是6
 		dtoBean.setOriTradeNo(oriTradeNo);
 		dtoBean.setTradeNo(tradeNo);
 		dtoBean.setTradeType(txtType);
@@ -116,16 +112,12 @@ public class PayCentreReceiveHttpAjaxAction extends WebBaseAction {
         this.bankId = bankId;
     }
 
-    public void setReceiveAmount(String receiveAmount) {
-        this.receiveAmount = receiveAmount;
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
     public void setReceiveDate(String receiveDate) {
         this.receiveDate = receiveDate;
-    }
-
-    public void setBusinessType(int businessType) {
-        this.businessType = businessType;
     }
 
     public void setPaymentChannel(int paymentChannel) {
