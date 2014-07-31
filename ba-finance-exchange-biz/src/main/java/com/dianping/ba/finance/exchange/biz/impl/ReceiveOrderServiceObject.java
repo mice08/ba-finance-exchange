@@ -66,6 +66,10 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
             if (StringUtils.isBlank(receiveOrderData.getPayerAccountName())) {
                 receiveOrderData.setPayerAccountName(rnData.getPayerName());
             }
+            // 手工录入POS，没有银行到账时间，设置为打款时间
+            if (receiveOrderData.getBankReceiveTime() == null) {
+                receiveOrderData.setBankReceiveTime(rnData.getPayTime());
+            }
             // 手工录入与填写的收款通知不匹配，添加失败
             if (!rornMatchService.doMatch(receiveOrderData, rnData)) {
                 MONITOR_LOGGER.error(String.format("severity=[1] ReceiveOrderServiceObject.createReceiveOrder ReceiveNotifyData and ReceiveOrderData no match! roId=%s, rnId=%s", receiveOrderData.getRoId(), rnData.getReceiveNotifyId()));

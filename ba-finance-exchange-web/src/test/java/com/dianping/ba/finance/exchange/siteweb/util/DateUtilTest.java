@@ -52,4 +52,17 @@ public class DateUtilTest {
         result=DateUtil.isValidDate(sDate);
         Assert.assertTrue(!result);
     }
+
+    @Test
+    public void testParseDate() throws Exception {
+        Date d = DateUtil.parseDate("20140731131313", "yyyyMMddhhmmss");
+        Assert.assertNotNull(d);
+
+    }
+    @Test
+    public void testParseDateError() throws Exception {
+        Date d = DateUtil.parseDate("201403ABC", "yyyyMMddhhmmss");
+        Assert.assertNull(d);
+
+    }
 }
