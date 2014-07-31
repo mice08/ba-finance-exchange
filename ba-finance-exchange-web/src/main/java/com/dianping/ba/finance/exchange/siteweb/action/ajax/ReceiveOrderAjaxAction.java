@@ -149,8 +149,8 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
             }
 
             ReceiveOrderData receiveOrderData = buildReceiveOrderData(loginId);
-            receiveOrderService.createReceiveOrder(receiveOrderData);
-            code = SUCCESS_CODE;
+            int i = receiveOrderService.createReceiveOrder(receiveOrderData);
+            code = i <= 0 ? ERROR_CODE : SUCCESS_CODE;
             return SUCCESS;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.createReceiveOrderManually error!", e);

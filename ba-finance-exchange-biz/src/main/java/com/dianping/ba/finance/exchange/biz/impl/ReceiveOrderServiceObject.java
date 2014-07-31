@@ -53,16 +53,41 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         if(StringUtils.isBlank(receiveOrderData.getTradeNo())){
             receiveOrderData.setTradeNo("FS-" + System.nanoTime());
         }
+        int rnId = -1;
+        // 如果录入带有收款通知，进行匹配
+        String applicationId = receiveOrderData.getApplicationId();
+        if (StringUtils.isNotBlank(applicationId)) {
+            ReceiveNotifyData rnData = receiveNotifyService.loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus.INIT, receiveOrderData.getBusinessType(), applicationId);
+            if (rnData == null) {
+                MONITOR_LOGGER.error(String.format("severity=[1] ReceiveOrderServiceObject.createReceiveOrder ReceiveNotifyData no found! biz=%s, applicationId=%s", receiveOrderData.getBusinessType(), applicationId));
+                return -1;
+            }
+            // 手工录入没有付款方名字
+            if (StringUtils.isBlank(receiveOrderData.getPayerAccountName())) {
+                receiveOrderData.setPayerAccountName(rnData.getPayerName());
+            }
+            // 手工录入与填写的收款通知不匹配，添加失败
+            if (!rornMatchService.doMatch(receiveOrderData, rnData)) {
+                MONITOR_LOGGER.error(String.format("severity=[1] ReceiveOrderServiceObject.createReceiveOrder ReceiveNotifyData and ReceiveOrderData no match! roId=%s, rnId=%s", receiveOrderData.getRoId(), rnData.getReceiveNotifyId()));
+                return -1;
+            }
+            rnId = rnData.getReceiveNotifyId();
+        }
+
         int roId = receiveOrderDao.insertReceiveOrderData(receiveOrderData);
         receiveOrderData.setRoId(roId);
 
+        if (rnId > 0) {
+            boolean update = receiveNotifyService.updateReceiveNotifyConfirm(roId, rnId);
+            if (!update) {
+                MONITOR_LOGGER.error(String.format("severity=[1] ReceiveOrderServiceObject.createReceiveOrder updateReceiveNotifyConfirm error! roId=%s, rnId=%s", roId, rnId));
+                return -1;
+            }
+        }
         if (ReceiveOrderStatus.CONFIRMED.value() == receiveOrderData.getStatus()) {
             ReceiveOrderResultBean receiveOrderResultBean = buildReceiveOrderResultBean(receiveOrderData, receiveOrderData.getAddLoginId());
             receiveOrderResultNotify.receiveResultNotify(receiveOrderResultBean);
-            String applicationId = receiveOrderData.getApplicationId();
-            if (StringUtils.isNotBlank(applicationId)) {
-                relateRORN(roId,applicationId);
-            }
+            rornMatchFireService.executeMatchingForReceiveOrderConfirmed(receiveOrderData);
         } else {
             rornMatchFireService.executeMatchingForNewReceiveOrder(receiveOrderData);
         }
@@ -226,17 +251,15 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
 
     @Override
     public boolean manuallyUpdateReceiveOrder(ReceiveOrderUpdateBean receiveOrderUpdateBean) {
-        if (receiveOrderUpdateBean.getStatus() != ReceiveOrderStatus.CONFIRMED.value()) {
-            int u = updateReceiveOrderConfirm(receiveOrderUpdateBean);
-            return u == 1;
-        }
         String applicationId = receiveOrderUpdateBean.getApplicationId();
-        if (StringUtils.isEmpty(applicationId)) {
+        if (receiveOrderUpdateBean.getStatus() != ReceiveOrderStatus.CONFIRMED.value()
+                || StringUtils.isEmpty(applicationId)) {
             int u = updateReceiveOrderConfirm(receiveOrderUpdateBean);
             return u == 1;
         }
+
         // 带有applicationId，及确认的收款单
-        if (relateRORN(receiveOrderUpdateBean.getRoId(),receiveOrderUpdateBean.getApplicationId())) {
+        if (relateRORN(receiveOrderUpdateBean.getRoId(), receiveOrderUpdateBean.getApplicationId())) {
             int u = updateReceiveOrderConfirm(receiveOrderUpdateBean);
             return u == 1;
         }

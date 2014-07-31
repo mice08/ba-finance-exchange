@@ -6,6 +6,7 @@ import com.dianping.ba.finance.exchange.api.ReceiveNotifyService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderResultBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
@@ -35,16 +36,17 @@ public class ReceiveOrderServiceObjectTest {
 
     private ReceiveNotifyService receiveNotifyServiceMock;
 
-    private RORNMatchService rornMatchService;
+    private RORNMatchService rornMatchServiceMock;
 
 	private ReceiveOrderResultNotify receiveOrderResultNotifyMock;
 
-	@Before
+
+    @Before
 	public void setUp() throws Exception {
 		receiveOrderServiceObjectStub = new ReceiveOrderServiceObject();
 
-        rornMatchService = mock(RORNMatchService.class);
-        receiveOrderServiceObjectStub.setRornMatchService(rornMatchService);
+        rornMatchServiceMock = mock(RORNMatchService.class);
+        receiveOrderServiceObjectStub.setRornMatchService(rornMatchServiceMock);
 
         receiveNotifyServiceMock = mock(ReceiveNotifyService.class);
         receiveOrderServiceObjectStub.setReceiveNotifyService(receiveNotifyServiceMock);
@@ -88,12 +90,21 @@ public class ReceiveOrderServiceObjectTest {
 
 		when(receiveOrderDaoMock.loadReceiveOrderDataByRoId(anyInt())).thenReturn(roData);
 
+        ReceiveNotifyData rnData = new ReceiveNotifyData();
+        rnData.setReceiveNotifyId(100);
+		when(receiveNotifyServiceMock.loadUnmatchedReceiveNotifyByApplicationId(any(ReceiveNotifyStatus.class), anyInt(), anyString())).thenReturn(rnData);
+
+        when(receiveNotifyServiceMock.updateReceiveNotifyConfirm(anyInt(), anyInt())).thenReturn(true);
+
+        when(rornMatchServiceMock.doMatch(any(ReceiveOrderData.class), any(ReceiveNotifyData.class))).thenReturn(true);
+
 		int roId = receiveOrderServiceObjectStub.createReceiveOrder(roData);
 		Assert.assertEquals(87, roId);
 		Assert.assertEquals(87, roData.getRoId());
 
-		verify(receiveOrderResultNotifyMock, times(1)).receiveResultNotify(any(ReceiveOrderResultBean.class));
-//        verify(rornMatchFireServiceMock, times(1)).executeMatchingForReceiveOrderConfirmed(any(ReceiveOrderData.class));
+        verify(receiveOrderDaoMock, times(1)).insertReceiveOrderData(any(ReceiveOrderData.class));
+        verify(receiveOrderResultNotifyMock, times(1)).receiveResultNotify(any(ReceiveOrderResultBean.class));
+        verify(rornMatchFireServiceMock, times(1)).executeMatchingForReceiveOrderConfirmed(any(ReceiveOrderData.class));
 
     }
 

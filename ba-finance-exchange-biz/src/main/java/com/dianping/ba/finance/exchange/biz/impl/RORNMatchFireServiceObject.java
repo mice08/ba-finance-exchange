@@ -13,6 +13,7 @@ import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 import com.dianping.finance.common.util.LionConfigUtils;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
@@ -73,6 +74,9 @@ public class RORNMatchFireServiceObject implements RORNMatchFireService {
         }
         // 先获取，
         List<ReceiveNotifyData> receiveNotifyDataList = receiveNotifyService.findUnmatchedLeftReceiveNotify(ReceiveNotifyStatus.MATCHED, confirmedROData.getRoId(), applicationId);
+        if (CollectionUtils.isEmpty(receiveNotifyDataList)){
+            return;
+        }
         // 再清空MatchID修改状态
         List<Integer> rnIdList = buildRNIDList(receiveNotifyDataList);
         receiveNotifyService.clearReceiveNotifyMatchInfo(ReceiveNotifyStatus.INIT, rnIdList);

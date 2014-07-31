@@ -192,6 +192,9 @@ public class ReceiveOrderAjaxActionTest {
 
     @Test
     public void testCreateReceiveOrderManuallySuccess() throws Exception {
+
+        when(receiveOrderServiceMock.createReceiveOrder(any(ReceiveOrderData.class))).thenReturn(1);
+
         receiveOrderAjaxActionStub.setCustomerId(123);
         receiveOrderAjaxActionStub.setBusinessType(BusinessType.ADVERTISEMENT.value());
         receiveOrderAjaxActionStub.setReceiveAmount(BigDecimal.TEN);
