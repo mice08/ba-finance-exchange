@@ -38,7 +38,7 @@ public class PayCentreReceiveHttpAjaxAction extends WebBaseAction {
 	/**
 	 * 我司收款银行   汉涛上海：1    汉海上海：8   汉海北京：7   汉海广州：11
 	 */
-	private int bankId;
+	private int bankid;
 
 	private String amount;
 	/**
@@ -88,7 +88,7 @@ public class PayCentreReceiveHttpAjaxAction extends WebBaseAction {
 			dtoBean.setReceiveAmount(new BigDecimal(amount));
 		}
 		dtoBean.setBizContent(contractNo);
-		dtoBean.setBankId(bankId);
+		dtoBean.setBankId(bankid);
 		dtoBean.setBusinessType(6);// 支付中心的，广告业务是6
 		dtoBean.setOriTradeNo(oriTradeNo);
 		dtoBean.setTradeNo(tradeNo);
@@ -108,8 +108,8 @@ public class PayCentreReceiveHttpAjaxAction extends WebBaseAction {
         this.txtType = txtType;
     }
 
-    public void setBankId(int bankId) {
-        this.bankId = bankId;
+    public void setBankid(int bankid) {
+        this.bankid = bankid;
     }
 
     public void setAmount(String amount) {
