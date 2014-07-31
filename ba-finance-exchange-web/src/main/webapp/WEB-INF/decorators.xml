@@ -17,7 +17,7 @@
         <pattern>/account/*</pattern>
         <pattern>/dpd.jsp</pattern>
         <pattern>/caiwu/relation/getRelationHtml</pattern>
-        <pattern>/exchange/receiveorder/DPCSReceiveNotify</pattern>
+        <pattern>/exchange/receiveorder/DPCSReceiveNotify*</pattern>
     </excludes>
 
     <decorator name="centralized">

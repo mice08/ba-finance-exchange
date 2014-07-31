@@ -10,7 +10,7 @@
             <result name="success" type="freemarker">/WEB-INF/pages/receiveorder.ftl</result>
         </action>
 
-        <!-- POS 支付中心 http接口-->
+        <!-- 广告 POS 支付中心 http接口-->
         <action name="DPCSReceiveNotify"
                 class="com.dianping.ba.finance.exchange.siteweb.action.PayCentreReceiveHttpAjaxAction">
             <result name="success" type="freemarker">/WEB-INF/pages/paycentresuccess.ftl</result>

@@ -5,6 +5,7 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.PayCentreReceiveRequestHandleService;
 import com.dianping.ba.finance.exchange.api.dtos.PayCentreReceiveRequestDTO;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
+import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -37,21 +38,18 @@ public class PayCentreReceiveHttpAjaxAction extends WebBaseAction {
 	/**
 	 * 我司收款银行   汉涛上海：1    汉海上海：8   汉海北京：7   汉海广州：11
 	 */
-	private int bankId;
+	private int bankid;
 
-	private String receiveAmount;
+	private String amount;
 	/**
 	 * 收款日期
 	 */
 	private String receiveDate;
-	/**
-	 * 1, "团购" 2, "预订" 6, "广告" 7, "结婚"  8,"储值卡"
-	 */
-	private int businessType;
+
 	/**
 	 * 对方付款渠道：10是快钱渠道
 	 */
-	private int payChannel;
+	private int paymentChannel;
 	/**
 	 * 对方付款方式：5是POS机
 	 */
@@ -59,7 +57,7 @@ public class PayCentreReceiveHttpAjaxAction extends WebBaseAction {
 	/**
 	 * 业务文本（广告：合同号）
 	 */
-	private String bizContent;
+	private String contractNo;
 
 	/**
 	 * 原始交易号 冲销必须有
@@ -84,19 +82,18 @@ public class PayCentreReceiveHttpAjaxAction extends WebBaseAction {
 
     private PayCentreReceiveRequestDTO buildPayCentreReceiveRequestDTO() throws ParseException {
         PayCentreReceiveRequestDTO dtoBean = new PayCentreReceiveRequestDTO();
-		if (receiveAmount == null || receiveAmount.equals("")) {
+		if (StringUtils.isBlank(amount)) {
 			dtoBean.setReceiveAmount(BigDecimal.ZERO);
 		} else {
-			BigDecimal receiveAmountBig = new BigDecimal(receiveAmount);
-			dtoBean.setReceiveAmount(receiveAmountBig);
+			dtoBean.setReceiveAmount(new BigDecimal(amount));
 		}
-		dtoBean.setBizContent(bizContent);
-		dtoBean.setBankId(bankId);
-		dtoBean.setBusinessType(businessType);
+		dtoBean.setBizContent(contractNo);
+		dtoBean.setBankId(bankid);
+		dtoBean.setBusinessType(6);// 支付中心的，广告业务是6
 		dtoBean.setOriTradeNo(oriTradeNo);
 		dtoBean.setTradeNo(tradeNo);
 		dtoBean.setTradeType(txtType);
-		dtoBean.setPayChannel(payChannel);
+		dtoBean.setPayChannel(paymentChannel);
 		dtoBean.setPayMethod(payMethod);
         //yyyyMMddhhmmss
 		dtoBean.setReceiveDate(DateUtil.parseDate(receiveDate, "yyyyMMddhhmmss"));
@@ -111,32 +108,28 @@ public class PayCentreReceiveHttpAjaxAction extends WebBaseAction {
         this.txtType = txtType;
     }
 
-    public void setBankId(int bankId) {
-        this.bankId = bankId;
+    public void setBankid(int bankid) {
+        this.bankid = bankid;
     }
 
-    public void setReceiveAmount(String receiveAmount) {
-        this.receiveAmount = receiveAmount;
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
     public void setReceiveDate(String receiveDate) {
         this.receiveDate = receiveDate;
     }
 
-    public void setBusinessType(int businessType) {
-        this.businessType = businessType;
-    }
-
-    public void setPayChannel(int payChannel) {
-        this.payChannel = payChannel;
+    public void setPaymentChannel(int paymentChannel) {
+        this.paymentChannel = paymentChannel;
     }
 
     public void setPayMethod(int payMethod) {
         this.payMethod = payMethod;
     }
 
-    public void setBizContent(String bizContent) {
-        this.bizContent = bizContent;
+    public void setContractNo(String contractNo) {
+        this.contractNo = contractNo;
     }
 
     public void setOriTradeNo(String oriTradeNo) {
