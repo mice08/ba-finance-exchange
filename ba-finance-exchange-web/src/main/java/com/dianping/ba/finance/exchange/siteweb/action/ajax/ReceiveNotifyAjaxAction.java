@@ -248,7 +248,7 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 			receiveInfoBean.setCustomerName(customerInfoBean.getCustomerName());
 		}
 		receiveInfoBean.setPayChannel(rnData.getPayChannel());
-		receiveInfoBean.setPayTime(rnData.getPayTime());
+		receiveInfoBean.setPayTime(DateUtil.formatDateToString(rnData.getPayTime(), "yyyy-MM-dd"));
 		receiveInfoBean.setReceiveAmount(rnData.getReceiveAmount());
 		return receiveInfoBean;
 	}

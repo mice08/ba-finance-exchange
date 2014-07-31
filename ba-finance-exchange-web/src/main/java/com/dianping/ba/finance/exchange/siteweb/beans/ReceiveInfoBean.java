@@ -2,7 +2,6 @@ package com.dianping.ba.finance.exchange.siteweb.beans;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * Created by noahshen on 14-7-28.
@@ -19,7 +18,7 @@ public class ReceiveInfoBean implements Serializable {
 
     private int payChannel;
 
-    private Date payTime;
+    private String payTime;
 
     private String bizContent;
 
@@ -68,11 +67,11 @@ public class ReceiveInfoBean implements Serializable {
         this.payChannel = payChannel;
     }
 
-    public Date getPayTime() {
+    public String getPayTime() {
         return payTime;
     }
 
-    public void setPayTime(Date payTime) {
+    public void setPayTime(String payTime) {
         this.payTime = payTime;
     }
 
