@@ -175,7 +175,7 @@
         <action name="DPCSReceiveNotify"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.PayCentreReceiveHttpAjaxAction"
                 method="receiveFromPayCentre">
-            <result type="plaintext"></result>
+            <result type="json"></result>
         </action>
     </package>
 
