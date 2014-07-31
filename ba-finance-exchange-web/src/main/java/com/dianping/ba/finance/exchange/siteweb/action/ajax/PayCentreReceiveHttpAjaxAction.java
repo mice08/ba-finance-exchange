@@ -39,7 +39,7 @@ public class PayCentreReceiveHttpAjaxAction extends AjaxBaseAction{
 	/**
 	 * 交易类型：1收款；2冲销
 	 */
-	private int tradeType;
+	private int txtType;
 	/**
 	 * 我司收款银行   汉涛上海：1    汉海上海：8   汉海北京：7   汉海广州：11
 	 */
@@ -102,7 +102,7 @@ public class PayCentreReceiveHttpAjaxAction extends AjaxBaseAction{
 		dtoBean.setBusinessType(businessType);
 		dtoBean.setOriTradeNo(oriTradeNo);
 		dtoBean.setTradeNo(tradeNo);
-		dtoBean.setTradeType(tradeType);
+		dtoBean.setTradeType(txtType);
 		dtoBean.setPayChannel(payChannel);
 		dtoBean.setPayMethod(payMethod);
 		dtoBean.setReceiveDate(DateUtil.isValidDate(receiveDate) ? DateUtil.formatDate(receiveDate, true) : null);
@@ -127,12 +127,12 @@ public class PayCentreReceiveHttpAjaxAction extends AjaxBaseAction{
 		this.tradeNo = tradeNo;
 	}
 
-	public int getTradeType() {
-		return tradeType;
+	public int getTxtType() {
+		return txtType;
 	}
 
-	public void setTradeType(int tradeType) {
-		this.tradeType = tradeType;
+	public void setTxtType(int txtType) {
+		this.txtType = txtType;
 	}
 
 	public int getBankId() {
