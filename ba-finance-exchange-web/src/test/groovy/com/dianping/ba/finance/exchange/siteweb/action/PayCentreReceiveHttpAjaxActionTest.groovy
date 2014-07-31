@@ -27,7 +27,6 @@ class PayCentreReceiveHttpAjaxActionTest extends Specification {
         payCentreReceiveHttpAjaxActionStub.paymentChannel = 10;
         payCentreReceiveHttpAjaxActionStub.bankId = 11
         payCentreReceiveHttpAjaxActionStub.amount = "11.87"
-        payCentreReceiveHttpAjaxActionStub.businessType = 6;
         payCentreReceiveHttpAjaxActionStub.receiveDate = "20140731131313"
 
         when:
@@ -44,7 +43,6 @@ class PayCentreReceiveHttpAjaxActionTest extends Specification {
         payCentreReceiveHttpAjaxActionStub.paymentChannel = 10;
         payCentreReceiveHttpAjaxActionStub.bankId = 11
         payCentreReceiveHttpAjaxActionStub.amount = "11.87"
-        payCentreReceiveHttpAjaxActionStub.businessType = 6;
         payCentreReceiveHttpAjaxActionStub.receiveDate = "20140731131313"
 
         when:
