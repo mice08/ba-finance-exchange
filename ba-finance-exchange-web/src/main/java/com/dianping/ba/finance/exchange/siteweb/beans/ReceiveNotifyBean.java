@@ -25,6 +25,15 @@ public class ReceiveNotifyBean {
 	private String attachment;
 	private String status;
 	private String memo;
+	private int roMatchId;
+
+	public int getRoMatchId() {
+		return roMatchId;
+	}
+
+	public void setRoMatchId(int roMatchId) {
+		this.roMatchId = roMatchId;
+	}
 
 	public String getReceiveNotifyId() {
 		return receiveNotifyId;

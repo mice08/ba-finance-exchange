@@ -30,7 +30,6 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="modify-ro"><span class="glyphicon glyphicon-floppy-disk"></span>确定</button>
     </div>
 </div>
 
