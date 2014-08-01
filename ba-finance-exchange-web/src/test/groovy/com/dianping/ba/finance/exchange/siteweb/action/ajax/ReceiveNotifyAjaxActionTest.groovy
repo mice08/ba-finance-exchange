@@ -1,11 +1,16 @@
 package com.dianping.ba.finance.exchange.siteweb.action.ajax
 
+import com.dianping.ba.finance.exchange.api.ReceiveBankService
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
+import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean
+import com.dianping.ba.finance.exchange.api.datas.ReceiveBankData
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData
 import com.dianping.ba.finance.exchange.api.enums.BusinessType
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus
+import com.dianping.ba.finance.exchange.api.enums.ReceiveType
 import com.dianping.ba.finance.exchange.siteweb.beans.CustomerInfoBean
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService
+import com.dianping.core.type.PageModel
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -20,14 +25,20 @@ class ReceiveNotifyAjaxActionTest extends Specification {
 
     private CustomerNameService customerNameServiceMock;
 
+    private ReceiveBankService receiveBankServiceMock;
+
+
     void setup() {
-        receiveNotifyAjaxActionStub = []
+        receiveNotifyAjaxActionStub = new ReceiveNotifyAjaxActionMock()
 
         receiveNotifyServiceMock = Mock();
         receiveNotifyAjaxActionStub.receiveNotifyService = receiveNotifyServiceMock;
 
         customerNameServiceMock = Mock();
         receiveNotifyAjaxActionStub.customerNameService = customerNameServiceMock;
+
+        receiveBankServiceMock = Mock();
+        receiveNotifyAjaxActionStub.receiveBankService = receiveBankServiceMock;
     }
 
     @Unroll
@@ -110,4 +121,45 @@ class ReceiveNotifyAjaxActionTest extends Specification {
         null          | BusinessType.ADVERTISEMENT.value() | ReceiveNotifyAjaxAction.SUCCESS_CODE | null
         "APP123"      | BusinessType.ADVERTISEMENT.value() | ReceiveNotifyAjaxAction.SUCCESS_CODE | 123
     }
+
+    @Unroll
+    def "jsonExecute"(Integer businessType, String receiveAmount, Integer resultCode) {
+        given:
+        receiveNotifyAjaxActionStub.businessType = businessType
+        receiveNotifyServiceMock.paginateReceiveNotifyList(_ as ReceiveNotifySearchBean, _ as Integer, _ as Integer) >> {
+            PageModel pm = []
+            ReceiveNotifyData rnData = [receiveNotifyId: 123,
+                                        receiveType: ReceiveType.AD_FEE.value(),
+                                        status: ReceiveNotifyStatus.INIT.value()]
+            pm.records = [rnData]
+            pm
+        }
+        customerNameServiceMock.getRORNCustomerName(_ as List, _ as Integer) >> {
+            [:]
+        }
+        receiveBankServiceMock.loadReceiveBankByBankId(_ as Integer) >> {
+            ReceiveBankData bankData = [bankId: 1]
+            bankData
+        }
+        receiveNotifyServiceMock.loadTotalReceiveAmountByCondition(_ as ReceiveNotifySearchBean) >> BigDecimal.TEN
+
+        expect:
+        receiveNotifyAjaxActionStub.jsonExecute()
+        resultCode == receiveNotifyAjaxActionStub.code
+
+        where:
+        businessType | receiveAmount| resultCode
+        BusinessType.DEFAULT.value() | null | 0
+        BusinessType.ADVERTISEMENT.value() | null | ReceiveNotifyAjaxAction.SUCCESS_CODE
+        BusinessType.ADVERTISEMENT.value() | "10.87" | ReceiveNotifyAjaxAction.SUCCESS_CODE
+
+    }
+
+    private class ReceiveNotifyAjaxActionMock extends ReceiveNotifyAjaxAction {
+        @Override
+        int getLoginId() {
+            return 0
+        }
+    }
+
 }
