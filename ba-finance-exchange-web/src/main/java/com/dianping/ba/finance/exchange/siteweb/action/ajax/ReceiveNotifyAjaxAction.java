@@ -122,6 +122,7 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 		} else {
 			bean.setAttachment(receiveNotifyData.getAttachment());
 		}
+		bean.setRoMatchId(receiveNotifyData.getRoMatcherId());
 		bean.setBizContent(receiveNotifyData.getBizContent());
 		bean.setMemo(receiveNotifyData.getMemo());
 		bean.setPayerName(receiveNotifyData.getPayerName());

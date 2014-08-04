@@ -1,17 +1,17 @@
 <tags>
     <set name="收款管理">
-        <link name="收款单查询" url="http://${ba-finance-exchange-web.Domain}/exchange/receiveorder/orderlist"/>
-        <link name="收款通知单查询" url="http://${ba-finance-exchange-web.Domain}/exchange/receivenotify/orderlist"/>
+        <link name="收款单" url="http://${ba-finance-exchange-web.Domain}/exchange/receiveorder/orderlist"/>
+        <link name="收款通知单" url="http://${ba-finance-exchange-web.Domain}/exchange/receivenotify/orderlist"/>
     </set>
     <set name="付款管理">
-        <link name="付款计划查询" url="http://${ba-finance-settle-web.Domain}/settle/payplan/payplanlist"/>
-        <link name="付款单查询" url="http://${ba-finance-exchange-web.Domain}/exchange/payorder/orderlist"/>
+        <link name="付款计划" url="http://${ba-finance-settle-web.Domain}/settle/payplan/payplanlist"/>
+        <link name="付款单" url="http://${ba-finance-exchange-web.Domain}/exchange/payorder/orderlist"/>
     </set>
     <set name="开票管理">
-        <link name="开票查询" url="http://${ba-finance-settle-web.Domain}/settle/invoice/invoicelist"/>
+        <link name="开票" url="http://${ba-finance-settle-web.Domain}/settle/invoice/invoicelist"/>
     </set>
     <set name="预约预定">
-        <link name="付款计划查询" url="http://${ba-finance-settle-web.Domain}/caiwu/paymentplan/paymentplanlist"/>
-        <link name="付款单查询" url="http://${ba-finance-settle-web.Domain}/caiwu/exchangeorder/orderlist"/>
+        <link name="付款计划" url="http://${ba-finance-settle-web.Domain}/caiwu/paymentplan/paymentplanlist"/>
+        <link name="付款单" url="http://${ba-finance-settle-web.Domain}/caiwu/exchangeorder/orderlist"/>
     </set>
 </tags>

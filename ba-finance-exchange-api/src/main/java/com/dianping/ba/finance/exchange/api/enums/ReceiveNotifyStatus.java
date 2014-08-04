@@ -16,7 +16,7 @@ public enum ReceiveNotifyStatus {
 
     REJECT(3, "驳回"),
 
-    MATCHED(4, "已匹配"),
+    MATCHED(4, "待审核"),
 
     CONFIRMED(5, "已确认");
 
