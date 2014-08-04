@@ -36,7 +36,8 @@
                 <div class="control-group span6">
                     <label class="control-label">金额</label>
                     <div class="controls">
-                        <input type="text" id="q-receiveAmount" name="receiveAmount" class="form_value">
+                        <input type="text" id="q-receiveAmount" name="receiveAmount" class="form_value"
+                               >
                     </div>
                 </div>
             </div>

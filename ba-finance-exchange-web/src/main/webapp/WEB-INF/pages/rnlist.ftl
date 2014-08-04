@@ -81,7 +81,15 @@
     {{/if}}
     </td>
     <td class="fs tb-item auto-break">{{= record.bankId}}</td>
+    {{if record.status=="待审核"||record.status=="已确认"}}
+    <td class="fs tb-item auto-break">
+    <a href="javascript:void(0);" data-toggle="popover" data-placement="top"
+        roMatchId="{{= record.roMatchId}}"
+        class="rn-show"  rel="popover-medium">{{= record.status}}</a>
+    </td>
+    {{else}}
     <td class="fs tb-item auto-break">{{= record.status}}</td>
+    {{/if}}
     </tr>
     {{/each}}
 
