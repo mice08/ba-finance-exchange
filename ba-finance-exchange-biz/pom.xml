@@ -13,12 +13,11 @@
     <packaging>jar</packaging>
 
     <properties>
+        <struts.version>2.3.16.2</struts.version>
         <groovy.version>2.3.1</groovy.version>
     </properties>
 
     <dependencies>
-
-
         <dependency>
             <groupId>com.dianping.lion</groupId>
             <artifactId>lion-${env}</artifactId>
@@ -73,6 +72,29 @@
             <artifactId>midas-finance-api</artifactId>
             <version>1.0.1-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts2-core</artifactId>
+            <version>${struts.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-test</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.struts.xwork</groupId>
+                    <artifactId>xwork-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.struts.xwork</groupId>
+            <artifactId>xwork-core</artifactId>
+            <version>2.3.16.2.1</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
