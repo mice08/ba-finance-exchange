@@ -44,7 +44,7 @@
                     </div>
                 </div>
                 <div class="control-group span6">
-                    <label class="control-label">合同号<span class="required">*</span></label>
+                    <label class="control-label">合同号<span id="ro-add-bizContent" class="required">*</span></label>
 
                     <div class="controls">
                         <input type="text" id="bizContent" name="bizContent" class="form_value" validate="+">
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="control-group span6">
-                    <label class="control-label">客户名<span class="required">*</span></label>
+                    <label class="control-label">客户名<span  class="required">*</span></label>
 
                     <div class="controls">
                         <input type="text" id="customerName" name="customerName" class="form_value" validate="+"

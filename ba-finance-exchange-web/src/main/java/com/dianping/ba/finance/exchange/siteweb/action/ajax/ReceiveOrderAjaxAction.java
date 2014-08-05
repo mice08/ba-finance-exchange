@@ -309,7 +309,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
             sb.append("请填写业务类型");
             return false;
         }
-        if (StringUtils.isEmpty(bizContent)) {
+        if (("广告").equals(BusinessType.valueOf(businessType).toString())&&StringUtils.isEmpty(bizContent)) {
             sb.append("请填写业务ID");
             return false;
         }
