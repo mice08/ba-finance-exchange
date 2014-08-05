@@ -197,7 +197,7 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         if (receiveOrderUpdateBean.getStatus() != ReceiveOrderStatus.CONFIRMED.value()) {
             return true;
         } else {
-			if (BusinessType.valueOf(temp.getBusinessType()).toString().equals("团购")) {
+			if (temp.getBusinessType()==BusinessType.GROUP_PURCHASE.value()) {
 				return receiveOrderUpdateBean.getReceiveTime() != null
 						&& receiveOrderUpdateBean.getCustomerId() > 0
 						&& receiveOrderUpdateBean.getReceiveType().value() > 0;
