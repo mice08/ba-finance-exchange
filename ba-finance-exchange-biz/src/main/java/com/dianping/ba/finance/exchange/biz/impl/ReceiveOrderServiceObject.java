@@ -196,18 +196,16 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         //已确认状态判断字段 推广——客户名，系统入账时间，收款类型，业务类型
         if (receiveOrderUpdateBean.getStatus() != ReceiveOrderStatus.CONFIRMED.value()) {
             return true;
+        }
+        if (temp.getBusinessType() == BusinessType.GROUP_PURCHASE.value()) {
+            return receiveOrderUpdateBean.getReceiveTime() != null
+                    && receiveOrderUpdateBean.getCustomerId() > 0
+                    && receiveOrderUpdateBean.getReceiveType().value() > 0;
         } else {
-			if (temp.getBusinessType()==BusinessType.GROUP_PURCHASE.value()) {
-				return receiveOrderUpdateBean.getReceiveTime() != null
-						&& receiveOrderUpdateBean.getCustomerId() > 0
-						&& receiveOrderUpdateBean.getReceiveType().value() > 0;
-			}
-			else {
-				return receiveOrderUpdateBean.getReceiveTime() != null
-						&& receiveOrderUpdateBean.getCustomerId() > 0
-						&& StringUtils.isNotEmpty(receiveOrderUpdateBean.getBizContent())
-						&& receiveOrderUpdateBean.getReceiveType().value() > 0;
-			}
+            return receiveOrderUpdateBean.getReceiveTime() != null
+                    && receiveOrderUpdateBean.getCustomerId() > 0
+                    && StringUtils.isNotEmpty(receiveOrderUpdateBean.getBizContent())
+                    && receiveOrderUpdateBean.getReceiveType().value() > 0;
         }
     }
 

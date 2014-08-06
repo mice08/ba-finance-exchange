@@ -8,6 +8,7 @@ import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
+import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
@@ -207,7 +208,7 @@ public class ReceiveOrderServiceObjectTest {
 
         Assert.assertTrue(result == -1);
         verify(receiveOrderDaoMock, times(0)).updateReceiveOrder(any(ReceiveOrderData.class));
-        verify(receiveOrderDaoMock, times(0)).loadReceiveOrderDataByRoId(anyInt());
+        verify(receiveOrderDaoMock, times(1)).loadReceiveOrderDataByRoId(anyInt());
         verify(receiveOrderResultNotifyMock, times(0)).receiveResultNotify(any(ReceiveOrderResultBean.class));
     }
 
@@ -218,6 +219,7 @@ public class ReceiveOrderServiceObjectTest {
         receiveOrderData.setRoId(1);
         receiveOrderData.setStatus(ReceiveOrderStatus.CONFIRMED.value());
         receiveOrderData.setApplicationId("applicationId");
+        receiveOrderData.setBusinessType(BusinessType.ADVERTISEMENT.value());
         when(receiveOrderDaoMock.loadReceiveOrderDataByRoId(anyInt())).thenReturn(receiveOrderData);
 
         ReceiveOrderUpdateBean receiveOrderUpdateBean=new ReceiveOrderUpdateBean();
@@ -231,7 +233,7 @@ public class ReceiveOrderServiceObjectTest {
 
         Assert.assertTrue(result > 0);
         verify(receiveOrderDaoMock, times(1)).updateReceiveOrder(any(ReceiveOrderData.class));
-        verify(receiveOrderDaoMock, times(1)).loadReceiveOrderDataByRoId(anyInt());
+        verify(receiveOrderDaoMock, times(2)).loadReceiveOrderDataByRoId(anyInt());
         verify(receiveOrderResultNotifyMock, times(1)).receiveResultNotify(any(ReceiveOrderResultBean.class));
         verify(rornMatchFireServiceMock, times(1)).executeMatchingForReceiveOrderConfirmed(any(ReceiveOrderData.class));
     }
