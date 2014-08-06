@@ -111,10 +111,11 @@
                     </div>
                 </div>
                 <div class="control-group span6">
-                    <label class="control-label">收款通知ID</label>
-
+                    <label class="control-label">银行账户</label>
                     <div class="controls">
-                        <input type="text" id="m-applicationId" name="applicationId" class="form_value load_value">
+                        <div class="input-prepend">
+                            <label id="m-bankID" class="load_value" style="padding-top: 5px" name="bankID"></label>
+                        </div>
                     </div>
                 </div>
 
@@ -134,10 +135,10 @@
                     </div>
                 </div>
                 <div class="control-group span6">
-                    <label class="control-label">合同号</label>
+                    <label class="control-label">收款通知ID</label>
+
                     <div class="controls">
-                        <input type="text" id="m-bizContent" name="bizContent" class="form_value load_value" validate="s[0,100]"
-                               error_msg="s[0,254]:请输入0-100位字符">
+                        <input type="text" id="m-applicationId" name="applicationId" class="form_value load_value">
                     </div>
                 </div>
             </div>
@@ -152,15 +153,14 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="control-group span6">
-                    <label class="control-label">客户名</label>
-
+                    <label class="control-label">合同号</label>
                     <div class="controls">
-                        <input type="text" id="m-customerName" name="customerName" class="form_value load_value">
-                        <input type="hidden" id="m-customerId" name="customerId" class="form_value load_value">
+                        <input type="text" id="m-bizContent" name="bizContent" class="form_value load_value" validate="s[0,100]"
+                               error_msg="s[0,254]:请输入0-100位字符">
                     </div>
                 </div>
+
             </div>
             <div class="row-fluid label-colon">
                 <div class="control-group span6">
@@ -168,6 +168,14 @@
                     <div class="controls">
                         <input type="text" id="m-memo" name="memo" class="form_value load_value" validate="s[0,100]"
                                error_msg="s[0,254]:请输入0-100位字符">
+                    </div>
+                </div>
+                <div class="control-group span6">
+                    <label class="control-label">客户名</label>
+
+                    <div class="controls">
+                        <input type="text" id="m-customerName" name="customerName" class="form_value load_value">
+                        <input type="hidden" id="m-customerId" name="customerId" class="form_value load_value">
                     </div>
                 </div>
             </div>
