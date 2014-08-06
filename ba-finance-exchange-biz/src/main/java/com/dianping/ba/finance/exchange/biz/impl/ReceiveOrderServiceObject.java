@@ -185,15 +185,29 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         return result;
     }
 
+	/**
+	 * 在原有业务逻辑的基础上有一些改动，针对团购的收款单的确认，去掉对合同号的限制
+	 * by 成亚雄
+	 * @param receiveOrderUpdateBean
+	 * @return
+	 */
     private boolean allowReceiveOrderUpdateBeanConfirmStatus(ReceiveOrderUpdateBean receiveOrderUpdateBean){
+        ReceiveOrderData temp = loadReceiveOrderDataByRoId(receiveOrderUpdateBean.getRoId());
         //已确认状态判断字段 推广——客户名，系统入账时间，收款类型，业务类型
         if (receiveOrderUpdateBean.getStatus() != ReceiveOrderStatus.CONFIRMED.value()) {
             return true;
         } else {
-            return receiveOrderUpdateBean.getReceiveTime() != null
-                    && receiveOrderUpdateBean.getCustomerId() > 0
-                    && StringUtils.isNotEmpty(receiveOrderUpdateBean.getBizContent())
-                    && receiveOrderUpdateBean.getReceiveType().value() > 0;
+			if (temp.getBusinessType()==BusinessType.GROUP_PURCHASE.value()) {
+				return receiveOrderUpdateBean.getReceiveTime() != null
+						&& receiveOrderUpdateBean.getCustomerId() > 0
+						&& receiveOrderUpdateBean.getReceiveType().value() > 0;
+			}
+			else {
+				return receiveOrderUpdateBean.getReceiveTime() != null
+						&& receiveOrderUpdateBean.getCustomerId() > 0
+						&& StringUtils.isNotEmpty(receiveOrderUpdateBean.getBizContent())
+						&& receiveOrderUpdateBean.getReceiveType().value() > 0;
+			}
         }
     }
 
