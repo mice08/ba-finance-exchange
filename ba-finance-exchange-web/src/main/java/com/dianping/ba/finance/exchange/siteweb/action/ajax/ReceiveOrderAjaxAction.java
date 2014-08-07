@@ -247,7 +247,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 		//根据bankId获取银行名
 		ReceiveBankData bankData = receiveBankService.loadReceiveBankByBankId(receiveOrderData.getBankID());
 		if (bankData != null) {
-			receiveOrderBean.setBankID(CompanyIDName.valueOf(bankData.getCompanyId()).toString());
+			receiveOrderBean.setBankAccount(CompanyIDName.valueOf(bankData.getCompanyId()).toString());
 		}
         ReceiveType rt = ReceiveType.valueOf(receiveOrderData.getReceiveType());
         if (rt != ReceiveType.DEFAULT) {

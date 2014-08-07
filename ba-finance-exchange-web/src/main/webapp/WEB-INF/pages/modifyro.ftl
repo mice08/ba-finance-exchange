@@ -114,7 +114,7 @@
                     <label class="control-label">银行账户</label>
                     <div class="controls">
                         <div class="input-prepend">
-                            <label id="m-bankID" class="load_value" style="padding-top: 5px" name="bankID"></label>
+                            <label id="m-bankAccount" class="load_value" style="padding-top: 5px" name="bankAccount"></label>
                         </div>
                     </div>
                 </div>
