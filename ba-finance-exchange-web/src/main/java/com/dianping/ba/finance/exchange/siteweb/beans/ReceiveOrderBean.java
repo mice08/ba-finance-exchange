@@ -17,7 +17,7 @@ public class ReceiveOrderBean {
     private String payerAccountNo;
     private String payerBankName;
     private String tradeNo;
-    private int bankID;
+    private String bankID;
     private int reverseRoId;
     private int shopId;
     private String payTime;
@@ -173,11 +173,11 @@ public class ReceiveOrderBean {
         this.tradeNo = tradeNo;
     }
 
-    public int getBankID() {
+    public String getBankID() {
         return bankID;
     }
 
-    public void setBankID(int bankID) {
+    public void setBankID(String bankID) {
         this.bankID = bankID;
     }
 
