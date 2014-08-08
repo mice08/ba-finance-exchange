@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="PayPlan">
+    <typeAlias alias="PayPlanMonitorData" type="com.dianping.ba.finance.exchange.paymonitor.api.datas.PayPlanMonitorData"/>
+    <resultMap id="payPlanMonitorData" class="PayPlanMonitorData">
+        <result property="ppId" column="PPID"/>
+        <result property="status" column="Status"/>
+        <result property="updateTime" column="UpdateTime"/>
+    </resultMap>
+
+    <select id="findPayPlansByDate" resultMap="payPlanMonitorData" parameterClass="map">
+        SELECT PPID,Status,UpdateTime
+        FROM FC_PayPlan
+        WHERE
+        UpdateTime &gt;= #startDate#
+        AND
+        UpdateTime &lt;= #endDate#
+    </select>
+
+    <select id="getPayPlanById" resultMap="payPlanMonitorData" parameterClass="map">
+        SELECT PPID,Status,UpdateTime
+        FROM FC_PayPlan
+        WHERE PPID = #ppId#
+    </select>
+
+    <select id="getPaySequenceById" resultClass="String" parameterClass="map">
+      SELECT PaySequence
+      FROM FC_PayFLow
+      WHERE PPID = #ppId# AND Status = 2
+    </select>
+</sqlMap>

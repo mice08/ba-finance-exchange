@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="MonitorTime">
+    <typeAlias alias="MonitorTimeData" type="com.dianping.ba.finance.exchange.paymonitor.api.datas.MonitorTimeData"/>
+    <resultMap id="monitorTimeData" class="MonitorTimeData">
+        <result property="monitorId" column="MonitorID"/>
+        <result property="monitorTime" column="MonitorTime"/>
+    </resultMap>
+
+    <insert id="addMonitorTime" parameterClass="map">
+        INSERT INTO FC_PayMonitorTime
+        (MonitorTime)
+        VALUES (#date#)
+        <selectKey resultClass="java.lang.Integer" keyProperty="MonitorID">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <select id="getLastMonitorTime" parameterClass="map" resultClass="java.util.Date">
+        SELECT MonitorTime
+          FROM FC_PayMonitorTime
+         WHERE MonitorID = (SELECT MAX(MonitorID) FROM FC_PayMonitorTime)
+    </select>
+
+</sqlMap>
