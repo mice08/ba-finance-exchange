@@ -2,15 +2,14 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.exchange.api.ReceiveBankService;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveBankData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderPaginateData;
-import com.dianping.ba.finance.exchange.api.enums.BusinessType;
-import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
-import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
-import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
+import com.dianping.ba.finance.exchange.api.enums.*;
 import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveOrderBean;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
@@ -91,6 +90,8 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
     private ReceiveOrderService receiveOrderService;
 
     private CustomerNameService customerNameService;
+
+	private ReceiveBankService receiveBankService;
 
     @Override
     protected void jsonExecute() {
@@ -231,7 +232,6 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderBean.setCustomerId(receiveOrderData.getCustomerId());
         receiveOrderBean.setMemo(receiveOrderData.getMemo());
         receiveOrderBean.setPayChannel(ReceiveOrderPayChannel.valueOf(receiveOrderData.getPayChannel()).toString());
-        receiveOrderBean.setBankID(receiveOrderData.getBankID());
         receiveOrderBean.setTradeNo(receiveOrderData.getTradeNo());
         receiveOrderBean.setPayerAccountName(receiveOrderData.getPayerAccountName());
         receiveOrderBean.setPayerAccountNo(receiveOrderData.getPayerAccountNo());
@@ -243,6 +243,12 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderBean.setPayerName(receiveOrderData.getPayerAccountName());
         receiveOrderBean.setReceiveAmount(new DecimalFormat("##,###,###,###,##0.00").format(receiveOrderData.getReceiveAmount()));
         receiveOrderBean.setReceiveTime(DateUtil.formatDateToString(receiveOrderData.getReceiveTime(), "yyyy-MM-dd"));
+		//根据bankId获取银行账户
+		//根据bankId获取银行名
+		ReceiveBankData bankData = receiveBankService.loadReceiveBankByBankId(receiveOrderData.getBankID());
+		if (bankData != null) {
+			receiveOrderBean.setBankAccount(CompanyIDName.valueOf(bankData.getCompanyId()).toString());
+		}
         ReceiveType rt = ReceiveType.valueOf(receiveOrderData.getReceiveType());
         if (rt != ReceiveType.DEFAULT) {
             receiveOrderBean.setReceiveType(rt.toString());
@@ -309,8 +315,9 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
             sb.append("请填写业务类型");
             return false;
         }
-        if (StringUtils.isEmpty(bizContent)) {
-            sb.append("请填写业务ID");
+        if (businessType == BusinessType.ADVERTISEMENT.value()
+                && StringUtils.isEmpty(bizContent)) {
+            sb.append("请填写业务文本");
             return false;
         }
         return true;
@@ -493,7 +500,11 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         return rnId;
     }
 
-    public void setRnId(int rnId) {
+	public void setRnId(int rnId) {
         this.rnId = rnId;
     }
+
+	public void setReceiveBankService(ReceiveBankService receiveBankService) {
+		this.receiveBankService = receiveBankService;
+	}
 }

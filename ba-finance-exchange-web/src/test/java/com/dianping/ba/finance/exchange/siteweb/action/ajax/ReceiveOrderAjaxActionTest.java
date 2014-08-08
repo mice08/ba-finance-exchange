@@ -1,8 +1,10 @@
 package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 
+import com.dianping.ba.finance.exchange.api.ReceiveBankService;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveBankData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderPaginateData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
@@ -33,6 +35,8 @@ public class ReceiveOrderAjaxActionTest {
 
     private CustomerNameService customerNameServiceMock;
 
+    private ReceiveBankService receiveBankServiceMock;
+
     @Before
     public void setUp() throws Exception {
         receiveOrderAjaxActionStub = new ReceiveOrderAjaxAction();
@@ -42,6 +46,9 @@ public class ReceiveOrderAjaxActionTest {
 
         customerNameServiceMock = mock(CustomerNameService.class);
         receiveOrderAjaxActionStub.setCustomerNameService(customerNameServiceMock);
+
+        receiveBankServiceMock = mock(ReceiveBankService.class);
+        receiveOrderAjaxActionStub.setReceiveBankService(receiveBankServiceMock);
     }
 
     @Test
@@ -66,6 +73,9 @@ public class ReceiveOrderAjaxActionTest {
         ReceiveOrderData receiveOrderData = new ReceiveOrderData();
         receiveOrderData.setReceiveAmount(BigDecimal.ONE);
         when(receiveOrderServiceMock.loadReceiveOrderDataByRoId(anyInt())).thenReturn(receiveOrderData);
+
+        Map<Integer, String> empty = Maps.newHashMap();
+        when(customerNameServiceMock.getROCustomerName(anyList(), anyInt())).thenReturn(empty);
         receiveOrderAjaxActionStub.loadReceiveOrderById();
         Assert.assertNotNull(receiveOrderAjaxActionStub.getReceiveOrder());
     }
@@ -107,10 +117,17 @@ public class ReceiveOrderAjaxActionTest {
         customerIdNameMap.put(123, "客户名称");
         when(customerNameServiceMock.getROCustomerName(anyList(), anyInt())).thenReturn(customerIdNameMap);
 
+        ReceiveBankData receiveBankData = new ReceiveBankData();
+        receiveBankData.setBankId(1);
+        receiveBankData.setAddTime(new Date());
+        receiveBankData.setBankName("name");
+        receiveBankData.setCompanyId(1);
+        when(receiveBankServiceMock.loadReceiveBankByBankId(anyInt())).thenReturn(receiveBankData);
+
         receiveOrderAjaxActionStub.setBusinessType(BusinessType.GROUP_PURCHASE.value());
         receiveOrderAjaxActionStub.jsonExecute();
 
-        Assert.assertEquals(receiveOrderAjaxActionStub.getTotalAmount(), "1.00");
+        Assert.assertEquals("1.00", receiveOrderAjaxActionStub.getTotalAmount());
     }
 
     @Test

@@ -134,6 +134,7 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 		bean.setCustomerId(customerIdNameMap.get(receiveNotifyData.getCustomerId()));
 		bean.setReceiveType(ReceiveType.valueOf(receiveNotifyData.getReceiveType()).toString());
 		bean.setStatus(ReceiveNotifyStatus.valueOf(receiveNotifyData.getStatus()).toString());
+		//根据bankId获取银行名
 		ReceiveBankData bankData = receiveBankService.loadReceiveBankByBankId(receiveNotifyData.getBankId());
 		if (bankData != null) {
 			bean.setBankId(CompanyIDName.valueOf(bankData.getCompanyId()).toString());

@@ -3,9 +3,11 @@ package com.dianping.ba.finance.exchange.biz.impl
 import com.dianping.ba.finance.exchange.api.RORNMatchFireService
 import com.dianping.ba.finance.exchange.api.RORNMatchService
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
+import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderResultBean
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData
+import com.dianping.ba.finance.exchange.api.enums.BusinessType
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType
@@ -133,5 +135,29 @@ class ReceiveOrderServiceObjectSpockTest extends Specification {
         ReceiveOrderStatus.CONFIRMED   | ""            | true
         ReceiveOrderStatus.CONFIRMED   | "123"         | true
 
+    }
+
+    def "updateReceiveOrderConfirm" (ReceiveOrderStatus status,Integer resultInt) {
+        given:
+        ReceiveOrderUpdateBean receiveOrderUpdateBean = [status       : status.value(),
+                                                         receiveTime  : new Date(),
+                                                         customerId   : 10,
+                                                         receiveType  : ReceiveType.TG_GUARANTEE,
+                                                         roId: 1234]
+        receiveOrderDaoMock.loadReceiveOrderDataByRoId(_ as Integer) >> { Integer roId2 ->
+            ReceiveOrderData roData = [roId       : roId2,
+                                       businessType:BusinessType.GROUP_PURCHASE.value(),
+                                       receiveType  : ReceiveType.TG_GUARANTEE.value()]
+            roData
+        }
+        receiveOrderResultNotifyMock.receiveResultNotify(_ as ReceiveOrderResultBean) >> {};
+
+        receiveOrderDaoMock.updateReceiveOrder(_ as ReceiveOrderData) >> 1
+        expect:
+        resultInt == receiveOrderServiceObjectStub.updateReceiveOrderConfirm(receiveOrderUpdateBean)
+
+        where:
+        status                         | resultInt
+        ReceiveOrderStatus.CONFIRMED   | 1
     }
 }
