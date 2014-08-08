@@ -9,52 +9,42 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-    <!--<bean id="monitorMailService" class="com.dianping.ba.finance.exchange.monitor.job.service.MonitorMailService">
+    <bean id="monitorMailService" class="com.dianping.ba.finance.exchange.receivemonitor.job.service.MonitorMailService">
         <property name="mailService" ref="mailService"/>
     </bean>
 
-    <bean id="monitorSmsService" class="com.dianping.ba.finance.exchange.monitor.job.service.MonitorSmsService">
+    <bean id="monitorSmsService" class="com.dianping.ba.finance.exchange.receivemonitor.job.service.MonitorSmsService">
         <property name="smsService" ref="smsService"/>
-    </bean>-->
+    </bean>
 
-    <!--<bean id="checkController" class="com.dianping.ba.finance.exchange.monitor.job.CheckController">
+    <bean id="checkController" class="com.dianping.ba.finance.exchange.receivemonitor.job.CheckController">
         <property name="executorService" ref="executorService"/>
-        <property name="fsMonitorService" ref="fsMonitorService"/>
+        <property name="receiveMonitorService" ref="receiveMonitorService"/>
         <property name="monitorMailService" ref="monitorMailService"/>
         <property name="monitorSmsService" ref="monitorSmsService"/>
         <property name="dataCheckList">
             <list>
-                <ref bean="exchangeOrderDataChecker"/>
+                <ref bean="receiveOrderDataChecker"/>
             </list>
         </property>
     </bean>
 
-    <bean id="exchangeOrderDataChecker" class="com.dianping.ba.finance.exchange.monitor.job.ExchangeOrderDataChecker">
-        <property name="exchangeOrderMonitorService" ref="exchangeOrderMonitorService"/>
-        <property name="fsMonitorService" ref="fsMonitorService"/>
-        <property name="eoCheckRuleList" ref="eoCheckRuleList"/>
+    <bean id="receiveOrderDataChecker" class="com.dianping.ba.finance.exchange.receivemonitor.job.ReceiveOrderDataChecker">
+        <property name="receiveOrderMonitorService" ref="receiveOrderMonitorService"/>
+        <property name="receiveMonitorService" ref="receiveMonitorService"/>
+        <property name="roCheckRuleList" ref="roCheckRuleList"/>
     </bean>
 
-    <bean id="eoCheckRuleList" class="java.util.ArrayList">
+    <bean id="roCheckRuleList" class="java.util.ArrayList">
         <constructor-arg>
             <list>
-                <ref bean="eoPendingAndInitCheck"/>
-                <ref bean="eoRefundFlowCheck"/>
-                <ref bean="eoSuccessFlowCheck"/>
+                <ref bean="RORCChecker"/>
             </list>
         </constructor-arg>
     </bean>
 
-    <bean id="eoPendingAndInitCheck" class="com.dianping.ba.finance.exchange.monitor.job.eocheck.rule.EOPendIngAndInitCheck">
-        <property name="shopFundAccountFlowMonitorService" ref="shopFundAccountFlowMonitorService"/>
+    <bean id="RORCChecker" class="com.dianping.ba.finance.exchange.receivemonitor.job.rocheck.rule.RORCCheck">
+        <property name="receiveConfirmMonitorService" ref="receiveConfirmMonitorService"/>
     </bean>
-
-    <bean id="eoRefundFlowCheck" class="com.dianping.ba.finance.exchange.monitor.job.eocheck.rule.EORefundFlowCheck">
-        <property name="shopFundAccountFlowMonitorService" ref="shopFundAccountFlowMonitorService"/>
-    </bean>
-
-    <bean id="eoSuccessFlowCheck" class="com.dianping.ba.finance.exchange.monitor.job.eocheck.rule.EOSuccessFlowCheck">
-        <property name="shopFundAccountFlowMonitorService" ref="shopFundAccountFlowMonitorService"/>
-    </bean>-->
 
 </beans>
