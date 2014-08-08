@@ -5,6 +5,12 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
+    <package name="permission" namespace="/exchange/permission" extends="default">
+        <action name="clean" class="com.dianping.ba.finance.exchange.siteweb.action.CleanPermissionInfoAction">
+            <result name="success" type="freemarker">/WEB-INF/pages/cleansuccess.ftl</result>
+            <result name="error" type="freemarker">/WEB-INF/pages/error.ftl</result>
+        </action>
+    </package>
     <package name="receiveorder" namespace="/exchange/receiveorder" extends="default">
         <action name="orderlist" class="com.dianping.ba.finance.exchange.siteweb.action.RedirectAction">
             <result name="success" type="freemarker">/WEB-INF/pages/receiveorder.ftl</result>
