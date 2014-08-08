@@ -33,7 +33,8 @@
 	<package name="default" extends="avatar-json-default">
 		 <interceptors>
             <interceptor name="visitLoggerInterceptor" class="com.dianping.ba.finance.exchange.siteweb.interceptors.VisitLoggerInterceptor"/>
-            <interceptor-stack name="isLogin">
+            <interceptor name="permission" class="com.dianping.ba.finance.exchange.siteweb.interceptors.PermissionInterceptor"/>
+             <interceptor-stack name="isLogin">
 				<interceptor-ref name="exception"/>
                 <interceptor-ref name="checkbox"/>
                 <interceptor-ref name="multiselect"/>
@@ -54,13 +55,15 @@
                     <param name="excludeMethods"></param>
                 </interceptor-ref>
                 <interceptor-ref name="visitLoggerInterceptor"/>
+                 <interceptor-ref name="permission"/>
 			</interceptor-stack>
 		</interceptors>
 		<default-interceptor-ref name="isLogin" />
 		
 		<global-results>
-			<result name="error"  type="freemarker">/WEB-INF/pages/error.ftl</result>
-			<result name="login"  type="redirect">http://sys.www.dianping.com/Logout.aspx</result>
+			<result name="error" type="freemarker">/WEB-INF/pages/error.ftl</result>
+			<result name="login" type="freemarker">/WEB-INF/pages/error.ftl</result>
+            <result name="ajaxerror" type="json"></result>
 		</global-results>		
 	</package>
 	<include file="config/struts/struts-*.xml" />	

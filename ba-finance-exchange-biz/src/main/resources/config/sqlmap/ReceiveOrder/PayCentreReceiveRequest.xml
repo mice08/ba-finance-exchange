@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="PayCentreReceiveRequest">
+
+    <typeAlias alias="PayCentreReceiveRequestData" type="com.dianping.ba.finance.exchange.api.datas.PayCentreReceiveRequestData"/>
+    <resultMap id="payCentreReceiveRequestData" class="PayCentreReceiveRequestData">
+        <result property="requestId" column="RequestID"/>
+        <result property="tradeNo" column="TradeNo"/>
+        <result property="tradeType" column="TradeType"/>
+        <result property="bankId" column="BankID"/>
+        <result property="bizContent" column="BizContent"/>
+        <result property="receiveDate" column="ReceiveDate"/>
+        <result property="receiveAmount" column="ReceiveAmount"/>
+        <result property="businessType" column="BusinessType"/>
+        <result property="payChannel" column="PayChannel"/>
+        <result property="payMethod" column="PayMethod"/>
+        <result property="oriTradeNo" column="OriTradeNo"/>
+        <result property="addTime" column="AddTime"/>
+        <result property="memo" column="Memo"/>
+    </resultMap>
+
+    <insert id="insertPayCentreReceiveRequest" parameterClass="map">
+        <![CDATA[
+            INSERT INTO FC_PayCentreReceiveRequest
+                        (TradeNo,
+                         TradeType,
+                         BankID,
+                         BizContent,
+                         ReceiveDate,
+                         ReceiveAmount,
+                         BusinessType,
+                         PayChannel,
+                         PayMethod,
+                         OriTradeNo,
+                         AddTime,
+                         Memo)
+            VALUES      (#payCentreReceiveRequestData.tradeNo#,
+                         #payCentreReceiveRequestData.tradeType#,
+                         #payCentreReceiveRequestData.bankId#,
+                         #payCentreReceiveRequestData.bizContent#,
+                         #payCentreReceiveRequestData.receiveDate#,
+                         #payCentreReceiveRequestData.receiveAmount#,
+                         #payCentreReceiveRequestData.businessType#,
+                         #payCentreReceiveRequestData.payChannel#,
+                         #payCentreReceiveRequestData.payMethod#,
+                         #payCentreReceiveRequestData.oriTradeNo#,
+                         #payCentreReceiveRequestData.addTime#,
+                         #payCentreReceiveRequestData.memo#)
+
+ 		]]>
+        <selectKey resultClass="java.lang.Integer" keyProperty="requestId">
+            <![CDATA[
+			SELECT @@IDENTITY AS id
+		]]>
+        </selectKey>
+    </insert>
+
+</sqlMap>

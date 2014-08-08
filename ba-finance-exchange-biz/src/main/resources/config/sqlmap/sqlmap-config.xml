@@ -11,5 +11,11 @@
     <sqlMap resource="config/sqlmap/ShopFundAccount/ShopFundAccountFlow.xml"/>
     <sqlMap resource="config/sqlmap/ExchangeOrder/ExchangeOrder.xml"/>
     <sqlMap resource="config/sqlmap/PayOrder/PayOrder.xml"/>
+    <sqlMap resource="config/sqlmap/ReceiveOrder/ReceiveOrder.xml"/>
+    <sqlMap resource="config/sqlmap/ReceiveOrder/ReceiveBank.xml"/>
+    <sqlMap resource="config/sqlmap/ReceiveOrder/PayCentreReceiveRequest.xml"/>
+    <sqlMap resource="config/sqlmap/AuthToken/AuthToken.xml"/>
+    <sqlMap resource="config/sqlmap/ReceiveNotify/ReceiveNotifyRecord.xml"/>
+    <sqlMap resource="config/sqlmap/ReceiveNotify/ReceiveNotify.xml"/>
 
 </sqlMapConfig>

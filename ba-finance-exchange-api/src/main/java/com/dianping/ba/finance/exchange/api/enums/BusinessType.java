@@ -25,7 +25,12 @@ public enum BusinessType {
     /**
      * 储值卡
      */
-    PREPAID_CARD(4);
+    PREPAID_CARD(4),
+
+    /**
+     * 本地广告
+     */
+    ADVERTISEMENT(5);
 
     private int businessType;
 
@@ -44,6 +49,8 @@ public enum BusinessType {
                 return "结婚亲子";
             case 4:
                 return "储值卡" ;
+            case 5:
+                return "广告" ;
             default:
                 return "默认";
         }
@@ -59,10 +66,29 @@ public enum BusinessType {
                 return WEDDING;
             case 4:
                 return PREPAID_CARD;
+            case 5:
+                return ADVERTISEMENT;
             default:
                 return DEFAULT;
         }
     }
+
+	public static BusinessType valueOfPayCentre(int value){
+		switch (value){
+			case 1:
+				return GROUP_PURCHASE;
+			case 2:
+				return BOOKING;
+			case 7:
+				return WEDDING;
+			case 8:
+				return PREPAID_CARD;
+			case 6:
+				return ADVERTISEMENT;
+			default:
+				return DEFAULT;
+		}
+	}
 
     public  String toString(int businessType) {
         this.setBusinessType(businessType);

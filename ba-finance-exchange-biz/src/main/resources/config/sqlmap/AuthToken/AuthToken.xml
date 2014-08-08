@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="AuthToken">
+    <typeAlias alias="AccessTokenInfoData" type="com.dianping.ba.finance.exchange.api.datas.AccessTokenInfoData"/>
+    <resultMap id="accessTokenInfoData" class="AccessTokenInfoData">
+        <result property="tokenId" column="TokenId"/>
+        <result property="authBusinessId" column="AuthBusinessId"/>
+        <result property="accessToken" column="AccessToken"/>
+        <result property="businessName" column="BusinessName"/>
+        <result property="businessType" column="BusinessType"/>
+        <result property="authCode" column="AuthCode"/>
+        <result property="expireDate" column="ExpireDate"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="memo" column="Memo"/>
+    </resultMap>
+
+    <select id="findAllAccessTokenInfo" resultClass="accessTokenInfoData" parameterClass="map">
+        SELECT t.tokenId,
+               t.AuthBusinessId,
+               t.AccessToken,
+               IFNULL(ab.BusinessName, NULL) AS BusinessName,
+               IFNULL(ab.BusinessType, 0)    AS BusinessType,
+               IFNULL(ab.AuthCode, 0)        AS AuthCode,
+               t.ExpireDate,
+               t.AddDate,
+               t.Memo
+        FROM   FS_AuthAccessToken t
+               LEFT JOIN FS_AuthBusiness ab
+                      ON ( t.AuthBusinessId = ab.AuthBusinessId )
+        WHERE  t.ExpireDate IS NULL
+           OR  t.ExpireDate >= Now()
+    </select>
+
+    <select id="loadAccessTokenInfo" resultClass="accessTokenInfoData" parameterClass="map">
+        SELECT t.tokenId,
+               t.AuthBusinessId,
+               t.AccessToken,
+               IFNULL(ab.BusinessName, NULL) AS BusinessName,
+               IFNULL(ab.BusinessType, 0)    AS BusinessType,
+               IFNULL(ab.AuthCode, 0)        AS AuthCode,
+               t.ExpireDate,
+               t.AddDate,
+               t.Memo
+        FROM   FS_AuthAccessToken t
+               LEFT JOIN FS_AuthBusiness ab
+                      ON ( t.AuthBusinessId = ab.AuthBusinessId )
+        WHERE  t.AccessToken = #token#
+         AND ( t.ExpireDate IS NULL
+                OR t.ExpireDate >= Now() )
+    </select>
+
+</sqlMap>

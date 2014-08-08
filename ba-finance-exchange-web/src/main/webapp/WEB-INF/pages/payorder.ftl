@@ -70,11 +70,11 @@
             <div class="form-horizontal" id="payorder_search">
                 <div class="row-fluid label-colon">
                     <div class="control-group span6" id="business-type-selector">
-                        <label class="control-label">业务类型</label>
+                        <label class="control-label">产品线<span class="required">*</span></label>
 
                         <div class="controls">
                             <select id="businesstype" name="businessType" class="form_value" validate="ne[0]"
-                                    error_msg="ne[0]:请选择业务类型">
+                                    error_msg="ne[0]:请选择产品线">
                             </select>
                         </div>
                     </div>
@@ -183,20 +183,20 @@
                     <thead>
                     <tr>
                         <th width="3%"><input type="checkbox" id="select-all"></th>
-                        <th width="10%" class="fs tb-header id">付款单号</th>
-                        <th width="15%" class="fs tb-header customer-name">客户名</th>
+                        <th width="5%" class="fs tb-header id">付款单号</th>
+                        <th width="20%" class="fs tb-header customer-name">客户名</th>
                         <th width="8%" class="fs tb-header amount">付款单金额</th>
                         <th width="10%" class="fs tb-header date">产生日期</th>
-                        <th width="9%" class="fs tb-header bank-account">银行账号</th>
-                        <th width="10%" class="fs tb-header paid-time">付款日期</th>
-                        <th width="10%" class="fs tb-header sendback-time">退票日期</th>
-                        <th width="10%" class="fs tb-header status">状态</th>
+                        <th width="5%" class="fs tb-header bank-account">银行账号</th>
+                        <th width="6%" class="fs tb-header paid-time">付款日期</th>
+                        <th width="6%" class="fs tb-header sendback-time">退票日期</th>
+                        <th width="5%" class="fs tb-header status">状态</th>
                         <th class="fs tb-header memo">备注</th>
                     </tr>
                     </thead>
 
                     <tbody id="payorder_list" namespace="payOrderModel" page_size="20"
-                           table_url="/caiwu/ajax/payorderlist">
+                           table_url="/exchange/ajax/payorderlist">
                     </tbody>
 
                 </table>

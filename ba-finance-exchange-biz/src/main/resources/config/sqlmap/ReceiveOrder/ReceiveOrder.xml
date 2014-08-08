@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ReceiveOrder">
+
+    <typeAlias alias="ReceiveOrderData" type="com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData"/>
+    <resultMap id="receiveOrderData" class="ReceiveOrderData">
+        <result property="roId" column="ROID"/>
+        <result property="customerId" column="CustomerID"/>
+        <result property="shopId" column="ShopID"/>
+        <result property="businessType" column="BusinessType"/>
+        <result property="receiveAmount" column="ReceiveAmount"/>
+        <result property="receiveTime" column="ReceiveTime"/>
+        <result property="payTime" column="PayTime"/>
+        <result property="payerAccountNo" column="PayerAccountNo"/>
+        <result property="payerBankName" column="PayerBankName"/>
+        <result property="bankReceiveTime" column="BankReceiveTime"/>
+        <result property="payChannel" column="PayChannel"/>
+        <result property="receiveType" column="ReceiveType"/>
+        <result property="bizContent" column="BizContent"/>
+        <result property="tradeNo" column="TradeNo"/>
+        <result property="bankID" column="BankID"/>
+        <result property="status" column="Status"/>
+        <result property="addTime" column="AddTime"/>
+        <result property="addLoginId" column="AddLoginID"/>
+        <result property="updateTime" column="UpdateTime"/>
+        <result property="updateLoginId" column="UpdateLoginID"/>
+        <result property="reverseRoId" column="ReverseROID"/>
+        <result property="payerAccountName" column="PayerAccountName"/>
+        <result property="applicationId" column="ApplicationID"/>
+        <result property="memo" column="Memo"/>
+    </resultMap>
+
+    <typeAlias alias="ReceiveOrderPaginateData" type="com.dianping.ba.finance.exchange.api.datas.ReceiveOrderPaginateData"/>
+    <resultMap id="receiveOrderPaginateData" class="ReceiveOrderPaginateData">
+        <result property="roId" column="ROID"/>
+        <result property="customerId" column="CustomerID"/>
+        <result property="shopId" column="ShopID"/>
+        <result property="businessType" column="BusinessType"/>
+        <result property="receiveAmount" column="ReceiveAmount"/>
+        <result property="receiveTime" column="ReceiveTime"/>
+        <result property="payTime" column="PayTime"/>
+        <result property="payerAccountNo" column="PayerAccountNo"/>
+        <result property="payerBankName" column="PayerBankName"/>
+        <result property="bankReceiveTime" column="BankReceiveTime"/>
+        <result property="payChannel" column="PayChannel"/>
+        <result property="receiveType" column="ReceiveType"/>
+        <result property="bizContent" column="BizContent"/>
+        <result property="tradeNo" column="TradeNo"/>
+        <result property="bankID" column="BankID"/>
+        <result property="status" column="Status"/>
+        <result property="addTime" column="AddTime"/>
+        <result property="addLoginId" column="AddLoginID"/>
+        <result property="updateTime" column="UpdateTime"/>
+        <result property="updateLoginId" column="UpdateLoginID"/>
+        <result property="reverseRoId" column="ReverseROID"/>
+        <result property="payerAccountName" column="PayerAccountName"/>
+        <result property="applicationId" column="ApplicationID"/>
+        <result property="memo" column="Memo"/>
+        <result property="matchedCount" column="MatchedCount"/>
+    </resultMap>
+
+    <insert id="insertReceiveOrderData" parameterClass="map">
+        <![CDATA[
+            INSERT INTO FC_ReceiveOrder
+                        (CustomerID,
+                         ShopID,
+                         BusinessType,
+                         ReceiveAmount,
+                         ReceiveTime,
+                         PayTime,
+                         BankReceiveTime,
+                         PayChannel,
+                         ReceiveType,
+                         BizContent,
+                         TradeNo,
+                         BankID,
+                         Status,
+                         AddTime,
+                         AddLoginID,
+                         UpdateTime,
+                         UpdateLoginID,
+                         ReverseROID,
+                         Memo,
+                         PayerAccountName,
+                         PayerAccountNo,
+                         PayerBankName,
+                         ApplicationID)
+            VALUES      (#receiveOrderData.customerId#,
+                         #receiveOrderData.shopId#,
+                         #receiveOrderData.businessType#,
+                         #receiveOrderData.receiveAmount#,
+                         #receiveOrderData.receiveTime#,
+                         #receiveOrderData.payTime#,
+                         #receiveOrderData.bankReceiveTime#,
+                         #receiveOrderData.payChannel#,
+                         #receiveOrderData.receiveType#,
+                         #receiveOrderData.bizContent#,
+                         #receiveOrderData.tradeNo#,
+                         #receiveOrderData.bankID#,
+                         #receiveOrderData.status#,
+                         #receiveOrderData.addTime#,
+                         #receiveOrderData.addLoginId#,
+                         #receiveOrderData.updateTime#,
+                         #receiveOrderData.updateLoginId#,
+                         #receiveOrderData.reverseRoId#,
+                         #receiveOrderData.memo#,
+                         #receiveOrderData.payerAccountName#,
+                         #receiveOrderData.payerAccountNo#,
+                         #receiveOrderData.payerBankName#,
+                         #receiveOrderData.applicationId#)
+
+ 		]]>
+        <selectKey resultClass="java.lang.Integer" keyProperty="roId">
+            <![CDATA[
+			SELECT @@IDENTITY AS id
+		]]>
+        </selectKey>
+    </insert>
+
+    <select id="paginateReceiveOrderList" resultMap="receiveOrderPaginateData" parameterClass="map">
+        SELECT *
+        FROM (SELECT ro.ROID,
+            ro.CustomerID,
+            ro.ShopID,
+            ro.BusinessType,
+            ro.ReceiveAmount,
+            ro.PayerAccountNo,
+            ro.PayerBankName,
+            ro.ReceiveTime,
+            ro.PayTime,
+            ro.BankReceiveTime,
+            ro.PayChannel,
+            ro.ReceiveType,
+            ro.BizContent,
+            ro.TradeNo,
+            ro.BankID,
+            ro.Status,
+            ro.AddTime,
+            ro.AddLoginID,
+            ro.UpdateTime,
+            ro.UpdateLoginID,
+            ro.ReverseROID,
+            ro.Memo,
+            ro.PayerAccountName,
+            ro.ApplicationID,
+            (SELECT Count(1)
+                FROM FC_ReceiveNotify rn
+                WHERE rn.ROMatcherID = ro.roId
+                AND rn.Status = 4) AS MatchedCount
+            FROM FC_ReceiveOrder ro
+        <dynamic prepend="WHERE">
+            <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
+                ro.BusinessType = #receiveOrderSearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
+                ro.CustomerID = #receiveOrderSearchBean.customerId#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.receiveType" prepend="and" compareValue="0">
+                ro.ReceiveType = #receiveOrderSearchBean.receiveType#
+            </isGreaterThan>
+            <isNotNull property="receiveOrderSearchBean.receiveTimeBegin" prepend="and">
+                ro.ReceiveTime &gt;= #receiveOrderSearchBean.receiveTimeBegin#
+            </isNotNull>
+            <isNotNull property="receiveOrderSearchBean.receiveTimeEnd" prepend="and">
+                ro.ReceiveTime &lt;= #receiveOrderSearchBean.receiveTimeEnd#
+            </isNotNull>
+            <isGreaterThan property="receiveOrderSearchBean.payChannel" prepend="and" compareValue="0">
+                ro.PayChannel = #receiveOrderSearchBean.payChannel#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.status" compareValue="0" prepend="and">
+                ro.Status = #receiveOrderSearchBean.status#
+            </isGreaterThan>
+            <isNotNull property="receiveOrderSearchBean.bankReceiveTimeBegin" prepend="and">
+                ro.BankReceiveTime &gt;= #receiveOrderSearchBean.bankReceiveTimeBegin#
+            </isNotNull>
+            <isNotNull property="receiveOrderSearchBean.bankReceiveTimeEnd" prepend="and">
+                ro.BankReceiveTime &lt;= #receiveOrderSearchBean.bankReceiveTimeEnd#
+            </isNotNull>
+            <isGreaterThan property="receiveOrderSearchBean.bankId" prepend="and" compareValue="0">
+                ro.BankID = #receiveOrderSearchBean.bankId#
+            </isGreaterThan>
+        </dynamic>
+        ) AS t
+        ORDER BY MatchedCount DESC,
+        AddTime DESC,
+        ROID ASC;
+    </select>
+
+    <select id="paginateReceiveOrderList_COUNT" resultClass="int" parameterClass="map">
+        SELECT COUNT(1)
+        FROM FC_ReceiveOrder ro
+        <dynamic prepend="WHERE">
+            <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
+                BusinessType = #receiveOrderSearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
+                CustomerID = #receiveOrderSearchBean.customerId#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.receiveType" prepend="and" compareValue="0">
+                ReceiveType = #receiveOrderSearchBean.receiveType#
+            </isGreaterThan>
+            <isNotNull property="receiveOrderSearchBean.receiveTimeBegin" prepend="and">
+                ReceiveTime &gt;= #receiveOrderSearchBean.receiveTimeBegin#
+            </isNotNull>
+            <isNotNull property="receiveOrderSearchBean.receiveTimeEnd" prepend="and">
+                ReceiveTime &lt;= #receiveOrderSearchBean.receiveTimeEnd#
+            </isNotNull>
+            <isGreaterThan property="receiveOrderSearchBean.payChannel" prepend="and" compareValue="0">
+                PayChannel = #receiveOrderSearchBean.payChannel#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.status" compareValue="0" prepend="and">
+                Status = #receiveOrderSearchBean.status#
+            </isGreaterThan>
+            <isNotNull property="receiveOrderSearchBean.bankReceiveTimeBegin" prepend="and">
+                BankReceiveTime &gt;= #receiveOrderSearchBean.bankReceiveTimeBegin#
+            </isNotNull>
+            <isNotNull property="receiveOrderSearchBean.bankReceiveTimeEnd" prepend="and">
+                BankReceiveTime &lt;= #receiveOrderSearchBean.bankReceiveTimeEnd#
+            </isNotNull>
+            <isGreaterThan property="receiveOrderSearchBean.bankId" prepend="and" compareValue="0">
+                BankID = #receiveOrderSearchBean.bankId#
+            </isGreaterThan>
+        </dynamic>
+    </select>
+
+    <select id="loadReceiveOrderTotalAmountByCondition" resultClass="java.math.BigDecimal" parameterClass="map">
+        SELECT IFNULL(SUM(ReceiveAmount), 0) AS totalAmount
+          FROM FC_ReceiveOrder
+        <dynamic prepend="WHERE">
+            <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
+                BusinessType = #receiveOrderSearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
+                CustomerID = #receiveOrderSearchBean.customerId#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.receiveType" prepend="and" compareValue="0">
+                ReceiveType = #receiveOrderSearchBean.receiveType#
+            </isGreaterThan>
+            <isNotNull property="receiveOrderSearchBean.receiveTimeBegin" prepend="and">
+                ReceiveTime &gt;= #receiveOrderSearchBean.receiveTimeBegin#
+            </isNotNull>
+            <isNotNull property="receiveOrderSearchBean.receiveTimeEnd" prepend="and">
+                ReceiveTime &lt;= #receiveOrderSearchBean.receiveTimeEnd#
+            </isNotNull>
+            <isGreaterThan property="receiveOrderSearchBean.payChannel" prepend="and" compareValue="0">
+                PayChannel = #receiveOrderSearchBean.payChannel#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.status" compareValue="0" prepend="and">
+                Status = #receiveOrderSearchBean.status#
+            </isGreaterThan>
+            <isNotNull property="receiveOrderSearchBean.bankReceiveTimeBegin" prepend="and">
+                BankReceiveTime &gt;= #receiveOrderSearchBean.bankReceiveTimeBegin#
+            </isNotNull>
+            <isNotNull property="receiveOrderSearchBean.bankReceiveTimeEnd" prepend="and">
+                BankReceiveTime &lt;= #receiveOrderSearchBean.bankReceiveTimeEnd#
+            </isNotNull>
+            <isGreaterThan property="receiveOrderSearchBean.bankId" prepend="and" compareValue="0">
+                BankID = #receiveOrderSearchBean.bankId#
+            </isGreaterThan>
+        </dynamic>
+    </select>
+
+    <select id="loadReceiveOrderByTradeNo" resultMap="receiveOrderData" parameterClass="map">
+        SELECT ro.ROID,
+        ro.CustomerID,
+        ro.ShopID,
+        ro.BusinessType,
+        ro.ReceiveAmount,
+        ro.ReceiveTime,
+        ro.PayerAccountNo,
+        ro.PayerBankName,
+        ro.PayTime,
+        ro.BankReceiveTime,
+        ro.PayChannel,
+        ro.ReceiveType,
+        ro.BizContent,
+        ro.TradeNo,
+        ro.BankID,
+        ro.Status,
+        ro.AddTime,
+        ro.AddLoginID,
+        ro.UpdateTime,
+        ro.UpdateLoginID,
+        ro.ReverseROID,
+        ro.Memo,
+        ro.PayerAccountName,
+        ro.ApplicationID
+        FROM FC_ReceiveOrder ro
+        WHERE TradeNo = #tradeNo#
+        LIMIT 1
+    </select>
+
+    <update id="updateReceiveOrderByRoId" parameterClass="map">
+        UPDATE FC_ReceiveOrder
+        SET
+        <isGreaterThan property="updateBean.status" compareValue="0">
+            Status = #updateBean.status#,
+        </isGreaterThan>
+        <isGreaterThan property="updateBean.reverseRoId" compareValue="0">
+            ReverseROID = #updateBean.reverseRoId#,
+        </isGreaterThan>
+        <isNotEmpty property="updateBean.memo">
+            Memo = #updateBean.memo#,
+        </isNotEmpty>
+        <isGreaterThan property="updateBean.updateLoginId" compareValue="0">
+            UpdateLoginID = "updateBean.updateLoginId",
+        </isGreaterThan>
+        UpdateTime = NOW()
+        WHERE ROID = #roId#
+    </update>
+
+    <!-- 不进行非空判断-->
+    <update id="updateReceiveOrder" parameterClass="map">
+        UPDATE FC_ReceiveOrder
+        SET
+        CustomerID = #receiveOrderData.customerId#,
+        ShopID = #receiveOrderData.shopId#,
+        <isGreaterThan property="receiveOrderData.status" compareValue="0">
+            Status = #receiveOrderData.status#,
+        </isGreaterThan>
+        <isGreaterThan property="receiveOrderData.receiveType" compareValue="0">
+            ReceiveType = #receiveOrderData.receiveType#,
+        </isGreaterThan>
+        BizContent = #receiveOrderData.bizContent#,
+        ReceiveTime = #receiveOrderData.receiveTime#,
+        Memo = #receiveOrderData.memo#,
+        ApplicationID = #receiveOrderData.applicationId#,
+        UpdateLoginID = #receiveOrderData.updateLoginId#,
+        UpdateTime = NOW()
+        WHERE ROID = #receiveOrderData.roId#
+    </update>
+
+    <select id="loadReceiveOrderDataByRoId" resultMap="receiveOrderData" parameterClass="map">
+        SELECT ro.ROID,
+        ro.CustomerID,
+        ro.ShopID,
+        ro.BusinessType,
+        ro.ReceiveAmount,
+        ro.PayerAccountNo,
+        ro.PayerBankName,
+        ro.ReceiveTime,
+        ro.PayTime,
+        ro.BankReceiveTime,
+        ro.PayChannel,
+        ro.ReceiveType,
+        ro.BizContent,
+        ro.TradeNo,
+        ro.BankID,
+        ro.Status,
+        ro.AddTime,
+        ro.AddLoginID,
+        ro.UpdateTime,
+        ro.UpdateLoginID,
+        ro.ReverseROID,
+        ro.Memo,
+        ro.PayerAccountName,
+        ro.ApplicationID
+        FROM FC_ReceiveOrder ro
+        WHERE ROID = #roId#
+        LIMIT 1
+    </select>
+
+    <select id="findUnmatchAndUnconfirmedReceiveOrder" resultMap="receiveOrderData" parameterClass="map">
+        SELECT ro.ROID,
+               ro.CustomerID,
+               ro.ShopID,
+               ro.BusinessType,
+               ro.ReceiveAmount,
+               ro.PayerAccountNo,
+               ro.PayerBankName,
+               ro.ReceiveTime,
+               ro.PayTime,
+               ro.BankReceiveTime,
+               ro.PayChannel,
+               ro.ReceiveType,
+               ro.BizContent,
+               ro.TradeNo,
+               ro.BankID,
+               ro.Status,
+               ro.AddTime,
+               ro.AddLoginID,
+               ro.UpdateTime,
+               ro.UpdateLoginID,
+               ro.ReverseROID,
+               ro.Memo,
+               ro.PayerAccountName,
+               ro.ApplicationID
+        FROM   FC_ReceiveOrder ro
+        WHERE  ro.Status = #status#
+           AND ro.ApplicationID IS NULL
+    </select>
+
+</sqlMap>

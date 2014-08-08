@@ -34,6 +34,16 @@ public class DateUtil {
         return isValidDate(dateTimeStr) ? format.parse(dateTimeStr, pos) : null;
     }
 
+    public static Date parseDate(String dateTimeStr, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        try {
+            return sdf.parse(dateTimeStr);
+        } catch (ParseException e) {
+            // ignore
+        }
+        return null;
+    }
+
     /**
      * 判断日期是否合法
      *

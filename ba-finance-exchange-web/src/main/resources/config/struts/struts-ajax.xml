@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="ajax" namespace="/caiwu/ajax" extends="default">
+    <package name="ajax" namespace="/exchange/ajax" extends="default">
 
         <action name="payorderlist"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.PayOrderAjaxAction">
@@ -18,9 +18,27 @@
             <result type="json"></result>
         </action>
 
+        <action name="loadROStatusOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadROStatusOption">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadRNStatusOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadRNStatusOption">
+            <result type="json"></result>
+        </action>
+
         <action name="loadBusinessTypeOption"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
                 method="loadBusinessTypeOption">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadProductLionOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadProductLionOption">
             <result type="json"></result>
         </action>
 
@@ -35,6 +53,125 @@
                 method="importRefund">
             <result type="json"></result>
         </action>
+
+        <action name="receiveorderlist"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction">
+            <result type="json"></result>
+        </action>
+
+        <action name="addReceiveOrderManually"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction"
+                method="createReceiveOrderManually">
+            <result type="json"></result>
+        </action>
+
+        <action name="getReceiveOrderById"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction"
+                method="loadReceiveOrderById">
+            <result type="json"></result>
+        </action>
+
+        <action name="updateReceiveOrder"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction"
+                method="updateReceiveOrder">
+            <result type="json"></result>
+        </action>
+
+
+        <action name="loadReceiveBankOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveBankOption">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadAllReceiveBankOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadAllReceiveBankOption">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadReceiveOrderPayChannelOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveOrderPayChannelOption">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadReceiveTypeOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveTypeOption">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadReceiveTypeOptionByPL"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveTypeOptionByPL">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadReceiveTypeOptionInQuery"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveTypeOptionInQuery">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadReceiveBankOptionInQuery"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadReceiveBankOptionInQuery">
+            <result type="json"></result>
+        </action>
+
+        <action name="findCustomerNameSuggestion"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.CustomerAjaxAction"
+                method="findCustomerNameSuggestion">
+            <result type="json"></result>
+        </action>
+
+        <action name="importTelTransfer"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ImportTelTransferAjaxAction"
+                method="importTelTransfer">
+            <result type="json"></result>
+        </action>
+
+        <action name="fetchCustomerNameSuggestion"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.CustomerNameSuggestionAction"
+                method="fetchCustomerNameSuggestion">
+            <result type="json"></result>
+        </action>
+        <action name="fetchCustomerInfo"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.CustomerNameSuggestionAction"
+                method="fetchCustomerInfo">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadReceiveOrderInfo"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveNotifyAjaxAction"
+                method="loadReceiveOrderInfo">
+            <result type="json"></result>
+        </action>
+
+        <action name="findNotifiesByROId"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveNotifyAjaxAction"
+                method="findNotifiesByROId">
+            <result type="json"></result>
+        </action>
+
+        <action name="rornCancelLink"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveNotifyAjaxAction"
+                method="rornCancelLink">
+            <result type="json"></result>
+        </action>
+
+        <action name="confirmNotify"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction"
+                method="confirmNotify">
+            <result type="json"></result>
+        </action>
+
+        <action name="receiveNotifyList"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveNotifyAjaxAction">
+            <result type="json"></result>
+        </action>
+
     </package>
 
 </struts>
