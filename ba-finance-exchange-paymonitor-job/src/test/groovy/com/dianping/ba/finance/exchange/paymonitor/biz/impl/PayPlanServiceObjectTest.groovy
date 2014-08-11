@@ -33,7 +33,7 @@ class PayPlanServiceObjectTest extends Specification {
         when:
         payPlanServiceObjectStub.getPayPlanById(ppid);
         then:
-        1 * payPlanDaoMock.getPayPlanById(_ as Integer);
+        1 * payPlanDaoMock.loadPayPlanById(_ as Integer);
     }
 
     def "GetPaySequenceById"() {
@@ -42,6 +42,6 @@ class PayPlanServiceObjectTest extends Specification {
         when:
         payPlanServiceObjectStub.getPaySequenceById(ppid);
         then:
-        1 * payPlanDaoMock.getPaySequenceById(_ as Integer);
+        1 * payPlanDaoMock.loadPaySequenceById(_ as Integer);
     }
 }

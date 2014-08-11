@@ -14,7 +14,7 @@ import java.util.List;
 public interface MonitorTodoDao extends GenericDao {
 
     @DAOAction(action = DAOActionType.INSERT)
-    public int addMonitorTodo(@DAOParam("monitorTodoData") MonitorTodoData monitorTodoData);
+    public int insertMonitorTodo(@DAOParam("monitorTodoData") MonitorTodoData monitorTodoData);
 
     @DAOAction(action = DAOActionType.QUERY)
     public List<MonitorTodoData> findMonitorTodoDatas(@DAOParam("status") int status);
