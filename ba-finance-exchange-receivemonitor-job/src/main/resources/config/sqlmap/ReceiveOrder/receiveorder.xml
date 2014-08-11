@@ -5,7 +5,7 @@
     <typeAlias alias="ReceiveOrderMonitorData"
                type="com.dianping.ba.finance.exchange.receivemonitor.api.datas.ReceiveOrderMonitorData"></typeAlias>
     <resultMap id="ReceiveOrderMonitorData" class="ReceiveOrderMonitorData">
-        <result property="roId" column="ReceiveOrderID"/>
+        <result property="roId" column="ROID"/>
         <result property="addDate" column="AddTime"/>
         <result property="status" column="Status"/>
         <result property="lastUpdateDate" column="UpdateTime"/>
@@ -17,7 +17,14 @@
                 AddTime,
                 UpdateTime
         FROM FC_ReceiveOrder
-        WHERE  UpdateTime BETWEEN #startDate# AND #endDate#
+        <dynamic prepend="where">
+            <isNotNull prepend="and" property="startDate">
+                UpdateTime &gt;= #startDate#
+            </isNotNull>
+            <isNotNull prepend="and" property="endDate">
+                UpdateTime &lt;= #endDate#
+            </isNotNull>
+        </dynamic>
     </select>
 
     <select id="loadReceiveOrderData" parameterClass="map" resultMap="ReceiveOrderMonitorData">

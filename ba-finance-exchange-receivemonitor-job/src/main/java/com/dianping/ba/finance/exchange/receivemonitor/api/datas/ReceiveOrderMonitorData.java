@@ -15,7 +15,6 @@ public class ReceiveOrderMonitorData {
 
     private Date lastUpdateDate;
 
-
     public ReceiveOrderMonitorData() {
     }
 
@@ -51,7 +50,7 @@ public class ReceiveOrderMonitorData {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    @Override
+	@Override
     public String toString() {
         return "ReceiveOrderMonitorData{" +
                 "roId=" + roId +

@@ -12,6 +12,5 @@ import com.dianping.finance.common.util.LionConfigUtils;
 public class ConstantUtils {
 	public static String monitorMailAddress = LionConfigUtils.getProperty("ba-finance-exchange-monitor-job.MonitorMailAddress", "fs.ba@dianping.com");
 	public static String monitorMobileNo = LionConfigUtils.getProperty("ba-finance-exchange-monitor-job.MonitorMobileNo", "");
-	public static int refundTimeout = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-monitor-job.RefundTimeout", "5"));
-	public static int paySuccessTimeout = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-monitor-job.paySuccessTimeout", "5"));
+	public static int roRCTimeout = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-receivemonitor-job.RoRcTimeout", "5"));
 }

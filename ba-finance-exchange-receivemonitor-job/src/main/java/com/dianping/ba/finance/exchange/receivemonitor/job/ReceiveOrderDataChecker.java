@@ -14,10 +14,8 @@ import com.dianping.ba.finance.exchange.receivemonitor.job.rocheck.ROCheckResult
 import com.dianping.ba.finance.exchange.receivemonitor.job.rocheck.ROCheckRule;
 import com.dianping.finance.common.util.LogUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -60,8 +58,10 @@ public class ReceiveOrderDataChecker extends DataChecker {
 
     private void checkNewData() {
         Date lastMonitorTime = receiveMonitorService.getLastMonitorTime();
-
-        List<ReceiveOrderMonitorData> receiveOrderMonitorDataList = receiveOrderMonitorService.findReceiveOrderData(lastMonitorTime, getCurrentMonitorTime());
+		/*Calendar c1 = Calendar.getInstance();
+		c1.set(2014,7,10,14,30);*/
+        List<ReceiveOrderMonitorData> receiveOrderMonitorDataList =
+				receiveOrderMonitorService.findReceiveOrderData(lastMonitorTime, getCurrentMonitorTime());
         for (ReceiveOrderMonitorData roData : receiveOrderMonitorDataList) {
             checkReceiveOrderData(roData, null);
         }

@@ -19,7 +19,7 @@ public abstract class ROCheckBase implements ROCheckRule {
     private long timeout;
 
     protected boolean checkIfTimeout(Date date) {
-        timeout = ConstantUtils.refundTimeout;
+        timeout = ConstantUtils.roRCTimeout;
         long diff = DateUtils.timeDifference(date, new Date(), TimeUnit.MINUTES);
         return diff > timeout;
     }

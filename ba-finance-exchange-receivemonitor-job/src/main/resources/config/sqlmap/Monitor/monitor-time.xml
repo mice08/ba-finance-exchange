@@ -20,7 +20,7 @@
         SELECT MonitorID,
                 MonitorTime
           FROM FC_ReceiveMonitorTime
-         WHERE MonitorID = (SELECT MAX(MonitorID) FROM FS_MonitorTime)
+         WHERE MonitorID = (SELECT MAX(MonitorID) FROM FC_ReceiveMonitorTime)
     </select>
 
 </sqlMap>

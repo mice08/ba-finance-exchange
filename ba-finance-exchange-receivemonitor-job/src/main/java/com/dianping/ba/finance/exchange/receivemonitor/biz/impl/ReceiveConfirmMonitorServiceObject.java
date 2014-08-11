@@ -16,8 +16,8 @@ public class ReceiveConfirmMonitorServiceObject implements ReceiveConfirmMonitor
 
 
 	@Override
-	public ReceiveConfirmMonitorData loadReceiveConfirmData(int rcId) {
-		return receiveConfirmMonitorDao.loadReceiveConfirmData(rcId);
+	public ReceiveConfirmMonitorData loadReceiveConfirmData(int roId) {
+		return receiveConfirmMonitorDao.loadReceiveConfirmData(roId);
 	}
 
 	public void setReceiveConfirmMonitorDao(ReceiveConfirmMonitorDao receiveConfirmMonitorDao) {

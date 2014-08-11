@@ -16,7 +16,7 @@
                 Status,
                 AddTime
         FROM FC_ReceiveConfirm
-        WHERE RCID = #rcId#
+        WHERE ROID = #roId#
     </select>
 
 </sqlMap>

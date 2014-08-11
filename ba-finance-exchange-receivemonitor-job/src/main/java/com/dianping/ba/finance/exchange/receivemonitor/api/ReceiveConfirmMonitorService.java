@@ -14,10 +14,10 @@ public interface ReceiveConfirmMonitorService {
 
 
     /**
-     *  按收款确认Id获取收款确认信息
-     * @param rcId
+     *  根据收款单的id去获取收款确认信息
+     * @param roId
      * @return
      */
-    ReceiveConfirmMonitorData loadReceiveConfirmData(int rcId);
+    ReceiveConfirmMonitorData loadReceiveConfirmData(int roId);
 
 }

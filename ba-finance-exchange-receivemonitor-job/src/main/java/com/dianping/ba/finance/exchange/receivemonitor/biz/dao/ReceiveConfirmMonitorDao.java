@@ -18,7 +18,7 @@ import java.util.List;
 public interface ReceiveConfirmMonitorDao extends GenericDao {
 
     @DAOAction(action = DAOActionType.LOAD)
-    public ReceiveConfirmMonitorData loadReceiveConfirmData(@DAOParam("rcId") int rcId);
+    public ReceiveConfirmMonitorData loadReceiveConfirmData(@DAOParam("roId") int roId);
 
 
 }

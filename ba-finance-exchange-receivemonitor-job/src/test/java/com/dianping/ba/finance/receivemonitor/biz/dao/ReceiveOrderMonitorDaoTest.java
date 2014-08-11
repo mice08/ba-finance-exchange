@@ -31,10 +31,11 @@ public class ReceiveOrderMonitorDaoTest {
     @Test
     public void testFindReceiveOrderData() {
         Calendar c1 = Calendar.getInstance();
-        c1.set(2014, 0, 1);
+        c1.set(2014, 7, 11,0,0);
         Calendar c2 = Calendar.getInstance();
         c2.set(2014, 3, 26);
-        List<ReceiveOrderMonitorData>  actual = receiveOrderMonitorDao.findReceiveOrderData(c1.getTime(), c2.getTime());
+        //List<ReceiveOrderMonitorData>  actual = receiveOrderMonitorDao.findReceiveOrderData(c1.getTime(), c2.getTime());
+        List<ReceiveOrderMonitorData>  actual = receiveOrderMonitorDao.findReceiveOrderData(c1.getTime(), null);
         System.out.println(actual.size());
     }
 
