@@ -15,6 +15,8 @@
         <property name="serialize" value="hessian" />
         <property name="callMethod" value="sync" />
         <property name="timeout" value="10000" />
+        <property name="timeoutRetry" value="true"/>
+        <property name="retries" value="${ba-finance-exchange-biz.pigeon.retryTimes}"/>
     </bean>
 
 	
