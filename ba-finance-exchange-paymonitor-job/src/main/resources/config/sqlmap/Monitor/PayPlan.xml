@@ -11,10 +11,14 @@
     <select id="findPayPlansByDate" resultMap="payPlanMonitorData" parameterClass="map">
         SELECT PPID,Status,UpdateTime
         FROM FC_PayPlan
-        WHERE
-        UpdateTime &gt;= #startDate#
-        AND
-        UpdateTime &lt;= #endDate#
+        <dynamic prepend="where">
+            <isNotNull prepend="and" property="startDate">
+                UpdateTime &gt;= #startDate#
+            </isNotNull>
+            <isNotNull prepend="and" property="endDate">
+                UpdateTime &lt;= #endDate#
+            </isNotNull>
+        </dynamic>
     </select>
 
     <select id="getPayPlanById" resultMap="payPlanMonitorData" parameterClass="map">
