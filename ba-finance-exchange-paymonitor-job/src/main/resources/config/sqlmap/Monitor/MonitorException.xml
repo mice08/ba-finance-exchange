@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="MonitorException">
+    <typeAlias alias="MonitorExceptionData" type="com.dianping.ba.finance.exchange.paymonitor.api.datas.MonitorExceptionData"/>
+    <resultMap id="monitorExceptionData" class="MonitorExceptionData">
+        <result property="exceptionId" column="ExceptionID"/>
+        <result property="ppId" column="PPID"/>
+        <result property="exceptionType" column="ExceptionType"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="status" column="Status"/>
+    </resultMap>
+
+    <insert id="addMonitorException" parameterClass="map">
+        INSERT INTO FC_PayMonitorException
+        (PPID,
+        ExceptionType,
+        AddDate,
+        Status)
+        VALUES (
+        #monitorExceptionData.ppId#,
+        #monitorExceptionData.exceptionType#,
+        #monitorExceptionData.addDate#,
+        #monitorExceptionData.status#)
+        <selectKey resultClass="java.lang.Integer" keyProperty="ExceptionID">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <select id="findMonitorExceptionDatas" resultMap="monitorExceptionData" parameterClass="map">
+        SELECT ExceptionID,
+               PPID,
+               ExceptionType,
+               AddDate,
+               Status
+        FROM FC_PayMonitorException
+        WHERE status = #status#
+    </select>
+
+    <update id="updateMonitorExceptionStatus" parameterClass="map">
+        UPDATE FC_PayMonitorException
+        SET Status = #status#
+        WHERE ExceptionID IN
+        <iterate open="(" close=")" conjunction="," property="monitorExceptionIdList">
+            #monitorExceptionIdList[]#
+        </iterate>
+    </update>
+</sqlMap>

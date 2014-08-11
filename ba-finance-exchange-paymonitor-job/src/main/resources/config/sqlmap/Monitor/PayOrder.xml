@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="PayOrder">
+    <typeAlias alias="PayOrderMonitorData" type="com.dianping.ba.finance.exchange.paymonitor.api.datas.PayOrderMonitorData"/>
+    <resultMap id="payOrderMonitorData" class="PayOrderMonitorData">
+        <result property="poId" column="POID"/>
+        <result property="status" column="Status"/>
+    </resultMap>
+
+    <select id="getPayOrderBySequence" resultMap="payOrderMonitorData" parameterClass="map">
+        SELECT POID, Status
+        FROM FC_PayOrder
+        WHERE PaySequence = #paySequence#
+    </select>
+</sqlMap>
