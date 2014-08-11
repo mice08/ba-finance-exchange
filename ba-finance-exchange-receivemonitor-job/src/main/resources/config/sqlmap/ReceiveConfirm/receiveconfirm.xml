@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ReceiveConfirm">
+
+    <typeAlias alias="ReceiveConfirmMonitorData"
+               type="com.dianping.ba.finance.exchange.receivemonitor.api.datas.ReceiveConfirmMonitorData"></typeAlias>
+    <resultMap id="ReceiveConfirmMonitorData" class="ReceiveConfirmMonitorData">
+        <result property="rcId" column="RCID"/>
+        <result property="addDate" column="AddTime"/>
+        <result property="status" column="Status"/>
+    </resultMap>
+
+
+    <select id="loadReceiveConfirmData" parameterClass="map" resultMap="ReceiveConfirmMonitorData">
+        SELECT RCID,
+                Status,
+                AddTime
+        FROM FC_ReceiveConfirm
+        WHERE ROID = #roId#
+    </select>
+
+</sqlMap>
