@@ -3,6 +3,9 @@ package com.dianping.ba.finance.exchange.receivemonitor.api.enums;
 
 public enum ReceiveConfirmStatus {
 
+	/**
+	 *
+	 */
     DEFAULT(0),
 
 	CONFIRM_SUCCESS(1),
