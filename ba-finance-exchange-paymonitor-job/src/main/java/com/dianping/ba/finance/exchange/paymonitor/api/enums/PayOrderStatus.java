@@ -7,28 +7,30 @@ public enum PayOrderStatus {
     /**
      * 异常
      */
-    DEFAULT(0),
+    DEFAULT(0, "异常"),
     /**
      * 初始
      */
-    INIT(1),
+    INIT(1, "初始"),
     /**
      * 2-支付中
      */
-    EXPORT_PAYING(2),
+    EXPORT_PAYING(2, "支付中"),
     /**
      * 3-支付成功
      */
-    PAY_SUCCESS(3),
+    PAY_SUCCESS(3, "支付成功"),
     /**
      * 4-退票
      */
-    REFUND(4);
+    REFUND(4, "退票");
 
     private int payOrderStatus;
+    private String description;
 
-    private PayOrderStatus(int payOrderStatus) {
-        this.setPayOrderStatus(payOrderStatus);
+    private PayOrderStatus(int payOrderStatus, String description) {
+        this.payOrderStatus = payOrderStatus;
+        this.description = description;
     }
 
     public static PayOrderStatus valueOf(int value) {
@@ -48,22 +50,7 @@ public enum PayOrderStatus {
 
     @Override
     public String toString() {
-        switch (payOrderStatus) {
-            case 1:
-                return "初始";
-            case 2:
-                return "支付中";
-            case 3:
-                return "支付成功";
-            case 4:
-                return "退票";
-            default:
-                return "错误";
-        }
-    }
-
-    private void setPayOrderStatus(int payOrderStatus) {
-        this.payOrderStatus = payOrderStatus;
+        return this.description;
     }
 
     public int value(){

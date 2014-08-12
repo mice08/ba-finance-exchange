@@ -8,45 +8,46 @@ public enum PayPlanStatus {
     /**
      * 异常
      */
-    DEFAULT(0),
+    DEFAULT(0,"异常"),
     /**
      * 初始
      */
-    INIT(1),
+    INIT(1,"初始"),
     /**
      * 2-提交中
      */
-    IN_SUBMISSION(2),
+    IN_SUBMISSION(2,"提交中"),
     /**
      * 3-无有效的银行账号
      */
-    INVALID_BANK_ACCOUNT(3),
+    INVALID_BANK_ACCOUNT(3,"无有效的银行账号"),
     /**
      * 4-支付中
      */
-    IN_PAYMENT(4),
+    IN_PAYMENT(4,"支付中"),
     /**
      * 5-支付成功
      */
-    PAY_SUCCESS(5),
+    PAY_SUCCESS(5,"支付成功"),
     /**
      * 6-退票
      */
-    REFUND(6),
+    REFUND(6,"退票"),
     /**
      * 7-暂停
      */
-    SUSPEND(7),
-
+    SUSPEND(7,"暂停"),
     /**
      * 8-支付失败
      */
-    PAY_FAILED(8);
+    PAY_FAILED(8,"支付失败");
 
     private int payPlanStatus;
+    private String description;
 
-    private PayPlanStatus(int paymentPlanStatus) {
+    private PayPlanStatus(int paymentPlanStatus, String description) {
         this.setPayPlanStatus(paymentPlanStatus);
+        this.setDescription(description);
     }
 
     public static PayPlanStatus valueOf(int value) {
@@ -74,30 +75,15 @@ public enum PayPlanStatus {
 
     @Override
     public String toString() {
-        switch (payPlanStatus) {
-            case 1:
-                return "初始";
-            case 2:
-                return "提交中";
-            case 3:
-                return "无有效银行账号";
-            case 4:
-                return "支付中";
-            case 5:
-                return "支付成功";
-            case 6:
-                return "退票";
-            case 7:
-                return "暂停";
-            case 8:
-                return "支付失败";
-            default:
-                return "错误";
-        }
+        return this.description;
     }
 
     private void setPayPlanStatus(int payPlanStatus) {
         this.payPlanStatus = payPlanStatus;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int value(){

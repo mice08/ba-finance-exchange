@@ -12,8 +12,8 @@ import java.util.Date;
  */
 public interface MonitorTimeDao extends GenericDao {
     @DAOAction(action = DAOActionType.LOAD)
-    public Date getLastMonitorTime();
+    public Date loadLastMonitorTime();
 
     @DAOAction(action = DAOActionType.INSERT)
-    public int addMonitorTime(@DAOParam("date") Date date);
+    public int insertMonitorTime(@DAOParam("date") Date date);
 }
