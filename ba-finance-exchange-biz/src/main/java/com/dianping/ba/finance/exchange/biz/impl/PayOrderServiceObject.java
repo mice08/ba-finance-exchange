@@ -239,6 +239,11 @@ public class PayOrderServiceObject implements PayOrderService {
         return payOrderDao.findPayOrderTotalAmountByCondition(payOrderSearchBean);
     }
 
+    @Override
+    public List<Integer> findPayOrderIdList(PayOrderSearchBean payOrderSearchBean) {
+        return payOrderDao.findPayOrderIdList(payOrderSearchBean);
+    }
+
     public void setPayOrderDao(PayOrderDao payOrderDao) {
         this.payOrderDao = payOrderDao;
     }
