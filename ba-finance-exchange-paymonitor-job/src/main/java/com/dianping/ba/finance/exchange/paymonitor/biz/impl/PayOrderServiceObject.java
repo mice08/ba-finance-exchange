@@ -12,7 +12,7 @@ public class PayOrderServiceObject implements PayOrderService{
 
     @Override
     public PayOrderMonitorData getPayOrderBySequence(String paySequence) {
-        return payOrderDao.getPayOrderBySequence(paySequence);
+        return payOrderDao.loadPayOrderBySequence(paySequence);
     }
 
     public void setPayOrderDao(PayOrderDao payOrderDao) {

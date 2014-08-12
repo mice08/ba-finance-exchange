@@ -92,7 +92,7 @@
                     </descriptors>
                     <archive>
                         <manifest>
-                            <mainClass>com.dianping.ba.finance.exchange.monitor.job.JobBooter</mainClass>
+                            <mainClass>com.dianping.ba.finance.exchange.receivemonitor.job.JobBooter</mainClass>
                             <addClasspath>true</addClasspath>
                         </manifest>
                     </archive>

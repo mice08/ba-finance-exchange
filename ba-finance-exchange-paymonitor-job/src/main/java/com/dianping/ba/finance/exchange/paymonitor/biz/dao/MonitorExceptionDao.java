@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface MonitorExceptionDao extends GenericDao {
     @DAOAction(action = DAOActionType.INSERT)
-    public int addMonitorException(@DAOParam("monitorExceptionData") MonitorExceptionData monitorExceptionData);
+    public int insertMonitorException(@DAOParam("monitorExceptionData") MonitorExceptionData monitorExceptionData);
 
     @DAOAction(action = DAOActionType.QUERY)
     public List<MonitorExceptionData> findMonitorExceptionDatas(@DAOParam("status") int status);

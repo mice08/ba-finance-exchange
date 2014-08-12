@@ -12,5 +12,5 @@ import com.dianping.ba.finance.exchange.paymonitor.api.datas.PayOrderMonitorData
 public interface PayOrderDao extends GenericDao{
 
     @DAOAction(action = DAOActionType.LOAD)
-    public PayOrderMonitorData getPayOrderBySequence(@DAOParam("paySequence")String paySequence);
+    public PayOrderMonitorData loadPayOrderBySequence(@DAOParam("paySequence") String paySequence);
 }

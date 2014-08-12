@@ -9,7 +9,7 @@
         <result property="status" column="Status"/>
     </resultMap>
 
-    <insert id="addMonitorTodo" parameterClass="map">
+    <insert id="insertMonitorTodo" parameterClass="map">
         INSERT INTO FC_PayMonitorTodo
         (PPID,
         AddDate,

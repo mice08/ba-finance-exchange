@@ -21,12 +21,12 @@ public class PayPlanServiceObject implements PayPlanService {
 
     @Override
     public PayPlanMonitorData getPayPlanById(int ppId) {
-        return payPlanDao.getPayPlanById(ppId);
+        return payPlanDao.loadPayPlanById(ppId);
     }
 
     @Override
     public String getPaySequenceById(int ppId) {
-        return payPlanDao.getPaySequenceById(ppId);
+        return payPlanDao.loadPaySequenceById(ppId);
     }
 
     public void setPayPlanDao(PayPlanDao payPlanDao) {

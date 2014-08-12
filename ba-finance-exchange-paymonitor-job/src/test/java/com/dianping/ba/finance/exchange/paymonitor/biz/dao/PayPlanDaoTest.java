@@ -36,14 +36,14 @@ public class PayPlanDaoTest {
     @Test
     public void testGetPayPlanById() throws Exception {
         int ppId = 202195;
-        PayPlanMonitorData payPlanMonitorData = payPlanDao.getPayPlanById(ppId);
+        PayPlanMonitorData payPlanMonitorData = payPlanDao.loadPayPlanById(ppId);
         Assert.assertNotNull(payPlanMonitorData);
     }
 
     @Test
     public void testGetPaySequenceById() throws Exception {
-        int ppId = 201952;
-        String sequence = payPlanDao.getPaySequenceById(ppId);
+        int ppId = 202135;
+        String sequence = payPlanDao.loadPaySequenceById(ppId);
         Assert.assertNotNull(sequence);
     }
 }

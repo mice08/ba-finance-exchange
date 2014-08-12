@@ -27,7 +27,7 @@ public class MonitorTodoDaoTest {
         monitorTodoData.setPpId(12234);
         monitorTodoData.setAddDate(new Date());
         monitorTodoData.setStatus(1);
-        int result = monitorTodoDao.addMonitorTodo(monitorTodoData);
+        int result = monitorTodoDao.insertMonitorTodo(monitorTodoData);
         Assert.assertTrue(result>0);
     }
 
@@ -41,7 +41,7 @@ public class MonitorTodoDaoTest {
     @Test
     public void testUpdateMonitorToDoStatus() throws Exception {
         int status = 2;
-        int todoId = 1;
+        int todoId = 0;
         List<Integer> todoList = new ArrayList<Integer>();
         todoList.add(todoId);
         int resultCount = monitorTodoDao.updateMonitorToDoStatus(todoList,status);
