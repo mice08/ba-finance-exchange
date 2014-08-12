@@ -1,5 +1,7 @@
 package com.dianping.ba.finance.exchange.siteweb.services;
 
+import com.dianping.avatar.log.AvatarLogger;
+import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
@@ -38,7 +40,15 @@ public class CustomerNameService {
      */
     private CorporationService corporationService;
 
-    @Log(severity = 2, logBefore = true, logAfter = true)
+	/**
+	 * 记录需要监控的业务日志
+	 */
+	private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService");
+
+	private MonitorMailService monitorMailService;
+	private MonitorSmsService monitorSmsService;
+
+	@Log(severity = 2, logBefore = true, logAfter = true)
     @ReturnDefault
     public Map<Integer, String> getCustomerName(List<PayOrderData> payOrderDataList, int loginId) {
         Multimap<Integer, Integer> businessTypeCustomerIdMMap = groupByBusinessType(payOrderDataList);
@@ -57,11 +67,23 @@ public class CustomerNameService {
             return;
         }
         for (int customerId : adCustomerIdList) {
-            CorporationDTO corporationDTO = corporationService.queryCorporationById(customerId);
-            if (corporationDTO != null) {
-                customerIdNameMap.put(corporationDTO.getId(), corporationDTO.getName());
-            }
-        }
+			try {
+				//外部接口调用，添加日志和告警
+				MONITOR_LOGGER.info("CorporationService.queryCorporationById" +
+						" customerId:" + customerId);
+				CorporationDTO corporationDTO = corporationService.queryCorporationById(customerId);
+				if (corporationDTO != null) {
+					customerIdNameMap.put(corporationDTO.getId(), corporationDTO.getName());
+                    //记录返回日志
+					MONITOR_LOGGER.info("CorporationService.queryCorporationByBizContent" +
+							"return id:" + corporationDTO.getId() + " name:"+corporationDTO.getName());
+				}
+			} catch (Exception e) {
+				//异常日志和告警
+				MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationByBizContent error!", e);
+				notifyException("queryCorporationByBizContent", "roData.getBizContent()");
+			}
+		}
 
     }
 
@@ -148,11 +170,25 @@ public class CustomerNameService {
     }
 
     private List<CustomerNameSuggestionBean> fetchADCustomerSuggestion(String customerName, int maxSize, int loginId) {
-        List<CorporationDTO> corporationDTOList = corporationService.queryCorporationByName(customerName, maxSize);
-        if (CollectionUtils.isEmpty(corporationDTOList)) {
-            return Collections.emptyList();
-        }
-        List<CustomerNameSuggestionBean> suggestionBeanList = Lists.newLinkedList();
+		List<CorporationDTO> corporationDTOList = null;
+		try {
+			//外部接口调用，添加日志和告警
+			MONITOR_LOGGER.info("CorporationService.queryCorporationByName" +
+					" customerName:" + customerName + " maxSize:" + maxSize);
+			corporationDTOList = corporationService.queryCorporationByName(customerName, maxSize);
+			//记录返回日志
+			MONITOR_LOGGER.info("CorporationService.queryCorporationByName" +
+					"return ListSize:" + corporationDTOList.size());
+			if (CollectionUtils.isEmpty(corporationDTOList)) {
+				return Collections.emptyList();
+			}
+		} catch (Exception e) {
+			//异常日志和告警
+			MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationByName error!", e);
+			notifyException("queryCorporationByName",
+					"customerName:" + customerName + " maxSize:" + String.valueOf(maxSize));
+		}
+		List<CustomerNameSuggestionBean> suggestionBeanList = Lists.newLinkedList();
         for (CorporationDTO corporationDTO : corporationDTOList) {
             CustomerNameSuggestionBean suggestionBean = new CustomerNameSuggestionBean();
             suggestionBean.setCustomerId(corporationDTO.getId());
@@ -190,14 +226,26 @@ public class CustomerNameService {
     }
 
     private CustomerInfoBean fetchADCustomerInfoById(int customerId, int loginId) {
-        CorporationDTO corporationDTO = corporationService.queryCorporationById(customerId);
-        if (corporationDTO != null) {
-            CustomerInfoBean customerInfoBean = new CustomerInfoBean();
-            customerInfoBean.setCustomerId(corporationDTO.getId());
-            customerInfoBean.setCustomerName(corporationDTO.getName());
-            return customerInfoBean;
-        }
-        return null;
+		try {
+			//这是一个外部接口，调用前后记录日志，发生异常记录日志还需要告警
+			MONITOR_LOGGER.info("CorporationService.queryCorporationById" +
+					" customerId:" + customerId);
+			CorporationDTO corporationDTO = corporationService.queryCorporationById(customerId);
+			if (corporationDTO != null) {
+				CustomerInfoBean customerInfoBean = new CustomerInfoBean();
+				customerInfoBean.setCustomerId(corporationDTO.getId());
+				customerInfoBean.setCustomerName(corporationDTO.getName());
+                //记录返回日志
+				MONITOR_LOGGER.info("CorporationService.queryCorporationById" +
+						"return id:" + corporationDTO.getId() + " name:"+corporationDTO.getName());
+				return customerInfoBean;
+			}
+		} catch (Exception e) {
+			//异常日志和告警
+			MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationById error!", e);
+			notifyException("queryCorporationById", String.valueOf(customerId));
+		}
+		return null;
     }
 
     private CustomerInfoBean fetchTGCustomerInfoById(int customerId, int loginId) {
@@ -218,14 +266,26 @@ public class CustomerNameService {
     }
 
     private CustomerInfoBean fetchADCustomerInfo(String bizContent, int loginId) {
-        CorporationDTO corporationDTO = corporationService.queryCorporationByBizContent(bizContent);
-        if (corporationDTO != null) {
-            CustomerInfoBean customerInfoBean = new CustomerInfoBean();
-            customerInfoBean.setCustomerId(corporationDTO.getId());
-            customerInfoBean.setCustomerName(corporationDTO.getName());
-            return customerInfoBean;
-        }
-        return null;
+		try {
+			//这是一个外部接口，调用前后记录日志，发生异常记录日志还需要告警
+			MONITOR_LOGGER.info("CorporationService.queryCorporationByBizContent" +
+					" bizContent:" + bizContent);
+			CorporationDTO corporationDTO = corporationService.queryCorporationByBizContent(bizContent);
+			if (corporationDTO != null) {
+				CustomerInfoBean customerInfoBean = new CustomerInfoBean();
+				customerInfoBean.setCustomerId(corporationDTO.getId());
+				customerInfoBean.setCustomerName(corporationDTO.getName());
+				//记录返回日志
+				MONITOR_LOGGER.info("CorporationService.queryCorporationByBizContent" +
+						"return id:" + corporationDTO.getId() + " name:"+corporationDTO.getName());
+				return customerInfoBean;
+			}
+		} catch (Exception e) {
+			//异常日志和告警
+			MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationByBizContent error!", e);
+			notifyException("queryCorporationByBizContent",bizContent);
+		}
+		return null;
     }
 
     private CustomerInfoBean fetchTGCustomerInfo(String bizContent, int loginId) {
@@ -241,4 +301,23 @@ public class CustomerNameService {
     public void setCorporationService(CorporationService corporationService) {
         this.corporationService = corporationService;
     }
+
+	/**
+	 * 告警
+	 */
+	private void notifyException(String callMethod,String param) {
+		String mailInfo = "CorporationService接口调用错误详情：\n";
+		mailInfo += String.format("调用接口为%s,参数为%s\n",callMethod,param);
+		String smsInfo = "CorporationService接口调用异常，详情请见邮件！";
+		monitorSmsService.sendSms(smsInfo);
+		monitorMailService.sendMail(mailInfo);
+	}
+
+	public void setMonitorMailService(MonitorMailService monitorMailService) {
+		this.monitorMailService = monitorMailService;
+	}
+
+	public void setMonitorSmsService(MonitorSmsService monitorSmsService) {
+		this.monitorSmsService = monitorSmsService;
+	}
 }

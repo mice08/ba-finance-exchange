@@ -53,6 +53,16 @@
 
     <bean id="bizInfoService" class="com.dianping.ba.finance.exchange.biz.service.BizInfoService">
         <property name="corporationService" ref="corporationService"/>
+        <property name="monitorMailService" ref="monitorMailService"/>
+        <property name="monitorSmsService" ref="monitorSmsService"/>
+    </bean>
+
+    <bean id="monitorMailService" class="com.dianping.ba.finance.exchange.biz.service.MonitorMailService">
+        <property name="mailService" ref="mailService"/>
+    </bean>
+
+    <bean id="monitorSmsService" class="com.dianping.ba.finance.exchange.biz.service.MonitorSmsService">
+        <property name="smsService" ref="smsService"/>
     </bean>
 
     <bean id="receiveOrderResultNotify" class="com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify">
