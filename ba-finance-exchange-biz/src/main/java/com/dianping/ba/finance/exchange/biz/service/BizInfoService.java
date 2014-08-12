@@ -9,14 +9,9 @@ import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 import com.dianping.midas.finance.api.dto.CorporationDTO;
 import com.dianping.midas.finance.api.service.CorporationService;
-import org.apache.commons.collections.CollectionUtils;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -64,10 +59,10 @@ public class BizInfoService {
 				}
 			} catch (Exception e) {
 				//异常日志和告警
-				String exStr = ConvertExToStr(e);
+				String exStr = convertExToStr(e);
 				MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationByBizContent error!", e);
 				MONITOR_LOGGER.error(exStr);
-				notifyException("queryCorporationByBizContent",roData.getBizContent(),exStr);
+				notifyException("queryCorporationByBizContent", roData.getBizContent(), exStr);
 			}
 		}
         return null;
@@ -95,7 +90,7 @@ public class BizInfoService {
 	 * @param e
 	 * @return
 	 */
-	private String ConvertExToStr(Exception e) {
+	private String convertExToStr(Exception e) {
 		//将Exception的printStackTrace写入String
 		StringWriter errors = new StringWriter();
 		e.printStackTrace(new PrintWriter(errors));

@@ -82,7 +82,7 @@ public class CustomerNameService {
 				}
 			} catch (Exception e) {
 				//异常日志和告警
-				String exStr = ConvertExToStr(e);
+				String exStr = convertExToStr(e);
 				MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationByBizContent error!", e);
 				MONITOR_LOGGER.error("异常堆栈信息:" + exStr);
 				notifyException("queryCorporationByBizContent", "roData.getBizContent()",exStr);
@@ -188,7 +188,7 @@ public class CustomerNameService {
 			}
 		} catch (Exception e) {
 			//异常日志和告警
-			String exStr = ConvertExToStr(e);
+			String exStr = convertExToStr(e);
 			MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationByName error!", e);
 			MONITOR_LOGGER.error("异常堆栈信息:" + exStr);
 			notifyException("queryCorporationByName",
@@ -248,7 +248,7 @@ public class CustomerNameService {
 			}
 		} catch (Exception e) {
 			//异常日志和告警
-			String exStr = ConvertExToStr(e);
+			String exStr = convertExToStr(e);
 			MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationById error!", e);
 			MONITOR_LOGGER.error("异常堆栈信息:" + exStr);
 			notifyException("queryCorporationById", String.valueOf(customerId),exStr);
@@ -290,10 +290,10 @@ public class CustomerNameService {
 			}
 		} catch (Exception e) {
 			//异常日志和告警
-			String exStr = ConvertExToStr(e);
+			String exStr = convertExToStr(e);
 			MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationByBizContent error!", e);
 			MONITOR_LOGGER.error("异常堆栈信息:" + exStr);
-			notifyException("queryCorporationByBizContent",bizContent,exStr);
+			notifyException("queryCorporationByBizContent", bizContent, exStr);
 		}
 		return null;
     }
@@ -329,7 +329,7 @@ public class CustomerNameService {
 	 * @param e
 	 * @return
 	 */
-	private String ConvertExToStr(Exception e) {
+	private String convertExToStr(Exception e) {
         //将Exception的printStackTrace写入String
 		StringWriter errors = new StringWriter();
 		e.printStackTrace(new PrintWriter(errors));

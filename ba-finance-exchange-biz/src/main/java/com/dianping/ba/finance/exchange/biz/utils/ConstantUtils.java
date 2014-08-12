@@ -10,6 +10,6 @@ import com.dianping.finance.common.util.LionConfigUtils;
  * To change this template use File | Settings | File Templates.
  */
 public class ConstantUtils {
-	public static String monitorMailAddress = LionConfigUtils.getProperty("ba-finance-exchange-receivemonitor-job.MonitorMailAddress", "fs.ba@dianping.com");
-	public static String monitorMobileNo = LionConfigUtils.getProperty("ba-finance-exchange-receivemonitor-job.MonitorMobileNo", "");
+	public static String monitorMailAddress = LionConfigUtils.getProperty("ba-finance-exchange-biz.ADMonitorMailAddress", "fs.ba@dianping.com");
+	public static String monitorMobileNo = LionConfigUtils.getProperty("ba-finance-exchange-biz.ADMonitorMobileNo", "");
 }
