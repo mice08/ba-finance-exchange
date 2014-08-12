@@ -11,6 +11,8 @@ import com.dianping.midas.finance.api.dto.CorporationDTO;
 import com.dianping.midas.finance.api.service.CorporationService;
 import org.apache.commons.collections.CollectionUtils;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,8 +64,10 @@ public class BizInfoService {
 				}
 			} catch (Exception e) {
 				//异常日志和告警
+				String exStr = ConvertExToStr(e);
 				MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationByBizContent error!", e);
-				notifyException("queryCorporationByBizContent",roData.getBizContent());
+				MONITOR_LOGGER.error(exStr);
+				notifyException("queryCorporationByBizContent",roData.getBizContent(),exStr);
 			}
 		}
         return null;
@@ -73,15 +77,29 @@ public class BizInfoService {
 		this.corporationService = corporationService;
 	}
 
+
 	/**
 	 * 告警
 	 */
-	private void notifyException(String callMethod,String param) {
+	private void notifyException(String callMethod,String param,String e) {
 		String mailInfo = "CorporationService接口调用错误详情：\n";
 		mailInfo += String.format("调用接口为%s,参数为%s\n",callMethod,param);
 		String smsInfo = "CorporationService接口调用异常，详情请见邮件！";
+		mailInfo += String.format("异常信息为%s\n",e);
 		monitorSmsService.sendSms(smsInfo);
 		monitorMailService.sendMail(mailInfo);
+	}
+
+	/**
+	 * 将Exception的printStackTrace信息存入字符串
+	 * @param e
+	 * @return
+	 */
+	private String ConvertExToStr(Exception e) {
+		//将Exception的printStackTrace写入String
+		StringWriter errors = new StringWriter();
+		e.printStackTrace(new PrintWriter(errors));
+		return errors.toString();
 	}
 
 	public void setMonitorMailService(MonitorMailService monitorMailService) {

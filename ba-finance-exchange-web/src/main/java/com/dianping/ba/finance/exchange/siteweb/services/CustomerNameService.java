@@ -21,6 +21,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import org.apache.commons.collections.CollectionUtils;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -80,8 +82,10 @@ public class CustomerNameService {
 				}
 			} catch (Exception e) {
 				//异常日志和告警
+				String exStr = ConvertExToStr(e);
 				MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationByBizContent error!", e);
-				notifyException("queryCorporationByBizContent", "roData.getBizContent()");
+				MONITOR_LOGGER.error("异常堆栈信息:" + exStr);
+				notifyException("queryCorporationByBizContent", "roData.getBizContent()",exStr);
 			}
 		}
 
@@ -184,9 +188,11 @@ public class CustomerNameService {
 			}
 		} catch (Exception e) {
 			//异常日志和告警
+			String exStr = ConvertExToStr(e);
 			MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationByName error!", e);
+			MONITOR_LOGGER.error("异常堆栈信息:" + exStr);
 			notifyException("queryCorporationByName",
-					"customerName:" + customerName + " maxSize:" + String.valueOf(maxSize));
+					"customerName:" + customerName + " maxSize:" + String.valueOf(maxSize),exStr);
 		}
 		List<CustomerNameSuggestionBean> suggestionBeanList = Lists.newLinkedList();
         for (CorporationDTO corporationDTO : corporationDTOList) {
@@ -242,8 +248,10 @@ public class CustomerNameService {
 			}
 		} catch (Exception e) {
 			//异常日志和告警
+			String exStr = ConvertExToStr(e);
 			MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationById error!", e);
-			notifyException("queryCorporationById", String.valueOf(customerId));
+			MONITOR_LOGGER.error("异常堆栈信息:" + exStr);
+			notifyException("queryCorporationById", String.valueOf(customerId),exStr);
 		}
 		return null;
     }
@@ -282,8 +290,10 @@ public class CustomerNameService {
 			}
 		} catch (Exception e) {
 			//异常日志和告警
+			String exStr = ConvertExToStr(e);
 			MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationByBizContent error!", e);
-			notifyException("queryCorporationByBizContent",bizContent);
+			MONITOR_LOGGER.error("异常堆栈信息:" + exStr);
+			notifyException("queryCorporationByBizContent",bizContent,exStr);
 		}
 		return null;
     }
@@ -305,14 +315,26 @@ public class CustomerNameService {
 	/**
 	 * 告警
 	 */
-	private void notifyException(String callMethod,String param) {
+	private void notifyException(String callMethod,String param,String e) {
 		String mailInfo = "CorporationService接口调用错误详情：\n";
 		mailInfo += String.format("调用接口为%s,参数为%s\n",callMethod,param);
 		String smsInfo = "CorporationService接口调用异常，详情请见邮件！";
+		mailInfo += String.format("异常信息为%s\n",e);
 		monitorSmsService.sendSms(smsInfo);
 		monitorMailService.sendMail(mailInfo);
 	}
 
+	/**
+	 * 将Exception的printStackTrace信息存入字符串
+	 * @param e
+	 * @return
+	 */
+	private String ConvertExToStr(Exception e) {
+        //将Exception的printStackTrace写入String
+		StringWriter errors = new StringWriter();
+		e.printStackTrace(new PrintWriter(errors));
+		return errors.toString();
+	}
 	public void setMonitorMailService(MonitorMailService monitorMailService) {
 		this.monitorMailService = monitorMailService;
 	}
