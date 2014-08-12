@@ -20,7 +20,7 @@ public class PayOrderDaoTest {
     @Test
     public void testGetPayOrderBySequence() throws Exception {
         String sequence = "TG_202194_1407149690338";
-        PayOrderMonitorData payOrderMonitorData = payOrderDao.getPayOrderBySequence(sequence);
+        PayOrderMonitorData payOrderMonitorData = payOrderDao.loadPayOrderBySequence(sequence);
         Assert.assertNotNull(payOrderMonitorData);
     }
 }

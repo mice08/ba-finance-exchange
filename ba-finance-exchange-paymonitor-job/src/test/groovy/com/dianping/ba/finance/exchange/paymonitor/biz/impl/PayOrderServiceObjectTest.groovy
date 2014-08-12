@@ -23,6 +23,6 @@ class PayOrderServiceObjectTest extends Specification {
         when:
         payOrderServiceObjectStub.getPayOrderBySequence(sequence);
         then:
-        1 * payOrderDaoMock.getPayOrderBySequence(_ as String);
+        1 * payOrderDaoMock.loadPayOrderBySequence(_ as String);
     }
 }

@@ -21,13 +21,13 @@
         </dynamic>
     </select>
 
-    <select id="getPayPlanById" resultMap="payPlanMonitorData" parameterClass="map">
+    <select id="loadPayPlanById" resultMap="payPlanMonitorData" parameterClass="map">
         SELECT PPID,Status,UpdateTime
         FROM FC_PayPlan
         WHERE PPID = #ppId#
     </select>
 
-    <select id="getPaySequenceById" resultClass="String" parameterClass="map">
+    <select id="loadPaySequenceById" resultClass="String" parameterClass="map">
       SELECT PaySequence
       FROM FC_PayFLow
       WHERE PPID = #ppId# AND Status = 2

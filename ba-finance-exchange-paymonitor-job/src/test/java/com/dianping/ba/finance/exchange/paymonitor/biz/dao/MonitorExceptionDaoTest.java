@@ -2,7 +2,6 @@ package com.dianping.ba.finance.exchange.paymonitor.biz.dao;
 
 import com.dianping.ba.finance.exchange.paymonitor.api.datas.MonitorExceptionData;
 import junit.framework.Assert;
-import net.sf.ehcache.search.aggregator.Min;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class MonitorExceptionDaoTest {
         monitorExceptionData.setExceptionType(1);
         monitorExceptionData.setStatus(1);
         monitorExceptionData.setAddDate(new Date());
-        int result = monitorExceptionDao.addMonitorException(monitorExceptionData);
+        int result = monitorExceptionDao.insertMonitorException(monitorExceptionData);
         Assert.assertTrue(result>0);
     }
 

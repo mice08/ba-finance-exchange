@@ -33,7 +33,7 @@ class PayMonitorServiceObjectTest extends Specification {
         when:
         payMonitorServiceObjectStub.getLastMonitorTime();
         then:
-        1 * monitorTimeDaoMock.getLastMonitorTime();
+        1 * monitorTimeDaoMock.loadLastMonitorTime();
     }
 
     def "AddMonitorTime"() {
@@ -42,7 +42,7 @@ class PayMonitorServiceObjectTest extends Specification {
         when:
         payMonitorServiceObjectStub.addMonitorTime(date);
         then:
-        1 * monitorTimeDaoMock.addMonitorTime(_ as Date);
+        1 * monitorTimeDaoMock.insertMonitorTime(_ as Date);
     }
 
     def "AddMonitorTodo"() {
@@ -51,7 +51,7 @@ class PayMonitorServiceObjectTest extends Specification {
         when:
         payMonitorServiceObjectStub.addMonitorTodo(monitorTodoData);
         then:
-        1 * monitorTodoDaoMock.addMonitorTodo(_ as MonitorTodoData);
+        1 * monitorTodoDaoMock.insertMonitorTodo(_ as MonitorTodoData);
     }
 
     def "AddMonitorException"() {
@@ -60,7 +60,7 @@ class PayMonitorServiceObjectTest extends Specification {
         when:
         payMonitorServiceObjectStub.addMonitorException(monitorExceptionData);
         then:
-        1 * monitorExceptionDaoMock.addMonitorException(_ as MonitorExceptionData);
+        1 * monitorExceptionDaoMock.insertMonitorException(_ as MonitorExceptionData);
     }
 
     def "FindUnhandldedMonitorTodoDatas"() {

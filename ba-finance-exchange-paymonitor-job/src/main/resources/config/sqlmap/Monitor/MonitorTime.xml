@@ -7,7 +7,7 @@
         <result property="monitorTime" column="MonitorTime"/>
     </resultMap>
 
-    <insert id="addMonitorTime" parameterClass="map">
+    <insert id="insertMonitorTime" parameterClass="map">
         INSERT INTO FC_PayMonitorTime
         (MonitorTime)
         VALUES (#date#)
@@ -16,7 +16,7 @@
         </selectKey>
     </insert>
 
-    <select id="getLastMonitorTime" parameterClass="map" resultClass="java.util.Date">
+    <select id="loadLastMonitorTime" parameterClass="map" resultClass="java.util.Date">
         SELECT MonitorTime
           FROM FC_PayMonitorTime
          WHERE MonitorID = (SELECT MAX(MonitorID) FROM FC_PayMonitorTime)

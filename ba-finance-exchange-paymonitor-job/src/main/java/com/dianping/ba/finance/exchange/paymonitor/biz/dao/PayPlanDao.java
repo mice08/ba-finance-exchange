@@ -19,9 +19,9 @@ public interface PayPlanDao extends GenericDao {
                                                        @DAOParam("endDate") Date endDate);
 
     @DAOAction(action = DAOActionType.LOAD)
-    public PayPlanMonitorData getPayPlanById(@DAOParam("ppId") int ppId);
+    public PayPlanMonitorData loadPayPlanById(@DAOParam("ppId") int ppId);
 
     @DAOAction(action = DAOActionType.LOAD)
-    public  String getPaySequenceById(@DAOParam("ppId") int ppId);
+    public  String loadPaySequenceById(@DAOParam("ppId") int ppId);
 
 }
