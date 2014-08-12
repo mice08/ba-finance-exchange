@@ -14,7 +14,7 @@
         <property name="iface" value="com.dianping.midas.finance.api.service.CorporationService" />
         <property name="serialize" value="hessian" />
         <property name="callMethod" value="sync" />
-        <property name="timeout" value="10000" />
+        <property name="timeout" value="${ba-finance-exchange-biz.pigeon.timeout.medium}" />
         <property name="timeoutRetry" value="true"/>
         <property name="retries" value="${ba-finance-exchange-biz.pigeon.retryTimes}"/>
     </bean>
