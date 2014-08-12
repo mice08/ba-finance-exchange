@@ -89,8 +89,8 @@ public enum MonitorExceptionType {
         }
     }
 
-    public static String toString(MonitorExceptionType monitorExceptionType){
-        return monitorExceptionType.description;
+    public String toString(){
+        return this.description;
 
     }
 
