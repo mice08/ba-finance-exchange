@@ -4,8 +4,6 @@ import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
-import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
-import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.finance.common.util.ListUtils;
 import com.dianping.finance.common.util.StringUtils;
@@ -61,21 +59,11 @@ public class PaySuccessAjaxAction extends PayOrderAjaxAction {
 		List<Integer> orderIdList = StringUtil.isBlank(poIds)? new ArrayList<Integer>() : StringUtils.splitStringToList(poIds, ",");
 		if (CollectionUtils.isEmpty(orderIdList)){
 			PayOrderSearchBean searchBean = buildPayOrderSearchBean();
-			List<PayOrderData> orderList = payOrderService.findPayOrderList(searchBean);
-			orderIdList = getSubmitOrderIdList(orderList);
+			orderIdList = payOrderService.findPayOrderIdList(searchBean);
 		}
 		return orderIdList;
 	}
 
-	private List<Integer> getSubmitOrderIdList(List<PayOrderData> orderList) {
-		List<Integer> orderIdList = new ArrayList<Integer>();
-		for (PayOrderData order : orderList) {
-
-			if (order.getStatus() == PayOrderStatus.EXPORT_PAYING.value())
-				orderIdList.add(order.getPoId());
-		}
-		return orderIdList;
-	}
 
 	private int doPaySuccess(List<Integer> orderIdList) {
 		int successCount = 0;

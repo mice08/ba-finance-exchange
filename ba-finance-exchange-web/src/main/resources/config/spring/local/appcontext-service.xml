@@ -65,5 +65,15 @@
           class="com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService">
         <property name="customerInfoService" ref="customerInfoService"/>
         <property name="corporationService" ref="corporationService"/>
+        <property name="monitorMailService" ref="monitorMailService"/>
+        <property name="monitorSmsService" ref="monitorSmsService"/>
+    </bean>
+
+    <bean id="monitorMailService" class="com.dianping.ba.finance.exchange.siteweb.services.MonitorMailService">
+        <property name="mailService" ref="mailService"/>
+    </bean>
+
+    <bean id="monitorSmsService" class="com.dianping.ba.finance.exchange.siteweb.services.MonitorSmsService">
+        <property name="smsService" ref="smsService"/>
     </bean>
 </beans>

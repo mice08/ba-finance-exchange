@@ -7,7 +7,7 @@
         <result property="status" column="Status"/>
     </resultMap>
 
-    <select id="getPayOrderBySequence" resultMap="payOrderMonitorData" parameterClass="map">
+    <select id="loadPayOrderBySequence" resultMap="payOrderMonitorData" parameterClass="map">
         SELECT POID, Status
         FROM FC_PayOrder
         WHERE PaySequence = #paySequence#

@@ -23,22 +23,22 @@ public class PayMonitorServiceObject implements PayMonitorService {
 
     @Override
     public Date getLastMonitorTime() {
-        return monitorTimeDao.getLastMonitorTime();
+        return monitorTimeDao.loadLastMonitorTime();
     }
 
     @Override
     public int addMonitorTime(Date date) {
-        return monitorTimeDao.addMonitorTime(date);
+        return monitorTimeDao.insertMonitorTime(date);
     }
 
     @Override
     public int addMonitorTodo(MonitorTodoData monitorTodoData) {
-        return monitorTodoDao.addMonitorTodo(monitorTodoData);
+        return monitorTodoDao.insertMonitorTodo(monitorTodoData);
     }
 
     @Override
     public int addMonitorException(MonitorExceptionData monitorExceptionData) {
-        return monitorExceptionDao.addMonitorException(monitorExceptionData);
+        return monitorExceptionDao.insertMonitorException(monitorExceptionData);
     }
 
     @Override

@@ -10,7 +10,7 @@
         <result property="status" column="Status"/>
     </resultMap>
 
-    <insert id="addMonitorException" parameterClass="map">
+    <insert id="insertMonitorException" parameterClass="map">
         INSERT INTO FC_PayMonitorException
         (PPID,
         ExceptionType,

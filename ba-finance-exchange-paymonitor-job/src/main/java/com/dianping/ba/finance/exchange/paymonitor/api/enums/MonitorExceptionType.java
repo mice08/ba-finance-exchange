@@ -4,21 +4,58 @@ package com.dianping.ba.finance.exchange.paymonitor.api.enums;
  * Created by adam.huang on 2014/8/7.
  */
 public enum MonitorExceptionType {
-    DEFAULT(0),
-    PP_IN_SUBMISSION_TIMEOUT(1),
-    PP_IN_PAYMENT_TIMEOUT(2),
-    PP_IN_PAYMENT_INVALID_STATE(3),
-    PP_PAY_SUCCESS_INVALID_STATE(4),
-    PP_REFUND_INVALID_STATE(5),
-    PP_PAY_FAILED(6),
-    PP_PAY_SEQUENCE_NOT_FOUND(7),
-    PP_PAY_ORDER_NOT_FOUND(8);
+    /**
+     * 异常
+     */
+    DEFAULT(0,"异常"),
+
+    /**
+     * 提交超时
+     */
+    PP_IN_SUBMISSION_TIMEOUT(1, "付款计划状态提交超时"),
+
+    /**
+     * 支付超时
+     */
+    PP_IN_PAYMENT_TIMEOUT(2, "付款计划状态支付超时"),
+
+    /**
+     * 支付中对应状态出错
+     */
+    PP_IN_PAYMENT_INVALID_STATE(3, "付款计划状态无法与付款单状态对应，当前付款计划为支付中"),
+
+    /**
+     * 支付成功对应状态出错
+     */
+    PP_PAY_SUCCESS_INVALID_STATE(4, "付款计划状态无法与付款单状态对应，当前付款计划为支付成功"),
+
+    /**
+     * 退票对应状态出错
+     */
+    PP_REFUND_INVALID_STATE(5, "付款计划状态无法与付款单状态对应，当前付款计划为退票"),
+
+    /**
+     * 支付失败
+     */
+    PP_PAY_FAILED(6, "付款计划支付失败"),
+
+    /**
+     * 找不到对应付款序列号
+     */
+    PP_PAY_SEQUENCE_NOT_FOUND(7, "付款计划找不到对应的付款序列号"),
+
+    /**
+     * 找不到对应付款单记录
+     */
+    PP_PAY_ORDER_NOT_FOUND(8, "付款计划找不到对应的付款单记录");
 
 
     private int type;
+    private String description;
 
-    private MonitorExceptionType(int type) {
+    private MonitorExceptionType(int type, String description) {
         this.type = type;
+        this.description = description;
     }
 
     public int getType() {
@@ -52,27 +89,8 @@ public enum MonitorExceptionType {
         }
     }
 
-    public static String toString(MonitorExceptionType monitorExceptionType){
-        switch(monitorExceptionType){
-            case PP_IN_SUBMISSION_TIMEOUT:
-                return "付款计划状态一直为提交中";
-            case PP_IN_PAYMENT_TIMEOUT:
-                return "付款计划状态一直为支付中";
-            case PP_IN_PAYMENT_INVALID_STATE:
-                return "付款计划状态无法与付款单状态对应，当前付款计划为支付中";
-            case PP_PAY_SUCCESS_INVALID_STATE:
-                return "付款计划状态无法与付款单状态对应，当前付款计划为支付成功";
-            case PP_REFUND_INVALID_STATE:
-                return "付款计划状态无法与付款单状态对应，当前付款计划为退票";
-            case PP_PAY_FAILED:
-                return "付款计划支付失败";
-            case PP_PAY_SEQUENCE_NOT_FOUND:
-                return  "付款计划找不到对应的付款序列号";
-            case PP_PAY_ORDER_NOT_FOUND:
-                return "付款计划找不到对应的付款单记录";
-            default:
-                return "未知错误";
-        }
+    public String toString(){
+        return this.description;
 
     }
 

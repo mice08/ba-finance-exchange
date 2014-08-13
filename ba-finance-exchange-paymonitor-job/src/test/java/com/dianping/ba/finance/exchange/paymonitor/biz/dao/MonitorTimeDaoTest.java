@@ -1,6 +1,5 @@
 package com.dianping.ba.finance.exchange.paymonitor.biz.dao;
 
-import com.dianping.ba.finance.exchange.paymonitor.api.datas.MonitorTimeData;
 import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,13 +21,13 @@ public class MonitorTimeDaoTest {
 
     @Test
     public void testGetLastMonitorTime() throws Exception {
-        Date date = monitorTimeDao.getLastMonitorTime();
+        Date date = monitorTimeDao.loadLastMonitorTime();
         Assert.assertNotNull(date);
     }
 
     @Test
     public void testAddMonitorTime() throws Exception {
-        int result = monitorTimeDao.addMonitorTime(new Date());
+        int result = monitorTimeDao.insertMonitorTime(new Date());
         Assert.assertTrue(result>0);
     }
 }
