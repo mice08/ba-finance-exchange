@@ -149,7 +149,7 @@ class ReceiveNotifyAjaxActionTest extends Specification {
 
         where:
         businessType | receiveAmount| resultCode
-        BusinessType.DEFAULT.value() | null | 0
+        BusinessType.DEFAULT.value() | null | 500
         BusinessType.ADVERTISEMENT.value() | null | ReceiveNotifyAjaxAction.SUCCESS_CODE
         BusinessType.ADVERTISEMENT.value() | "10.87" | ReceiveNotifyAjaxAction.SUCCESS_CODE
 

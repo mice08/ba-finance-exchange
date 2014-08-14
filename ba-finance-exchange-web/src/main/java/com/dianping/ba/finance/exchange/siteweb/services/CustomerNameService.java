@@ -96,7 +96,7 @@ public class CustomerNameService {
         if (CollectionUtils.isEmpty(tgCustomerIdList)) {
             return;
         }
-        List<CustomerLite> customerLiteList = customerInfoService.getCustomerLitesFuture(tgCustomerIdList, loginId);
+        List<CustomerLite> customerLiteList = customerInfoService.getCustomerLites(tgCustomerIdList, loginId);
         if (CollectionUtils.isEmpty(customerLiteList)) {
             return;
         }

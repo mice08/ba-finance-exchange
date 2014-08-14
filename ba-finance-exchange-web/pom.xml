@@ -418,7 +418,7 @@
         <dependency>
             <groupId>com.dianping</groupId>
             <artifactId>customerinfo-api</artifactId>
-            <version>1.0.8-SNAPSHOT</version>
+            <version>1.2.8-SNAPSHOT</version>
         </dependency>
 
         <dependency>
