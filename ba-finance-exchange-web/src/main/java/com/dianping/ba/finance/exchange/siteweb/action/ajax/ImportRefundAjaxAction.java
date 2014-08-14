@@ -43,10 +43,6 @@ public class ImportRefundAjaxAction extends AjaxBaseAction {
 
     private String excelInvalidMsg = "";
 
-    private int code;
-
-    private Map<String, Object> msg = new HashMap<String, Object>();
-
     private ExecutorService executorService;
 
     private PayOrderService payOrderService;
@@ -210,16 +206,6 @@ public class ImportRefundAjaxAction extends AjaxBaseAction {
     protected void jsonExecute() throws Exception {
         msg.put(msgKey, "");
         return;
-    }
-
-    @Override
-    public int getCode() {
-        return this.code;
-    }
-
-    @Override
-    public Map<String, Object> getMsg() {
-        return this.msg;
     }
 
     public File getRefundFile() {

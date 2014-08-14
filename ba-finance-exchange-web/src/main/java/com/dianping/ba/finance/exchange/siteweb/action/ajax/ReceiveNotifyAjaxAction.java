@@ -42,11 +42,7 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 
 	private int businessType;
 
-	private int code;
-
 	private int rnId;
-
-	private Map<String, Object> msg = Maps.newHashMap();
 
 	private ReceiveNotifyService receiveNotifyService;
 
@@ -76,6 +72,8 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 	protected void jsonExecute() {
 		if (businessType == BusinessType.DEFAULT.value()) {
 			totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO);
+            msg.put("totalAmount", totalAmount);
+            code = ERROR_CODE;
 			return;
 		}
 		try {
@@ -83,7 +81,9 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 			receiveNotifyModel = receiveNotifyService.paginateReceiveNotifyList(searchBean, page, pageSize);
 			receiveNotifyModel.setRecords(buildReceiveNotifyBeans((List<ReceiveNotifyData>) receiveNotifyModel.getRecords()));
 			totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(receiveNotifyService.loadTotalReceiveAmountByCondition(searchBean));
-			code = SUCCESS_CODE;
+            msg.put("totalAmount", totalAmount);
+            msg.put("receiveNotifyModel", receiveNotifyModel);
+            code = SUCCESS_CODE;
 		} catch (Exception e) {
 			MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.jsonExecute error!", e);
 			code = ERROR_CODE;
@@ -178,6 +178,7 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 			List<ReceiveNotifyData> list = receiveNotifyService.findMatchedReceiveNotify(roMatcherId);
 
 			records = buildReceiveNotifyConfirmList(list);
+            msg.put("records", records);
 			code = SUCCESS_CODE;
 		} catch (Exception e) {
 			MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.findNotifiesByROId error!", e);

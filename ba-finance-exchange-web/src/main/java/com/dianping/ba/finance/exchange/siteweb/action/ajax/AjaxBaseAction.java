@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.siteweb.action.WebBaseAction;
+import com.google.common.collect.Maps;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,12 +14,13 @@ public abstract class AjaxBaseAction extends WebBaseAction {
 
 	protected static final int SUCCESS_CODE = 200;
 	protected static final int ERROR_CODE = 500;
+    protected static final int NO_AUTH_CODE = 403;
 	protected static final String msgKey = "message";
 
 	private static AvatarLogger logger = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.web.monitor.AjaxBaseAction");
-	private int code;
+	protected int code = NO_AUTH_CODE;
 
-	private Map<String, Object> msg = new HashMap<String, Object>();
+	protected Map<String, Object> msg = Maps.newHashMap();
 
 
 	public String webExecute() throws Exception {
@@ -34,14 +36,12 @@ public abstract class AjaxBaseAction extends WebBaseAction {
 
 	abstract protected void jsonExecute() throws Exception;
 
-	/**
-	 * @return the code
-	 */
-	public abstract int getCode();
+	public int getCode(){
+        return code;
+    }
 
-	/**
-	 * @return the msg
-	 */
-	public abstract Map<String, Object> getMsg();
+	public Map<String, Object> getMsg(){
+        return msg;
+    }
 
 }
