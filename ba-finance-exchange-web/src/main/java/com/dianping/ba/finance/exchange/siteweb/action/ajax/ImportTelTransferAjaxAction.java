@@ -274,6 +274,17 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
         this.bankId = bankId;
     }
 
+
+    @Override
+    public int getCode() {
+        return code;
+    }
+
+    @Override
+    public Map<String, Object> getMsg() {
+        return msg;
+    }
+
     public void setReceiveOrderService(ReceiveOrderService receiveOrderService) {
         this.receiveOrderService = receiveOrderService;
     }

@@ -218,9 +218,15 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         return "";
     }
 
+
+    @Override
+    public int getCode() {
+        return code;
+    }
+
     @Override
     public Map<String, Object> getMsg() {
-        return null;
+        return msg;
     }
 
     public int getStatus() {

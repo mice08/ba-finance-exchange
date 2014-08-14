@@ -36,12 +36,8 @@ public abstract class AjaxBaseAction extends WebBaseAction {
 
 	abstract protected void jsonExecute() throws Exception;
 
-	public int getCode(){
-        return code;
-    }
+	public abstract int getCode();
 
-	public Map<String, Object> getMsg(){
-        return msg;
-    }
+	public abstract Map<String, Object> getMsg();
 
 }

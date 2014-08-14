@@ -52,6 +52,17 @@ public class CustomerAjaxAction extends AjaxBaseAction {
 		}
 	}
 
+
+    @Override
+    public int getCode() {
+        return code;
+    }
+
+    @Override
+    public Map<String, Object> getMsg() {
+        return msg;
+    }
+
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
