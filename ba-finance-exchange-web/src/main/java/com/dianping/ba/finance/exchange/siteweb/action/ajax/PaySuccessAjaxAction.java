@@ -30,10 +30,6 @@ public class PaySuccessAjaxAction extends PayOrderAjaxAction {
 
 	private String poIds;
 
-	private Map<String, Object> msg = new HashMap<String, Object>();
-
-	private int code;
-
 	protected static final String msgKey = "message";
 
 	private PayOrderService payOrderService;
@@ -96,15 +92,16 @@ public class PaySuccessAjaxAction extends PayOrderAjaxAction {
 		return successCount;
 	}
 
-	@Override
-	public int getCode() {
-		return this.code;
-	}
 
-	@Override
-	public Map<String, Object> getMsg() {
-		return this.msg;
-	}
+    @Override
+    public int getCode() {
+        return code;
+    }
+
+    @Override
+    public Map<String, Object> getMsg() {
+        return msg;
+    }
 
 	public void setPayOrderService(PayOrderService payOrderService) {
 		this.payOrderService = payOrderService;

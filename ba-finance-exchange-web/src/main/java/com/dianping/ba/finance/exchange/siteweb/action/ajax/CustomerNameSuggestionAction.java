@@ -17,10 +17,6 @@ import java.util.Map;
  */
 public class CustomerNameSuggestionAction extends AjaxBaseAction {
 
-    private Map<String, Object> msg = Maps.newHashMap();
-
-    private int code;
-
     /**
      * autocomplete插件的参数名为q
      */
@@ -75,9 +71,10 @@ public class CustomerNameSuggestionAction extends AjaxBaseAction {
         return SUCCESS;
     }
 
+
     @Override
     public int getCode() {
-        return this.code;
+        return code;
     }
 
     @Override

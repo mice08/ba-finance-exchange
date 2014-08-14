@@ -70,7 +70,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     @Override
     protected void jsonExecute() throws Exception {
         if (businessType == BusinessType.DEFAULT.value()) {
-            totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO);
+            msg.put("totalAmount", new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO));
+            code = ERROR_CODE;
             return;
         }
         try {
@@ -78,7 +79,11 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
             payOrderModel = payOrderService.paginatePayOrderList(payOrderSearchBean, page, pageSize);
             payOrderModel.setRecords(buildPayOrderBeans((List<PayOrderData>) payOrderModel.getRecords()));
             totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(payOrderService.findPayOrderTotalAmount(payOrderSearchBean));
+            msg.put("payOrderModel", payOrderModel);
+            msg.put("totalAmount", totalAmount);
+            code = SUCCESS_CODE;
         } catch (Exception e) {
+            code = ERROR_CODE;
             MONITOR_LOGGER.error("severity=[1] PayOrderAjaxAction.jsonExecute error!", e);
         }
     }
@@ -213,14 +218,15 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         return "";
     }
 
+
     @Override
     public int getCode() {
-        return 0;
+        return code;
     }
 
     @Override
     public Map<String, Object> getMsg() {
-        return null;
+        return msg;
     }
 
     public int getStatus() {

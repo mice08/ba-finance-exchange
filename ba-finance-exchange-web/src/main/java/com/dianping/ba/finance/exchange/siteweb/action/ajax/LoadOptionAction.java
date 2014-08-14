@@ -27,30 +27,35 @@ public class LoadOptionAction extends AjaxBaseAction {
 
     public String loadPOStatusOption() {
         option.putAll(OptionConstant.POSTATUS_OPTION);
+        msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
     }
 
     public String loadROStatusOption(){
         option.putAll(OptionConstant.ROSTATUS_OPTION);
+        msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
     }
 
 	public String loadRNStatusOption(){
 		option.putAll(OptionConstant.RNSTATUS_OPTION);
+        msg.put("option", option);
 		code = SUCCESS_CODE;
 		return SUCCESS;
 	}
 
     public String loadBusinessTypeOption() {
         option.putAll(OptionConstant.BUSINESSTYPE_OPTION);
+        msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
     }
 
     public String loadProductLionOption() {
         option.putAll(OptionConstant.PRODUCTLINE_OPTION);
+        msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
     }
@@ -64,6 +69,7 @@ public class LoadOptionAction extends AjaxBaseAction {
                 option.put(channel.getChannel(), channel.getDescription());
             }
         }
+        msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
     }
@@ -77,6 +83,7 @@ public class LoadOptionAction extends AjaxBaseAction {
                 option.put(type.getReceiveType(), type.getDescription());
             }
         }
+        msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
     }
@@ -99,6 +106,7 @@ public class LoadOptionAction extends AjaxBaseAction {
         } else if (businessType == BusinessType.ADVERTISEMENT.value()) {
             option.put(ReceiveType.AD_FEE.value(), ReceiveType.AD_FEE.getDescription());
         }
+        msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
     }
@@ -121,6 +129,7 @@ public class LoadOptionAction extends AjaxBaseAction {
         } else if (businessType == BusinessType.ADVERTISEMENT.value()) {
             option.put(ReceiveType.AD_FEE.value(), ReceiveType.AD_FEE.getDescription());
         }
+        msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
     }
@@ -144,6 +153,7 @@ public class LoadOptionAction extends AjaxBaseAction {
         if (option.size() == 2) {
             option.remove(0);
         }
+        msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
     }
@@ -164,6 +174,7 @@ public class LoadOptionAction extends AjaxBaseAction {
                 }
             }
         }
+        msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
     }
@@ -179,6 +190,7 @@ public class LoadOptionAction extends AjaxBaseAction {
                 option.put(receiveBankData.getBankId(), name);
             }
         }
+        msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
     }

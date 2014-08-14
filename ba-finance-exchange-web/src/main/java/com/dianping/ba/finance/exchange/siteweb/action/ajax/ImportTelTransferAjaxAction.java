@@ -68,10 +68,6 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
 
     private String invalidFileMsg = "";
 
-    private int code;
-
-    private Map<String, Object> msg = Maps.newHashMap();
-
     private ReceiveOrderService receiveOrderService;
 
     private ReceiveBankService receiveBankService;
@@ -266,16 +262,6 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
         return;
     }
 
-    @Override
-    public int getCode() {
-        return this.code;
-    }
-
-    @Override
-    public Map<String, Object> getMsg() {
-        return this.msg;
-    }
-
     public void setTelTransferFile(File telTransferFile) {
         this.telTransferFile = telTransferFile;
     }
@@ -286,6 +272,17 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
 
     public void setBankId(int bankId) {
         this.bankId = bankId;
+    }
+
+
+    @Override
+    public int getCode() {
+        return code;
+    }
+
+    @Override
+    public Map<String, Object> getMsg() {
+        return msg;
     }
 
     public void setReceiveOrderService(ReceiveOrderService receiveOrderService) {

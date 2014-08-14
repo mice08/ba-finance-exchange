@@ -55,8 +55,6 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     private String memo;
 
-    private int code;
-
     private String bankReceiveTimeBegin;
 
     private String bankReceiveTimeEnd;
@@ -85,8 +83,6 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
     //分页大小
     private Integer pageSize = 20;
 
-    private Map<String, Object> msg = Maps.newHashMap();
-
     private ReceiveOrderService receiveOrderService;
 
     private CustomerNameService customerNameService;
@@ -96,7 +92,9 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
     @Override
     protected void jsonExecute() {
         if (businessType == BusinessType.DEFAULT.value()) {
+            code = ERROR_CODE;
             totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO);
+            msg.put("totalAmount", totalAmount);
             return;
         }
 
@@ -105,6 +103,8 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
             receiveOrderModel = receiveOrderService.paginateReceiveOrderList(receiveOrderSearchBean, page, pageSize);
             receiveOrderModel.setRecords(buildReceiveOrderBeans((List<ReceiveOrderData>) receiveOrderModel.getRecords()));
             totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(receiveOrderService.loadReceiveOrderTotalAmountByCondition(receiveOrderSearchBean));
+            msg.put("totalAmount", totalAmount);
+            msg.put("receiveOrderModel", receiveOrderModel);
             code = SUCCESS_CODE;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.jsonExecute error!", e);
@@ -165,6 +165,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
             receiveOrderData = receiveOrderService.loadReceiveOrderDataByRoId(roId);
             Map<Integer, String> customerIdNameMap = customerNameService.getROCustomerName(Arrays.asList(receiveOrderData), getLoginId());
             receiveOrder = convertRODataToROBean(receiveOrderData, customerIdNameMap);
+            msg.put("receiveOrder", receiveOrder);
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.getReveiveOrderById error!", e);
             code = ERROR_CODE;
