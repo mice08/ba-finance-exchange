@@ -23,24 +23,10 @@ public class CustomerAjaxAction extends AjaxBaseAction {
 
     private String customerName;
 
-    private int code;
-
-    private Map<String, Object> msg = Maps.newHashMap();
-
     private CustomerService customerService;
     @Override
     protected void jsonExecute() throws Exception {
 
-    }
-
-    @Override
-    public int getCode() {
-        return code;
-    }
-
-    @Override
-    public Map<String, Object> getMsg() {
-        return msg;
     }
 
     /**

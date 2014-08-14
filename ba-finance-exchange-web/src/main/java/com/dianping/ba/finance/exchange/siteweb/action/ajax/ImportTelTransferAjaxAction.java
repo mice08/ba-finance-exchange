@@ -68,10 +68,6 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
 
     private String invalidFileMsg = "";
 
-    private int code;
-
-    private Map<String, Object> msg = Maps.newHashMap();
-
     private ReceiveOrderService receiveOrderService;
 
     private ReceiveBankService receiveBankService;
@@ -264,16 +260,6 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
     protected void jsonExecute() throws Exception {
         msg.put(msgKey, "");
         return;
-    }
-
-    @Override
-    public int getCode() {
-        return this.code;
-    }
-
-    @Override
-    public Map<String, Object> getMsg() {
-        return this.msg;
     }
 
     public void setTelTransferFile(File telTransferFile) {
