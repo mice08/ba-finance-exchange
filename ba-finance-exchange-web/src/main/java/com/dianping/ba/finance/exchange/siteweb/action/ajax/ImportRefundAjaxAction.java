@@ -208,6 +208,17 @@ public class ImportRefundAjaxAction extends AjaxBaseAction {
         return;
     }
 
+
+    @Override
+    public int getCode() {
+        return code;
+    }
+
+    @Override
+    public Map<String, Object> getMsg() {
+        return msg;
+    }
+
     public File getRefundFile() {
         return refundFile;
     }

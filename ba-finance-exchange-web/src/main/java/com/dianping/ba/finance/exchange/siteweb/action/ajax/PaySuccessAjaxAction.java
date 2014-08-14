@@ -92,6 +92,17 @@ public class PaySuccessAjaxAction extends PayOrderAjaxAction {
 		return successCount;
 	}
 
+
+    @Override
+    public int getCode() {
+        return code;
+    }
+
+    @Override
+    public Map<String, Object> getMsg() {
+        return msg;
+    }
+
 	public void setPayOrderService(PayOrderService payOrderService) {
 		this.payOrderService = payOrderService;
 	}

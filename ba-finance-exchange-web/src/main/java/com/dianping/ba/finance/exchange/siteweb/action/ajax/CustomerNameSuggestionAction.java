@@ -71,6 +71,17 @@ public class CustomerNameSuggestionAction extends AjaxBaseAction {
         return SUCCESS;
     }
 
+
+    @Override
+    public int getCode() {
+        return code;
+    }
+
+    @Override
+    public Map<String, Object> getMsg() {
+        return msg;
+    }
+
     public void setQ(String q) {
         this.q = q;
     }
