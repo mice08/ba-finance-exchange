@@ -312,4 +312,28 @@
         </iterate>
     </select>
 
+
+    <select id="findPayOrderIdList" resultClass="java.lang.Integer" parameterClass="map">
+        SELECT
+        POID
+        FROM FC_PayOrder
+        <dynamic prepend="WHERE">
+            <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
+                PayCode = #payOrderSearchBean.payCode#
+            </isNotEmpty>
+            <isNotNull property="payOrderSearchBean.beginTime" prepend="and">
+                AddTime &gt;= #payOrderSearchBean.beginTime#
+            </isNotNull>
+            <isNotNull property="payOrderSearchBean.endTime" prepend="and">
+                AddTime &lt;= #payOrderSearchBean.endTime#
+            </isNotNull>
+            <isGreaterThan property="payOrderSearchBean.status" compareValue="0" prepend="and">
+                Status = #payOrderSearchBean.status#
+            </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
+                BusinessType = #payOrderSearchBean.businessType#
+            </isGreaterThan>
+        </dynamic>
+    </select>
+
 </sqlMap>

@@ -36,7 +36,7 @@ class CustomerNameServiceTest extends Specification {
     def "get customer name"(Integer businessType, Integer customerId, String customerName) {
         given:
         PayOrderData poDate = [businessType: businessType, customerId: customerId];
-        customerInfoServiceMock.getCustomerLitesFuture(_ as List<Integer>, _ as Integer) >> { args ->
+        customerInfoServiceMock.getCustomerLites(_ as List<Integer>, _ as Integer) >> { args ->
             def customerLiteList = [];
             args[0].each {
                 CustomerLite customerLite = [customerID: it, customerName: "客户名称" + it];
@@ -64,7 +64,7 @@ class CustomerNameServiceTest extends Specification {
     def "get ro customer name"(Integer businessType, Integer customerId, String customerName) {
         given:
         ReceiveOrderData roDate = [businessType: businessType, customerId: customerId];
-        customerInfoServiceMock.getCustomerLitesFuture(_ as List<Integer>, _ as Integer) >> { args ->
+        customerInfoServiceMock.getCustomerLites(_ as List<Integer>, _ as Integer) >> { args ->
             def customerLiteList = [];
             args[0].each {
                 CustomerLite customerLite = [customerID: it, customerName: "客户名称" + it];

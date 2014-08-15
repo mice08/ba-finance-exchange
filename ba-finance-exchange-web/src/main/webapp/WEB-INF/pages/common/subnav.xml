@@ -10,8 +10,4 @@
     <set name="开票管理">
         <link name="开票" url="http://${ba-finance-settle-web.Domain}/settle/invoice/invoicelist"/>
     </set>
-    <set name="预约预定">
-        <link name="付款计划" url="http://${ba-finance-settle-web.Domain}/caiwu/paymentplan/paymentplanlist"/>
-        <link name="付款单" url="http://${ba-finance-settle-web.Domain}/caiwu/exchangeorder/orderlist"/>
-    </set>
 </tags>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+
+    <bean id="receiveOrderMonitorService" class="com.dianping.ba.finance.exchange.receivemonitor.biz.impl.ReceiveOrderMonitorServiceObject">
+        <property name="receiveOrderMonitorDao" ref="receiveOrderMonitorDao"/>
+    </bean>
+
+    <bean id="receiveMonitorService" class="com.dianping.ba.finance.exchange.receivemonitor.biz.impl.ReceiveMonitorServiceObject">
+        <property name="fsMonitorTimeDao" ref="fsMonitorTimeDao"/>
+        <property name="fsMonitorTodoDao" ref="fsMonitorTodoDao"/>
+        <property name="fsMonitorExceptionDao" ref="fsMonitorExceptionDao"/>
+    </bean>
+
+    <bean id="receiveConfirmMonitorService" class="com.dianping.ba.finance.exchange.receivemonitor.biz.impl.ReceiveConfirmMonitorServiceObject">
+        <property name="receiveConfirmMonitorDao" ref="receiveConfirmMonitorDao"/>
+    </bean>
+</beans>

@@ -194,4 +194,12 @@ public class PayOrderServiceObjectTest {
         verify(payOrderDaoMock, times(1)).updatePayOrders(any(POUpdateInfoBean.class));
         verify(payOrderResultNotifyMock, times(1)).payResultNotify(any(PayOrderResultBean.class));
     }
+
+    @Test
+    public void testFindPayOrderIdList() throws Exception {
+        when(payOrderDaoMock.findPayOrderIdList(any(PayOrderSearchBean.class))).thenReturn(Arrays.asList(123));
+        List<Integer> ppIdList = payOrderServiceObjectStub.findPayOrderIdList(new PayOrderSearchBean());
+        Assert.assertNotNull(ppIdList);
+        Assert.assertEquals(123, ppIdList.get(0).intValue());
+    }
 }

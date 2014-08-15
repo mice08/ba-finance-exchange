@@ -1,5 +1,7 @@
 package com.dianping.ba.finance.exchange.siteweb.services;
 
+import com.dianping.avatar.log.AvatarLogger;
+import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
@@ -19,6 +21,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import org.apache.commons.collections.CollectionUtils;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +42,15 @@ public class CustomerNameService {
      */
     private CorporationService corporationService;
 
-    @Log(severity = 2, logBefore = true, logAfter = true)
+	/**
+	 * 记录需要监控的业务日志
+	 */
+	private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService");
+
+	private MonitorMailService monitorMailService;
+	private MonitorSmsService monitorSmsService;
+
+	@Log(severity = 2, logBefore = true, logAfter = true)
     @ReturnDefault
     public Map<Integer, String> getCustomerName(List<PayOrderData> payOrderDataList, int loginId) {
         Multimap<Integer, Integer> businessTypeCustomerIdMMap = groupByBusinessType(payOrderDataList);
@@ -57,11 +69,25 @@ public class CustomerNameService {
             return;
         }
         for (int customerId : adCustomerIdList) {
-            CorporationDTO corporationDTO = corporationService.queryCorporationById(customerId);
-            if (corporationDTO != null) {
-                customerIdNameMap.put(corporationDTO.getId(), corporationDTO.getName());
-            }
-        }
+			try {
+				//外部接口调用，添加日志和告警
+				MONITOR_LOGGER.info("CorporationService.queryCorporationById" +
+						" customerId:" + customerId);
+				CorporationDTO corporationDTO = corporationService.queryCorporationById(customerId);
+				if (corporationDTO != null) {
+					customerIdNameMap.put(corporationDTO.getId(), corporationDTO.getName());
+                    //记录返回日志
+					MONITOR_LOGGER.info("CorporationService.queryCorporationByBizContent" +
+							"return id:" + corporationDTO.getId() + " name:"+corporationDTO.getName());
+				}
+			} catch (Exception e) {
+				//异常日志和告警
+				String exStr = convertExToStr(e);
+				MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationByBizContent error!", e);
+				MONITOR_LOGGER.error("异常堆栈信息:" + exStr);
+				notifyException("queryCorporationByBizContent", "roData.getBizContent()",exStr);
+			}
+		}
 
     }
 
@@ -70,7 +96,7 @@ public class CustomerNameService {
         if (CollectionUtils.isEmpty(tgCustomerIdList)) {
             return;
         }
-        List<CustomerLite> customerLiteList = customerInfoService.getCustomerLitesFuture(tgCustomerIdList, loginId);
+        List<CustomerLite> customerLiteList = customerInfoService.getCustomerLites(tgCustomerIdList, loginId);
         if (CollectionUtils.isEmpty(customerLiteList)) {
             return;
         }
@@ -148,11 +174,27 @@ public class CustomerNameService {
     }
 
     private List<CustomerNameSuggestionBean> fetchADCustomerSuggestion(String customerName, int maxSize, int loginId) {
-        List<CorporationDTO> corporationDTOList = corporationService.queryCorporationByName(customerName, maxSize);
-        if (CollectionUtils.isEmpty(corporationDTOList)) {
-            return Collections.emptyList();
-        }
-        List<CustomerNameSuggestionBean> suggestionBeanList = Lists.newLinkedList();
+		List<CorporationDTO> corporationDTOList = null;
+		try {
+			//外部接口调用，添加日志和告警
+			MONITOR_LOGGER.info("CorporationService.queryCorporationByName" +
+					" customerName:" + customerName + " maxSize:" + maxSize);
+			corporationDTOList = corporationService.queryCorporationByName(customerName, maxSize);
+			//记录返回日志
+			MONITOR_LOGGER.info("CorporationService.queryCorporationByName" +
+					"return ListSize:" + corporationDTOList.size());
+			if (CollectionUtils.isEmpty(corporationDTOList)) {
+				return Collections.emptyList();
+			}
+		} catch (Exception e) {
+			//异常日志和告警
+			String exStr = convertExToStr(e);
+			MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationByName error!", e);
+			MONITOR_LOGGER.error("异常堆栈信息:" + exStr);
+			notifyException("queryCorporationByName",
+					"customerName:" + customerName + " maxSize:" + String.valueOf(maxSize),exStr);
+		}
+		List<CustomerNameSuggestionBean> suggestionBeanList = Lists.newLinkedList();
         for (CorporationDTO corporationDTO : corporationDTOList) {
             CustomerNameSuggestionBean suggestionBean = new CustomerNameSuggestionBean();
             suggestionBean.setCustomerId(corporationDTO.getId());
@@ -190,14 +232,28 @@ public class CustomerNameService {
     }
 
     private CustomerInfoBean fetchADCustomerInfoById(int customerId, int loginId) {
-        CorporationDTO corporationDTO = corporationService.queryCorporationById(customerId);
-        if (corporationDTO != null) {
-            CustomerInfoBean customerInfoBean = new CustomerInfoBean();
-            customerInfoBean.setCustomerId(corporationDTO.getId());
-            customerInfoBean.setCustomerName(corporationDTO.getName());
-            return customerInfoBean;
-        }
-        return null;
+		try {
+			//这是一个外部接口，调用前后记录日志，发生异常记录日志还需要告警
+			MONITOR_LOGGER.info("CorporationService.queryCorporationById" +
+					" customerId:" + customerId);
+			CorporationDTO corporationDTO = corporationService.queryCorporationById(customerId);
+			if (corporationDTO != null) {
+				CustomerInfoBean customerInfoBean = new CustomerInfoBean();
+				customerInfoBean.setCustomerId(corporationDTO.getId());
+				customerInfoBean.setCustomerName(corporationDTO.getName());
+                //记录返回日志
+				MONITOR_LOGGER.info("CorporationService.queryCorporationById" +
+						"return id:" + corporationDTO.getId() + " name:"+corporationDTO.getName());
+				return customerInfoBean;
+			}
+		} catch (Exception e) {
+			//异常日志和告警
+			String exStr = convertExToStr(e);
+			MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationById error!", e);
+			MONITOR_LOGGER.error("异常堆栈信息:" + exStr);
+			notifyException("queryCorporationById", String.valueOf(customerId),exStr);
+		}
+		return null;
     }
 
     private CustomerInfoBean fetchTGCustomerInfoById(int customerId, int loginId) {
@@ -218,14 +274,28 @@ public class CustomerNameService {
     }
 
     private CustomerInfoBean fetchADCustomerInfo(String bizContent, int loginId) {
-        CorporationDTO corporationDTO = corporationService.queryCorporationByBizContent(bizContent);
-        if (corporationDTO != null) {
-            CustomerInfoBean customerInfoBean = new CustomerInfoBean();
-            customerInfoBean.setCustomerId(corporationDTO.getId());
-            customerInfoBean.setCustomerName(corporationDTO.getName());
-            return customerInfoBean;
-        }
-        return null;
+		try {
+			//这是一个外部接口，调用前后记录日志，发生异常记录日志还需要告警
+			MONITOR_LOGGER.info("CorporationService.queryCorporationByBizContent" +
+					" bizContent:" + bizContent);
+			CorporationDTO corporationDTO = corporationService.queryCorporationByBizContent(bizContent);
+			if (corporationDTO != null) {
+				CustomerInfoBean customerInfoBean = new CustomerInfoBean();
+				customerInfoBean.setCustomerId(corporationDTO.getId());
+				customerInfoBean.setCustomerName(corporationDTO.getName());
+				//记录返回日志
+				MONITOR_LOGGER.info("CorporationService.queryCorporationByBizContent" +
+						"return id:" + corporationDTO.getId() + " name:"+corporationDTO.getName());
+				return customerInfoBean;
+			}
+		} catch (Exception e) {
+			//异常日志和告警
+			String exStr = convertExToStr(e);
+			MONITOR_LOGGER.error("severity=[1] CorporationService.queryCorporationByBizContent error!", e);
+			MONITOR_LOGGER.error("异常堆栈信息:" + exStr);
+			notifyException("queryCorporationByBizContent", bizContent, exStr);
+		}
+		return null;
     }
 
     private CustomerInfoBean fetchTGCustomerInfo(String bizContent, int loginId) {
@@ -241,4 +311,35 @@ public class CustomerNameService {
     public void setCorporationService(CorporationService corporationService) {
         this.corporationService = corporationService;
     }
+
+	/**
+	 * 告警
+	 */
+	private void notifyException(String callMethod,String param,String e) {
+		String mailInfo = "CorporationService接口调用错误详情：\n";
+		mailInfo += String.format("调用接口为%s,参数为%s\n",callMethod,param);
+		String smsInfo = "CorporationService接口调用异常，详情请见邮件！";
+		mailInfo += String.format("异常信息为%s\n",e);
+		monitorSmsService.sendSms(smsInfo);
+		monitorMailService.sendMail(mailInfo);
+	}
+
+	/**
+	 * 将Exception的printStackTrace信息存入字符串
+	 * @param e
+	 * @return
+	 */
+	private String convertExToStr(Exception e) {
+        //将Exception的printStackTrace写入String
+		StringWriter errors = new StringWriter();
+		e.printStackTrace(new PrintWriter(errors));
+		return errors.toString();
+	}
+	public void setMonitorMailService(MonitorMailService monitorMailService) {
+		this.monitorMailService = monitorMailService;
+	}
+
+	public void setMonitorSmsService(MonitorSmsService monitorSmsService) {
+		this.monitorSmsService = monitorSmsService;
+	}
 }

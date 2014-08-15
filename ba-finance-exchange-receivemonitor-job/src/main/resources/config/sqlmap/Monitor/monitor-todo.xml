@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="MonitorTodo">
+    <typeAlias alias="TodoData" type="com.dianping.ba.finance.exchange.receivemonitor.api.datas.TodoData"/>
+    <resultMap id="todoData" class="TodoData">
+        <result property="todoId" column="TodoID"/>
+        <result property="roId" column="ROID"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="status" column="Status"/>
+    </resultMap>
+
+    <insert id="insertTodoData" parameterClass="map">
+        INSERT INTO FC_ReceiveMonitorTodo
+        (ROID,
+        AddDate,
+        Status)
+        VALUES (
+        #todoData.roId#,
+        #todoData.addDate#,
+        #todoData.status#)
+        <selectKey resultClass="java.lang.Integer" keyProperty="todoId">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <select id="findToDoDatas" parameterClass="map" resultMap="todoData">
+       SELECT TodoID,
+              ROID,
+              AddDate,
+              Status
+         FROM FC_ReceiveMonitorTodo
+        WHERE Status = #status#;
+    </select>
+
+    <update id="updateToDoStatus" parameterClass="map">
+        UPDATE FC_ReceiveMonitorTodo
+           SET Status = #setStatus#
+         WHERE Status = #preStatus#
+           AND TodoID IN
+        <iterate open="(" close=")" conjunction="," property="todoList">
+            #todoList[]#
+        </iterate>
+    </update>
+</sqlMap>

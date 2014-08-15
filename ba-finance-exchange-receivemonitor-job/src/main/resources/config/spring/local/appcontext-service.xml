@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+    <bean id="monitorMailService" class="com.dianping.ba.finance.exchange.receivemonitor.job.service.MonitorMailService">
+        <property name="mailService" ref="mailService"/>
+    </bean>
+
+    <bean id="monitorSmsService" class="com.dianping.ba.finance.exchange.receivemonitor.job.service.MonitorSmsService">
+        <property name="smsService" ref="smsService"/>
+    </bean>
+
+    <bean id="checkController" class="com.dianping.ba.finance.exchange.receivemonitor.job.CheckController">
+        <property name="executorService" ref="executorService"/>
+        <property name="receiveMonitorService" ref="receiveMonitorService"/>
+        <property name="monitorMailService" ref="monitorMailService"/>
+        <property name="monitorSmsService" ref="monitorSmsService"/>
+        <property name="dataCheckList">
+            <list>
+                <ref bean="receiveOrderDataChecker"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="receiveOrderDataChecker" class="com.dianping.ba.finance.exchange.receivemonitor.job.ReceiveOrderDataChecker">
+        <property name="receiveOrderMonitorService" ref="receiveOrderMonitorService"/>
+        <property name="receiveMonitorService" ref="receiveMonitorService"/>
+        <property name="roCheckRuleList" ref="roCheckRuleList"/>
+    </bean>
+
+    <bean id="roCheckRuleList" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <ref bean="RORCChecker"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="RORCChecker" class="com.dianping.ba.finance.exchange.receivemonitor.job.rocheck.rule.RORCCheck">
+        <property name="receiveConfirmMonitorService" ref="receiveConfirmMonitorService"/>
+    </bean>
+
+</beans>

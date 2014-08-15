@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="MonitorTodo">
+    <typeAlias alias="MonitorTodoData" type="com.dianping.ba.finance.exchange.paymonitor.api.datas.MonitorTodoData"/>
+    <resultMap id="monitorTodoData" class="MonitorTodoData">
+        <result property="todoId" column="TodoID"/>
+        <result property="ppId" column="PPID"/>
+        <result property="addDate" column="AddDate"/>
+        <result property="status" column="Status"/>
+    </resultMap>
+
+    <insert id="insertMonitorTodo" parameterClass="map">
+        INSERT INTO FC_PayMonitorTodo
+        (PPID,
+        AddDate,
+        Status)
+        VALUES (
+        #monitorTodoData.ppId#,
+        #monitorTodoData.addDate#,
+        #monitorTodoData.status#)
+        <selectKey resultClass="java.lang.Integer" keyProperty="todoId">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+    <select id="findMonitorTodoDatas" parameterClass="map" resultMap="monitorTodoData">
+       SELECT TodoID,
+              PPID,
+              AddDate,
+              Status
+         FROM FC_PayMonitorTodo
+        WHERE Status = #status#;
+    </select>
+
+    <update id="updateMonitorToDoStatus" parameterClass="map">
+        UPDATE FC_PayMonitorTodo
+           SET Status = #status#
+         WHERE TodoID IN
+        <iterate open="(" close=")" conjunction="," property="monitorTodoList">
+            #monitorTodoList[]#
+        </iterate>
+    </update>
+</sqlMap>

@@ -77,4 +77,12 @@ public interface PayOrderDao extends GenericDao {
      */
     @DAOAction(action = DAOActionType.QUERY)
     List<PayOrderData> findPayOrderListByPayCode(@DAOParam("payCodeList") List<String> payCodeList);
+
+    /**
+     * 根据查询条件查找付款单Id
+     * @param payOrderSearchBean
+     * @return
+     */
+    @DAOAction(action = DAOActionType.QUERY)
+    List<Integer> findPayOrderIdList(@DAOParam("payOrderSearchBean") PayOrderSearchBean payOrderSearchBean);
 }

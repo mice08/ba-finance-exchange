@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+    <bean id="payOrderDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.paymonitor.biz.dao.PayOrderDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="PayOrder"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="payPlanDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.paymonitor.biz.dao.PayPlanDao"/>
+        <property name="target">
+            <bean parent="fsAssist.daoRealizeTarget">
+                <constructor-arg value="PayPlan"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="monitorTodoDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.paymonitor.biz.dao.MonitorTodoDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="MonitorTodo"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="monitorTimeDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.paymonitor.biz.dao.MonitorTimeDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="MonitorTime"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="monitorExceptionDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.paymonitor.biz.dao.MonitorExceptionDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="MonitorException"/>
+            </bean>
+        </property>
+    </bean>
+</beans>

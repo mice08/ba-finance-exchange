@@ -14,7 +14,27 @@
         <property name="iface" value="com.dianping.midas.finance.api.service.CorporationService" />
         <property name="serialize" value="hessian" />
         <property name="callMethod" value="sync" />
-        <property name="timeout" value="10000" />
+        <property name="timeout" value="${ba-finance-exchange-biz.pigeon.timeout.medium}" />
+        <property name="timeoutRetry" value="true"/>
+        <property name="retries" value="${ba-finance-exchange-biz.pigeon.retryTimes}"/>
+    </bean>
+
+    <bean id="mailService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName"
+                  value="http://service.dianping.com/mailService/mailService_1.0.0"/>
+        <property name="iface" value="com.dianping.mailremote.remote.MailService"/>
+        <property name="serialize" value="hessian"/>
+        <property name="callMethod" value="sync"/>
+        <property name="timeout" value="5000"/>
+    </bean>
+
+    <bean id="smsService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName"
+                  value="http://service.dianping.com/smsService/smsRemoteService_1.0.0"/>
+        <property name="iface" value="com.dianping.sms.biz.SMSService"/>
+        <property name="serialize" value="hessian"/>
+        <property name="callMethod" value="oneway"/>
+        <property name="timeout" value="5000"/>
     </bean>
 
 	
