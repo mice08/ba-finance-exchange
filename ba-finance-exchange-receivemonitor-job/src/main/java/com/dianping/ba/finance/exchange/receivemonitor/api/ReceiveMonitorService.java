@@ -23,7 +23,7 @@ public interface ReceiveMonitorService {
      * @param date
      * @return
      */
-    public int addMonitorTime(Date date);
+    public boolean addMonitorTime(Date date);
 
     /**
      * 添加ToDo
