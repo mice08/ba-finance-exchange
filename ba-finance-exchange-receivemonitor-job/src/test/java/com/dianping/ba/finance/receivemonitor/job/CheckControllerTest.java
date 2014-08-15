@@ -53,7 +53,7 @@ public class CheckControllerTest {
 
 	@Test
 	public void testFindUnhandledExceptionData(){
-		when(receiveMonitorService.addMonitorTime(any(Date.class))).thenReturn(1);
+		when(receiveMonitorService.addMonitorTime(any(Date.class))).thenReturn(true);
 		when(receiveMonitorService.findUnhandledExceptionDatas()).thenReturn(buildOneExceptionDataList());
 		when(receiveMonitorService.updateExceptionToHandled(anyList())).thenReturn(1);
 		when(monitorMailServiceMock.sendMail(anyString())).thenReturn(true);

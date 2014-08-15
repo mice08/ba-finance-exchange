@@ -32,11 +32,11 @@ public class ReceiveMonitorServiceObject implements ReceiveMonitorService {
     }
 
     @Override
-    public int addMonitorTime(Date date) {
+    public boolean addMonitorTime(Date date) {
         MonitorTimeData mtd = new MonitorTimeData();
         mtd.setMonitorTime(date);
         int mtId = fsMonitorTimeDao.insertMonitorTime(mtd);
-        return mtId;
+        return mtId > 0;
     }
 
     @Override
