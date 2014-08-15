@@ -32,11 +32,11 @@ public class ReceiveMonitorServiceObject implements ReceiveMonitorService {
     }
 
     @Override
-    public boolean addMonitorTime(Date date) {
+    public int addMonitorTime(Date date) {
         MonitorTimeData mtd = new MonitorTimeData();
         mtd.setMonitorTime(date);
         int mtId = fsMonitorTimeDao.insertMonitorTime(mtd);
-        return mtId > 0;
+        return mtId;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ReceiveMonitorServiceObject implements ReceiveMonitorService {
     }
 
     @Override
-    public List<ExceptionData> findUnhandledExceptionData() {
+    public List<ExceptionData> findUnhandledExceptionDatas() {
         return fsMonitorExceptionDao.findExceptions(ExceptionStatus.INIT.value());  //To change body of implemented methods use File | Settings | File Templates.
     }
 

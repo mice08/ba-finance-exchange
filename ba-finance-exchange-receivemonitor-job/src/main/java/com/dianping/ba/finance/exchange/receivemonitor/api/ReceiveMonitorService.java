@@ -23,7 +23,7 @@ public interface ReceiveMonitorService {
      * @param date
      * @return
      */
-    public boolean addMonitorTime(Date date);
+    public int addMonitorTime(Date date);
 
     /**
      * 添加ToDo
@@ -50,7 +50,7 @@ public interface ReceiveMonitorService {
      * 获取未处理的异常记录
      * @return
      */
-    public List<ExceptionData> findUnhandledExceptionData();
+    public List<ExceptionData> findUnhandledExceptionDatas();
 
     /**
      * 更新异常记录为已处理
