@@ -58,7 +58,7 @@ public class CheckController {
 
 	private void notifyException() {
 		List<Integer> handledExceptionList = new ArrayList<Integer>();
-		List<ExceptionData> exceptionUnHandledList = receiveMonitorService.findUnhandledExceptionData();
+		List<ExceptionData> exceptionUnHandledList = receiveMonitorService.findUnhandledExceptionDatas();
 		if (CollectionUtils.isEmpty(exceptionUnHandledList)) {
 			return;
 		}

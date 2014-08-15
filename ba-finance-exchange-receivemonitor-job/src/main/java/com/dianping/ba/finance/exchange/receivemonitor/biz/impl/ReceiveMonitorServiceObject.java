@@ -57,7 +57,7 @@ public class ReceiveMonitorServiceObject implements ReceiveMonitorService {
     }
 
     @Override
-    public List<ExceptionData> findUnhandledExceptionData() {
+    public List<ExceptionData> findUnhandledExceptionDatas() {
         return fsMonitorExceptionDao.findExceptions(ExceptionStatus.INIT.value());  //To change body of implemented methods use File | Settings | File Templates.
     }
 
