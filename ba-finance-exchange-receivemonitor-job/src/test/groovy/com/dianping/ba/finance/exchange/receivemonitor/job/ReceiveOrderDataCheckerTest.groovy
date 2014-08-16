@@ -36,76 +36,85 @@ class ReceiveOrderDataCheckerTest extends Specification {
     }
 
     def "runWithoutQualifiedRO"() {
-        given:
-        receiveMonitorServiceMock.findUnhandledToDoData() >> []
-        receiveOrderMonitorServiceMock.findReceiveOrderData(_ as Date,_ as Date) >> []
-
-        when:
-        checkerStub.run()
-
-        then:
-        0*receiveMonitorServiceMock.updateTodoToHandled(_ as List<Integer>)
-    }
-
-    def "runWithTodoWithoutRo"() {
-        given:
-        receiveMonitorServiceMock.findUnhandledToDoData() >> {
-            TodoData data = [roId:2,
-                             status:1]
-            [data]
-        }
-        receiveOrderMonitorServiceMock.loadReceiveOrderData(_ as Integer) >> {
-            ReceiveOrderMonitorData roData = [roId:2,
-                                              status:2]
-            roData
-        }
-        receiveOrderMonitorServiceMock.findReceiveOrderData(_ as Date,_ as Date) >> []
-        rorcCheck.filter(_ as ReceiveOrderMonitorData) >> true
-        rorcCheck.check(_ as ReceiveOrderMonitorData) >> {
-            ROCheckResult checkResult = [valid:true,
-                                         timeout:false]
-            checkResult
-        }
-        when:
-        checkerStub.run()
-
-        then:
-        1*receiveMonitorServiceMock.updateTodoToHandled(_ as List<Integer>)
-    }
-
-    def "runWithTodoWithRo"() {
         setup:
 
         when:
         checkerStub.run()
 
         then:
-        _ * receiveMonitorServiceMock.findUnhandledToDoData() >> {
+        1 * receiveMonitorServiceMock.findUnhandledToDoData() >> []
+        1 * receiveOrderMonitorServiceMock.findReceiveOrderData(null, null) >> []
+        0 * receiveMonitorServiceMock.updateTodoToHandled(_ as List<Integer>)
+    }
+
+    def "runWithTodoWithoutRo"() {
+        given:
+
+        when:
+        checkerStub.run()
+
+        then:
+        1 * receiveMonitorServiceMock.findUnhandledToDoData() >> {
             TodoData data = [roId:2,
                              status:1]
             [data]
         }
-        1*receiveOrderMonitorServiceMock.loadReceiveOrderData(_ as Integer) >> {
+
+        1 * receiveOrderMonitorServiceMock.loadReceiveOrderData(_ as Integer) >> {
             ReceiveOrderMonitorData roData = [roId:2,
                                               status:2]
             roData
         }
-        1*receiveOrderMonitorServiceMock.findReceiveOrderData(_, _) >> {
-            ReceiveOrderMonitorData roDataNew = [roId:4,
-                                                 status:2]
-            [roDataNew]
-        }
-        2*rorcCheck.filter(_ as ReceiveOrderMonitorData) >> true
-        2*rorcCheck.check(_ as ReceiveOrderMonitorData) >> { ReceiveOrderMonitorData roParam ->
+
+        1 * receiveOrderMonitorServiceMock.findReceiveOrderData(null, null) >> []
+
+        1 * rorcCheck.filter(_ as ReceiveOrderMonitorData) >> true
+
+        1 * rorcCheck.check(_ as ReceiveOrderMonitorData) >> {
             ROCheckResult checkResult = [valid:true,
                                          timeout:false]
-            if(roParam.roId == 4) {
+            checkResult
+        }
+
+        1 * receiveMonitorServiceMock.updateTodoToHandled(_ as List<Integer>)
+    }
+
+    def "runWithTodoWithRo"() {
+        setup:
+        checkerStub.currentMonitorTime = new Date()
+
+        when:
+        checkerStub.run()
+
+        then:
+        1 * receiveMonitorServiceMock.getLastMonitorTime() >> new Date()
+
+        1 * receiveMonitorServiceMock.findUnhandledToDoData() >> {
+            TodoData data = [roId  : 2,
+                             status: 1]
+            [data]
+        }
+        1 * receiveOrderMonitorServiceMock.loadReceiveOrderData(_ as Integer) >> {
+            ReceiveOrderMonitorData roData = [roId  : 2,
+                                              status: 2]
+            roData
+        }
+        1 * receiveOrderMonitorServiceMock.findReceiveOrderData(_ as Date, _ as Date) >> {
+            ReceiveOrderMonitorData roDataNew = [roId  : 4,
+                                                 status: 2]
+            [roDataNew]
+        }
+        2 * rorcCheck.filter(_ as ReceiveOrderMonitorData) >> true
+        2 * rorcCheck.check(_ as ReceiveOrderMonitorData) >> { ReceiveOrderMonitorData roParam ->
+            ROCheckResult checkResult = [valid  : true,
+                                         timeout: false]
+            if (roParam.roId == 4) {
                 checkResult.valid = false;
             }
             checkResult
         }
-        1*receiveMonitorServiceMock.updateTodoToHandled(_ as List<Integer>)
-        1*receiveMonitorServiceMock.addTodo(_ as TodoData)
+        1 * receiveMonitorServiceMock.updateTodoToHandled(_ as List<Integer>)
+        1 * receiveMonitorServiceMock.addTodo(_ as TodoData)
     }
 
 }
