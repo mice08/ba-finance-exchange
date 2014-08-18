@@ -1,9 +1,6 @@
 package com.dianping.ba.finance.exchange.receivemonitor.job.rocheck
-
+import com.dianping.ba.finance.exchange.receivemonitor.api.datas.ReceiveOrderMonitorData
 import spock.lang.Specification
-
-import java.text.SimpleDateFormat
-
 /**
  * Created by IntelliJ IDEA.
  * User: yaxiong.cheng
@@ -15,20 +12,32 @@ class ROCheckBaseTest extends Specification {
     ROCheckBase checkBaseStub
 
     void setup(){
-        checkBaseStub = Mock()
-        checkBaseStub.timeout = 5
+        checkBaseStub = new ROCheckBaseForTest()
     }
 
-    def "checkIfTimeout"(String dateStr,boolean result) {
+    def "checkIfTimeout"(Date date, Boolean result) {
         given:
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = formatter.parse(dateStr)
+        checkBaseStub.timeout = 5
+
         expect:
         result == checkBaseStub.checkIfTimeout(date)
 
         where:
-        dateStr               ||  result
-        "2014-8-8 15:19:30"   ||  false
-        "2014-7-8 15:19:30"   ||  true
+        date           | result
+        new Date() - 1 | true
+        new Date()     | false
+    }
+
+    private class ROCheckBaseForTest extends ROCheckBase {
+
+        @Override
+        boolean filter(ReceiveOrderMonitorData receiveOrderMonitorData) {
+            return false
+        }
+
+        @Override
+        ROCheckResult check(ReceiveOrderMonitorData receiveOrderMonitorData) {
+            return null
+        }
     }
 }
