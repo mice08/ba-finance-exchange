@@ -127,4 +127,8 @@
         <property name="rornMatchService" ref="rornMatchService"/>
         <property name="receiveOrderService" ref="receiveOrderService"/>
     </bean>
+
+    <bean id="receiveOrderMonitorService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveOrderMonitorServiceObject">
+        <property name="receiveOrderDao" ref="receiveOrderDao"/>
+    </bean>
 </beans>

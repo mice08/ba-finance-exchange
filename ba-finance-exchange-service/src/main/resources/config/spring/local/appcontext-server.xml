@@ -23,7 +23,8 @@
                 <entry key="http://service.dianping.com/baFinanceExchangeService/receiveNotifyHandleService_1.0.0" value-ref="receiveNotifyHandleService"/>
                 <entry key="http://service.dianping.com/baFinanceExchangeService/receiveNotifyService_1.0.0" value-ref="receiveNotifyService"/>
                 <entry key="http://service.dianping.com/baFinanceExchangeService/receiveBankService_1.0.0" value-ref="receiveBankService"/>
-            </map>
+                <entry key="http://service.dianping.com/baFinanceExchangeService/receiveOrderMonitorService_1.0.0" value-ref="receiveOrderMonitorService"/>
+        </map>
         </property>
     </bean>
 
