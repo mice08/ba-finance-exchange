@@ -9,78 +9,19 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-    <bean id="payPlanService" class="com.dianping.ba.finance.exchange.paymonitor.biz.impl.PayPlanServiceObject">
-        <property name="payPlanDao" ref="payPlanDao"/>
+    <bean id="invoiceRecoService" class="com.dianping.ba.finance.exchange.midasreco.biz.impl.InvoiceRecoServiceObject">
+        <property name="invoiceRecoDao" ref="invoiceRecoDao"/>
     </bean>
 
-    <bean id="payOrderService" class="com.dianping.ba.finance.exchange.paymonitor.biz.impl.PayOrderServiceObject">
-        <property name="payOrderDao" ref="payOrderDao"/>
+    <bean id="receiveOrderRecoService" class="com.dianping.ba.finance.exchange.midasreco.biz.impl.ReceiveOrderRecoServiceObject">
+        <property name="receiveOrderRecoDao" ref="receiveOrderRecoDao"/>
     </bean>
 
-    <bean id="payMonitorService" class="com.dianping.ba.finance.exchange.paymonitor.biz.impl.PayMonitorServiceObject">
-        <property name="monitorTodoDao" ref="monitorTodoDao"/>
-        <property name="monitorTimeDao" ref="monitorTimeDao"/>
-        <property name="monitorExceptionDao" ref="monitorExceptionDao"/>
-    </bean>
-
-    <bean id="monitorMailService" class="com.dianping.ba.finance.exchange.paymonitor.job.service.MonitorMailService">
-        <property name="mailService" ref="mailService"/>
-    </bean>
-
-    <bean id="monitorSmsService" class="com.dianping.ba.finance.exchange.paymonitor.job.service.MonitorSmsService">
-        <property name="smsService" ref="smsService"/>
-    </bean>
-
-    <bean id="checkController" class="com.dianping.ba.finance.exchange.paymonitor.job.CheckController">
-        <property name="executorService" ref="executorService"/>
-        <property name="payMonitorService" ref="payMonitorService"/>
-        <property name="monitorMailService" ref="monitorMailService"/>
-        <property name="monitorSmsService" ref="monitorSmsService"/>
-        <property name="dataCheckList">
-            <list>
-                <ref bean="payPlanDataChecker"/>
-            </list>
-        </property>
-    </bean>
-
-    <!-- ============== PayCheck ============== -->
-    <bean id="inPaymentCheck" class="com.dianping.ba.finance.exchange.paymonitor.job.paycheck.rules.InPaymentCheck">
-        <property name="payOrderService" ref="payOrderService"/>
-        <property name="payPlanService" ref="payPlanService"/>
-    </bean>
-
-    <bean id="inSubmissionCheck" class="com.dianping.ba.finance.exchange.paymonitor.job.paycheck.rules.InSubmissionCheck">
-    </bean>
-
-    <bean id="payFailedCheck" class="com.dianping.ba.finance.exchange.paymonitor.job.paycheck.rules.PayFailedCheck">
-    </bean>
-
-    <bean id="paySuccessCheck" class="com.dianping.ba.finance.exchange.paymonitor.job.paycheck.rules.PaySuccessCheck">
-        <property name="payOrderService" ref="payOrderService"/>
-        <property name="payPlanService" ref="payPlanService"/>
-    </bean>
-
-    <bean id="refundCheck" class="com.dianping.ba.finance.exchange.paymonitor.job.paycheck.rules.RefundCheck">
-        <property name="payOrderService" ref="payOrderService"/>
-        <property name="payPlanService" ref="payPlanService"/>
-    </bean>
-
-    <bean id="validStateCheck" class="com.dianping.ba.finance.exchange.paymonitor.job.paycheck.rules.ValidStateCheck">
-    </bean>
-
-    <bean id="payPlanDataChecker" class="com.dianping.ba.finance.exchange.paymonitor.job.PayPlanDataChecker">
-        <property name="payPlanService" ref="payPlanService"/>
-        <property name="payMonitorService" ref="payMonitorService"/>
-        <property name="payCheckRuleList">
-            <list>
-                <ref local="inPaymentCheck"/>
-                <ref local="inSubmissionCheck"/>
-                <ref local="payFailedCheck"/>
-                <ref local="paySuccessCheck"/>
-                <ref local="refundCheck"/>
-                <ref local="validStateCheck"/>
-            </list>
-        </property>
+    <bean id="midasRecoService" class="com.dianping.ba.finance.exchange.midasreco.biz.impl.MidasRecoServiceObject">
+        <property name="invoiceRecoService" ref="invoiceRecoService"/>
+        <property name="receiveOrderRecoService" ref="receiveOrderRecoService"/>
+        <property name="invoiceMonitorService" ref="invoiceMonitorService"/>
+        <property name="receiveOrderMonitorService" ref="receiveOrderMonitorService"/>
     </bean>
 
 </beans>

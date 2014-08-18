@@ -1,6 +1,8 @@
 package ba.finance.exchange.midasreco.biz.impl;
 
+import ba.finance.exchange.midasreco.api.InvoiceRecoService;
 import ba.finance.exchange.midasreco.api.MidasRecoService;
+import ba.finance.exchange.midasreco.api.ReceiveOrderRecoService;
 import ba.finance.exchange.midasreco.api.datas.InvoiceRecoData;
 import ba.finance.exchange.midasreco.api.datas.ReceiveOrderRecoData;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderMonitorService;
@@ -21,6 +23,8 @@ public class MidasRecoServiceObject implements MidasRecoService {
     private final static String RO_PREFIX = "midas_ro_";
     private ReceiveOrderMonitorService receiveOrderMonitorService;
     private InvoiceMonitorService invoiceMonitorService;
+    private InvoiceRecoService invoiceRecoService;
+    private ReceiveOrderRecoService receiveOrderRecoService;
 
     @Override
     public boolean saveReconciliationData() {
@@ -35,6 +39,9 @@ public class MidasRecoServiceObject implements MidasRecoService {
 
         List<ReceiveOrderMonitorDTO> receiveOrderMonitorDTOs = receiveOrderMonitorService.findReceiveOrderMonitorDataByTime(startTime, endTime);
         List<InvoiceMonitorDTO> invoiceMonitorDTOs = invoiceMonitorService.findInvoiceMonitorDataByTime(startTime, endTime);
+
+        receiveOrderRecoService.insertReceiveOrderRecoDatas(buildReceiveOrderRecoDatas(receiveOrderMonitorDTOs));
+        invoiceRecoService.insertInvoiceRecoDatas(buildInvoiceRecoDatas(invoiceMonitorDTOs));
         return false;
     }
 
@@ -52,5 +59,13 @@ public class MidasRecoServiceObject implements MidasRecoService {
 
     public void setInvoiceMonitorService(InvoiceMonitorService invoiceMonitorService) {
         this.invoiceMonitorService = invoiceMonitorService;
+    }
+
+    public void setInvoiceRecoService(InvoiceRecoService invoiceRecoService) {
+        this.invoiceRecoService = invoiceRecoService;
+    }
+
+    public void setReceiveOrderRecoService(ReceiveOrderRecoService receiveOrderRecoService) {
+        this.receiveOrderRecoService = receiveOrderRecoService;
     }
 }
