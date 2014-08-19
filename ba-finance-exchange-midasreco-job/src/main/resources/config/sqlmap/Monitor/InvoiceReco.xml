@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="InvoiceReco">
+    <typeAlias alias="InvoiceRecoData" type="com.dianping.ba.finance.exchange.midasreco.api.datas.InvoiceRecoData"/>
+
+    <insert id="insertInvoiceRecoDatas" parameterClass="map">
+        <![CDATA[
+        INSERT INTO RECO_BA_Invoice
+                    (ID,
+                     BatchID,
+                     InvoiceAmount,
+                     BizID,
+                     CustomerID,
+                     ShopID,
+                     BizContent,
+                     InvoiceTitle,
+                     InvoiceContent,
+                     CompanyID,
+                     TaxNumber,
+                     BankName,
+                     BankAccountNo,
+                     Address,
+                     Phone,
+                     InvoiceTaxNo,
+                     ReleaseDate,
+                     InvoiceType,
+                     AddTime,
+                     UpdateTime
+                    )
+        VALUES
+        ]]>
+        <iterate conjunction="," property="list">
+            (
+              #list[].id#,
+              #list[].batchId#,
+              #list[].invoiceAmount#,
+              #list[].bizId#,
+              #list[].customerId#,
+              #list[].shopId#,
+              #list[].bizContent#,
+              #list[].invoiceTitle#,
+              #list[].invoiceContent#,
+              #list[].companyId#,
+              #list[].taxNumber#,
+              #list[].bankName#,
+              #list[].bankAccountNo#,
+              #list[].address#,
+              #list[].phone#,
+              #list[].invoiceTaxNo#,
+              #list[].releaseDate#,
+              #list[].invoiceType#,
+              #list[].addTime#,
+              #list[].updateTime#
+            )
+        </iterate>
+    </insert>
+</sqlMap>

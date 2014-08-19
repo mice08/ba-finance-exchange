@@ -1,22 +1,23 @@
-package com.dianping.ba.finance.exchange.api.dtos;
+package com.dianping.ba.finance.exchange.midasreco.api.datas;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * Created by adam.huang on 2014/8/18.
+ * Created by will on 14-8-18.
  */
-public class ReceiveOrderMonitorDTO implements Serializable {
-    private int romId;
+public class ReceiveOrderRecoData implements Serializable {
 
-    private int roId;
+    private int id;
+
+    private String batchId;
 
     private int customerId;
 
     private int shopId;
 
-    private int businessType;
+    private int type;
 
     private BigDecimal receiveAmount;
 
@@ -34,28 +35,16 @@ public class ReceiveOrderMonitorDTO implements Serializable {
 
     private Date addTime;
 
-    private int addLoginId;
-
     private Date updateTime;
 
-    private int updateLoginId;
 
-    private String memo;
 
-    public int getRomId() {
-        return romId;
+    public int getId() {
+        return id;
     }
 
-    public void setRomId(int romId) {
-        this.romId = romId;
-    }
-
-    public int getRoId() {
-        return roId;
-    }
-
-    public void setRoId(int roId) {
-        this.roId = roId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getCustomerId() {
@@ -74,12 +63,12 @@ public class ReceiveOrderMonitorDTO implements Serializable {
         this.shopId = shopId;
     }
 
-    public int getBusinessType() {
-        return businessType;
+    public int getType() {
+        return type;
     }
 
-    public void setBusinessType(int businessType) {
-        this.businessType = businessType;
+    public void setType(int type) {
+        this.type = type;
     }
 
     public BigDecimal getReceiveAmount() {
@@ -146,14 +135,6 @@ public class ReceiveOrderMonitorDTO implements Serializable {
         this.addTime = addTime;
     }
 
-    public int getAddLoginId() {
-        return addLoginId;
-    }
-
-    public void setAddLoginId(int addLoginId) {
-        this.addLoginId = addLoginId;
-    }
-
     public Date getUpdateTime() {
         return updateTime;
     }
@@ -162,30 +143,22 @@ public class ReceiveOrderMonitorDTO implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public int getUpdateLoginId() {
-        return updateLoginId;
+    public String getBatchId() {
+        return batchId;
     }
 
-    public void setUpdateLoginId(int updateLoginId) {
-        this.updateLoginId = updateLoginId;
-    }
-
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
+    public void setBatchId(String batchId) {
+        this.batchId = batchId;
     }
 
     @Override
     public String toString() {
-        return "ReceiveOrderMonitorDTO{" +
-                "romId=" + romId +
-                ", roId=" + roId +
+        return "ReceiveOrderRecoData{" +
+                "id=" + id +
+                ", batchId='" + batchId + '\'' +
                 ", customerId=" + customerId +
                 ", shopId=" + shopId +
-                ", businessType=" + businessType +
+                ", type=" + type +
                 ", receiveAmount=" + receiveAmount +
                 ", receiveTime=" + receiveTime +
                 ", payChannel=" + payChannel +
@@ -194,10 +167,7 @@ public class ReceiveOrderMonitorDTO implements Serializable {
                 ", tradeNo='" + tradeNo + '\'' +
                 ", bankID=" + bankID +
                 ", addTime=" + addTime +
-                ", addLoginId=" + addLoginId +
                 ", updateTime=" + updateTime +
-                ", updateLoginId=" + updateLoginId +
-                ", memo='" + memo + '\'' +
                 '}';
     }
 }
