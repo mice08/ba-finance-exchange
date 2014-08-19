@@ -352,4 +352,37 @@
                ROMatcherID = #roId#
          WHERE ReceiveNotifyID = #rnId#
     </update>
+
+
+    <select id="loadReceiveNotifyByApplicationId" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+        ApplicationID,
+        BusinessType,
+        ReceiveAmount,
+        CustomerID,
+        PayChannel,
+        ReceiveType,
+        PayTime,
+        PayerName,
+        BizContent,
+        BankID,
+        Attachment,
+        Status,
+        ROMatcherID,
+        Memo,
+        AddTime,
+        AddLoginID,
+        UpdateTime,
+        UpdateLoginID
+        FROM FC_ReceiveNotify
+        WHERE ApplicationID = #applicationId#
+    </select>
+
+
+    <update id="updateReceiveNotifyStatus" parameterClass="map">
+        UPDATE FC_ReceiveNotify
+           SET status = #setStatus#
+         WHERE ReceiveNotifyID = #rnId#
+           AND status = #preStatus#
+    </update>
 </sqlMap>

@@ -36,6 +36,7 @@
                     <th width="6%" class="fs tb-header">附件</th>
                     <th width="6%" class="fs tb-header">收款公司</th>
                     <th width="8%" class="fs tb-header">状态</th>
+                    <th width="6%" class="fs tb-header">操作</th>
                 </tr>
 
                 </thead>
@@ -91,6 +92,12 @@
     <td class="fs tb-item auto-break">{{= record.status}}</td>
     {{/if}}
     </tr>
+    {{if record.status=="待确认"}}
+    <td class="fs tb-item auto-break">
+    <a href="javascript:void(0)" rnid="{{= record.receiveNotifyId}}" class="confirm-link">确认</a>
+    <a href="javascript:void(0)" rnid="{{= record.receiveNotifyId}}" class="reject-link">驳回</a>
+    </td>
+    {{/if}}
     {{/each}}
 
 </script>

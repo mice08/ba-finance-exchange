@@ -127,4 +127,16 @@ public class ReceiveNotifyDaoTest {
         BigDecimal totalAmount = receiveNotifyDao.loadTotalReceiveAmountByCondition(receiveNotifySearchBean);
         Assert.assertTrue(totalAmount.doubleValue() == 100.3);
     }
+
+    @Test
+    public void testLoadReceiveNotifyByApplicationId() throws Exception {
+        ReceiveNotifyData receiveNotifyData = receiveNotifyDao.loadReceiveNotifyByApplicationId("124568787");
+        Assert.assertNotNull(receiveNotifyData);
+    }
+
+    @Test
+    public void testUpdateReceiveNotifyStatus() throws Exception {
+        int u = receiveNotifyDao.updateReceiveNotifyStatus(57, 5, 4);
+        Assert.assertEquals(1, u);
+    }
 }

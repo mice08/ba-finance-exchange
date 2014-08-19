@@ -97,10 +97,26 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
         return receiveNotifyDao.loadMatchedReceiveNotify(ReceiveNotifyStatus.MATCHED.value(), rnId, roId);
     }
 
+    @Log(severity = 3, logBefore = true, logAfter = true)
+    @ReturnDefault
     @Override
     public boolean updateReceiveNotifyConfirm(int roId, int rnId) {
         int u = receiveNotifyDao.updateReceiveNotifyConfirm(ReceiveNotifyStatus.CONFIRMED.value(), roId, rnId);
         return u == 1;
+    }
+
+    @Log(severity = 3, logBefore = true, logAfter = true)
+    @ReturnDefault
+    @Override
+    public ReceiveNotifyData loadReceiveNotifyByApplicationId(String applicationId) {
+        return receiveNotifyDao.loadReceiveNotifyByApplicationId(applicationId);
+    }
+
+    @Log(severity = 3, logBefore = true, logAfter = true)
+    @ReturnDefault
+    @Override
+    public int updateReceiveNotifyStatus(int rnId, ReceiveNotifyStatus preStatus, ReceiveNotifyStatus setStatus) {
+        return receiveNotifyDao.updateReceiveNotifyStatus(rnId, preStatus.value(), setStatus.value());
     }
 
     public void setReceiveNotifyDao(ReceiveNotifyDao receiveNotifyDao) {
