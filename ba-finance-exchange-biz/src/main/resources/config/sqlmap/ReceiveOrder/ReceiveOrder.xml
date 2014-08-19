@@ -4,10 +4,10 @@
 
     <typeAlias alias="ReceiveOrderData" type="com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData"/>
     <resultMap id="receiveOrderData" class="ReceiveOrderData">
-        <result property="id" column="ROID"/>
+        <result property="roId" column="ROID"/>
         <result property="customerId" column="CustomerID"/>
         <result property="shopId" column="ShopID"/>
-        <result property="type" column="BusinessType"/>
+        <result property="businessType" column="BusinessType"/>
         <result property="receiveAmount" column="ReceiveAmount"/>
         <result property="receiveTime" column="ReceiveTime"/>
         <result property="payTime" column="PayTime"/>
@@ -32,10 +32,10 @@
 
     <typeAlias alias="ReceiveOrderPaginateData" type="com.dianping.ba.finance.exchange.api.datas.ReceiveOrderPaginateData"/>
     <resultMap id="receiveOrderPaginateData" class="ReceiveOrderPaginateData">
-        <result property="id" column="ROID"/>
+        <result property="roId" column="ROID"/>
         <result property="customerId" column="CustomerID"/>
         <result property="shopId" column="ShopID"/>
-        <result property="type" column="BusinessType"/>
+        <result property="businessType" column="BusinessType"/>
         <result property="receiveAmount" column="ReceiveAmount"/>
         <result property="receiveTime" column="ReceiveTime"/>
         <result property="payTime" column="PayTime"/>
@@ -87,7 +87,7 @@
                          ApplicationID)
             VALUES      (#receiveOrderData.customerId#,
                          #receiveOrderData.shopId#,
-                         #receiveOrderData.type#,
+                         #receiveOrderData.businessType#,
                          #receiveOrderData.receiveAmount#,
                          #receiveOrderData.receiveTime#,
                          #receiveOrderData.payTime#,
@@ -110,9 +110,9 @@
                          #receiveOrderData.applicationId#)
 
  		]]>
-        <selectKey resultClass="java.lang.Integer" keyProperty="id">
+        <selectKey resultClass="java.lang.Integer" keyProperty="roId">
             <![CDATA[
-			SELECT @@IDENTITY AS id
+			SELECT @@IDENTITY AS roId
 		]]>
         </selectKey>
     </insert>
@@ -145,12 +145,12 @@
             ro.ApplicationID,
             (SELECT Count(1)
                 FROM FC_ReceiveNotify rn
-                WHERE rn.ROMatcherID = ro.id
+                WHERE rn.ROMatcherID = ro.roId
                 AND rn.Status = 4) AS MatchedCount
             FROM FC_ReceiveOrder ro
         <dynamic prepend="WHERE">
-            <isGreaterThan property="receiveOrderSearchBean.type" prepend="and" compareValue="0">
-                ro.BusinessType = #receiveOrderSearchBean.type#
+            <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
+                ro.BusinessType = #receiveOrderSearchBean.businessType#
             </isGreaterThan>
             <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
                 ro.CustomerID = #receiveOrderSearchBean.customerId#
@@ -190,8 +190,8 @@
         SELECT COUNT(1)
         FROM FC_ReceiveOrder ro
         <dynamic prepend="WHERE">
-            <isGreaterThan property="receiveOrderSearchBean.type" prepend="and" compareValue="0">
-                BusinessType = #receiveOrderSearchBean.type#
+            <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
+                BusinessType = #receiveOrderSearchBean.businessType#
             </isGreaterThan>
             <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
                 CustomerID = #receiveOrderSearchBean.customerId#
@@ -227,8 +227,8 @@
         SELECT IFNULL(SUM(ReceiveAmount), 0) AS totalAmount
           FROM FC_ReceiveOrder
         <dynamic prepend="WHERE">
-            <isGreaterThan property="receiveOrderSearchBean.type" prepend="and" compareValue="0">
-                BusinessType = #receiveOrderSearchBean.type#
+            <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="and" compareValue="0">
+                BusinessType = #receiveOrderSearchBean.businessType#
             </isGreaterThan>
             <isGreaterThan property="receiveOrderSearchBean.customerId" prepend="and" compareValue="0">
                 CustomerID = #receiveOrderSearchBean.customerId#
@@ -306,7 +306,7 @@
             UpdateLoginID = "updateBean.updateLoginId",
         </isGreaterThan>
         UpdateTime = NOW()
-        WHERE ROID = #id#
+        WHERE ROID = #roId#
     </update>
 
     <!-- 不进行非空判断-->
@@ -327,7 +327,7 @@
         ApplicationID = #receiveOrderData.applicationId#,
         UpdateLoginID = #receiveOrderData.updateLoginId#,
         UpdateTime = NOW()
-        WHERE ROID = #receiveOrderData.id#
+        WHERE ROID = #receiveOrderData.roId#
     </update>
 
     <select id="loadReceiveOrderDataByRoId" resultMap="receiveOrderData" parameterClass="map">
@@ -356,7 +356,7 @@
         ro.PayerAccountName,
         ro.ApplicationID
         FROM FC_ReceiveOrder ro
-        WHERE ROID = #id#
+        WHERE ROID = #roId#
         LIMIT 1
     </select>
 

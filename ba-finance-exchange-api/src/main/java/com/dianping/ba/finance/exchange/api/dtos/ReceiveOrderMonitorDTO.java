@@ -8,8 +8,6 @@ import java.util.Date;
  * Created by adam.huang on 2014/8/18.
  */
 public class ReceiveOrderMonitorDTO implements Serializable {
-    private int romId;
-
     private int roId;
 
     private int customerId;
@@ -41,14 +39,6 @@ public class ReceiveOrderMonitorDTO implements Serializable {
     private int updateLoginId;
 
     private String memo;
-
-    public int getRomId() {
-        return romId;
-    }
-
-    public void setRomId(int romId) {
-        this.romId = romId;
-    }
 
     public int getRoId() {
         return roId;
@@ -181,8 +171,7 @@ public class ReceiveOrderMonitorDTO implements Serializable {
     @Override
     public String toString() {
         return "ReceiveOrderMonitorDTO{" +
-                "romId=" + romId +
-                ", roId=" + roId +
+                "roId=" + roId +
                 ", customerId=" + customerId +
                 ", shopId=" + shopId +
                 ", businessType=" + businessType +
