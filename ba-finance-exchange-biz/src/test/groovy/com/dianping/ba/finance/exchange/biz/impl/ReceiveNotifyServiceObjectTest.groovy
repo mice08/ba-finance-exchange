@@ -212,4 +212,37 @@ class ReceiveNotifyServiceObjectTest extends Specification {
 
     }
 
+
+    @Unroll
+    def "loadReceiveNotifyByApplicationId"(String applicationId, Integer rnId) {
+        given:
+        receiveNotifyDaoMock.loadReceiveNotifyByApplicationId(_ as String) >> { String appId ->
+            if (appId == "8787APPID") {
+                return null
+            }
+            ReceiveNotifyData rnData = [receiveNotifyId: 123, applicationId: appId]
+            rnData
+        }
+
+        expect:
+        rnId == receiveNotifyServiceStub.loadReceiveNotifyByApplicationId(applicationId)?.getReceiveNotifyId();
+
+        where:
+        applicationId | rnId
+        "8787APPID"  | null
+        "8787"  | 123
+    }
+
+    @Unroll
+    def "updateReceiveNotifyStatus"(Integer rnId, Integer result) {
+        given:
+        receiveNotifyDaoMock.updateReceiveNotifyStatus(_ as Integer, _ as Integer, _ as Integer) >> 1
+
+        expect:
+        result == receiveNotifyServiceStub.updateReceiveNotifyStatus(rnId, ReceiveNotifyStatus.INIT, ReceiveNotifyStatus.REJECT);
+
+        where:
+        rnId | result
+        123  | 1
+    }
 }

@@ -172,6 +172,17 @@
             <result type="json"></result>
         </action>
 
+        <action name="confirmReceiveNotify"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.UpdateReceiveNotifyStatusAjaxAction"
+                method="confirmReceiveNotify">
+            <result type="json"></result>
+        </action>
+        <action name="rejectReceiveNotify"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.UpdateReceiveNotifyStatusAjaxAction"
+                method="rejectReceiveNotify">
+            <result type="json"></result>
+        </action>
+
     </package>
 
 </struts>
