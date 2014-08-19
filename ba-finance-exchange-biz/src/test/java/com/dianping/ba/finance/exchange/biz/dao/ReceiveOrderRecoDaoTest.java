@@ -1,7 +1,6 @@
-package ba.finance.exchange.midasreco.biz.dao;
+package com.dianping.ba.finance.exchange.biz.dao;
 
-import com.dianping.ba.finance.exchange.midasreco.api.datas.ReceiveOrderRecoData;
-import com.dianping.ba.finance.exchange.midasreco.biz.dao.ReceiveOrderRecoDao;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderRecoData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

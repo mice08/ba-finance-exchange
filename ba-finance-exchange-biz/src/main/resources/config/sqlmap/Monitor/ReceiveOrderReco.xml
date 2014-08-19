@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 <sqlMap namespace="ReceiveOrderReco">
-    <typeAlias alias="ReceiveOrderRecoData" type="com.dianping.ba.finance.exchange.midasreco.api.datas.ReceiveOrderRecoData"/>
+    <typeAlias alias="ReceiveOrderRecoData" type="com.dianping.ba.finance.exchange.api.datas.ReceiveOrderRecoData"/>
     <resultMap id="receiveOrderRecoData" class="ReceiveOrderRecoData">
         <result property="id" column="ID"/>
         <result property="customerId" column="CustomerID"/>

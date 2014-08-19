@@ -130,5 +130,6 @@
 
     <bean id="receiveOrderMonitorService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveOrderMonitorServiceObject">
         <property name="receiveOrderDao" ref="receiveOrderDao"/>
+        <property name="receiveOrderRecoDao" ref="receiveOrderRecoDao"/>
     </bean>
 </beans>

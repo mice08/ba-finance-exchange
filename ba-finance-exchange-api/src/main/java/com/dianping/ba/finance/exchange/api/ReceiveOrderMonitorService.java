@@ -24,4 +24,9 @@ public interface ReceiveOrderMonitorService {
      * @return
      */
     List<ReceiveOrderMonitorDTO> findReceiveOrderMonitorDataByTime(Date startTime, Date endTime);
+
+    /**
+     * 根据日期将收款单数据存入数据库
+     */
+    void insertReceiveOrderRecoDatas(Date startTime, Date endTime);
 }

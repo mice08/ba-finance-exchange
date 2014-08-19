@@ -1,4 +1,4 @@
-package com.dianping.ba.finance.exchange.midasreco.api.datas;
+package com.dianping.ba.finance.exchange.api.datas;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
