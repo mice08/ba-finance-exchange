@@ -10,6 +10,7 @@ import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.core.type.PageModel;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -82,6 +83,15 @@ public interface ReceiveOrderDao extends GenericDao {
      */
     @DAOAction(action = DAOActionType.QUERY)
     List<ReceiveOrderData> findUnmatchAndUnconfirmedReceiveOrder(@DAOParam("status") int status);
+
+    /**
+     * 根据时间查询数据
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    @DAOAction(action = DAOActionType.QUERY)
+    List<ReceiveOrderData> findReceiveOrderDataByTime(@DAOParam("startTime") Date startTime, @DAOParam("endTime") Date endTime);
 
 
 }

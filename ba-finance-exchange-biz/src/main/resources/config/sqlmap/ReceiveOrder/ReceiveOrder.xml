@@ -112,7 +112,7 @@
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="roId">
             <![CDATA[
-			SELECT @@IDENTITY AS id
+			SELECT @@IDENTITY AS roId
 		]]>
         </selectKey>
     </insert>
@@ -390,4 +390,39 @@
            AND ro.ApplicationID IS NULL
     </select>
 
+    <select id="findReceiveOrderDataByTime" resultMap="receiveOrderData" parameterClass="map">
+        SELECT ro.ROID,
+        ro.CustomerID,
+        ro.ShopID,
+        ro.BusinessType,
+        ro.ReceiveAmount,
+        ro.PayerAccountNo,
+        ro.PayerBankName,
+        ro.ReceiveTime,
+        ro.PayTime,
+        ro.BankReceiveTime,
+        ro.PayChannel,
+        ro.ReceiveType,
+        ro.BizContent,
+        ro.TradeNo,
+        ro.BankID,
+        ro.Status,
+        ro.AddTime,
+        ro.AddLoginID,
+        ro.UpdateTime,
+        ro.UpdateLoginID,
+        ro.ReverseROID,
+        ro.Memo,
+        ro.PayerAccountName,
+        ro.ApplicationID
+        FROM FC_ReceiveOrder ro
+        <dynamic prepend="WHERE">
+            <isNotNull prepend="AND" property="startTime">
+              ro.AddTime &gt;= #startTime#
+            </isNotNull>
+            <isNotNull prepend="AND" property="endTime">
+              ro.AddTime &lt;= #endTime#
+            </isNotNull>
+        </dynamic>
+    </select>
 </sqlMap>

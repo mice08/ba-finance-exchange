@@ -96,4 +96,12 @@
         </property>
     </bean>
 
+    <bean id="receiveOrderRecoDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderRecoDao"/>
+        <property name="target">
+            <bean parent="fsExtra.daoRealizeTarget">
+                <constructor-arg value="ReceiveOrderReco"/>
+            </bean>
+        </property>
+    </bean>
 </beans>
