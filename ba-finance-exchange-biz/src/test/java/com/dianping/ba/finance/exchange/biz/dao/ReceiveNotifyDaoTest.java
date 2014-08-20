@@ -133,6 +133,11 @@ public class ReceiveNotifyDaoTest {
         ReceiveNotifyData receiveNotifyData = receiveNotifyDao.loadReceiveNotifyByApplicationId("124568787");
         Assert.assertNotNull(receiveNotifyData);
     }
+    @Test
+    public void testLoadReceiveNotifyByRNID() throws Exception {
+        ReceiveNotifyData receiveNotifyData = receiveNotifyDao.loadReceiveNotifyByRNID(15);
+        Assert.assertNotNull(receiveNotifyData);
+    }
 
     @Test
     public void testUpdateReceiveNotifyStatus() throws Exception {

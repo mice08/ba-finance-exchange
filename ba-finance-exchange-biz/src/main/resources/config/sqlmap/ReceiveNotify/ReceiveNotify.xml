@@ -378,6 +378,30 @@
         WHERE ApplicationID = #applicationId#
     </select>
 
+    <select id="loadReceiveNotifyByRNID" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+        ApplicationID,
+        BusinessType,
+        ReceiveAmount,
+        CustomerID,
+        PayChannel,
+        ReceiveType,
+        PayTime,
+        PayerName,
+        BizContent,
+        BankID,
+        Attachment,
+        Status,
+        ROMatcherID,
+        Memo,
+        AddTime,
+        AddLoginID,
+        UpdateTime,
+        UpdateLoginID
+        FROM FC_ReceiveNotify
+        WHERE ReceiveNotifyID = #rnId#
+    </select>
+
 
     <update id="updateReceiveNotifyStatus" parameterClass="map">
         UPDATE FC_ReceiveNotify

@@ -1,10 +1,13 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService;
+import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifyResultBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyResultStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveNotifyDao;
+import com.dianping.ba.finance.exchange.biz.producer.ReceiveNotifyResultNotify;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
@@ -16,6 +19,8 @@ import java.util.List;
  * Created by Administrator on 2014/7/24.
  */
 public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
+
+    private ReceiveNotifyResultNotify receiveNotifyResultNotify;
 
     private ReceiveNotifyDao receiveNotifyDao;
 
@@ -116,7 +121,32 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
     @ReturnDefault
     @Override
     public int updateReceiveNotifyStatus(int rnId, ReceiveNotifyStatus preStatus, ReceiveNotifyStatus setStatus) {
-        return receiveNotifyDao.updateReceiveNotifyStatus(rnId, preStatus.value(), setStatus.value());
+        int u = receiveNotifyDao.updateReceiveNotifyStatus(rnId, preStatus.value(), setStatus.value());
+        if (u > 0
+                && (setStatus == ReceiveNotifyStatus.CONFIRMED
+                || setStatus == ReceiveNotifyStatus.REJECT)) {
+            ReceiveNotifyData rnData = receiveNotifyDao.loadReceiveNotifyByRNID(rnId);
+            if (rnData != null) {
+                ReceiveNotifyResultStatus status = ReceiveNotifyResultStatus.valueOf(rnData.getStatus());
+                ReceiveNotifyResultBean receiveNotifyResultBean = buildReceiveNotifyResultBean(rnData, status);
+                receiveNotifyResultNotify.resultNotify(receiveNotifyResultBean);
+            }
+        }
+        return u;
+    }
+
+    private ReceiveNotifyResultBean buildReceiveNotifyResultBean(ReceiveNotifyData rnData, ReceiveNotifyResultStatus status) {
+        ReceiveNotifyResultBean receiveNotifyResultBean = new ReceiveNotifyResultBean();
+        receiveNotifyResultBean.setApplicationId(rnData.getApplicationId());
+        receiveNotifyResultBean.setBusinessType(rnData.getBusinessType());
+        receiveNotifyResultBean.setMemo(status.toString());
+        receiveNotifyResultBean.setReceiveNotifyId(rnData.getReceiveNotifyId());
+        receiveNotifyResultBean.setStatus(status);
+        return receiveNotifyResultBean;
+    }
+
+    public void setReceiveNotifyResultNotify(ReceiveNotifyResultNotify receiveNotifyResultNotify) {
+        this.receiveNotifyResultNotify = receiveNotifyResultNotify;
     }
 
     public void setReceiveNotifyDao(ReceiveNotifyDao receiveNotifyDao) {
