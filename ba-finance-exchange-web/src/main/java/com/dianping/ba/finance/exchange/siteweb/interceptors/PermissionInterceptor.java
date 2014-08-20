@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.siteweb.interceptors;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.portal.header.client.util.AuthenticationUtil;
 import com.dianping.finance.gabriel.impl.GabrielService;
 import com.dianping.lion.EnvZooKeeperConfig;
 import com.dianping.lion.client.ConfigCache;
@@ -74,7 +75,7 @@ public class PermissionInterceptor extends AbstractInterceptor {
             if (request == null) {
                 return 0;
             }
-            String assertion = request.getRemoteUser();
+            String assertion = AuthenticationUtil.getRemoteUser(request);
             if (assertion != null) {
                 return Integer.parseInt(assertion.split("\\|")[1]);
             }

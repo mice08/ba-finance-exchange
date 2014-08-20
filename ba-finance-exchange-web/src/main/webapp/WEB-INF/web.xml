@@ -40,13 +40,14 @@
 
     <filter>
         <filter-name>CAS Authentication Filter</filter-name>
+        <!--<filter-class>org.jasig.cas.client.authentication.Saml11AuthenticationFilter</filter-class>-->
         <filter-class>com.dianping.ba.finance.portal.header.client.filter.ExtendAuthenticationFilter</filter-class>
         <init-param>
-            <param-name>casLoginUrlFromLion</param-name>
+            <param-name>casServerLoginUrlLionKey</param-name>
             <param-value>ba-finance-exchange-web.casServerLoginUrl</param-value>
         </init-param>
         <init-param>
-            <param-name>serverNameFromLion</param-name>
+            <param-name>serverNameLionKey</param-name>
             <param-value>ba-finance-exchange-web.serverName</param-value>
         </init-param>
         <init-param>
@@ -60,13 +61,13 @@
     </filter>
     <filter>
         <filter-name>CAS Validation Filter</filter-name>
-        <filter-class>com.dianping.ba.finance.portal.header.client.filter.ExtendTicketValidationFilter</filter-class>
+        <filter-class>org.jasig.cas.client.validation.Saml11TicketValidationFilter</filter-class>
         <init-param>
-            <param-name>casUrlPrefixFromLion</param-name>
+            <param-name>casServerUrlPrefixLionKey</param-name>
             <param-value>ba-finance-exchange-web.casServerUrlPrefix</param-value>
         </init-param>
         <init-param>
-            <param-name>serverNameFromLion</param-name>
+            <param-name>serverNameLionKey</param-name>
             <param-value>ba-finance-exchange-web.serverName</param-value>
         </init-param>
         <init-param>
