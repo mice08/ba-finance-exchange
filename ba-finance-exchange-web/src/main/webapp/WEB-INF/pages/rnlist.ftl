@@ -27,16 +27,16 @@
                     <th width="7%" class="fs tb-header">收款通知ID</th>
                     <th width="15%" class="fs tb-header">客户名</th>
                     <th width="7%" class="fs tb-header">收款金额</th>
-                    <th width="8%" class="fs tb-header">打款日期</th>
+                    <th width="9%" class="fs tb-header">打款日期</th>
                     <th width="12%" class="fs tb-header">付款方户名</th>
-                    <th width="8%" class="fs tb-header">款项类型</th>
-                    <th width="8%" class="fs tb-header">合同号</th>
+                    <th width="6%" class="fs tb-header">款项类型</th>
+                    <th width="12%" class="fs tb-header">合同号</th>
                     <th width="8%" class="fs tb-header">收款方式</th>
                     <th width="6%" class="fs tb-header">备注</th>
                     <th width="6%" class="fs tb-header">附件</th>
                     <th width="6%" class="fs tb-header">收款公司</th>
-                    <th width="8%" class="fs tb-header">状态</th>
-                    <th width="6%" class="fs tb-header">操作</th>
+                    <th width="5%" class="fs tb-header">状态</th>
+                    <th width="8%" class="fs tb-header">操作</th>
                 </tr>
 
                 </thead>
@@ -91,12 +91,12 @@
         {{else}}
         <td class="fs tb-item auto-break">{{= record.status}}</td>
         {{/if}}
-        {{if record.status=="待确认"}}
         <td class="fs tb-item auto-break">
+            {{if record.status=="待确认"}}
             <a href="javascript:void(0)" rnid="{{= record.receiveNotifyId}}" class="confirm-link">确认</a>
             <a href="javascript:void(0)" rnid="{{= record.receiveNotifyId}}" class="reject-link">驳回</a>
+            {{/if}}
         </td>
-        {{/if}}
     </tr>
 
     {{/each}}
