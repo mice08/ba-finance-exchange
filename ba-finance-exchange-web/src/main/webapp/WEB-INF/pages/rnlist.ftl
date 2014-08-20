@@ -66,7 +66,7 @@
     {{else}}
     <tr>
         {{/if}}
-        <td class="fs tb-item">{{= record.receiveNotifyId}}</td>
+        <td class="fs tb-item">{{= record.applicationId}}</td>
 
         <td class="fs tb-item auto-break">{{= record.customerId}}</td>
         <td class="fs tb-item auto-break">{{= record.receiveAmount}}</td>
