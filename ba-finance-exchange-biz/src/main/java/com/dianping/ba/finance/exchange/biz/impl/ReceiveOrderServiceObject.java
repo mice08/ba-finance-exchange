@@ -6,6 +6,7 @@ import com.dianping.ba.finance.exchange.api.RORNMatchFireService;
 import com.dianping.ba.finance.exchange.api.RORNMatchService;
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
+import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifyResultBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderResultBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
@@ -13,6 +14,7 @@ import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.*;
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderDao;
+import com.dianping.ba.finance.exchange.biz.producer.ReceiveNotifyResultNotify;
 import com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.aop.annotation.Log;
@@ -39,6 +41,8 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
     private ReceiveOrderResultNotify receiveOrderResultNotify;
 
     private ReceiveNotifyService receiveNotifyService;
+
+    private ReceiveNotifyResultNotify receiveNotifyResultNotify;
 
     @Log(severity = 1, logBefore = true, logAfter = true)
     @ReturnDefault
@@ -92,10 +96,27 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
             ReceiveOrderResultBean receiveOrderResultBean = buildReceiveOrderResultBean(receiveOrderData, receiveOrderData.getAddLoginId());
             receiveOrderResultNotify.receiveResultNotify(receiveOrderResultBean);
             rornMatchFireService.executeMatchingForReceiveOrderConfirmed(receiveOrderData);
+            if (StringUtils.isNotBlank(applicationId)) {
+                ReceiveNotifyData receiveNotifyData = receiveNotifyService.loadReceiveNotifyByApplicationId(applicationId);
+                if (receiveNotifyData != null) {
+                    ReceiveNotifyResultBean receiveNotifyResultBean = buildReceiveNotifyResultBean(receiveNotifyData, ReceiveNotifyResultStatus.CONFIRMED);
+                    receiveNotifyResultNotify.resultNotify(receiveNotifyResultBean);
+                }
+            }
         } else {
             rornMatchFireService.executeMatchingForNewReceiveOrder(receiveOrderData);
         }
         return roId;
+    }
+
+    private ReceiveNotifyResultBean buildReceiveNotifyResultBean(ReceiveNotifyData receiveNotifyData, ReceiveNotifyResultStatus status) {
+        ReceiveNotifyResultBean receiveNotifyResultBean = new ReceiveNotifyResultBean();
+        receiveNotifyResultBean.setApplicationId(receiveNotifyData.getApplicationId());
+        receiveNotifyResultBean.setBusinessType(receiveNotifyData.getBusinessType());
+        receiveNotifyResultBean.setMemo(status.toString());
+        receiveNotifyResultBean.setReceiveNotifyId(receiveNotifyData.getReceiveNotifyId());
+        receiveNotifyResultBean.setStatus(status);
+        return receiveNotifyResultBean;
     }
 
     private ReceiveOrderResultBean buildReceiveOrderResultBean(ReceiveOrderData receiveOrderData, int loginId) {
@@ -180,6 +201,11 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
             String applicationId = receiveOrderData.getApplicationId();
             if (StringUtils.isNotBlank(applicationId)) {
                 rornMatchFireService.executeMatchingForReceiveOrderConfirmed(receiveOrderData);
+                ReceiveNotifyData receiveNotifyData = receiveNotifyService.loadReceiveNotifyByApplicationId(applicationId);
+                if (receiveNotifyData != null) {
+                    ReceiveNotifyResultBean receiveNotifyResultBean = buildReceiveNotifyResultBean(receiveNotifyData, ReceiveNotifyResultStatus.CONFIRMED);
+                    receiveNotifyResultNotify.resultNotify(receiveNotifyResultBean);
+                }
             }
         }
         return result;
@@ -338,5 +364,9 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
 
     public void setRornMatchService(RORNMatchService rornMatchService) {
         this.rornMatchService = rornMatchService;
+    }
+
+    public void setReceiveNotifyResultNotify(ReceiveNotifyResultNotify receiveNotifyResultNotify) {
+        this.receiveNotifyResultNotify = receiveNotifyResultNotify;
     }
 }

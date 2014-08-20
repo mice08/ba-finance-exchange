@@ -12,6 +12,7 @@ public class ReceiveNotifyResultBean implements Serializable{
     private int receiveNotifyId;
     private ReceiveNotifyResultStatus status;
     private String memo;
+    private int businessType;
 
     public String getApplicationId() {
         return applicationId;
@@ -45,13 +46,22 @@ public class ReceiveNotifyResultBean implements Serializable{
         this.memo = memo;
     }
 
+    public int getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(int businessType) {
+        this.businessType = businessType;
+    }
+
     @Override
     public String toString() {
         return "ReceiveNotifyResultBean{" +
                 "applicationId='" + applicationId + '\'' +
-                ", receiveNotifyId='" + receiveNotifyId + '\'' +
+                ", receiveNotifyId=" + receiveNotifyId +
                 ", status=" + status +
                 ", memo='" + memo + '\'' +
+                ", businessType=" + businessType +
                 '}';
     }
 }

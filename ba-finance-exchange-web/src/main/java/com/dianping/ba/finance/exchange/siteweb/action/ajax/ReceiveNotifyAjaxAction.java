@@ -116,7 +116,8 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 
 	private ReceiveNotifyBean convertRNDataToRNBean(ReceiveNotifyData receiveNotifyData, Map<Integer, String> customerIdNameMap) {
 		ReceiveNotifyBean bean = new ReceiveNotifyBean();
-		bean.setReceiveNotifyId(receiveNotifyData.getApplicationId());
+		bean.setReceiveNotifyId(receiveNotifyData.getReceiveNotifyId());
+		bean.setApplicationId(receiveNotifyData.getApplicationId());
 		if (StringUtils.isBlank(receiveNotifyData.getAttachment())) {
 			bean.setAttachment("nourl");
 		} else {

@@ -20,10 +20,6 @@ public class ReceiveOrderMonitorDTO implements Serializable {
 
     private Date receiveTime;
 
-    private Date payTime;
-
-    private Date bankReceiveTime;
-
     private int payChannel;
 
     private int receiveType;
@@ -34,27 +30,15 @@ public class ReceiveOrderMonitorDTO implements Serializable {
 
     private int bankID;
 
-    private int status;
-
     private Date addTime;
 
     private int addLoginId;
 
     private Date updateTime;
 
-    private int reverseRoId;
-
-    private String applicationId;
-
     private int updateLoginId;
 
     private String memo;
-
-    private String payerAccountName;
-
-    private String payerAccountNo;
-
-    private String payerBankName;
 
     public int getRoId() {
         return roId;
@@ -104,22 +88,6 @@ public class ReceiveOrderMonitorDTO implements Serializable {
         this.receiveTime = receiveTime;
     }
 
-    public Date getPayTime() {
-        return payTime;
-    }
-
-    public void setPayTime(Date payTime) {
-        this.payTime = payTime;
-    }
-
-    public Date getBankReceiveTime() {
-        return bankReceiveTime;
-    }
-
-    public void setBankReceiveTime(Date bankReceiveTime) {
-        this.bankReceiveTime = bankReceiveTime;
-    }
-
     public int getPayChannel() {
         return payChannel;
     }
@@ -160,14 +128,6 @@ public class ReceiveOrderMonitorDTO implements Serializable {
         this.bankID = bankID;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
     public Date getAddTime() {
         return addTime;
     }
@@ -192,22 +152,6 @@ public class ReceiveOrderMonitorDTO implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public int getReverseRoId() {
-        return reverseRoId;
-    }
-
-    public void setReverseRoId(int reverseRoId) {
-        this.reverseRoId = reverseRoId;
-    }
-
-    public String getApplicationId() {
-        return applicationId;
-    }
-
-    public void setApplicationId(String applicationId) {
-        this.applicationId = applicationId;
-    }
-
     public int getUpdateLoginId() {
         return updateLoginId;
     }
@@ -224,57 +168,25 @@ public class ReceiveOrderMonitorDTO implements Serializable {
         this.memo = memo;
     }
 
-    public String getPayerAccountName() {
-        return payerAccountName;
-    }
-
-    public void setPayerAccountName(String payerAccountName) {
-        this.payerAccountName = payerAccountName;
-    }
-
-    public String getPayerAccountNo() {
-        return payerAccountNo;
-    }
-
-    public void setPayerAccountNo(String payerAccountNo) {
-        this.payerAccountNo = payerAccountNo;
-    }
-
-    public String getPayerBankName() {
-        return payerBankName;
-    }
-
-    public void setPayerBankName(String payerBankName) {
-        this.payerBankName = payerBankName;
-    }
-
     @Override
     public String toString() {
-        return "ReceiveOrderDTO{" +
+        return "ReceiveOrderMonitorDTO{" +
                 "roId=" + roId +
                 ", customerId=" + customerId +
                 ", shopId=" + shopId +
                 ", businessType=" + businessType +
                 ", receiveAmount=" + receiveAmount +
                 ", receiveTime=" + receiveTime +
-                ", payTime=" + payTime +
-                ", bankReceiveTime=" + bankReceiveTime +
                 ", payChannel=" + payChannel +
                 ", receiveType=" + receiveType +
                 ", bizContent='" + bizContent + '\'' +
                 ", tradeNo='" + tradeNo + '\'' +
                 ", bankID=" + bankID +
-                ", status=" + status +
                 ", addTime=" + addTime +
                 ", addLoginId=" + addLoginId +
                 ", updateTime=" + updateTime +
-                ", reverseRoId=" + reverseRoId +
-                ", applicationId='" + applicationId + '\'' +
                 ", updateLoginId=" + updateLoginId +
                 ", memo='" + memo + '\'' +
-                ", payerAccountName='" + payerAccountName + '\'' +
-                ", payerAccountNo='" + payerAccountNo + '\'' +
-                ", payerBankName='" + payerBankName + '\'' +
                 '}';
     }
 }

@@ -110,4 +110,21 @@ public interface ReceiveNotifyService {
      */
     boolean updateReceiveNotifyConfirm(int roId, int rnId);
 
+
+    /**
+     * 获取收款通知
+     * @param applicationId
+     * @return
+     */
+    ReceiveNotifyData loadReceiveNotifyByApplicationId(String applicationId);
+
+    /**
+     * 更新收款通知状态
+     * @param rnId
+     * @param preStatus
+     * @param setStatus
+     * @return
+     */
+    int updateReceiveNotifyStatus(int rnId, ReceiveNotifyStatus preStatus, ReceiveNotifyStatus setStatus);
+
 }
