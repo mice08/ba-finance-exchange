@@ -65,39 +65,40 @@
     <tr class="even">
     {{else}}
     <tr>
-    {{/if}}
-    <td class="fs tb-item">{{= record.receiveNotifyId}}</td>
+        {{/if}}
+        <td class="fs tb-item">{{= record.receiveNotifyId}}</td>
 
-    <td class="fs tb-item auto-break">{{= record.customerId}}</td>
-    <td class="fs tb-item auto-break">{{= record.receiveAmount}}</td>
-    <td class="fs tb-item auto-break">{{= record.payTime}}</td>
-    <td class="fs tb-item auto-break">{{= record.payerName}}</td>
-    <td class="fs tb-item auto-break">{{= record.businessType}}</td>
-    <td class="fs tb-item auto-break">{{= record.bizContent}}</td>
-    <td class="fs tb-item auto-break">{{= record.payChannel}}</td>
-    <td class="fs tb-item auto-break">{{= record.memo}}</td>
-    <td class="fs tb-item auto-break">
-    {{if record.attachment!="nourl"}}
-    <a href="{{= record.attachment}}" target="_blank">附件</a>
-    {{/if}}
-    </td>
-    <td class="fs tb-item auto-break">{{= record.bankId}}</td>
-    {{if record.status=="待审核"||record.status=="已确认"}}
-    <td class="fs tb-item auto-break">
-    <a href="javascript:void(0);" data-toggle="popover" data-placement="top"
-        roMatchId="{{= record.roMatchId}}"
-        class="rn-show"  rel="popover-medium">{{= record.status}}</a>
-    </td>
-    {{else}}
-    <td class="fs tb-item auto-break">{{= record.status}}</td>
-    {{/if}}
+        <td class="fs tb-item auto-break">{{= record.customerId}}</td>
+        <td class="fs tb-item auto-break">{{= record.receiveAmount}}</td>
+        <td class="fs tb-item auto-break">{{= record.payTime}}</td>
+        <td class="fs tb-item auto-break">{{= record.payerName}}</td>
+        <td class="fs tb-item auto-break">{{= record.businessType}}</td>
+        <td class="fs tb-item auto-break">{{= record.bizContent}}</td>
+        <td class="fs tb-item auto-break">{{= record.payChannel}}</td>
+        <td class="fs tb-item auto-break">{{= record.memo}}</td>
+        <td class="fs tb-item auto-break">
+        {{if record.attachment!="nourl"}}
+        <a href="{{= record.attachment}}" target="_blank">附件</a>
+        {{/if}}
+        </td>
+        <td class="fs tb-item auto-break">{{= record.bankId}}</td>
+        {{if record.status=="待审核"||record.status=="已确认"}}
+        <td class="fs tb-item auto-break">
+        <a href="javascript:void(0);" data-toggle="popover" data-placement="top"
+            roMatchId="{{= record.roMatchId}}"
+            class="rn-show"  rel="popover-medium">{{= record.status}}</a>
+        </td>
+        {{else}}
+        <td class="fs tb-item auto-break">{{= record.status}}</td>
+        {{/if}}
+        {{if record.status=="待确认"}}
+        <td class="fs tb-item auto-break">
+            <a href="javascript:void(0)" rnid="{{= record.receiveNotifyId}}" class="confirm-link">确认</a>
+            <a href="javascript:void(0)" rnid="{{= record.receiveNotifyId}}" class="reject-link">驳回</a>
+        </td>
+        {{/if}}
     </tr>
-    {{if record.status=="待确认"}}
-    <td class="fs tb-item auto-break">
-    <a href="javascript:void(0)" rnid="{{= record.receiveNotifyId}}" class="confirm-link">确认</a>
-    <a href="javascript:void(0)" rnid="{{= record.receiveNotifyId}}" class="reject-link">驳回</a>
-    </td>
-    {{/if}}
+
     {{/each}}
 
 </script>
