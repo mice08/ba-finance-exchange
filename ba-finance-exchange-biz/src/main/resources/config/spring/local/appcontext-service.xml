@@ -93,6 +93,8 @@
 
     <bean id="receiveNotifyService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveNotifyServiceObject">
         <property name="receiveNotifyDao" ref="receiveNotifyDao"/>
+        <property name="receiveNotifyResultNotify" ref="receiveNotifyResultNotify"/>
+
     </bean>
 
     <bean id="receiveNotifyHandleService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveNotifyHandleServiceObject">
