@@ -76,5 +76,18 @@ public interface ReceiveNotifyDao extends GenericDao {
 
     @DAOAction(action = DAOActionType.LOAD)
     BigDecimal loadTotalReceiveAmountByCondition(@DAOParam("receiveNotifySearchBean")ReceiveNotifySearchBean receiveNotifySearchBean);
+
+    @DAOAction(action = DAOActionType.LOAD)
+    ReceiveNotifyData loadReceiveNotifyByApplicationId(@DAOParam("applicationId") String applicationId);
+
+
+    @DAOAction(action = DAOActionType.LOAD)
+    ReceiveNotifyData loadReceiveNotifyByRNID(@DAOParam("rnId") int rnId);
+
+
+    @DAOAction(action = DAOActionType.UPDATE)
+    int updateReceiveNotifyStatus(@DAOParam("rnId") int rnId,
+                                  @DAOParam("preStatus") int preStatus,
+                                  @DAOParam("setStatus") int setStatus);
 }
 

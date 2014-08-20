@@ -1,11 +1,12 @@
 package com.dianping.ba.finance.exchange.biz.impl
-import com.dianping.ba.finance.exchange.api.RORNMatchFireService
+
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
 import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData
 import com.dianping.ba.finance.exchange.api.enums.BusinessType
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveNotifyDao
+import com.dianping.ba.finance.exchange.biz.producer.ReceiveNotifyResultNotify
 import spock.lang.Specification
 import spock.lang.Unroll
 /**
@@ -14,13 +15,16 @@ import spock.lang.Unroll
 class ReceiveNotifyServiceObjectTest extends Specification {
     ReceiveNotifyService receiveNotifyServiceStub;
     ReceiveNotifyDao receiveNotifyDaoMock;
-    RORNMatchFireService rornMatchFireServiceMock;
+
+    ReceiveNotifyResultNotify receiveNotifyResultNotifyMock;
+
 
     def setup(){
         receiveNotifyServiceStub = new ReceiveNotifyServiceObject();
         receiveNotifyDaoMock = Mock();
-        rornMatchFireServiceMock = Mock();
+        receiveNotifyResultNotifyMock = Mock()
         receiveNotifyServiceStub.receiveNotifyDao = receiveNotifyDaoMock;
+        receiveNotifyServiceStub.receiveNotifyResultNotify = receiveNotifyResultNotifyMock
     }
 
     def "InsertReceiveNotify"() {
@@ -212,4 +216,56 @@ class ReceiveNotifyServiceObjectTest extends Specification {
 
     }
 
+
+    @Unroll
+    def "loadReceiveNotifyByApplicationId"(String applicationId, Integer rnId) {
+        given:
+        receiveNotifyDaoMock.loadReceiveNotifyByApplicationId(_ as String) >> { String appId ->
+            if (appId == "8787APPID") {
+                return null
+            }
+            ReceiveNotifyData rnData = [receiveNotifyId: 123, applicationId: appId]
+            rnData
+        }
+
+        expect:
+        rnId == receiveNotifyServiceStub.loadReceiveNotifyByApplicationId(applicationId)?.getReceiveNotifyId();
+
+        where:
+        applicationId | rnId
+        "8787APPID"  | null
+        "8787"  | 123
+    }
+
+    @Unroll
+    def "updateReceiveNotifyStatus"(Integer rnId, ReceiveNotifyStatus setStatus, Integer result) {
+        given:
+        receiveNotifyDaoMock.updateReceiveNotifyStatus(_ as Integer, _ as Integer, _ as Integer) >> { args ->
+            def id = args[0]
+            if (id == 8787) {
+                return 0
+            }
+            1
+        }
+        receiveNotifyDaoMock.loadReceiveNotifyByRNID(_ as Integer) >> { Integer id ->
+            if (id == 878723) {
+                return null;
+            }
+            ReceiveNotifyData rnData = [receiveNotifyId: 123, status: setStatus.value()]
+            rnData
+        }
+
+
+        expect:
+        result == receiveNotifyServiceStub.updateReceiveNotifyStatus(rnId, ReceiveNotifyStatus.INIT, setStatus);
+
+        where:
+        rnId    | setStatus                     | result
+        8787    | ReceiveNotifyStatus.CONFIRMED | 0
+        8787123 | ReceiveNotifyStatus.MATCHED   | 1
+        8787123 | ReceiveNotifyStatus.CONFIRMED | 1
+        8787123 | ReceiveNotifyStatus.REJECT    | 1
+        878723  | ReceiveNotifyStatus.CONFIRMED | 1
+
+    }
 }
