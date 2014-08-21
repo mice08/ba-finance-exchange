@@ -5,6 +5,7 @@ import com.dianping.ba.finance.exchange.api.RORNMatchService
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderResultBean
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean
+import com.dianping.ba.finance.exchange.api.datas.ReceiveCalResultData
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData
 import com.dianping.ba.finance.exchange.api.enums.BusinessType
@@ -159,5 +160,23 @@ class ReceiveOrderServiceObjectSpockTest extends Specification {
         where:
         status                         | resultInt
         ReceiveOrderStatus.CONFIRMED   | 1
+    }
+
+    def "findCalculatedReceiveResult" (ReceiveOrderStatus status, Date date, Integer resultSize) {
+        given:
+
+        receiveOrderDaoMock.findCalculatedReceiveResult(_ as Integer, _ as Date, _ as Date) >> { args ->
+            ReceiveCalResultData rcData = [customerId  : 123,
+                                           businessType: BusinessType.GROUP_PURCHASE.value(),
+                                           totalAmount : BigDecimal.TEN]
+            [rcData]
+        }
+
+        expect:
+        resultSize == receiveOrderServiceObjectStub.findCalculatedReceiveResult(status, date, date)?.size()
+
+        where:
+        status                         | date       | resultSize
+        ReceiveOrderStatus.UNCONFIRMED | new Date() | 1
     }
 }
