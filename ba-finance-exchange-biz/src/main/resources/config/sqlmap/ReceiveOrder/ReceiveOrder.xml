@@ -423,6 +423,9 @@
             <isNotNull prepend="AND" property="endTime">
               ro.AddTime &lt;= #endTime#
             </isNotNull>
+            <isGreaterThan prepend="AND" property="businessType" compareValue="0">
+              ro.BusinessType = #businessType#
+            </isGreaterThan>
         </dynamic>
     </select>
 </sqlMap>
