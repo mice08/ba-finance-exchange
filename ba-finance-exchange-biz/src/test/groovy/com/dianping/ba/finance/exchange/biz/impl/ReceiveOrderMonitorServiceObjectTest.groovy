@@ -40,12 +40,13 @@ class ReceiveOrderMonitorServiceObjectTest extends Specification {
     @Unroll
     def "findReceiveOrderMonitorDataByTime"(int paramRoId, int expectRoId){
         given:
-        receiveOrderDaoMock.findReceiveOrderDataByTime(_ as Date, _ as Date)>>{
+        receiveOrderDaoMock.findReceiveOrderDataByTime(_ as Date, _ as Date, _ as Integer)>>{
             ReceiveOrderData receiveOrderData = ["roId":paramRoId];
             [receiveOrderData];
         }
+        ReceiveOrderMonitorSearchDTO receiveOrderMonitorSearchDTO = ["startTime":new Date(),"endTime":new Date(),"businessType":1];
         expect:
-        expectRoId == receiveOrderQueryServiceObjectStub.findReceiveOrderMonitorDataByTime(new Date(),new Date())[0].getRoId();
+        expectRoId == receiveOrderQueryServiceObjectStub.findReceiveOrderMonitorDataByTime(receiveOrderMonitorSearchDTO)[0].getRoId();
         where:
         paramRoId  ||  expectRoId
         1          ||  1
