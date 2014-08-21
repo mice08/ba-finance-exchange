@@ -10,6 +10,6 @@
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
     <bean id="noContractReceiveVoucherController" class="com.dianping.ba.finance.exchange.voucher.job.NoContractReceiveVoucherController">
-
+        <property name="receiveVoucherService" ref="receiveVoucherService"/>
     </bean>
 </beans>
