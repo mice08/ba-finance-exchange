@@ -97,13 +97,10 @@ public interface ReceiveOrderDao extends GenericDao {
 
     /**
      * 计算并获取收款凭证
-     * @param startTime
-     * @param endTime
+     * @param receiveOrderSearchBean
      * @return
      */
     @DAOAction(action = DAOActionType.QUERY)
-    List<ReceiveCalResultData> findCalculatedReceiveResult(@DAOParam("status") int status,
-                                                       @DAOParam("startTime") Date startTime,
-                                                       @DAOParam("endTime") Date endTime);
+    List<ReceiveCalResultData> findCalculatedReceiveResult(@DAOParam("receiveOrderSearchBean") ReceiveOrderSearchBean receiveOrderSearchBean);
 
 }
