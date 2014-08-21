@@ -9,5 +9,7 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
+    <bean id="noContractReceiveVoucherController" class="com.dianping.ba.finance.exchange.voucher.job.NoContractReceiveVoucherController">
 
+    </bean>
 </beans>
