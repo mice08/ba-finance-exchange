@@ -178,4 +178,10 @@ public class ReceiveOrderDaoTest {
         List<ReceiveOrderData> orderDataList = receiveOrderDao.findUnmatchAndUnconfirmedReceiveOrder(ReceiveOrderStatus.UNCONFIRMED.value());
         Assert.assertNotNull(orderDataList);
     }
+
+    @Test
+    public void testFindReceiveOrderDataByTime() throws Exception {
+        List<ReceiveOrderData> receiveOrderDataList = receiveOrderDao.findReceiveOrderDataByTime(null, new Date());
+        Assert.assertTrue(receiveOrderDataList.size()>0);
+    }
 }

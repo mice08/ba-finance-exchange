@@ -1,7 +1,7 @@
 package com.dianping.ba.finance.exchange.siteweb.beans;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * Created by IntelliJ IDEA.
@@ -11,8 +11,9 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  * 返回给前端页面的收款通知
  */
-public class ReceiveNotifyBean {
-	private String receiveNotifyId;
+public class ReceiveNotifyBean implements Serializable{
+	private int receiveNotifyId;
+	private String applicationId;
 	private String businessType;
 	private BigDecimal receiveAmount;
 	private String payChannel;
@@ -27,20 +28,28 @@ public class ReceiveNotifyBean {
 	private String memo;
 	private int roMatchId;
 
-	public int getRoMatchId() {
+    public int getReceiveNotifyId() {
+        return receiveNotifyId;
+    }
+
+    public void setReceiveNotifyId(int receiveNotifyId) {
+        this.receiveNotifyId = receiveNotifyId;
+    }
+
+    public String getApplicationId() {
+        return applicationId;
+    }
+
+    public void setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
+    }
+
+    public int getRoMatchId() {
 		return roMatchId;
 	}
 
 	public void setRoMatchId(int roMatchId) {
 		this.roMatchId = roMatchId;
-	}
-
-	public String getReceiveNotifyId() {
-		return receiveNotifyId;
-	}
-
-	public void setReceiveNotifyId(String receiveNotifyId) {
-		this.receiveNotifyId = receiveNotifyId;
 	}
 
 	public String getBusinessType() {
@@ -138,4 +147,25 @@ public class ReceiveNotifyBean {
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
+
+    @Override
+    public String toString() {
+        return "ReceiveNotifyBean{" +
+                "receiveNotifyId=" + receiveNotifyId +
+                ", applicationId='" + applicationId + '\'' +
+                ", businessType='" + businessType + '\'' +
+                ", receiveAmount=" + receiveAmount +
+                ", payChannel='" + payChannel + '\'' +
+                ", receiveType='" + receiveType + '\'' +
+                ", payTime='" + payTime + '\'' +
+                ", payerName='" + payerName + '\'' +
+                ", bizContent='" + bizContent + '\'' +
+                ", customerId='" + customerId + '\'' +
+                ", bankId='" + bankId + '\'' +
+                ", attachment='" + attachment + '\'' +
+                ", status='" + status + '\'' +
+                ", memo='" + memo + '\'' +
+                ", roMatchId=" + roMatchId +
+                '}';
+    }
 }

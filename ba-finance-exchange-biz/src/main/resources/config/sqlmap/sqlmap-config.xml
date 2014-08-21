@@ -17,5 +17,5 @@
     <sqlMap resource="config/sqlmap/AuthToken/AuthToken.xml"/>
     <sqlMap resource="config/sqlmap/ReceiveNotify/ReceiveNotifyRecord.xml"/>
     <sqlMap resource="config/sqlmap/ReceiveNotify/ReceiveNotify.xml"/>
-
+    <sqlMap resource="config/sqlmap/Monitor/ReceiveOrderReco.xml"/>
 </sqlMapConfig>

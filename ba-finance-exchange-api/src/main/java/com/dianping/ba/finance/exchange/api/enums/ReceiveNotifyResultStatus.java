@@ -19,7 +19,14 @@ public enum ReceiveNotifyResultStatus {
     /**
      * 驳回
      */
-    REJECT(3);
+    REJECT(3),
+
+    // 4是待审批，但是不需要通知BU方
+
+    /**
+     * 确认关联
+     */
+    CONFIRMED(5);
 
     private int receiveNotifyResultStatus;
 
@@ -35,6 +42,8 @@ public enum ReceiveNotifyResultStatus {
                 return FAIL;
             case 3:
                 return REJECT;
+            case 5:
+                return CONFIRMED;
             default:
                 return DEFAULT;
         }
@@ -49,6 +58,8 @@ public enum ReceiveNotifyResultStatus {
                 return "处理失败";
             case 3:
                 return "驳回";
+            case 5:
+                return "已关联";
             default:
                 return "错误";
         }

@@ -44,6 +44,7 @@
         <property name="rornMatchFireService" ref="rornMatchFireService"/>
         <property name="receiveNotifyService" ref="receiveNotifyService"/>
         <property name="rornMatchService" ref="rornMatchService"/>
+        <property name="receiveNotifyResultNotify" ref="receiveNotifyResultNotify"/>
     </bean>
 
     <bean id="receiveBankService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveBankServiceObject">
@@ -92,6 +93,8 @@
 
     <bean id="receiveNotifyService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveNotifyServiceObject">
         <property name="receiveNotifyDao" ref="receiveNotifyDao"/>
+        <property name="receiveNotifyResultNotify" ref="receiveNotifyResultNotify"/>
+
     </bean>
 
     <bean id="receiveNotifyHandleService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveNotifyHandleServiceObject">
@@ -126,5 +129,14 @@
         <property name="receiveNotifyService" ref="receiveNotifyService"/>
         <property name="rornMatchService" ref="rornMatchService"/>
         <property name="receiveOrderService" ref="receiveOrderService"/>
+    </bean>
+
+    <bean id="receiveOrderMonitorService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveOrderMonitorServiceObject">
+        <property name="receiveOrderDao" ref="receiveOrderDao"/>
+        <property name="receiveOrderRecoDao" ref="receiveOrderRecoDao"/>
+    </bean>
+
+    <bean id="receiveNotifyResultNotify" class="com.dianping.ba.finance.exchange.biz.producer.ReceiveNotifyResultNotify">
+        <property name="receiveNotifyProducer" ref="receiveNotifyResultProducer"/>
     </bean>
 </beans>
