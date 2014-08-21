@@ -4,6 +4,7 @@ import com.dianping.ba.finance.exchange.api.ReceiveOrderMonitorService;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderRecoData;
 import com.dianping.ba.finance.exchange.api.dtos.ReceiveOrderMonitorDTO;
+import com.dianping.ba.finance.exchange.api.dtos.ReceiveOrderMonitorSearchDTO;
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderDao;
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderRecoDao;
 import org.apache.commons.collections.CollectionUtils;
@@ -11,7 +12,6 @@ import org.apache.commons.collections.CollectionUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,8 +31,9 @@ public class ReceiveOrderMonitorServiceObject implements ReceiveOrderMonitorServ
     }
 
     @Override
-    public List<ReceiveOrderMonitorDTO> findReceiveOrderMonitorDataByTime(Date startTime, Date endTime) {
-        List<ReceiveOrderData> receiveOrderDataList = receiveOrderDao.findReceiveOrderDataByTime(startTime, endTime);
+    public List<ReceiveOrderMonitorDTO> findReceiveOrderMonitorDataByTime(ReceiveOrderMonitorSearchDTO receiveOrderMonitorSearchDTO) {
+        List<ReceiveOrderData> receiveOrderDataList = receiveOrderDao.findReceiveOrderDataByTime(receiveOrderMonitorSearchDTO.getStartTime()
+                , receiveOrderMonitorSearchDTO.getEndTime(), receiveOrderMonitorSearchDTO.getBusinessType());
         List<ReceiveOrderMonitorDTO> receiveOrderMonitorDTOList = new ArrayList<ReceiveOrderMonitorDTO>();
         for(ReceiveOrderData receiveOrderData : receiveOrderDataList){
             ReceiveOrderMonitorDTO receiveOrderMonitorDTO = buildReceiveOrderMonitorDTO(receiveOrderData);
@@ -42,8 +43,8 @@ public class ReceiveOrderMonitorServiceObject implements ReceiveOrderMonitorServ
     }
 
     @Override
-    public void insertReceiveOrderRecoDatas(Date startTime, Date endTime) {
-        List<ReceiveOrderMonitorDTO> receiveOrderMonitorDTOList = this.findReceiveOrderMonitorDataByTime(startTime, endTime);
+    public void insertReceiveOrderRecoDatas(ReceiveOrderMonitorSearchDTO receiveOrderMonitorSearchDTO) {
+        List<ReceiveOrderMonitorDTO> receiveOrderMonitorDTOList = this.findReceiveOrderMonitorDataByTime(receiveOrderMonitorSearchDTO);
         if(CollectionUtils.isEmpty(receiveOrderMonitorDTOList)){
             return;
         }
