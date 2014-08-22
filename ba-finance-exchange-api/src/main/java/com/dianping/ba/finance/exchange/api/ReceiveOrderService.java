@@ -9,7 +9,6 @@ import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.core.type.PageModel;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -104,10 +103,9 @@ public interface ReceiveOrderService {
 
     /**
      * 计算并获取收款凭证
-     * @param startTime
-     * @param endTime
+     * @param receiveOrderSearchBean
      * @return
      */
-    List<ReceiveCalResultData> findCalculatedReceiveResult(ReceiveOrderStatus status, Date startTime, Date endTime);
+    List<ReceiveCalResultData> findCalculatedReceiveResult(ReceiveOrderSearchBean receiveOrderSearchBean);
 
 }

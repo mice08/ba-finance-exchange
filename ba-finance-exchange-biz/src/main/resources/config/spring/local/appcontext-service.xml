@@ -139,4 +139,16 @@
     <bean id="receiveNotifyResultNotify" class="com.dianping.ba.finance.exchange.biz.producer.ReceiveNotifyResultNotify">
         <property name="receiveNotifyProducer" ref="receiveNotifyResultProducer"/>
     </bean>
+
+    <bean id="receivePayVoucherNotify" class="com.dianping.ba.finance.exchange.biz.producer.ReceivePayVoucherNotify">
+        <property name="receivePayVoucherProducer" ref="receivePayVoucherProducer"/>
+    </bean>
+
+    <bean id="receiveVoucherService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveVoucherServiceObject">
+        <property name="receiveOrderService" ref="receiveOrderService"/>
+        <property name="receiveVoucherDao" ref="receiveVoucherDao"/>
+        <property name="receivePayVoucherNotify" ref="receivePayVoucherNotify"/>
+    </bean>
+
+
 </beans>

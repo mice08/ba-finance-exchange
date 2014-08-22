@@ -79,4 +79,19 @@
         <property name="topic" value="${ba-finance-exchange-biz.fs.ad.receive.notify.notice.topic.name}"/>
         <property name="mode" value="ASYNC_MODE"/>
     </bean>
+
+
+    <bean id="receivePayVoucherProducer"  class="com.dianping.finance.common.swallow.SwallowProducer">
+        <property name="swallowClientWrapperMap">
+            <map>
+                <entry key="RECEIVE_PAY_VOUCHER_NOTIFY" value-ref="exFSReceivePayVoucherNotifyClient"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="exFSReceivePayVoucherNotifyClient" init-method="init"
+          class="com.dianping.finance.common.swallow.SwallowClientWrapper">
+        <property name="topic" value="${ba-finance-exchange-biz.ex.fs.receivepay.voucher.notice.topic.name}"/>
+        <property name="mode" value="ASYNC_MODE"/>
+    </bean>
 </beans>

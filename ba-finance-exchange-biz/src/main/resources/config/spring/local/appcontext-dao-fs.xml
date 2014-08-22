@@ -104,4 +104,13 @@
             </bean>
         </property>
     </bean>
+
+    <bean id="receiveVoucherDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ReceiveVoucherDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="ReceiveVoucher"/>
+            </bean>
+        </property>
+    </bean>
 </beans>

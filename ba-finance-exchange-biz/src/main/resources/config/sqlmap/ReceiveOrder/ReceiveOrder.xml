@@ -453,9 +453,28 @@
                BankID,
                Date_format(ro.AddTime, '%Y-%m-%d') as VoucherDate
         FROM   FC_ReceiveOrder ro
-        WHERE  ro.Status = #status#
-           AND ro.AddTime >= #startTime#
-           AND ro.AddTime < #endTime#
+        ]]>
+        <dynamic prepend="WHERE">
+            <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="AND" compareValue="0">
+                ro.BusinessType = #receiveOrderSearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.receiveType" prepend="AND" compareValue="0">
+                ro.ReceiveType = #receiveOrderSearchBean.receiveType#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.payChannel" prepend="AND" compareValue="0">
+                ro.PayChannel = #receiveOrderSearchBean.payChannel#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.status" compareValue="0" prepend="AND">
+                ro.Status = #receiveOrderSearchBean.status#
+            </isGreaterThan>
+            <isNotNull prepend="AND" property="receiveOrderSearchBean.addTimeBegin">
+                ro.AddTime &gt;= #receiveOrderSearchBean.addTimeBegin#
+            </isNotNull>
+            <isNotNull prepend="AND" property="receiveOrderSearchBean.addTimeEnd">
+                ro.AddTime &lt; #receiveOrderSearchBean.addTimeEnd#
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
         GROUP  BY CustomerID,
                   ShopID,
                   BusinessType,
