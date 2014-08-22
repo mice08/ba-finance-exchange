@@ -148,6 +148,8 @@
         <property name="receiveOrderService" ref="receiveOrderService"/>
         <property name="receiveVoucherDao" ref="receiveVoucherDao"/>
         <property name="receivePayVoucherNotify" ref="receivePayVoucherNotify"/>
+        <property name="receiveBankService" ref="receiveBankService"/>
+
     </bean>
 
 

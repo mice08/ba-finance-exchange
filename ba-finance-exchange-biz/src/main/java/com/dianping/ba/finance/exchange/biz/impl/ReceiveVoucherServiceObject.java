@@ -2,10 +2,12 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.exchange.api.ReceiveBankService;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.ReceiveVoucherService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveVoucherNotifyBean;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveBankData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveCalResultData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveVoucherData;
 import com.dianping.ba.finance.exchange.api.enums.AccountingVoucherType;
@@ -20,6 +22,7 @@ import com.dianping.finance.common.util.DateUtils;
 import com.google.common.collect.Lists;
 
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +38,8 @@ public class ReceiveVoucherServiceObject implements ReceiveVoucherService {
     private ReceiveVoucherDao receiveVoucherDao;
 
     private ReceivePayVoucherNotify receivePayVoucherNotify;
+
+    private ReceiveBankService receiveBankService;
 
     @Log(severity = 1, logBefore = true, logAfter = true)
     @ReturnDefault
@@ -90,38 +95,51 @@ public class ReceiveVoucherServiceObject implements ReceiveVoucherService {
     }
 
     private List<ReceiveVoucherData> buildReceiveVoucherData(ReceiveCalResultData rcData) {
-        List<ReceiveVoucherData> rvDataList = Lists.newLinkedList();
+        ReceiveBankData receiveBankData = receiveBankService.loadReceiveBankByBankId(rcData.getBankId());
         if (rcData.getBusinessType() == BusinessType.ADVERTISEMENT.value()) {
-            ReceiveVoucherData rvDataPRC = new ReceiveVoucherData();
-            rvDataPRC.setAddLoginId(-1);
-            rvDataPRC.setAddTime(new Date());
-            rvDataPRC.setAmount(rcData.getTotalAmount());
-            rvDataPRC.setBankId(rcData.getBankId());
-            rvDataPRC.setCityId(0);
-            rvDataPRC.setCompanyId(0);
-            rvDataPRC.setCustomerId(rcData.getCustomerId());
-            rvDataPRC.setShopId(rcData.getShopId());
-            rvDataPRC.setUpdateLoginId(-1);
-            rvDataPRC.setUpdateTime(new Date());
-            rvDataPRC.setVoucherDate(rcData.getVoucherDate());
-            rvDataPRC.setVoucherType(AccountingVoucherType.AD_O_NONE_CONTRACT_RECEIVE_PRC.value());
-            rvDataList.add(rvDataPRC);
+            return buildReceiveVoucherDataForAD(rcData, receiveBankData);
 
-            ReceiveVoucherData rvDataUS = new ReceiveVoucherData();
-            rvDataUS.setAddLoginId(-1);
-            rvDataUS.setAddTime(new Date());
-            rvDataUS.setAmount(rcData.getTotalAmount());
-            rvDataUS.setBankId(rcData.getBankId());
-            rvDataUS.setCityId(0);
-            rvDataUS.setCompanyId(0);
-            rvDataUS.setCustomerId(rcData.getCustomerId());
-            rvDataUS.setShopId(rcData.getShopId());
-            rvDataUS.setUpdateLoginId(-1);
-            rvDataUS.setUpdateTime(new Date());
-            rvDataUS.setVoucherDate(rcData.getVoucherDate());
-            rvDataUS.setVoucherType(AccountingVoucherType.AD_O_NONE_CONTRACT_RECEIVE_PRC.value());
-            rvDataList.add(rvDataUS);
         }
+        return Collections.emptyList();
+    }
+
+    private List<ReceiveVoucherData> buildReceiveVoucherDataForAD(ReceiveCalResultData rcData, ReceiveBankData receiveBankData) {
+        List<ReceiveVoucherData> rvDataList = Lists.newLinkedList();
+
+        ReceiveVoucherData rvDataPRC = new ReceiveVoucherData();
+        rvDataPRC.setAddLoginId(-1);
+        rvDataPRC.setAddTime(new Date());
+        rvDataPRC.setAmount(rcData.getTotalAmount());
+        rvDataPRC.setBankId(rcData.getBankId());
+        rvDataPRC.setCityId(0);
+        if (receiveBankData != null) {
+            rvDataPRC.setCompanyId(receiveBankData.getCompanyId());
+        }
+        rvDataPRC.setCustomerId(rcData.getCustomerId());
+        rvDataPRC.setShopId(rcData.getShopId());
+        rvDataPRC.setUpdateLoginId(-1);
+        rvDataPRC.setUpdateTime(new Date());
+        rvDataPRC.setVoucherDate(rcData.getVoucherDate());
+        rvDataPRC.setVoucherType(AccountingVoucherType.AD_O_NONE_CONTRACT_RECEIVE_PRC.value());
+        rvDataList.add(rvDataPRC);
+
+        ReceiveVoucherData rvDataUS = new ReceiveVoucherData();
+        rvDataUS.setAddLoginId(-1);
+        rvDataUS.setAddTime(new Date());
+        rvDataUS.setAmount(rcData.getTotalAmount());
+        rvDataUS.setBankId(rcData.getBankId());
+        rvDataUS.setCityId(0);
+        if (receiveBankData != null) {
+            rvDataUS.setCompanyId(receiveBankData.getCompanyId());
+        }
+        rvDataUS.setCustomerId(rcData.getCustomerId());
+        rvDataUS.setShopId(rcData.getShopId());
+        rvDataUS.setUpdateLoginId(-1);
+        rvDataUS.setUpdateTime(new Date());
+        rvDataUS.setVoucherDate(rcData.getVoucherDate());
+        rvDataUS.setVoucherType(AccountingVoucherType.AD_O_NONE_CONTRACT_RECEIVE_US.value());
+        rvDataList.add(rvDataUS);
+
         return rvDataList;
     }
 
@@ -135,5 +153,9 @@ public class ReceiveVoucherServiceObject implements ReceiveVoucherService {
 
     public void setReceivePayVoucherNotify(ReceivePayVoucherNotify receivePayVoucherNotify) {
         this.receivePayVoucherNotify = receivePayVoucherNotify;
+    }
+
+    public void setReceiveBankService(ReceiveBankService receiveBankService) {
+        this.receiveBankService = receiveBankService;
     }
 }
