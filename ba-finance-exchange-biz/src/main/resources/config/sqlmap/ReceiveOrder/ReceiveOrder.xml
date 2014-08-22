@@ -59,6 +59,18 @@
         <result property="matchedCount" column="MatchedCount"/>
     </resultMap>
 
+    <typeAlias alias="ReceiveCalResultData" type="com.dianping.ba.finance.exchange.api.datas.ReceiveCalResultData"/>
+    <resultMap id="receiveCalResultData" class="ReceiveCalResultData">
+        <result property="customerId" column="CustomerID"/>
+        <result property="shopId" column="ShopID"/>
+        <result property="businessType" column="BusinessType"/>
+        <result property="totalAmount" column="TotalAmount"/>
+        <result property="payChannel" column="PayChannel"/>
+        <result property="receiveType" column="ReceiveType"/>
+        <result property="bankId" column="BankID"/>
+        <result property="voucherDate" column="VoucherDate"/>
+    </resultMap>
+
     <insert id="insertReceiveOrderData" parameterClass="map">
         <![CDATA[
             INSERT INTO FC_ReceiveOrder
@@ -428,4 +440,30 @@
             </isGreaterThan>
         </dynamic>
     </select>
+
+
+    <select id="findCalculatedReceiveResult" resultMap="receiveCalResultData" parameterClass="map">
+        <![CDATA[
+        SELECT CustomerID,
+               ShopID,
+               BusinessType,
+               SUM(ReceiveAmount) as TotalAmount,
+               PayChannel,
+               ReceiveType,
+               BankID,
+               Date_format(ro.AddTime, '%Y-%m-%d') as VoucherDate
+        FROM   FC_ReceiveOrder ro
+        WHERE  ro.Status = #status#
+           AND ro.AddTime >= #startTime#
+           AND ro.AddTime < #endTime#
+        GROUP  BY CustomerID,
+                  ShopID,
+                  BusinessType,
+                  PayChannel,
+                  ReceiveType,
+                  BankID,
+                  Date_format(ro.AddTime, '%Y-%m-%d')
+		]]>
+    </select>
+
 </sqlMap>

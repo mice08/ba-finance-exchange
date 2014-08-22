@@ -10,6 +10,7 @@ import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifyResultBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderResultBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveCalResultData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.*;
@@ -344,6 +345,12 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         updateBean.setStatus(ReceiveOrderStatus.CONFIRMED.value());
         updateBean.setUpdateLoginId(loginId);
         return updateBean;
+    }
+
+
+    @Override
+    public List<ReceiveCalResultData> findCalculatedReceiveResult(ReceiveOrderStatus status, Date startTime, Date endTime) {
+        return receiveOrderDao.findCalculatedReceiveResult(status.value(), startTime, endTime);
     }
 
     public void setReceiveOrderDao(ReceiveOrderDao receiveOrderDao) {
