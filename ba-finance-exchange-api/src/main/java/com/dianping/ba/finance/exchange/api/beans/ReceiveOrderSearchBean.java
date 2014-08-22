@@ -28,6 +28,10 @@ public class ReceiveOrderSearchBean implements Serializable {
 
     private Date bankReceiveTimeEnd;
 
+    private Date addTimeBegin;
+
+    private Date addTimeEnd;
+
     public ReceiveOrderSearchBean() {
     }
 
@@ -111,6 +115,22 @@ public class ReceiveOrderSearchBean implements Serializable {
         this.bankId = bankId;
     }
 
+    public Date getAddTimeBegin() {
+        return addTimeBegin;
+    }
+
+    public void setAddTimeBegin(Date addTimeBegin) {
+        this.addTimeBegin = addTimeBegin;
+    }
+
+    public Date getAddTimeEnd() {
+        return addTimeEnd;
+    }
+
+    public void setAddTimeEnd(Date addTimeEnd) {
+        this.addTimeEnd = addTimeEnd;
+    }
+
     @Override
     public String toString() {
         return "ReceiveOrderSearchBean{" +
@@ -124,6 +144,8 @@ public class ReceiveOrderSearchBean implements Serializable {
                 ", bankId=" + bankId +
                 ", bankReceiveTimeBegin=" + bankReceiveTimeBegin +
                 ", bankReceiveTimeEnd=" + bankReceiveTimeEnd +
+                ", addTimeBegin=" + addTimeBegin +
+                ", addTimeEnd=" + addTimeEnd +
                 '}';
     }
 }

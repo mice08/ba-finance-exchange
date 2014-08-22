@@ -349,8 +349,8 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
 
 
     @Override
-    public List<ReceiveCalResultData> findCalculatedReceiveResult(ReceiveOrderStatus status, Date startTime, Date endTime) {
-        return receiveOrderDao.findCalculatedReceiveResult(status.value(), startTime, endTime);
+    public List<ReceiveCalResultData> findCalculatedReceiveResult(ReceiveOrderSearchBean receiveOrderSearchBean) {
+        return receiveOrderDao.findCalculatedReceiveResult(receiveOrderSearchBean);
     }
 
     public void setReceiveOrderDao(ReceiveOrderDao receiveOrderDao) {
