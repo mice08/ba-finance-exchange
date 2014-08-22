@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.impl
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData
+import com.dianping.ba.finance.exchange.api.dtos.ReceiveOrderMonitorSearchDTO
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderDao
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderRecoDao
 import spock.lang.Specification
@@ -39,12 +40,13 @@ class ReceiveOrderMonitorServiceObjectTest extends Specification {
     @Unroll
     def "findReceiveOrderMonitorDataByTime"(int paramRoId, int expectRoId){
         given:
-        receiveOrderDaoMock.findReceiveOrderDataByTime(_ as Date, _ as Date)>>{
+        receiveOrderDaoMock.findReceiveOrderDataByTime(_ as Date, _ as Date, _ as Integer)>>{
             ReceiveOrderData receiveOrderData = ["roId":paramRoId];
             [receiveOrderData];
         }
+        ReceiveOrderMonitorSearchDTO receiveOrderMonitorSearchDTO = ["startTime":new Date(),"endTime":new Date(),"businessType":1];
         expect:
-        expectRoId == receiveOrderQueryServiceObjectStub.findReceiveOrderMonitorDataByTime(new Date(),new Date())[0].getRoId();
+        expectRoId == receiveOrderQueryServiceObjectStub.findReceiveOrderMonitorDataByTime(receiveOrderMonitorSearchDTO)[0].getRoId();
         where:
         paramRoId  ||  expectRoId
         1          ||  1
@@ -53,10 +55,11 @@ class ReceiveOrderMonitorServiceObjectTest extends Specification {
 
     def "insertReceiveOrderRecoDatas"(){
         setup:
+        ReceiveOrderMonitorSearchDTO receiveOrderMonitorSearchDTO = ["startTime":new Date(),"endTime":new Date(),"businessType":1];
         when:
-        receiveOrderQueryServiceObjectStub.insertReceiveOrderRecoDatas(new Date(), new Date());
+        receiveOrderQueryServiceObjectStub.insertReceiveOrderRecoDatas(receiveOrderMonitorSearchDTO);
         then:
-        1 * receiveOrderDaoMock.findReceiveOrderDataByTime(_ as Date, _ as Date)>>{
+        1 * receiveOrderDaoMock.findReceiveOrderDataByTime(_ as Date, _ as Date, _ as Integer)>>{
             ReceiveOrderData receiveOrderData = [];
             [receiveOrderData];
         }
@@ -66,10 +69,11 @@ class ReceiveOrderMonitorServiceObjectTest extends Specification {
 
     def "insert empty list"(){
         setup:
+        ReceiveOrderMonitorSearchDTO receiveOrderMonitorSearchDTO = ["startTime":new Date(),"endTime":new Date(),"businessType":1];
         when:
-        receiveOrderQueryServiceObjectStub.insertReceiveOrderRecoDatas(new Date(), new Date());
+        receiveOrderQueryServiceObjectStub.insertReceiveOrderRecoDatas(receiveOrderMonitorSearchDTO);
         then:
-        1 * receiveOrderDaoMock.findReceiveOrderDataByTime(_ as Date, _ as Date)>>{
+        1 * receiveOrderDaoMock.findReceiveOrderDataByTime(_ as Date, _ as Date, _ as Integer)>>{
             [];
         }
 

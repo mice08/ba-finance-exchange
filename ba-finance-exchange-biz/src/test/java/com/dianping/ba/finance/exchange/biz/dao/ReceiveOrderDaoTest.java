@@ -182,7 +182,7 @@ public class ReceiveOrderDaoTest {
 
     @Test
     public void testFindReceiveOrderDataByTime() throws Exception {
-        List<ReceiveOrderData> receiveOrderDataList = receiveOrderDao.findReceiveOrderDataByTime(null, new Date());
+        List<ReceiveOrderData> receiveOrderDataList = receiveOrderDao.findReceiveOrderDataByTime(null, new Date(),1);
         Assert.assertTrue(receiveOrderDataList.size()>0);
     }
     @Test
