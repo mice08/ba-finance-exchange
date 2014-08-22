@@ -17,14 +17,14 @@ public class NoContractReceiveVoucherController {
 	public boolean execute() {
         MONITOR_LOGGER.info(String.format("NoContractReceiveVoucherController.execute start"));
         try{
-            //当前日期减一天
-            String strRunDate=DateUtils.format(DateUtils.addDate(DateUtils.getCurrentDate(),-1));
-            String lionDate=LionConfigUtils.getProperty("ba-finance-exchange-voucher-job.runDate","");
+            //当前日期上个月
+            String strRunMonth=DateUtils.format(DateUtils.addDate(DateUtils.formatDate(DateUtils.getMonthFirstDay()),-1));
+            String lionDate=LionConfigUtils.getProperty("ba-finance-exchange-voucher-job.runMonth","");
             if (StringUtils.isNotEmpty(lionDate)) {
-                strRunDate=lionDate;
+                strRunMonth=lionDate;
             }
-            Date runDate= DateUtils.formatDate(strRunDate);
-            receiveVoucherService.generateUnconfirmedReceiveVoucher(runDate);
+            Date runMonth= DateUtils.formatDate(strRunMonth);
+            receiveVoucherService.generateUnconfirmedReceiveVoucher(runMonth);
         }catch (Exception e){
             MONITOR_LOGGER.error(String.format("severity=[2] NoContractReceiveVoucherController.execute error"), e);
         }
