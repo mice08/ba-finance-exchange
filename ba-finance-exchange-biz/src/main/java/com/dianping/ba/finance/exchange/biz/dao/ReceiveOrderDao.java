@@ -6,6 +6,7 @@ import com.dianping.avatar.dao.annotation.DAOActionType;
 import com.dianping.avatar.dao.annotation.DAOParam;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveCalResultData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.core.type.PageModel;
 
@@ -93,5 +94,13 @@ public interface ReceiveOrderDao extends GenericDao {
     @DAOAction(action = DAOActionType.QUERY)
     List<ReceiveOrderData> findReceiveOrderDataByTime(@DAOParam("startTime") Date startTime, @DAOParam("endTime") Date endTime, @DAOParam("businessType")int businessType);
 
+
+    /**
+     * 计算并获取收款凭证
+     * @param receiveOrderSearchBean
+     * @return
+     */
+    @DAOAction(action = DAOActionType.QUERY)
+    List<ReceiveCalResultData> findCalculatedReceiveResult(@DAOParam("receiveOrderSearchBean") ReceiveOrderSearchBean receiveOrderSearchBean);
 
 }

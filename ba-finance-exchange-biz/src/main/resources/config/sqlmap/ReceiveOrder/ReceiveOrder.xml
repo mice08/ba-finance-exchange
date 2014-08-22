@@ -59,6 +59,18 @@
         <result property="matchedCount" column="MatchedCount"/>
     </resultMap>
 
+    <typeAlias alias="ReceiveCalResultData" type="com.dianping.ba.finance.exchange.api.datas.ReceiveCalResultData"/>
+    <resultMap id="receiveCalResultData" class="ReceiveCalResultData">
+        <result property="customerId" column="CustomerID"/>
+        <result property="shopId" column="ShopID"/>
+        <result property="businessType" column="BusinessType"/>
+        <result property="totalAmount" column="TotalAmount"/>
+        <result property="payChannel" column="PayChannel"/>
+        <result property="receiveType" column="ReceiveType"/>
+        <result property="bankId" column="BankID"/>
+        <result property="voucherDate" column="VoucherDate"/>
+    </resultMap>
+
     <insert id="insertReceiveOrderData" parameterClass="map">
         <![CDATA[
             INSERT INTO FC_ReceiveOrder
@@ -428,4 +440,49 @@
             </isGreaterThan>
         </dynamic>
     </select>
+
+
+    <select id="findCalculatedReceiveResult" resultMap="receiveCalResultData" parameterClass="map">
+        <![CDATA[
+        SELECT CustomerID,
+               ShopID,
+               BusinessType,
+               SUM(ReceiveAmount) as TotalAmount,
+               PayChannel,
+               ReceiveType,
+               BankID,
+               Date_format(ro.AddTime, '%Y-%m-%d') as VoucherDate
+        FROM   FC_ReceiveOrder ro
+        ]]>
+        <dynamic prepend="WHERE">
+            <isGreaterThan property="receiveOrderSearchBean.businessType" prepend="AND" compareValue="0">
+                ro.BusinessType = #receiveOrderSearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.receiveType" prepend="AND" compareValue="0">
+                ro.ReceiveType = #receiveOrderSearchBean.receiveType#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.payChannel" prepend="AND" compareValue="0">
+                ro.PayChannel = #receiveOrderSearchBean.payChannel#
+            </isGreaterThan>
+            <isGreaterThan property="receiveOrderSearchBean.status" compareValue="0" prepend="AND">
+                ro.Status = #receiveOrderSearchBean.status#
+            </isGreaterThan>
+            <isNotNull prepend="AND" property="receiveOrderSearchBean.addTimeBegin">
+                ro.AddTime &gt;= #receiveOrderSearchBean.addTimeBegin#
+            </isNotNull>
+            <isNotNull prepend="AND" property="receiveOrderSearchBean.addTimeEnd">
+                ro.AddTime &lt; #receiveOrderSearchBean.addTimeEnd#
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+        GROUP  BY CustomerID,
+                  ShopID,
+                  BusinessType,
+                  PayChannel,
+                  ReceiveType,
+                  BankID,
+                  Date_format(ro.AddTime, '%Y-%m-%d')
+		]]>
+    </select>
+
 </sqlMap>

@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.api;
 
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveCalResultData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.core.type.PageModel;
@@ -100,5 +101,11 @@ public interface ReceiveOrderService {
      */
     boolean manuallyUpdateReceiveOrder(ReceiveOrderUpdateBean receiveOrderUpdateBean);
 
+    /**
+     * 计算并获取收款凭证
+     * @param receiveOrderSearchBean
+     * @return
+     */
+    List<ReceiveCalResultData> findCalculatedReceiveResult(ReceiveOrderSearchBean receiveOrderSearchBean);
 
 }

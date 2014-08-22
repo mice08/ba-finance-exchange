@@ -4,11 +4,14 @@ import com.dianping.ba.finance.exchange.api.RORNMatchFireService
 import com.dianping.ba.finance.exchange.api.RORNMatchService
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderResultBean
+import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean
+import com.dianping.ba.finance.exchange.api.datas.ReceiveCalResultData
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData
 import com.dianping.ba.finance.exchange.api.enums.BusinessType
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus
+import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderDao
@@ -159,5 +162,27 @@ class ReceiveOrderServiceObjectSpockTest extends Specification {
         where:
         status                         | resultInt
         ReceiveOrderStatus.CONFIRMED   | 1
+    }
+
+    def "findCalculatedReceiveResult" (ReceiveOrderStatus status, Date date, Integer resultSize) {
+        given:
+        ReceiveOrderSearchBean searchBean = [status      : status.value(),
+                                             addTimeBegin: date,
+                                             addTimeEnd  : date,
+                                             payChannel  : ReceiveOrderPayChannel.POS_MACHINE.value()]
+
+        receiveOrderDaoMock.findCalculatedReceiveResult(_ as ReceiveOrderSearchBean) >> { args ->
+            ReceiveCalResultData rcData = [customerId  : 123,
+                                           businessType: BusinessType.GROUP_PURCHASE.value(),
+                                           totalAmount : BigDecimal.TEN]
+            [rcData]
+        }
+
+        expect:
+        resultSize == receiveOrderServiceObjectStub.findCalculatedReceiveResult(searchBean)?.size()
+
+        where:
+        status                         | date       | resultSize
+        ReceiveOrderStatus.UNCONFIRMED | new Date() | 1
     }
 }

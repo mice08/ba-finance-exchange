@@ -2,7 +2,9 @@ package com.dianping.ba.finance.exchange.biz.dao;
 
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
+import com.dianping.ba.finance.exchange.api.datas.ReceiveCalResultData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.core.type.PageModel;
 import junit.framework.Assert;
@@ -183,5 +185,30 @@ public class ReceiveOrderDaoTest {
     public void testFindReceiveOrderDataByTime() throws Exception {
         List<ReceiveOrderData> receiveOrderDataList = receiveOrderDao.findReceiveOrderDataByTime(null, new Date(),1);
         Assert.assertTrue(receiveOrderDataList.size()>0);
+    }
+    @Test
+    public void testFindCalculatedReceiveResult() throws Exception {
+        ReceiveOrderSearchBean searchBean = new ReceiveOrderSearchBean();
+
+        Calendar startCal = Calendar.getInstance();
+        startCal.set(Calendar.MONTH, Calendar.AUGUST);
+        startCal.set(Calendar.DAY_OF_MONTH, 20);
+        startCal.set(Calendar.HOUR_OF_DAY, 00);
+        startCal.set(Calendar.MINUTE, 00);
+        startCal.set(Calendar.SECOND, 00);
+        searchBean.setAddTimeBegin(startCal.getTime());
+
+        Calendar endCal = Calendar.getInstance();
+        endCal.set(Calendar.MONTH, Calendar.AUGUST);
+        endCal.set(Calendar.DAY_OF_MONTH, 21);
+        endCal.set(Calendar.HOUR_OF_DAY, 00);
+        endCal.set(Calendar.MINUTE, 00);
+        endCal.set(Calendar.SECOND, 00);
+        searchBean.setAddTimeEnd(endCal.getTime());
+
+        searchBean.setPayChannel(ReceiveOrderPayChannel.POS_MACHINE.value());
+        searchBean.setStatus(ReceiveOrderStatus.UNCONFIRMED.value());
+        List<ReceiveCalResultData> receiveCalResultDataList = receiveOrderDao.findCalculatedReceiveResult(searchBean);
+        Assert.assertFalse(receiveCalResultDataList.isEmpty());
     }
 }
