@@ -18,10 +18,9 @@ import com.dianping.ba.finance.exchange.biz.dao.ReceiveVoucherDao;
 import com.dianping.ba.finance.exchange.biz.producer.ReceivePayVoucherNotify;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
-import com.dianping.finance.common.util.DateUtils;
 import com.google.common.collect.Lists;
 
-import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -45,27 +44,33 @@ public class ReceiveVoucherServiceObject implements ReceiveVoucherService {
     @ReturnDefault
     @Override
     public void generateUnconfirmedReceiveVoucher(Date date) {
-        try {
-            Date today = DateUtils.addDate(date, 1);
-            Date endDate = DateUtils.removeTime(today);
-            Date startDate = DateUtils.removeTime(date);
-            ReceiveOrderSearchBean searchBean = buildReceiveOrderSearchBean(startDate, endDate);
-            List<ReceiveCalResultData> receiveCalResultDataList = receiveOrderService.findCalculatedReceiveResult(searchBean);
-            for (ReceiveCalResultData rcData : receiveCalResultDataList) {
-                List<ReceiveVoucherData> rvDataList = buildReceiveVoucherData(rcData);
-                for (ReceiveVoucherData rvData : rvDataList) {
-                    int voucherId = receiveVoucherDao.insertReceiveVoucherData(rvData);
-                    if (voucherId <= 0) {
-                        MONITOR_LOGGER.error(String.format("severity=[1] ReceiveVoucherServiceObject.generateUnconfirmedReceiveVoucher insertReceiveVoucherData error! receiveVoucherData=%s", rvData));
-                        continue;
-                    }
-                    rvData.setVoucherId(voucherId);
-                    ReceiveVoucherNotifyBean notifyBean = buildReceiveVoucherNotifyBean(rvData);
-                    receivePayVoucherNotify.notifyVoucher(notifyBean);
+        Calendar startCal = Calendar.getInstance();
+        startCal.setTime(date);
+        startCal.set(Calendar.DAY_OF_MONTH, 1);
+        startCal.set(Calendar.HOUR_OF_DAY, 00);
+        startCal.set(Calendar.MINUTE, 00);
+        startCal.set(Calendar.SECOND, 00);
+
+        Calendar endCal = (Calendar) startCal.clone();
+        endCal.add(Calendar.MONTH, 1);
+
+        Date endDate = endCal.getTime();
+        Date startDate = startCal.getTime();
+
+        ReceiveOrderSearchBean searchBean = buildReceiveOrderSearchBean(startDate, endDate);
+        List<ReceiveCalResultData> receiveCalResultDataList = receiveOrderService.findCalculatedReceiveResult(searchBean);
+        for (ReceiveCalResultData rcData : receiveCalResultDataList) {
+            List<ReceiveVoucherData> rvDataList = buildReceiveVoucherData(rcData);
+            for (ReceiveVoucherData rvData : rvDataList) {
+                int voucherId = receiveVoucherDao.insertReceiveVoucherData(rvData);
+                if (voucherId <= 0) {
+                    MONITOR_LOGGER.error(String.format("severity=[1] ReceiveVoucherServiceObject.generateUnconfirmedReceiveVoucher insertReceiveVoucherData error! receiveVoucherData=%s", rvData));
+                    continue;
                 }
+                rvData.setVoucherId(voucherId);
+                ReceiveVoucherNotifyBean notifyBean = buildReceiveVoucherNotifyBean(rvData);
+                receivePayVoucherNotify.notifyVoucher(notifyBean);
             }
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
         }
     }
 
