@@ -171,7 +171,7 @@ class ReceiveOrderServiceObjectSpockTest extends Specification {
                                              addTimeEnd  : date,
                                              payChannel  : ReceiveOrderPayChannel.POS_MACHINE.value()]
 
-        receiveOrderDaoMock.findCalculatedReceiveResult(_ as ReceiveOrderSearchBean) >> { args ->
+        receiveOrderDaoMock.findCalculatedReceiveResult(_ as ReceiveOrderSearchBean, _ as String) >> { args ->
             ReceiveCalResultData rcData = [customerId  : 123,
                                            businessType: BusinessType.GROUP_PURCHASE.value(),
                                            totalAmount : BigDecimal.TEN]

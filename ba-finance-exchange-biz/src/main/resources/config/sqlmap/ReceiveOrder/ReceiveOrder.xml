@@ -451,7 +451,7 @@
                PayChannel,
                ReceiveType,
                BankID,
-               Date_format(ro.AddTime, '%Y-%m-%d') as VoucherDate
+               #voucherDate# as VoucherDate
         FROM   FC_ReceiveOrder ro
         ]]>
         <dynamic prepend="WHERE">

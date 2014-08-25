@@ -1,4 +1,4 @@
-package com.dianping.ba.finance.exchange.paymonitor.job;
+package com.dianping.ba.finance.exchange.voucher.job;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;

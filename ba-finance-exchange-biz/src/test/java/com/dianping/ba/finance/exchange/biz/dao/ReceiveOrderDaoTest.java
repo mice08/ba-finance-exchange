@@ -7,6 +7,7 @@ import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.core.type.PageModel;
+import com.dianping.finance.common.util.DateUtils;
 import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -208,7 +209,9 @@ public class ReceiveOrderDaoTest {
 
         searchBean.setPayChannel(ReceiveOrderPayChannel.POS_MACHINE.value());
         searchBean.setStatus(ReceiveOrderStatus.UNCONFIRMED.value());
-        List<ReceiveCalResultData> receiveCalResultDataList = receiveOrderDao.findCalculatedReceiveResult(searchBean);
+
+        String voucherDate = DateUtils.format("yyyy-MM-01", startCal.getTime());
+        List<ReceiveCalResultData> receiveCalResultDataList = receiveOrderDao.findCalculatedReceiveResult(searchBean, voucherDate);
         Assert.assertFalse(receiveCalResultDataList.isEmpty());
     }
 }

@@ -101,6 +101,7 @@ public interface ReceiveOrderDao extends GenericDao {
      * @return
      */
     @DAOAction(action = DAOActionType.QUERY)
-    List<ReceiveCalResultData> findCalculatedReceiveResult(@DAOParam("receiveOrderSearchBean") ReceiveOrderSearchBean receiveOrderSearchBean);
+    List<ReceiveCalResultData> findCalculatedReceiveResult(@DAOParam("receiveOrderSearchBean") ReceiveOrderSearchBean receiveOrderSearchBean,
+                                                           @DAOParam("voucherDate")String voucherDate);
 
 }

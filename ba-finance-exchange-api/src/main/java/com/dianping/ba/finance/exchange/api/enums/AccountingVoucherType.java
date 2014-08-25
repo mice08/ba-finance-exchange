@@ -13,9 +13,9 @@ public enum AccountingVoucherType {
 	/**
      * AD表示推广，O表示其他凭证，NONE_CONTRACT_RECEIVE，无合同收款，最后表示GAAPType
      */
-    AD_O_NONE_CONTRACT_RECEIVE_PRC(56032, "DP_pos无合同收款_推广_PRC"),
+    AD_O_NONE_CONTRACT_RECEIVE_PRC(56024, "DP_pos无合同收款_推广_PRC"),
 
-    AD_O_NONE_CONTRACT_RECEIVE_US(56055, "DP_pos无合同收款_推广_US");
+    AD_O_NONE_CONTRACT_RECEIVE_US(56047, "DP_pos无合同收款_推广_US");
 
     private int type;
 

@@ -20,9 +20,11 @@ import com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
+import com.dianping.finance.common.util.DateUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -350,7 +352,16 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
 
     @Override
     public List<ReceiveCalResultData> findCalculatedReceiveResult(ReceiveOrderSearchBean receiveOrderSearchBean) {
-        return receiveOrderDao.findCalculatedReceiveResult(receiveOrderSearchBean);
+        Date addTimeBegin = receiveOrderSearchBean.getAddTimeBegin();
+        if (addTimeBegin == null) {
+            addTimeBegin = new Date();
+        }
+        try {
+            String voucherDate = DateUtils.format("yyyy-MM-01", addTimeBegin);
+            return receiveOrderDao.findCalculatedReceiveResult(receiveOrderSearchBean, voucherDate);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void setReceiveOrderDao(ReceiveOrderDao receiveOrderDao) {
