@@ -33,7 +33,8 @@ public class ReceiveOrderMonitorServiceObject implements ReceiveOrderMonitorServ
     @Override
     public List<ReceiveOrderMonitorDTO> findReceiveOrderMonitorDataByTime(ReceiveOrderMonitorSearchDTO receiveOrderMonitorSearchDTO) {
         List<ReceiveOrderData> receiveOrderDataList = receiveOrderDao.findReceiveOrderDataByTime(receiveOrderMonitorSearchDTO.getStartTime()
-                , receiveOrderMonitorSearchDTO.getEndTime(), receiveOrderMonitorSearchDTO.getBusinessType());
+                , receiveOrderMonitorSearchDTO.getEndTime(), receiveOrderMonitorSearchDTO.getBusinessType(),
+                receiveOrderMonitorSearchDTO.getStatus());
         List<ReceiveOrderMonitorDTO> receiveOrderMonitorDTOList = new ArrayList<ReceiveOrderMonitorDTO>();
         for(ReceiveOrderData receiveOrderData : receiveOrderDataList){
             ReceiveOrderMonitorDTO receiveOrderMonitorDTO = buildReceiveOrderMonitorDTO(receiveOrderData);

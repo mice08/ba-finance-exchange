@@ -10,6 +10,7 @@ public class ReceiveOrderMonitorSearchDTO implements Serializable {
     private Date startTime;
     private Date endTime;
     private int BusinessType;
+    private int status;
 
     public Date getStartTime() {
         return startTime;
@@ -35,12 +36,21 @@ public class ReceiveOrderMonitorSearchDTO implements Serializable {
         BusinessType = businessType;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "ReceiveOrderMonitorSearchDTO{" +
                 "startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", BusinessType=" + BusinessType +
+                ", status=" + status +
                 '}';
     }
 }
