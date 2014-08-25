@@ -2,9 +2,12 @@ package com.dianping.ba.finance.exchange.midasreco.biz.impl;
 
 import com.dianping.ba.finance.exchange.api.ReceiveOrderMonitorService;
 import com.dianping.ba.finance.exchange.api.dtos.ReceiveOrderMonitorSearchDTO;
+import com.dianping.ba.finance.exchange.api.enums.BusinessType;
+import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.ba.finance.exchange.midasreco.api.MidasRecoService;
 import com.dianping.ba.finance.settle.api.InvoiceMonitorService;
 import com.dianping.ba.finance.settle.api.dtos.InvoiceMonitorSearchDTO;
+import com.dianping.ba.finance.settle.api.enums.InvoiceStatus;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -32,13 +35,15 @@ public class MidasRecoServiceObject implements MidasRecoService {
         ReceiveOrderMonitorSearchDTO receiveOrderMonitorSearchDTO = new ReceiveOrderMonitorSearchDTO();
         receiveOrderMonitorSearchDTO.setStartTime(startTime);
         receiveOrderMonitorSearchDTO.setEndTime(endTime);
-        receiveOrderMonitorSearchDTO.setBusinessType(5);
+        receiveOrderMonitorSearchDTO.setStatus(ReceiveOrderStatus.CONFIRMED.value());
+        receiveOrderMonitorSearchDTO.setBusinessType(BusinessType.ADVERTISEMENT.value());
         receiveOrderMonitorService.insertReceiveOrderRecoDatas(receiveOrderMonitorSearchDTO);
 
         InvoiceMonitorSearchDTO invoiceMonitorSearchDTO = new InvoiceMonitorSearchDTO();
         invoiceMonitorSearchDTO.setStartTime(startTime);
         invoiceMonitorSearchDTO.setEndTime(endTime);
-        invoiceMonitorSearchDTO.setBusinessType(5);
+        invoiceMonitorSearchDTO.setStatus(InvoiceStatus.INVOICED.value());
+        invoiceMonitorSearchDTO.setBusinessType(BusinessType.ADVERTISEMENT.value());
         invoiceMonitorService.insertInvoiceRecoDatas(invoiceMonitorSearchDTO);
         return false;
     }

@@ -92,7 +92,10 @@ public interface ReceiveOrderDao extends GenericDao {
      * @return
      */
     @DAOAction(action = DAOActionType.QUERY)
-    List<ReceiveOrderData> findReceiveOrderDataByTime(@DAOParam("startTime") Date startTime, @DAOParam("endTime") Date endTime, @DAOParam("businessType")int businessType);
+    List<ReceiveOrderData> findReceiveOrderDataByTime(@DAOParam("startTime") Date startTime,
+                                                      @DAOParam("endTime") Date endTime,
+                                                      @DAOParam("businessType") int businessType,
+                                                      @DAOParam("status") int status);
 
 
     /**

@@ -50,8 +50,8 @@
              #list[].bizContent#,
              #list[].tradeNo#,
              #list[].bankID#,
-             #list[].addTime#,
-             #list[].updateTime#,
+             NOW(),
+             NOW(),
              #list[].batchId#)
         </iterate>
     </insert>
