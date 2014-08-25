@@ -40,7 +40,7 @@ class ReceiveOrderMonitorServiceObjectTest extends Specification {
     @Unroll
     def "findReceiveOrderMonitorDataByTime"(int paramRoId, int expectRoId){
         given:
-        receiveOrderDaoMock.findReceiveOrderDataByTime(_ as Date, _ as Date, _ as Integer)>>{
+        receiveOrderDaoMock.findReceiveOrderDataByTime(_ as Date, _ as Date, _ as Integer, _ as Integer)>>{
             ReceiveOrderData receiveOrderData = ["roId":paramRoId];
             [receiveOrderData];
         }
@@ -59,7 +59,7 @@ class ReceiveOrderMonitorServiceObjectTest extends Specification {
         when:
         receiveOrderQueryServiceObjectStub.insertReceiveOrderRecoDatas(receiveOrderMonitorSearchDTO);
         then:
-        1 * receiveOrderDaoMock.findReceiveOrderDataByTime(_ as Date, _ as Date, _ as Integer)>>{
+        1 * receiveOrderDaoMock.findReceiveOrderDataByTime(_ as Date, _ as Date, _ as Integer, _ as Integer)>>{
             ReceiveOrderData receiveOrderData = [];
             [receiveOrderData];
         }
@@ -73,7 +73,7 @@ class ReceiveOrderMonitorServiceObjectTest extends Specification {
         when:
         receiveOrderQueryServiceObjectStub.insertReceiveOrderRecoDatas(receiveOrderMonitorSearchDTO);
         then:
-        1 * receiveOrderDaoMock.findReceiveOrderDataByTime(_ as Date, _ as Date, _ as Integer)>>{
+        1 * receiveOrderDaoMock.findReceiveOrderDataByTime(_ as Date, _ as Date, _ as Integer, _ as Integer)>>{
             [];
         }
 

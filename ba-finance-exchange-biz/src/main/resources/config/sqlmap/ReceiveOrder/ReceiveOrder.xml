@@ -438,6 +438,9 @@
             <isGreaterThan prepend="AND" property="businessType" compareValue="0">
               ro.BusinessType = #businessType#
             </isGreaterThan>
+            <isGreaterThan prepend="AND" property="status" compareValue="0">
+              ro.Status = #status#
+            </isGreaterThan>
         </dynamic>
     </select>
 
