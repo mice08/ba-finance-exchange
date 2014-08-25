@@ -430,10 +430,10 @@
         FROM FC_ReceiveOrder ro
         <dynamic prepend="WHERE">
             <isNotNull prepend="AND" property="startTime">
-              ro.AddTime &gt;= #startTime#
+              ro.ReceiveTime &gt;= #startTime#
             </isNotNull>
             <isNotNull prepend="AND" property="endTime">
-              ro.AddTime &lt;= #endTime#
+              ro.ReceiveTime &lt;= #endTime#
             </isNotNull>
             <isGreaterThan prepend="AND" property="businessType" compareValue="0">
               ro.BusinessType = #businessType#
