@@ -28,9 +28,11 @@ public class MidasRecoServiceObject implements MidasRecoService {
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
-        Date endTime = cal.getTime();
         cal.add(Calendar.DATE, -1);
         Date startTime = cal.getTime();
+        cal.add(Calendar.DATE, 1);
+        cal.add(Calendar.SECOND, -1);
+        Date endTime = cal.getTime();
 
         ReceiveOrderMonitorSearchDTO receiveOrderMonitorSearchDTO = new ReceiveOrderMonitorSearchDTO();
         receiveOrderMonitorSearchDTO.setStartTime(startTime);
