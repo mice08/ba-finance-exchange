@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.biz.rornmatcher;
 
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
+import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.finance.common.util.DateUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
@@ -27,9 +28,27 @@ public class RORNMatcherTelTransfer implements RORNMatcher {
                     && timeDifferenceMatch(receiveOrderData, receiveNotifyData)
                     && amountMatch(receiveOrderData, receiveNotifyData)
                     && bankMatch(receiveOrderData, receiveNotifyData)
-                    && receiveTypeMatch(receiveOrderData, receiveNotifyData);
+                    && receiveTypeMatch(receiveOrderData, receiveNotifyData)
+                    && customerIdExist(receiveNotifyData)
+                    && bizContentNotEmptyForAD(receiveNotifyData);
         }
         return false;
+    }
+
+    /**
+     * 广告的业务文本，对于电汇来说，不能为空
+     * @param receiveNotifyData
+     * @return
+     */
+    private boolean bizContentNotEmptyForAD(ReceiveNotifyData receiveNotifyData) {
+        if (receiveNotifyData.getBusinessType() == BusinessType.ADVERTISEMENT.value()) {
+            return StringUtils.isNotEmpty(receiveNotifyData.getBizContent());
+        }
+        return true;
+    }
+
+    private boolean customerIdExist(ReceiveNotifyData receiveNotifyData) {
+        return receiveNotifyData.getCustomerId() > 0;
     }
 
 

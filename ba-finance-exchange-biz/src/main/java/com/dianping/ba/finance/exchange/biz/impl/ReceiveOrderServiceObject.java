@@ -303,18 +303,10 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
             return u == 1;
         }
 
-        // 带有applicationId，及确认的收款单
-        if (relateRORN(receiveOrderUpdateBean.getRoId(), receiveOrderUpdateBean.getApplicationId())) {
-            int u = updateReceiveOrderConfirm(receiveOrderUpdateBean);
-            return u == 1;
-        }
-        return false;
-    }
-
-    private boolean relateRORN(int roId, String applicationId){
-        ReceiveOrderData roData = receiveOrderDao.loadReceiveOrderDataByRoId(roId);
+        // 带有applicationId，确认是否能关联并更新
+        ReceiveOrderData roData = receiveOrderDao.loadReceiveOrderDataByRoId(receiveOrderUpdateBean.getRoId());
         if (roData == null) {
-            MONITOR_LOGGER.error(String.format("severity=[1] ReceiveOrderServiceObject.manuallyUpdateReceiveOrder ReceiveOrderData no found! roId=%s", roId));
+            MONITOR_LOGGER.error(String.format("severity=[1] ReceiveOrderServiceObject.manuallyUpdateReceiveOrder ReceiveOrderData no found! roId=%s", receiveOrderUpdateBean.getRoId()));
             return false;
         }
         ReceiveNotifyData rnData = receiveNotifyService.loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus.INIT, roData.getBusinessType(), applicationId);
@@ -322,8 +314,13 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
             MONITOR_LOGGER.error(String.format("severity=[1] ReceiveOrderServiceObject.manuallyUpdateReceiveOrder ReceiveNotifyData no found! biz=%s, applicationId=%s", roData.getBusinessType(), roData.getApplicationId()));
             return false;
         }
+        // 判断是否能关联
         if (!rornMatchService.doMatch(roData, rnData)) {
             MONITOR_LOGGER.error(String.format("severity=[1] ReceiveOrderServiceObject.manuallyUpdateReceiveOrder ReceiveNotifyData and ReceiveOrderData no match! roId=%s, rnId=%s", roData.getRoId(), rnData.getReceiveNotifyId()));
+            return false;
+        }
+        int u = updateReceiveOrderConfirm(receiveOrderUpdateBean);
+        if (u < 0) {
             return false;
         }
         boolean update = receiveNotifyService.updateReceiveNotifyConfirm(roData.getRoId(), rnData.getReceiveNotifyId());
