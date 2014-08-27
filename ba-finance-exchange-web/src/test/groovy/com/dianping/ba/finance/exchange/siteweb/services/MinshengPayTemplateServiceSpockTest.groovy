@@ -32,6 +32,10 @@ class MinshengPayTemplateServiceSpockTest extends Specification {
         PayOrderExportBean commonExportBean = [bankAccountType: 1, bankName: "XX银行", payAmount: 12.0G]
         PayOrderExportBean sameBankExportBean = [bankAccountType: 0, bankName: "民生银行", payAmount: 87.87G]
         def exportBeans = [commonExportBean, sameBankExportBean];
+//        1000.times {
+//            PayOrderExportBean temp = [bankAccountType: 1, bankName: "XX银行", payAmount: 187.0G]
+//            exportBeans.add(temp)
+//        }
 
         when:
         minShengPayTemplateServiceStub.init();

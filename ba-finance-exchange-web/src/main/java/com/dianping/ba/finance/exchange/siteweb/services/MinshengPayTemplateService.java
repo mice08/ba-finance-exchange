@@ -7,11 +7,19 @@ import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.SameBankPersonalTemplateBean;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
+import com.dianping.finance.common.util.LionConfigUtils;
+import com.dianping.finance.common.util.ListUtils;
+import com.dianping.finance.common.util.StringUtils;
 import com.google.common.collect.Lists;
+import jxl.Workbook;
+import jxl.biff.DisplayFormat;
+import jxl.format.Alignment;
+import jxl.format.Border;
+import jxl.format.VerticalAlignment;
+import jxl.write.*;
+import jxl.write.Number;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -20,6 +28,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,13 +43,13 @@ public class MinshengPayTemplateService implements PayTemplateService {
 
     private String[] commonColumns;
 
-    private int[] commonColumnFormats;
+    private DisplayFormat[] commonColumnFormats;
 
     private String[] sameBankPersonalProperties;
 
     private String[] sameBankPersonalColumns;
 
-    private int[] sameBankPersonalFormats;
+    private DisplayFormat[] sameBankPersonalFormats;
 
     public void init() {
         initCommon();
@@ -48,7 +57,7 @@ public class MinshengPayTemplateService implements PayTemplateService {
     }
 
     private void initCommon() {
-        commonProperties = new String[] {
+        commonProperties = new String[]{
                 "formType",
                 "payCode",
                 "customerId",
@@ -69,7 +78,7 @@ public class MinshengPayTemplateService implements PayTemplateService {
                 "email",
                 "bankCodeAndFullBranchName"
         };
-        commonColumns = new String[] {
+        commonColumns = new String[]{
                 "制单类型",
                 "企业自制凭证号",
                 "客户号",
@@ -91,44 +100,44 @@ public class MinshengPayTemplateService implements PayTemplateService {
                 "支付行号&支付行名称"
         };
 
-        commonColumnFormats = new int[] {
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_NUMERIC,
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_STRING
+        commonColumnFormats = new DisplayFormat[]{
+                NumberFormats.TEXT,
+                NumberFormats.TEXT,
+                NumberFormats.TEXT,
+                NumberFormats.TEXT,
+                NumberFormats.TEXT,
+                NumberFormats.FLOAT,
+                NumberFormats.TEXT,
+                NumberFormats.TEXT,
+                NumberFormats.TEXT,
+                NumberFormats.TEXT,
+                NumberFormats.TEXT,
+                NumberFormats.TEXT,
+                NumberFormats.TEXT,
+                NumberFormats.TEXT,
+                NumberFormats.TEXT,
+                NumberFormats.TEXT,
+                NumberFormats.TEXT,
+                NumberFormats.TEXT,
+                NumberFormats.TEXT
         };
     }
 
     private void initSameBankPersonal() {
-        sameBankPersonalProperties = new String[] {
+        sameBankPersonalProperties = new String[]{
                 "bankAccountNo",
                 "payAmount",
                 "bankAccountName"
         };
-        sameBankPersonalColumns = new String[] {
+        sameBankPersonalColumns = new String[]{
                 "个人帐号",
                 "金额",
                 "姓名"
         };
-        sameBankPersonalFormats = new int[] {
-                Cell.CELL_TYPE_STRING,
-                Cell.CELL_TYPE_NUMERIC,
-                Cell.CELL_TYPE_STRING
+        sameBankPersonalFormats = new DisplayFormat[]{
+                NumberFormats.TEXT,
+                NumberFormats.FLOAT,
+                NumberFormats.TEXT
         };
     }
 
@@ -146,102 +155,119 @@ public class MinshengPayTemplateService implements PayTemplateService {
         exportExcel(os, commonTemplateBeanList, sameBankPersonalTemplateBeanList);
     }
 
-    private void exportExcel(OutputStream os, List<CommonTemplateBean> commonTemplateBeanList, List<SameBankPersonalTemplateBean> sameBankPersonalTemplateBeanList) throws IOException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        Workbook wb = new SXSSFWorkbook(); //or new HSSFWorkbook();
+    private void exportExcel(OutputStream os, List<CommonTemplateBean> commonTemplateBeanList, List<SameBankPersonalTemplateBean> sameBankPersonalTemplateBeanList) throws IOException, WriteException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        WritableWorkbook excelBook = null;
         try {
-            exportSameBankPersonal(wb, sameBankPersonalTemplateBeanList);
-            exportCommon(wb, commonTemplateBeanList);
-            wb.write(os);
+            excelBook = Workbook.createWorkbook(os);
+            exportSameBankPersonal(excelBook, sameBankPersonalTemplateBeanList);
+            exportCommon(excelBook, commonTemplateBeanList);
+            excelBook.write();
         } finally {
+            if (excelBook != null) {
+                excelBook.close();
+            }
             os.close();
         }
     }
 
-    private void exportSameBankPersonal(Workbook workbook, List<SameBankPersonalTemplateBean> sameBankPersonalTemplateBeanList) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    private void exportSameBankPersonal(WritableWorkbook excelBook, List<SameBankPersonalTemplateBean> sameBankPersonalTemplateBeanList) throws WriteException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (CollectionUtils.isEmpty(sameBankPersonalTemplateBeanList)) {
             return;
         }
-        Sheet sheet = workbook.createSheet("行内对私支付模板");
-        sheet.setDefaultColumnWidth(20);
-        createSheetHeader(workbook, sheet, sameBankPersonalColumns);
-        createSheetBody(workbook, sheet, sameBankPersonalFormats, sameBankPersonalProperties, sameBankPersonalTemplateBeanList);
-
+        List<List<SameBankPersonalTemplateBean>> templateBeanGroupList;
+        int groupSize = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-web.export.sheetGroupSize", "100"));
+        if (groupSize <= 0) {
+            templateBeanGroupList = new LinkedList<List<SameBankPersonalTemplateBean>>();
+            templateBeanGroupList.add(sameBankPersonalTemplateBeanList);
+        } else {
+            templateBeanGroupList = ListUtils.generateListGroup(sameBankPersonalTemplateBeanList, groupSize);
+        }
+        for (int i = 0; i < templateBeanGroupList.size(); ++i) {
+            List<SameBankPersonalTemplateBean> templateBeanSeg = templateBeanGroupList.get(i);
+            WritableSheet sameBankPersonalSheet = excelBook.createSheet("行内对私支付模板" + (i + 1), excelBook.getNumberOfSheets());
+            createSheetHeader(sameBankPersonalSheet, sameBankPersonalColumns);
+            createSheetBody(sameBankPersonalSheet, sameBankPersonalFormats, sameBankPersonalProperties, templateBeanSeg);
+        }
     }
 
-    private void exportCommon(Workbook workbook, List<CommonTemplateBean> commonTemplateBeanList) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    private void exportCommon(WritableWorkbook excelBook, List<CommonTemplateBean> commonTemplateBeanList) throws WriteException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (CollectionUtils.isEmpty(commonTemplateBeanList)) {
             return;
         }
-        Sheet sheet = workbook.createSheet("通用支付模板");
-        sheet.setDefaultColumnWidth(20);
-        createSheetHeader(workbook, sheet, commonColumns);
-        createSheetBody(workbook, sheet, commonColumnFormats, commonProperties, commonTemplateBeanList);
-    }
-
-    private void createSheetHeader(Workbook workbook, Sheet sheet, String[] commonColumns) {
-        Row row = sheet.createRow(0);
-        CellStyle headCellStyle = workbook.createCellStyle();
-        headCellStyle.setAlignment(CellStyle.ALIGN_LEFT);
-        headCellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        headCellStyle.setBorderBottom(CellStyle.BORDER_NONE);
-        headCellStyle.setBorderLeft(CellStyle.BORDER_NONE);
-        headCellStyle.setBorderRight(CellStyle.BORDER_NONE);
-        headCellStyle.setBorderTop(CellStyle.BORDER_NONE);
-
-        for (int i = 0; i < commonColumns.length; i++) {
-            Cell cell = row.createCell(i, Cell.CELL_TYPE_STRING);
-            cell.setCellStyle(headCellStyle);
-            cell.setCellValue(commonColumns[i]);
+        List<List<CommonTemplateBean>> templateBeanGroupList;
+        int groupSize = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-web.export.sheetGroupSize", "100"));
+        if (groupSize <= 0) {
+            templateBeanGroupList = new LinkedList<List<CommonTemplateBean>>();
+            templateBeanGroupList.add(commonTemplateBeanList);
+        } else {
+            templateBeanGroupList = ListUtils.generateListGroup(commonTemplateBeanList, groupSize);
+        }
+        for (int i = 0; i < templateBeanGroupList.size(); ++i) {
+            WritableSheet commonSheet = excelBook.createSheet("通用支付模板" + (i + 1), excelBook.getNumberOfSheets());
+            createSheetHeader(commonSheet, commonColumns);
+            createSheetBody(commonSheet, commonColumnFormats, commonProperties, commonTemplateBeanList);
         }
     }
 
-
-    private void createSheetBody(Workbook workbook,
-                                 Sheet sheet,
-                                 int[] formats,
+    private void createSheetBody(WritableSheet commonSheet,
+                                 DisplayFormat[] formats,
                                  String[] commonProperties,
-                                 List<?> templateBeanList) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+                                 List<?> templateBeanList) throws WriteException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         for (int i = 0; i < templateBeanList.size(); i++) {
             Object obj = templateBeanList.get(i);
-            Row row = sheet.createRow(i + 1);
             for (int j = 0; j < commonProperties.length; j++) {
-                Cell cell = row.createCell(j);
-                cell.setCellType(formats[j]);
-                CellStyle cellStyle = createCellStyle(workbook, formats[j]);
-                cell.setCellStyle(cellStyle);
-
+                WritableCellFormat bodyFormat = createCellFormat(formats[j]);
                 if (obj instanceof Map) {
                     Map<?, ?> objMap = (Map<?, ?>) obj;
-                    cell.setCellValue(String.valueOf(objMap.get(commonProperties[j].toLowerCase())));
+                    Label label = new Label(j, i + 1, String.valueOf(objMap.get(commonProperties[j].toLowerCase())), bodyFormat);
+                    commonSheet.addCell(label);
                 } else {
                     String item = BeanUtils.getProperty(obj, commonProperties[j]);
                     if (item == null) {
                         item = "";
                     }
-                    cell.setCellValue(item);
+                    if (!formats[j].equals(NumberFormats.TEXT)
+                            && StringUtils.isDecimal(item)) {
+                        double num = Double.valueOf(item).doubleValue();
+                        Number number = new Number(j, i + 1, num, bodyFormat);
+                        commonSheet.addCell(number);
+                    } else {
+                        Label label = new Label(j, i + 1, item, bodyFormat);
+                        commonSheet.addCell(label);
+                    }
                 }
+                commonSheet.setRowView(i + 1, 350);
             }
         }
     }
 
-    private CellStyle createCellStyle(Workbook workbook, int format) {
-        CellStyle cellStyle = workbook.createCellStyle();
-        cellStyle.setAlignment(CellStyle.ALIGN_LEFT);
-        cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-
-        cellStyle.setBorderBottom(CellStyle.BORDER_NONE);
-        cellStyle.setBorderLeft(CellStyle.BORDER_NONE);
-        cellStyle.setBorderRight(CellStyle.BORDER_NONE);
-        cellStyle.setBorderTop(CellStyle.BORDER_NONE);
-
-        if (format == Cell.CELL_TYPE_NUMERIC) {
-            CreationHelper creationHelper = workbook.getCreationHelper();
-            short numberFormat = creationHelper.createDataFormat().getFormat("##,###,###,###,##0.00");
-            cellStyle.setDataFormat(numberFormat);
+    private WritableCellFormat createCellFormat(DisplayFormat format) throws WriteException {
+        DisplayFormat f;
+        if (format == NumberFormats.FLOAT) {
+            f = new NumberFormat("##,###,###,###,##0.00");
+        } else {
+            f = format;
         }
-        return cellStyle;
-
+        WritableCellFormat bodyFormat = new WritableCellFormat(f);
+        bodyFormat.setAlignment(Alignment.LEFT);
+        bodyFormat.setVerticalAlignment(VerticalAlignment.CENTRE);
+        bodyFormat.setBorder(jxl.format.Border.NONE, jxl.format.BorderLineStyle.THIN);
+        return bodyFormat;
     }
+
+    private void createSheetHeader(WritableSheet commonSheet, String[] commonColumns) throws WriteException {
+        WritableCellFormat headerFormat = new WritableCellFormat();
+        headerFormat.setAlignment(Alignment.LEFT);
+        headerFormat.setVerticalAlignment(VerticalAlignment.CENTRE);
+        headerFormat.setBorder(Border.NONE, jxl.format.BorderLineStyle.THIN);
+        for (int i = 0; i < commonColumns.length; i++) {
+            Label label = new Label(i, 0, commonColumns[i], headerFormat);
+            commonSheet.addCell(label);
+            commonSheet.setColumnView(i, 20);
+            commonSheet.setRowView(0, 500);
+        }
+    }
+
     private void initResponse(HttpServletResponse response, String fileName) throws UnsupportedEncodingException {
         String downloadFileName = getEncodedFileName(fileName);
         response.reset();
@@ -251,7 +277,7 @@ public class MinshengPayTemplateService implements PayTemplateService {
 
     private String getEncodedFileName(String fileName) throws UnsupportedEncodingException {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String downloadFileName = String.format("%s_%s.xlsx", fileName, df.format(new Date()));
+        String downloadFileName = String.format("%s_%s.xls", fileName, df.format(new Date()));
         return new String(downloadFileName.getBytes(System.getProperty("file.encoding")), "ISO-8859-1");
     }
 
