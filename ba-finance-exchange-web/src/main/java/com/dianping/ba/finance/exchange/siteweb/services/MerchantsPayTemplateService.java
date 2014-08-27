@@ -148,13 +148,14 @@ public class MerchantsPayTemplateService implements PayTemplateService {
     private void exportExcel(OutputStream os, List<MerchantsTemplateBean> merchantsTemplateBeanLinkedList) throws IOException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         Workbook wb = new XSSFWorkbook(); //or new HSSFWorkbook();
         try {
-            exportCommon(wb, merchantsTemplateBeanLinkedList, os);
+            exportCommon(wb, merchantsTemplateBeanLinkedList);
+            wb.write(os);
         } finally {
             os.close();
         }
     }
 
-    private void exportCommon(Workbook workbook, List<MerchantsTemplateBean> merchantsTemplateBeanLinkedList, OutputStream os) throws IOException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    private void exportCommon(Workbook workbook, List<MerchantsTemplateBean> merchantsTemplateBeanLinkedList) throws IOException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (CollectionUtils.isEmpty(merchantsTemplateBeanLinkedList)) {
             return;
         }
@@ -162,7 +163,6 @@ public class MerchantsPayTemplateService implements PayTemplateService {
         sheet.setDefaultColumnWidth(20);
         createSheetHeader(workbook, sheet, commonColumns);
         createSheetBody(workbook, sheet, commonColumnFormats, commonProperties, merchantsTemplateBeanLinkedList);
-        workbook.write(os);
     }
 
 
