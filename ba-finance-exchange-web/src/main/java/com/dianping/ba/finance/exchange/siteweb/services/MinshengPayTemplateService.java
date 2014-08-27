@@ -173,6 +173,7 @@ public class MinshengPayTemplateService implements PayTemplateService {
             return;
         }
         Sheet sheet = workbook.createSheet("通用支付模板");
+        sheet.setDefaultColumnWidth(20);
         createSheetHeader(workbook, sheet, commonColumns);
         createSheetBody(workbook, sheet, commonColumnFormats, commonProperties, commonTemplateBeanList);
     }
