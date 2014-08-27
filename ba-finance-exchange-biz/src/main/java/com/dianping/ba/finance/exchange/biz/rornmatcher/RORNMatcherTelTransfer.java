@@ -66,7 +66,7 @@ public class RORNMatcherTelTransfer implements RORNMatcher {
         BigDecimal roAmount = receiveOrderData.getReceiveAmount();
         BigDecimal rnAmount = receiveNotifyData.getReceiveAmount();
         if (roAmount != null && rnAmount != null) {
-            return rnAmount.compareTo(rnAmount) == 0;
+            return roAmount.compareTo(rnAmount) == 0;
         }
         return false;
     }
