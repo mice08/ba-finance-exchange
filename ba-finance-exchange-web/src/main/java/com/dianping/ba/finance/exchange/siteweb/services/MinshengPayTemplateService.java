@@ -203,9 +203,10 @@ public class MinshengPayTemplateService implements PayTemplateService {
             templateBeanGroupList = ListUtils.generateListGroup(commonTemplateBeanList, groupSize);
         }
         for (int i = 0; i < templateBeanGroupList.size(); ++i) {
+            List<CommonTemplateBean> templateBeanSeg = templateBeanGroupList.get(i);
             WritableSheet commonSheet = excelBook.createSheet("通用支付模板" + (i + 1), excelBook.getNumberOfSheets());
             createSheetHeader(commonSheet, commonColumns);
-            createSheetBody(commonSheet, commonColumnFormats, commonProperties, commonTemplateBeanList);
+            createSheetBody(commonSheet, commonColumnFormats, commonProperties, templateBeanSeg);
         }
     }
 
