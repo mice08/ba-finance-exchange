@@ -159,6 +159,7 @@ public class MerchantsPayTemplateService implements PayTemplateService {
             return;
         }
         Sheet sheet = workbook.createSheet("支付模板");
+        sheet.setDefaultColumnWidth(20);
         createSheetHeader(workbook, sheet, commonColumns);
         createSheetBody(workbook, sheet, commonColumnFormats, commonProperties, merchantsTemplateBeanLinkedList);
         workbook.write(os);
@@ -170,10 +171,10 @@ public class MerchantsPayTemplateService implements PayTemplateService {
         CellStyle headCellStyle = workbook.createCellStyle();
         headCellStyle.setAlignment(CellStyle.ALIGN_LEFT);
         headCellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-        headCellStyle.setBorderBottom(CellStyle.BORDER_THIN);
-        headCellStyle.setBorderLeft(CellStyle.BORDER_THIN);
-        headCellStyle.setBorderRight(CellStyle.BORDER_THIN);
-        headCellStyle.setBorderTop(CellStyle.BORDER_THIN);
+        headCellStyle.setBorderBottom(CellStyle.BORDER_NONE);
+        headCellStyle.setBorderLeft(CellStyle.BORDER_NONE);
+        headCellStyle.setBorderRight(CellStyle.BORDER_NONE);
+        headCellStyle.setBorderTop(CellStyle.BORDER_NONE);
 
         for (int i = 0; i < commonColumns.length; i++) {
             Cell cell = row.createCell(i, Cell.CELL_TYPE_STRING);
@@ -215,10 +216,10 @@ public class MerchantsPayTemplateService implements PayTemplateService {
         cellStyle.setAlignment(CellStyle.ALIGN_LEFT);
         cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 
-        cellStyle.setBorderBottom(CellStyle.BORDER_THIN);
-        cellStyle.setBorderLeft(CellStyle.BORDER_THIN);
-        cellStyle.setBorderRight(CellStyle.BORDER_THIN);
-        cellStyle.setBorderTop(CellStyle.BORDER_THIN);
+        cellStyle.setBorderBottom(CellStyle.BORDER_NONE);
+        cellStyle.setBorderLeft(CellStyle.BORDER_NONE);
+        cellStyle.setBorderRight(CellStyle.BORDER_NONE);
+        cellStyle.setBorderTop(CellStyle.BORDER_NONE);
 
         if (format == Cell.CELL_TYPE_NUMERIC) {
             CreationHelper creationHelper = workbook.getCreationHelper();
