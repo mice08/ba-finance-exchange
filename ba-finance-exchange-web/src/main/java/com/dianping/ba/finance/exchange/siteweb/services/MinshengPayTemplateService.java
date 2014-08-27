@@ -11,7 +11,7 @@ import com.google.common.collect.Lists;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -147,7 +147,7 @@ public class MinshengPayTemplateService implements PayTemplateService {
     }
 
     private void exportExcel(OutputStream os, List<CommonTemplateBean> commonTemplateBeanList, List<SameBankPersonalTemplateBean> sameBankPersonalTemplateBeanList) throws IOException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        Workbook wb = new XSSFWorkbook(); //or new HSSFWorkbook();
+        Workbook wb = new SXSSFWorkbook(); //or new HSSFWorkbook();
         try {
             exportSameBankPersonal(wb, sameBankPersonalTemplateBeanList);
             exportCommon(wb, commonTemplateBeanList);
