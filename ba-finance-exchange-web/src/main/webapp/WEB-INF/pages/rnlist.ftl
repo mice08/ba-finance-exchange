@@ -25,7 +25,7 @@
                 <thead>
                 <tr>
                     <th width="7%" class="fs tb-header">收款通知ID</th>
-                    <th width="15%" class="fs tb-header">客户名</th>
+                    <th width="12%" class="fs tb-header">客户名</th>
                     <th width="7%" class="fs tb-header">收款金额</th>
                     <th width="9%" class="fs tb-header">打款日期</th>
                     <th width="12%" class="fs tb-header">付款方户名</th>
@@ -35,7 +35,7 @@
                     <th width="6%" class="fs tb-header">备注</th>
                     <th width="6%" class="fs tb-header">附件</th>
                     <th width="6%" class="fs tb-header">收款公司</th>
-                    <th width="5%" class="fs tb-header">状态</th>
+                    <th width="6%" class="fs tb-header">状态</th>
                     <th width="8%" class="fs tb-header">操作</th>
                 </tr>
 
@@ -75,7 +75,10 @@
         <td class="fs tb-item auto-break">{{= record.businessType}}</td>
         <td class="fs tb-item auto-break">{{= record.bizContent}}</td>
         <td class="fs tb-item auto-break">{{= record.payChannel}}</td>
-        <td class="fs tb-item auto-break">{{= record.memo}}</td>
+        <td class="fs tb-item auto-break"><a href="javascript:void(0);" data-toggle="popover" data-placement="top"
+            memo="{{= record.memo}}"
+            class="memo-show"  rel="popover-medium">查看</a>
+        </td>
         <td class="fs tb-item auto-break">
         {{if record.attachment!="nourl"}}
         <a href="{{= record.attachment}}" target="_blank">附件</a>
