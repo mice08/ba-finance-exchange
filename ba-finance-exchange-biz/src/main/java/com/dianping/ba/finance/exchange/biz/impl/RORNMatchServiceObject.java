@@ -25,7 +25,7 @@ public class RORNMatchServiceObject implements RORNMatchService {
     private List<RORNMatcher> matchers;
 
 
-    @Log(severity = 1, logBefore = true, logAfter = false)
+    @Log(severity = 1, logAfter = false)
     @ReturnDefault
     @Override
     public RORNMatchingResultBean matching(List<ReceiveOrderData> receiveOrderDataList, List<ReceiveNotifyData> receiveNotifyDataList) {

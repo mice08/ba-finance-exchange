@@ -2,8 +2,10 @@ package com.dianping.ba.finance.exchange.biz.rornmatcher;
 
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
+import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.finance.common.util.DateUtils;
+import com.site.lookup.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -22,9 +24,25 @@ public class RORNMatcherPos implements RORNMatcher {
             return timeDifferenceMatch(receiveOrderData, receiveNotifyData)
                     && amountMatch(receiveOrderData, receiveNotifyData)
                     && bankMatch(receiveOrderData, receiveNotifyData)
-                    && receiveTypeMatch(receiveOrderData, receiveNotifyData);
+                    && receiveTypeMatch(receiveOrderData, receiveNotifyData)
+                    && customerIdExist(receiveNotifyData)
+                    && bizContentMatchForAD(receiveOrderData, receiveNotifyData);
         }
         return false;
+    }
+
+    private boolean bizContentMatchForAD(ReceiveOrderData receiveOrderData, ReceiveNotifyData receiveNotifyData) {
+        if (receiveNotifyData.getBusinessType() == BusinessType.ADVERTISEMENT.value()
+                && receiveOrderData.getBusinessType() == BusinessType.ADVERTISEMENT.value()) {
+            return StringUtils.isNotEmpty(receiveOrderData.getBizContent())
+                    && StringUtils.isNotEmpty(receiveNotifyData.getBizContent())
+                    && receiveOrderData.getBizContent().equals(receiveNotifyData.getBizContent());
+        }
+        return true;
+    }
+
+    private boolean customerIdExist(ReceiveNotifyData receiveNotifyData) {
+        return receiveNotifyData.getCustomerId() > 0;
     }
 
     private boolean receiveTypeMatch(ReceiveOrderData receiveOrderData, ReceiveNotifyData receiveNotifyData) {

@@ -1,5 +1,7 @@
 package com.dianping.ba.finance.exchange.siteweb.services;
 
+import com.dianping.avatar.log.AvatarLogger;
+import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.enums.BankAccountType;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.siteweb.beans.CommonTemplateBean;
@@ -7,6 +9,8 @@ import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.SameBankPersonalTemplateBean;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
+import com.dianping.finance.common.util.LionConfigUtils;
+import com.dianping.finance.common.util.ListUtils;
 import com.dianping.finance.common.util.StringUtils;
 import com.google.common.collect.Lists;
 import jxl.Workbook;
@@ -26,6 +30,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +38,8 @@ import java.util.Map;
  * 民生银行的导出支付的模板
  */
 public class MinshengPayTemplateService implements PayTemplateService {
+
+    private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.siteweb.services.MinshengPayTemplateService");
 
     private String templateName;
 
@@ -54,7 +61,7 @@ public class MinshengPayTemplateService implements PayTemplateService {
     }
 
     private void initCommon() {
-        commonProperties = new String[] {
+        commonProperties = new String[]{
                 "formType",
                 "payCode",
                 "customerId",
@@ -75,7 +82,7 @@ public class MinshengPayTemplateService implements PayTemplateService {
                 "email",
                 "bankCodeAndFullBranchName"
         };
-        commonColumns = new String[] {
+        commonColumns = new String[]{
                 "制单类型",
                 "企业自制凭证号",
                 "客户号",
@@ -97,7 +104,7 @@ public class MinshengPayTemplateService implements PayTemplateService {
                 "支付行号&支付行名称"
         };
 
-        commonColumnFormats = new DisplayFormat[] {
+        commonColumnFormats = new DisplayFormat[]{
                 NumberFormats.TEXT,
                 NumberFormats.TEXT,
                 NumberFormats.TEXT,
@@ -121,17 +128,17 @@ public class MinshengPayTemplateService implements PayTemplateService {
     }
 
     private void initSameBankPersonal() {
-        sameBankPersonalProperties = new String[] {
+        sameBankPersonalProperties = new String[]{
                 "bankAccountNo",
                 "payAmount",
                 "bankAccountName"
         };
-        sameBankPersonalColumns = new String[] {
+        sameBankPersonalColumns = new String[]{
                 "个人帐号",
                 "金额",
                 "姓名"
         };
-        sameBankPersonalFormats = new DisplayFormat[] {
+        sameBankPersonalFormats = new DisplayFormat[]{
                 NumberFormats.TEXT,
                 NumberFormats.FLOAT,
                 NumberFormats.TEXT
@@ -171,19 +178,43 @@ public class MinshengPayTemplateService implements PayTemplateService {
         if (CollectionUtils.isEmpty(sameBankPersonalTemplateBeanList)) {
             return;
         }
-        WritableSheet sameBankPersonalSheet = excelBook.createSheet("行内对私支付模板", 0);
-        createSheetHeader(sameBankPersonalSheet, sameBankPersonalColumns);
-        createSheetBody(sameBankPersonalSheet, sameBankPersonalFormats, sameBankPersonalProperties, sameBankPersonalTemplateBeanList);
-
+        List<List<SameBankPersonalTemplateBean>> templateBeanGroupList;
+        int groupSize = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-web.export.sheetGroupSize", "100"));
+        MONITOR_LOGGER.error(String.format("export.sheetGroupSize=%d", groupSize));
+        if (groupSize <= 0) {
+            templateBeanGroupList = new LinkedList<List<SameBankPersonalTemplateBean>>();
+            templateBeanGroupList.add(sameBankPersonalTemplateBeanList);
+        } else {
+            templateBeanGroupList = ListUtils.generateListGroup(sameBankPersonalTemplateBeanList, groupSize);
+        }
+        for (int i = 0; i < templateBeanGroupList.size(); ++i) {
+            List<SameBankPersonalTemplateBean> templateBeanSeg = templateBeanGroupList.get(i);
+            WritableSheet sameBankPersonalSheet = excelBook.createSheet("行内对私支付模板" + (i + 1), excelBook.getNumberOfSheets());
+            createSheetHeader(sameBankPersonalSheet, sameBankPersonalColumns);
+            createSheetBody(sameBankPersonalSheet, sameBankPersonalFormats, sameBankPersonalProperties, templateBeanSeg);
+        }
     }
 
     private void exportCommon(WritableWorkbook excelBook, List<CommonTemplateBean> commonTemplateBeanList) throws WriteException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         if (CollectionUtils.isEmpty(commonTemplateBeanList)) {
             return;
         }
-        WritableSheet commonSheet = excelBook.createSheet("通用支付模板", 0);
-        createSheetHeader(commonSheet, commonColumns);
-        createSheetBody(commonSheet, commonColumnFormats, commonProperties, commonTemplateBeanList);
+        List<List<CommonTemplateBean>> templateBeanGroupList;
+        int groupSize = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-web.export.sheetGroupSize", "20000"));
+        MONITOR_LOGGER.error(String.format("export.sheetGroupSize=%d", groupSize));
+
+        if (groupSize <= 0) {
+            templateBeanGroupList = new LinkedList<List<CommonTemplateBean>>();
+            templateBeanGroupList.add(commonTemplateBeanList);
+        } else {
+            templateBeanGroupList = ListUtils.generateListGroup(commonTemplateBeanList, groupSize);
+        }
+        for (int i = 0; i < templateBeanGroupList.size(); ++i) {
+            List<CommonTemplateBean> templateBeanSeg = templateBeanGroupList.get(i);
+            WritableSheet commonSheet = excelBook.createSheet("通用支付模板" + (i + 1), excelBook.getNumberOfSheets());
+            createSheetHeader(commonSheet, commonColumns);
+            createSheetBody(commonSheet, commonColumnFormats, commonProperties, templateBeanSeg);
+        }
     }
 
     private void createSheetBody(WritableSheet commonSheet,
