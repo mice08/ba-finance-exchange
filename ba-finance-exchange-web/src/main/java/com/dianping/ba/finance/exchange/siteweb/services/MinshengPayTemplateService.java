@@ -1,5 +1,7 @@
 package com.dianping.ba.finance.exchange.siteweb.services;
 
+import com.dianping.avatar.log.AvatarLogger;
+import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.enums.BankAccountType;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.siteweb.beans.CommonTemplateBean;
@@ -36,6 +38,8 @@ import java.util.Map;
  * 民生银行的导出支付的模板
  */
 public class MinshengPayTemplateService implements PayTemplateService {
+
+    private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.siteweb.services.MinshengPayTemplateService");
 
     private String templateName;
 
@@ -176,6 +180,7 @@ public class MinshengPayTemplateService implements PayTemplateService {
         }
         List<List<SameBankPersonalTemplateBean>> templateBeanGroupList;
         int groupSize = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-web.export.sheetGroupSize", "100"));
+        MONITOR_LOGGER.error(String.format("export.sheetGroupSize=%d", groupSize));
         if (groupSize <= 0) {
             templateBeanGroupList = new LinkedList<List<SameBankPersonalTemplateBean>>();
             templateBeanGroupList.add(sameBankPersonalTemplateBeanList);
@@ -195,7 +200,9 @@ public class MinshengPayTemplateService implements PayTemplateService {
             return;
         }
         List<List<CommonTemplateBean>> templateBeanGroupList;
-        int groupSize = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-web.export.sheetGroupSize", "100"));
+        int groupSize = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-web.export.sheetGroupSize", "20000"));
+        MONITOR_LOGGER.error(String.format("export.sheetGroupSize=%d", groupSize));
+
         if (groupSize <= 0) {
             templateBeanGroupList = new LinkedList<List<CommonTemplateBean>>();
             templateBeanGroupList.add(commonTemplateBeanList);
