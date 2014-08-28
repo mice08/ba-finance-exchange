@@ -10,11 +10,11 @@ public enum BankAccountType implements Serializable {
 	/**
 	 * 个人
 	 */
-	PERSONAL(0),
+	PERSONAL(1),
 	/**
 	 * 公司
 	 */
-	COMPANY(1);
+	COMPANY(2);
 
 	private int bankAccountType;
 
@@ -25,9 +25,9 @@ public enum BankAccountType implements Serializable {
 	@Override
 	public String toString() {
 		switch (bankAccountType) {
-			case 0:
-				return "个人";
 			case 1:
+				return "个人";
+			case 2:
 				return "公司";
 			default:
 				return "异常";
@@ -36,9 +36,9 @@ public enum BankAccountType implements Serializable {
 
 	public static BankAccountType valueOf(int value){
 		switch (value){
-			case 0:
-				return PERSONAL;
 			case 1:
+				return PERSONAL;
+			case 2:
 				return COMPANY;
 			default:
 				return PERSONAL;
