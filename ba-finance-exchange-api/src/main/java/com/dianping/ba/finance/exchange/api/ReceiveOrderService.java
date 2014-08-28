@@ -108,4 +108,10 @@ public interface ReceiveOrderService {
      */
     List<ReceiveCalResultData> findCalculatedReceiveResult(ReceiveOrderSearchBean receiveOrderSearchBean);
 
+    /**
+     * 根据ID作废收款单
+     * @param roId
+     * @return
+     */
+    boolean cancelReceiveOrder(int roId);
 }

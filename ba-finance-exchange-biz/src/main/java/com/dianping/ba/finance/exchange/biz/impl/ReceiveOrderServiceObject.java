@@ -361,6 +361,22 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         }
     }
 
+    @Log(severity = 1, logBefore = true, logAfter = true)
+    @ReturnDefault
+    @Override
+    public boolean cancelReceiveOrder(int roId) {
+        ReceiveOrderUpdateBean updateBean = new ReceiveOrderUpdateBean();
+        updateBean.setStatus(ReceiveOrderStatus.INVALID.value());
+        int id = receiveOrderDao.updateReceiveOrderByRoId(roId, updateBean);
+
+        List<ReceiveNotifyData> receiveNotifyDataList = receiveNotifyService.findMatchedReceiveNotify(roId);
+        for(ReceiveNotifyData receiveNotifyData : receiveNotifyDataList) {
+            receiveNotifyService.removeReceiveNotifyMatchRelation(receiveNotifyData.getReceiveNotifyId(),receiveNotifyData.getRoMatcherId());
+            rornMatchFireService.executeMatchingForNewReceiveNotify(receiveNotifyData);
+        }
+        return id > 0;
+    }
+
     public void setReceiveOrderDao(ReceiveOrderDao receiveOrderDao) {
         this.receiveOrderDao = receiveOrderDao;
     }
