@@ -14,7 +14,6 @@ import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveOrderBean;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
-import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -189,6 +188,17 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
             code = ERROR_CODE;
         } else {
             code = SUCCESS_CODE;
+        }
+        return SUCCESS;
+    }
+
+    public String cancelReceiveOrder() {
+        try {
+            boolean result = receiveOrderService.cancelReceiveOrder(roId);
+            code = result ? SUCCESS_CODE : ERROR_CODE;
+        } catch (Exception e) {
+            MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.cancelReceiveOrder error!", e);
+            code = ERROR_CODE;
         }
         return SUCCESS;
     }
