@@ -14,7 +14,6 @@ import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveOrderBean;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
-import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -193,6 +192,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         return SUCCESS;
     }
 
+<<<<<<< HEAD
 	public String findOrderByROId() {
 		try {
 			receiveOrderData = receiveOrderService.loadReceiveOrderDataByRoId(roId);
@@ -208,6 +208,18 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 		}
 		return SUCCESS;
 	}
+=======
+    public String cancelReceiveOrder() {
+        try {
+            boolean result = receiveOrderService.cancelReceiveOrder(roId);
+            code = result ? SUCCESS_CODE : ERROR_CODE;
+        } catch (Exception e) {
+            MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.cancelReceiveOrder error!", e);
+            code = ERROR_CODE;
+        }
+        return SUCCESS;
+    }
+>>>>>>> e8be2bc3cae723756bd0234f46b0e2de283a6607
 
     private ReceiveOrderUpdateBean buildUpdateReceiveOrder() throws ParseException {
         ReceiveOrderUpdateBean receiveOrderUpdateBean = new ReceiveOrderUpdateBean();

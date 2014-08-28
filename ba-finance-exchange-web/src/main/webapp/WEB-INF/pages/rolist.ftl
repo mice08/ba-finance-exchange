@@ -82,6 +82,7 @@
         class="ro-show"  rel="popover-medium">查看</a>
         {{if record.status=="待确认"}}
             <a href="javascript:void(0)" roId="{{= record.roId}}" class="modify-link">修改</a>
+            <a href="javascript:void(0)" roId="{{= record.roId}}" class="cancel-link">作废</a>
         {{/if}}
         {{if record.status == "待确认"
              && record.businessType == "广告"
@@ -93,7 +94,6 @@
                receiveType="{{= record.receiveType}}" bizContent="{{= record.bizContent}}"
                memo="{{= record.memo}}" payerName="{{= record.payerName}}">关联</a>
         {{/if}}
-        <a href="#">作废</a>
         </td>
     </tr>
     {{/each}}

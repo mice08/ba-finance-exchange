@@ -234,4 +234,12 @@ public class ReceiveOrderAjaxActionTest {
 		Assert.assertEquals(Action.SUCCESS, result);
 		Assert.assertEquals(AjaxBaseAction.ERROR_CODE, receiveOrderAjaxActionStub.getCode());
 	}
+
+    @Test
+    public void testCancelReceiveOrder() {
+        receiveOrderAjaxActionStub.setRoId(123);
+        receiveOrderAjaxActionStub.cancelReceiveOrder();
+        verify(receiveOrderServiceMock, times(1)).cancelReceiveOrder(anyInt());
+    }
+
 }
