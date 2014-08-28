@@ -46,7 +46,8 @@
                 </tr>
                 </thead>
 
-                <tbody id="rnreceiveorder_list" namespace="">
+                <tbody id="rnorder_list" namespace="msg" roId=""
+                       table_url="/exchange/ajax/findOrderByROId">
 					<td class="fs tb-header" id="rn_roId"></td>
 					<td class="fs tb-header" id="rn_customerName"></td>
 					<td class="fs tb-header" id="rn_receiveAmount"></td>
@@ -100,7 +101,7 @@
 
 </script>
 
-<script id="rnreceiveorder_model" type="text/x-jquery-tmpl">
+<script id="rnorderlist_model" type="text/x-jquery-tmpl">
 {{each(i,record) records}}
 {{if i%2==1}}
     <tr class="even">
@@ -117,6 +118,8 @@
         <td class="fs tb-item auto-break">{{= record.bizContent}}</td>
         <td class="fs tb-item auto-break">{{= record.payChannel}}</td>
         <td class="fs tb-item auto-break">{{= record.memo}}</td>
+        <td class="fs tb-item auto-break"></td>
+        <td class="fs tb-item auto-break"></td>
         </td>
     </tr>
     {{/each}}
