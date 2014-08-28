@@ -22,6 +22,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import static org.mockito.Matchers.any;
@@ -224,4 +225,13 @@ public class ReceiveOrderAjaxActionTest {
         Assert.assertEquals(AjaxBaseAction.SUCCESS_CODE, receiveOrderAjaxActionStub.getCode());
         verify(receiveOrderServiceMock, times(1)).createReceiveOrder(any(ReceiveOrderData.class));
     }
+
+	@Test
+	public void testfindOrderByROId() throws Exception {
+		receiveOrderAjaxActionStub.setRoId(999);
+
+		String result = receiveOrderAjaxActionStub.findOrderByROId();
+		Assert.assertEquals(Action.SUCCESS, result);
+		Assert.assertEquals(AjaxBaseAction.ERROR_CODE, receiveOrderAjaxActionStub.getCode());
+	}
 }

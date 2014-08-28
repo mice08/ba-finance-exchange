@@ -193,6 +193,22 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         return SUCCESS;
     }
 
+	public String findOrderByROId() {
+		try {
+			receiveOrderData = receiveOrderService.loadReceiveOrderDataByRoId(roId);
+			Map<Integer, String> customerIdNameMap = customerNameService.getROCustomerName(Arrays.asList(receiveOrderData), getLoginId());
+			receiveOrder = convertRODataToROBean(receiveOrderData, customerIdNameMap);
+			List<ReceiveOrderBean> records = new ArrayList<ReceiveOrderBean>();
+			records.add(receiveOrder);
+			msg.put("records", records);
+			code = SUCCESS_CODE;
+		} catch (Exception e) {
+			MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.findNotifiesByROId error!", e);
+			code = ERROR_CODE;
+		}
+		return SUCCESS;
+	}
+
     private ReceiveOrderUpdateBean buildUpdateReceiveOrder() throws ParseException {
         ReceiveOrderUpdateBean receiveOrderUpdateBean = new ReceiveOrderUpdateBean();
         receiveOrderUpdateBean.setRoId(roId);
