@@ -192,7 +192,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         return SUCCESS;
     }
 
-<<<<<<< HEAD
+
 	public String findOrderByROId() {
 		try {
 			receiveOrderData = receiveOrderService.loadReceiveOrderDataByRoId(roId);
@@ -208,7 +208,6 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 		}
 		return SUCCESS;
 	}
-=======
     public String cancelReceiveOrder() {
         try {
             boolean result = receiveOrderService.cancelReceiveOrder(roId);
@@ -219,7 +218,6 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         }
         return SUCCESS;
     }
->>>>>>> e8be2bc3cae723756bd0234f46b0e2de283a6607
 
     private ReceiveOrderUpdateBean buildUpdateReceiveOrder() throws ParseException {
         ReceiveOrderUpdateBean receiveOrderUpdateBean = new ReceiveOrderUpdateBean();
