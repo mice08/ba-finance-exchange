@@ -77,6 +77,11 @@
             <result type="json"></result>
         </action>
 
+        <action name="cancelReceiveOrder"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction"
+                method="cancelReceiveOrder">
+            <result type="json"></result>
+        </action>
 
         <action name="loadReceiveBankOption"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
@@ -152,6 +157,12 @@
         <action name="findNotifiesByROId"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveNotifyAjaxAction"
                 method="findNotifiesByROId">
+            <result type="json"></result>
+        </action>
+
+        <action name="findOrderByROId"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction"
+                method="findOrderByROId">
             <result type="json"></result>
         </action>
 

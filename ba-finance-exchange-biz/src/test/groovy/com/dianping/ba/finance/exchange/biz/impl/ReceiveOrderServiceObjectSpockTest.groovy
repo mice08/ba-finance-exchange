@@ -185,4 +185,23 @@ class ReceiveOrderServiceObjectSpockTest extends Specification {
         status                         | date       | resultSize
         ReceiveOrderStatus.UNCONFIRMED | new Date() | 1
     }
+
+    def "cancelReceiveOrder"(){
+        setup:
+        int roId = 1;
+        when:
+        receiveOrderServiceObjectStub.cancelReceiveOrder(roId);
+        then:
+        1 * receiveOrderDaoMock.updateReceiveOrderByRoId(_ as Integer, _ as ReceiveOrderUpdateBean);
+
+        1 * receiveNotifyServiceMock.findMatchedReceiveNotify(_ as Integer)>>{
+            ReceiveNotifyData receiveNotifyData1 = [];
+            ReceiveNotifyData receiveNotifyData2 = [];
+            [receiveNotifyData1, receiveNotifyData2];
+        }
+
+        2 * receiveNotifyServiceMock.removeReceiveNotifyMatchRelation(_ as Integer, _ as Integer);
+
+        2 * rornMatchFireServiceMock.executeMatchingForNewReceiveNotify(_ as ReceiveNotifyData);
+    }
 }
