@@ -128,7 +128,7 @@ public class MerchantsPayTemplateService implements PayTemplateService {
             templateBean.setPoId(exportBean.getPoId());
             templateBean.setPayCode(exportBean.getPayCode());
             templateBean.setOrderAmount(exportBean.getPayAmount());
-            templateBean.setBankName(exportBean.getBankFullBranchName());
+            templateBean.setBankName(exportBean.getBankName());
             templateBean.setBankAccountName(exportBean.getBankAccountName());
             templateBean.setBankAccountNo(exportBean.getBankAccountNo());
             templateBean.setBankProvince(exportBean.getBankProvince());
