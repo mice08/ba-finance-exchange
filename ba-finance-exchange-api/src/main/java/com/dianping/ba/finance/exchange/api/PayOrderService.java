@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.api;
 
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.dtos.PayOrderBankInfoDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
 import com.dianping.core.type.PageModel;
@@ -78,4 +79,13 @@ public interface PayOrderService {
      * @return
      */
     List<Integer> findPayOrderIdList(PayOrderSearchBean payOrderSearchBean);
+
+
+    /**
+     * 根据PaySequence获取付款单银行相关信息
+     * @param paySequence
+     * @return
+     */
+    PayOrderBankInfoDTO loadPayOrderByPaySequence(String paySequence);
+
 }

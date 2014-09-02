@@ -132,4 +132,11 @@ public class PayOrderDaoTest {
         System.out.print(actual.size());
 
     }
+
+    @Test
+    public void testLoadPayOrderByPaySequence() throws Exception {
+        PayOrderData poData = payOrderDao.loadPayOrderByPaySequence("paySeq_994");
+        Assert.assertNotNull(poData);
+
+    }
 }
