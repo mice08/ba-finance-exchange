@@ -44,4 +44,54 @@
         <property name="topic" value="${ba-finance-exchange-service.ex.fs.pay.result.notice.topic.name}"/>
         <property name="mode" value="ASYNC_MODE"/>
     </bean>
+
+    <bean id="receiveOrderProducer" class="com.dianping.finance.common.swallow.SwallowProducer">
+        <property name="swallowClientWrapperMap">
+            <map>
+                <entry key="FS_AD_RECEIVE_RESULT" value-ref="fsADReceiveResultClient"/>
+                <entry key="FS_TS_RECEIVE_RESULT" value-ref="fsTSReceiveResultClient"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="fsADReceiveResultClient" init-method="init"
+          class="com.dianping.finance.common.swallow.SwallowClientWrapper">
+        <property name="topic" value="${ba-finance-exchange-biz.fs.ad.receive.result.notice.topic.name}"/>
+        <property name="mode" value="ASYNC_MODE"/>
+    </bean>
+
+    <bean id="fsTSReceiveResultClient" init-method="init"
+          class="com.dianping.finance.common.swallow.SwallowClientWrapper">
+        <property name="topic" value="${ba-finance-exchange-biz.fs.ts.receive.result.notice.topic.name}"/>
+        <property name="mode" value="ASYNC_MODE"/>
+    </bean>
+
+    <bean id="receiveNotifyResultProducer"  class="com.dianping.finance.common.swallow.SwallowProducer">
+        <property name="swallowClientWrapperMap">
+            <map>
+                <entry key="FS_AD_RECEIVE_NOTIFY_RESULT" value-ref="fsADReceiveNotifyClient"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="fsADReceiveNotifyClient" init-method="init"
+          class="com.dianping.finance.common.swallow.SwallowClientWrapper">
+        <property name="topic" value="${ba-finance-exchange-biz.fs.ad.receive.notify.notice.topic.name}"/>
+        <property name="mode" value="ASYNC_MODE"/>
+    </bean>
+
+
+    <bean id="receivePayVoucherProducer"  class="com.dianping.finance.common.swallow.SwallowProducer">
+        <property name="swallowClientWrapperMap">
+            <map>
+                <entry key="RECEIVE_PAY_VOUCHER_NOTIFY" value-ref="exFSReceivePayVoucherNotifyClient"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="exFSReceivePayVoucherNotifyClient" init-method="init"
+          class="com.dianping.finance.common.swallow.SwallowClientWrapper">
+        <property name="topic" value="${ba-finance-exchange-biz.ex.fs.receivepay.voucher.notice.topic.name}"/>
+        <property name="mode" value="ASYNC_MODE"/>
+    </bean>
 </beans>

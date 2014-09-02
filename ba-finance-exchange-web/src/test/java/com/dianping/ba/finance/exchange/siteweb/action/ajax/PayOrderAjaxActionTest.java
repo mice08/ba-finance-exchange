@@ -4,7 +4,9 @@ import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
+import com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService;
 import com.dianping.core.type.PageModel;
+import com.google.common.collect.Maps;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +17,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -26,13 +29,18 @@ import static org.mockito.Mockito.*;
 public class PayOrderAjaxActionTest {
 
     private PayOrderService payOrderServiceMock;
+    private PayTemplateService payTemplateServiceMock;
     private PayOrderAjaxAction payOrderAjaxActionStub;
 
 	@Before
 	public void setUp() {
 		payOrderServiceMock = mock(PayOrderService.class);
+        payTemplateServiceMock = mock(PayTemplateService.class);
 		payOrderAjaxActionStub = new PayOrderAjaxAction4Test();
 		payOrderAjaxActionStub.setPayOrderService(payOrderServiceMock);
+        Map<String, PayTemplateService> payTemplateServiceMap = Maps.newHashMap();
+        payTemplateServiceMap.put("Minsheng", payTemplateServiceMock);
+        payOrderAjaxActionStub.setPayTemplateServiceMap(payTemplateServiceMap);
 	}
 
     @Test
@@ -47,7 +55,7 @@ public class PayOrderAjaxActionTest {
 
         payOrderAjaxActionStub.setBusinessType(1);
         payOrderAjaxActionStub.jsonExecute();
-        Assert.assertEquals(payOrderAjaxActionStub.getTotalAmount().compareTo(BigDecimal.ONE),0);
+        Assert.assertEquals(payOrderAjaxActionStub.getTotalAmount(),"0.00");
     }
 
 	@Test
@@ -93,6 +101,7 @@ public class PayOrderAjaxActionTest {
 
 		Assert.assertNull(actual);
 		verify(payOrderServiceMock, atLeastOnce()).updatePayOrderToPaying(anyList(), anyInt());
+		verify(payTemplateServiceMock, atLeastOnce()).createExcelAndDownload(any(HttpServletResponse.class), anyString(), anyList());
 	}
 
 	private class PayOrderAjaxAction4Test extends PayOrderAjaxAction {

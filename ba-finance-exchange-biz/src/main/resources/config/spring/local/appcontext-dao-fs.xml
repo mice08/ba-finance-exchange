@@ -42,4 +42,75 @@
         </property>
     </bean>
 
+    <bean id="receiveOrderDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderDao" />
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="ReceiveOrder" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="receiveBankDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ReceiveBankDao" />
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="ReceiveBank" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="payCentreReceiveRequestDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.PayCentreReceiveRequestDao" />
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="PayCentreReceiveRequest" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="authTokenDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.AuthTokenDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="AuthToken"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="receiveNotifyRecordDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ReceiveNotifyRecordDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="ReceiveNotifyRecord"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="receiveNotifyDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ReceiveNotifyDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="ReceiveNotify"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="receiveOrderRecoDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderRecoDao"/>
+        <property name="target">
+            <bean parent="fsExtra.daoRealizeTarget">
+                <constructor-arg value="ReceiveOrderReco"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="receiveVoucherDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ReceiveVoucherDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="ReceiveVoucher"/>
+            </bean>
+        </property>
+    </bean>
 </beans>

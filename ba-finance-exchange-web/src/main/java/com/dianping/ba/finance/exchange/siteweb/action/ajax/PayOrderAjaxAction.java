@@ -9,18 +9,20 @@ import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
+import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
+import com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
-import com.dianping.finance.common.util.ExcelUtils;
-import jxl.biff.DisplayFormat;
-import jxl.write.NumberFormats;
+import com.dianping.finance.common.util.ConvertUtils;
+import com.dianping.finance.common.util.LionConfigUtils;
+import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.*;
 
@@ -33,6 +35,9 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
      * 记录需要监控的业务日志
      */
     private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.web.monitor.PayOrderAjaxAction");
+
+    private static final Set<Integer> ALLOWED_EXPORT_STATUS = Sets.newHashSet(PayOrderStatus.INIT.value(), PayOrderStatus.EXPORT_PAYING.value());
+
     //查询结果，付款计划列表
     private PageModel payOrderModel = new PageModel();
     //第几页
@@ -51,7 +56,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     private String addEndTime;
 
     //付款计划总金额
-    private BigDecimal totalAmount = BigDecimal.ZERO;
+    private String totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO);
 
     private String payCode;
 
@@ -59,18 +64,26 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     private PayOrderService payOrderService;
 
+    private Map<String, PayTemplateService> payTemplateServiceMap;
+
+    private CustomerNameService customerNameService;
     @Override
     protected void jsonExecute() throws Exception {
         if (businessType == BusinessType.DEFAULT.value()) {
-            totalAmount = BigDecimal.ZERO;
+            msg.put("totalAmount", new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO));
+            code = ERROR_CODE;
             return;
         }
         try {
             PayOrderSearchBean payOrderSearchBean = buildPayOrderSearchBean();
             payOrderModel = payOrderService.paginatePayOrderList(payOrderSearchBean, page, pageSize);
             payOrderModel.setRecords(buildPayOrderBeans((List<PayOrderData>) payOrderModel.getRecords()));
-            totalAmount = payOrderService.findPayOrderTotalAmount(payOrderSearchBean);
+            totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(payOrderService.findPayOrderTotalAmount(payOrderSearchBean));
+            msg.put("payOrderModel", payOrderModel);
+            msg.put("totalAmount", totalAmount);
+            code = SUCCESS_CODE;
         } catch (Exception e) {
+            code = ERROR_CODE;
             MONITOR_LOGGER.error("severity=[1] PayOrderAjaxAction.jsonExecute error!", e);
         }
     }
@@ -79,7 +92,15 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 		try {
 			PayOrderSearchBean searchBean = buildPayOrderSearchBean();
 			List<PayOrderData> dataList = payOrderService.findPayOrderList(searchBean);
+            if (CollectionUtils.isEmpty(dataList)) {
+                MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderExportForPay No PayOrder found! searchBean=%s", searchBean));
+                return null;
+            }
 			List<PayOrderExportBean> beanList = buildPayOrderExportBeanList(dataList);
+            if (CollectionUtils.isEmpty(beanList)) {
+                MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderExportForPay No matched PayOrderBean found! searchBean=%s", searchBean));
+                return null;
+            }
 			updatePayOrderStatus(beanList, getLoginId());
 			exportPayOrders(beanList);
 			return null;
@@ -93,38 +114,28 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 		if(!CollectionUtils.isEmpty(beanList)){
 			List<Integer> orderIds = new ArrayList<Integer>();
 			for (PayOrderExportBean bean : beanList){
-				orderIds.add(bean.getOrderId());
+				orderIds.add(bean.getPoId());
 			}
 			payOrderService.updatePayOrderToPaying(orderIds,loginId);
 		}
 	}
 
-	private void exportPayOrders(List<PayOrderExportBean> beanList) throws UnsupportedEncodingException {
+	private void exportPayOrders(List<PayOrderExportBean> beanList) throws Exception {
 		HttpServletResponse response = getHttpServletResponse();
-		ExcelUtils excel = initialExcel();
-		excel.createExcelAndDownload(response, "付款单", beanList);
+        String exportBank = LionConfigUtils.getProperty("ba-finance-exchange-web.exportBank", "Minsheng");
+        MONITOR_LOGGER.info(String.format("exportBank=%s", exportBank));
+        PayTemplateService payTemplateService = payTemplateServiceMap.get(exportBank);
+        if (payTemplateService == null) {
+            throw new RuntimeException("不支持该银行的支付模板!exportBank=" + exportBank);
+        }
+        payTemplateService.createExcelAndDownload(response, "付款单", beanList);
 	}
 
 	protected HttpServletResponse getHttpServletResponse() {
 		return ServletActionContext.getResponse();
 	}
 
-	private ExcelUtils initialExcel() {
-		String propertyNames = "bizCode,debitSideId,bankAccountNo,bankAccountName,bankName,bankProvince,bankCity,debitSideEmail,currency," +
-				"payerBranchBank,settleType,payerAccountNo,expectedDate,expectedTime,use,orderAmount,debitSideBankNo,debitSideBankName,businessSummary";
-		String[] property = propertyNames.split(",");
-		String columnNameStr = "业务参考号,收款人编号,收款人帐号,收款人名称,收方开户支行,收款人所在省,收款人所在市,收方邮件地址,币种," +
-				"付款分行,结算方式,付方帐号,期望日,期望时间,用途,金额,收方联行号,收方银行,业务摘要";
-		String[] column = columnNameStr.split(",");
-		DisplayFormat[] formats = new DisplayFormat[]{
-				NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,
-				NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,
-				NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT,
-				NumberFormats.FLOAT,NumberFormats.TEXT,NumberFormats.TEXT,NumberFormats.TEXT};
-		return new ExcelUtils(column, property, formats, new Hashtable());
-	}
-
-	private List<PayOrderExportBean> buildPayOrderExportBeanList(List<PayOrderData> payOrderDataList) {
+	private List<PayOrderExportBean> buildPayOrderExportBeanList(List<PayOrderData> payOrderDataList) throws Exception {
 		if (CollectionUtils.isEmpty(payOrderDataList)) {
 			return Collections.emptyList();
 		}
@@ -140,13 +151,12 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 	}
 
 	private boolean orderCanExport(PayOrderData order) {
-		List<Integer> statusAllowedExport = Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.EXPORT_PAYING.value());
-		return order.getPayAmount().compareTo(BigDecimal.ZERO) > 0 && statusAllowedExport.contains(order.getStatus());
+		return order.getPayAmount().compareTo(BigDecimal.ZERO) > 0 &&
+                ALLOWED_EXPORT_STATUS.contains(order.getStatus());
 	}
 
-	private PayOrderExportBean buildPayOrderExportBean(PayOrderData order) {
-		PayOrderExportBean exportBean = new PayOrderExportBean();
-		exportBean.setOrderId(order.getPoId());
+	private PayOrderExportBean buildPayOrderExportBean(PayOrderData order) throws Exception {
+		PayOrderExportBean exportBean = ConvertUtils.copy(order, PayOrderExportBean.class);
 		return exportBean;
 	}
 
@@ -166,17 +176,20 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     }
 
     private List<PayOrderBean> buildPayOrderBeans(List<PayOrderData> payOrderDataList) {
-        List<PayOrderBean> payOrderBeans = new ArrayList<PayOrderBean>();
-        if (payOrderDataList == null) {
-            return payOrderBeans;
+        if (CollectionUtils.isEmpty(payOrderDataList)) {
+            return Collections.emptyList();
         }
+        List<PayOrderBean> payOrderBeans = new ArrayList<PayOrderBean>();
+
+        Map<Integer, String> customerIdNameMap = customerNameService.getCustomerName(payOrderDataList, getLoginId());
+
         for (PayOrderData payOrderData : payOrderDataList) {
-            payOrderBeans.add(convertPODataToPOBean(payOrderData));
+            payOrderBeans.add(convertPODataToPOBean(payOrderData, customerIdNameMap));
         }
         return payOrderBeans;
     }
 
-    private PayOrderBean convertPODataToPOBean(PayOrderData payOrderData) {
+    private PayOrderBean convertPODataToPOBean(PayOrderData payOrderData, Map<Integer, String> customerIdNameMap) {
         PayOrderBean payOrderBean = new PayOrderBean();
         payOrderBean.setPayCode(payOrderData.getPayCode());
         payOrderBean.setAddTime(DateUtil.formatDateToString(payOrderData.getAddTime(), "yyyy-MM-dd"));
@@ -186,10 +199,10 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         payOrderBean.setBankAccountName(payOrderData.getBankAccountName());
         payOrderBean.setBankAccountNo(payOrderData.getBankAccountNo());
         payOrderBean.setBankFullBranchName(payOrderData.getBankFullBranchName());
-        payOrderBean.setCustomerName(getCustomerNameById(payOrderData.getCustomerId()));
+        payOrderBean.setCustomerName(getCustomerNameById(payOrderData.getCustomerId(), customerIdNameMap));
         payOrderBean.setMemo(payOrderData.getMemo());
         payOrderBean.setPaidDate(DateUtil.formatDateToString(payOrderData.getPaidDate(), "yyyy-MM-dd"));
-        payOrderBean.setPayAmount(payOrderData.getPayAmount());
+        payOrderBean.setPayAmount(new DecimalFormat("##,###,###,###,##0.00").format(payOrderData.getPayAmount()));
         payOrderBean.setPoId(payOrderData.getPoId());
         payOrderBean.setStatusDesc(PayOrderStatus.valueOf(payOrderData.getStatus()).toString());
         payOrderBean.setStatus(payOrderData.getStatus());
@@ -197,18 +210,23 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         return payOrderBean;
     }
 
-    private String getCustomerNameById(int customerId){
+    private String getCustomerNameById(int customerId, Map<Integer, String> customerIdNameMap){
+        String customerName = customerIdNameMap.get(customerId);
+        if (StringUtils.isNotEmpty(customerName)) {
+            return customerName;
+        }
         return "";
     }
 
+
     @Override
     public int getCode() {
-        return 0;
+        return code;
     }
 
     @Override
     public Map<String, Object> getMsg() {
-        return null;
+        return msg;
     }
 
     public int getStatus() {
@@ -227,11 +245,11 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         this.businessType = businessType;
     }
 
-    public BigDecimal getTotalAmount() {
+    public String getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(BigDecimal totalAmount) {
+    public void setTotalAmount(String totalAmount) {
         this.totalAmount = totalAmount;
     }
 
@@ -269,6 +287,14 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     public void setPayOrderService(PayOrderService payOrderService) {
         this.payOrderService = payOrderService;
+    }
+
+    public void setPayTemplateServiceMap(Map<String, PayTemplateService> payTemplateServiceMap) {
+        this.payTemplateServiceMap = payTemplateServiceMap;
+    }
+
+    public void setCustomerNameService(CustomerNameService customerNameService) {
+        this.customerNameService = customerNameService;
     }
 
     public String getAddBeginTime() {

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ReceiveVoucher">
+
+    <typeAlias alias="ReceiveVoucherData" type="com.dianping.ba.finance.exchange.api.datas.ReceiveVoucherData"/>
+    <resultMap id="receiveVoucherData" class="ReceiveVoucherData">
+        <result property="voucherId" column="VoucherID"/>
+        <result property="customerId" column="CustomerID"/>
+        <result property="shopId" column="ShopID"/>
+        <result property="cityId" column="CityID"/>
+        <result property="companyId" column="CompanyID"/>
+        <result property="voucherDate" column="VoucherDate"/>
+        <result property="amount" column="Amount"/>
+        <result property="bankId" column="BankID"/>
+        <result property="voucherType" column="VoucherType"/>
+        <result property="addTime" column="AddTime"/>
+        <result property="addLoginId" column="AddLoginID"/>
+        <result property="updateTime" column="UpdateTime"/>
+        <result property="updateLoginId" column="UpdateLoginID"/>
+    </resultMap>
+
+    <insert id="insertReceiveVoucherData" parameterClass="map">
+        <![CDATA[
+        INSERT INTO FC_ReceiveVoucher
+                    (CustomerID,
+                     ShopID,
+                     CityID,
+                     CompanyID,
+                     VoucherDate,
+                     Amount,
+                     BankID,
+                     VoucherType,
+                     AddTime,
+                     AddLoginID,
+                     UpdateTime,
+                     UpdateLoginID)
+        VALUES      (#receiveVoucherData.customerId#,
+                     #receiveVoucherData.shopId#,
+                     #receiveVoucherData.cityId#,
+                     #receiveVoucherData.companyId#,
+                     #receiveVoucherData.voucherDate#,
+                     #receiveVoucherData.amount#,
+                     #receiveVoucherData.bankId#,
+                     #receiveVoucherData.voucherType#,
+                     NOW(),
+                     #receiveVoucherData.addLoginId#,
+                     NOW(),
+                     #receiveVoucherData.updateLoginId#)
+ 		]]>
+        <selectKey resultClass="java.lang.Integer" keyProperty="voucherId">
+            <![CDATA[
+			SELECT @@IDENTITY AS roId
+		]]>
+        </selectKey>
+    </insert>
+
+</sqlMap>

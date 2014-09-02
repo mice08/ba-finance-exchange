@@ -16,5 +16,7 @@
         <property name="logPrefix" value="com.dianping.ba.finance.exchange.web.monitor"/>
     </bean>
 
-    <bean id="returnDefaultAdvice" class="com.dianping.finance.common.aop.aspect.ReturnDefaultAdvice"/>
+    <bean id="returnDefaultAdvice" class="com.dianping.finance.common.aop.aspect.ReturnDefaultAdvice">
+        <property name="logPrefix" value="com.dianping.ba.finance.exchange.web.monitor"/>
+    </bean>
 </beans>

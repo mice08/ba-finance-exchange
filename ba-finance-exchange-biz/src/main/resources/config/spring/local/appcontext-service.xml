@@ -37,4 +37,120 @@
         <property name="payOrderDao" ref="payOrderDao"/>
         <property name="payOrderResultNotify" ref="payOrderResultNotify"/>
     </bean>
+
+    <bean id="receiveOrderService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveOrderServiceObject">
+        <property name="receiveOrderDao" ref="receiveOrderDao"/>
+        <property name="receiveOrderResultNotify" ref="receiveOrderResultNotify"/>
+        <property name="rornMatchFireService" ref="rornMatchFireService"/>
+        <property name="receiveNotifyService" ref="receiveNotifyService"/>
+        <property name="rornMatchService" ref="rornMatchService"/>
+        <property name="receiveNotifyResultNotify" ref="receiveNotifyResultNotify"/>
+    </bean>
+
+    <bean id="receiveBankService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveBankServiceObject">
+        <property name="receiveBankDao" ref="receiveBankDao"/>
+        <property name="cache" value="true"/>
+    </bean>
+
+    <bean id="bizInfoService" class="com.dianping.ba.finance.exchange.biz.service.BizInfoService">
+        <property name="corporationService" ref="corporationService"/>
+        <property name="monitorMailService" ref="monitorMailService"/>
+        <property name="monitorSmsService" ref="monitorSmsService"/>
+    </bean>
+
+    <bean id="monitorMailService" class="com.dianping.ba.finance.exchange.biz.service.MonitorMailService">
+        <property name="mailService" ref="mailService"/>
+    </bean>
+
+    <bean id="monitorSmsService" class="com.dianping.ba.finance.exchange.biz.service.MonitorSmsService">
+        <property name="smsService" ref="smsService"/>
+    </bean>
+
+    <bean id="receiveOrderResultNotify" class="com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify">
+        <property name="receiveOrderProducer" ref="receiveOrderProducer"/>
+    </bean>
+
+    <bean id="payCentreReceiveRequestService" class="com.dianping.ba.finance.exchange.biz.impl.PayCentreReceiveRequestServiceObject">
+        <property name="payCentreReceiveRequestDao" ref="payCentreReceiveRequestDao"/>
+    </bean>
+
+    <bean id="payCentreReceiveRequestHandleService" class="com.dianping.ba.finance.exchange.biz.impl.PayCentreReceiveRequestHandleServiceObject">
+        <property name="payCentreReceiveRequestService" ref="payCentreReceiveRequestService"/>
+        <property name="receiveOrderService" ref="receiveOrderService"/>
+        <property name="executorService" ref="executorService"/>
+        <property name="bizInfoService" ref="bizInfoService"/>
+    </bean>
+
+    <bean id="accessTokenService" init-method="init" class="com.dianping.ba.finance.exchange.biz.impl.AccessTokenServiceObject">
+        <property name="authTokenDao" ref="authTokenDao"/>
+        <property name="useCache" value="true"/>
+        <property name="loadAllWhenInitial" value="true"/>
+    </bean>
+
+    <bean id="receiveNotifyRecordService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveNotifyRecordServiceObject">
+        <property name="receiveNotifyRecordDao" ref="receiveNotifyRecordDao"/>
+    </bean>
+
+    <bean id="receiveNotifyService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveNotifyServiceObject">
+        <property name="receiveNotifyDao" ref="receiveNotifyDao"/>
+        <property name="receiveNotifyResultNotify" ref="receiveNotifyResultNotify"/>
+
+    </bean>
+
+    <bean id="receiveNotifyHandleService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveNotifyHandleServiceObject">
+        <property name="accessTokenService" ref="accessTokenService"/>
+        <property name="receiveNotifyRecordService" ref="receiveNotifyRecordService"/>
+        <property name="receiveNotifyService" ref="receiveNotifyService"/>
+        <property name="receiveNotifyResultProducer" ref="receiveNotifyResultProducer"/>
+        <property name="timeout" value="${ba-finance-exchange-biz.receive.notify.timeout}"/>
+        <property name="executorService" ref="executorService"/>
+        <property name="rornMatchFireService" ref="rornMatchFireService"/>
+
+    </bean>
+
+    <bean id="rornMatchService" class="com.dianping.ba.finance.exchange.biz.impl.RORNMatchServiceObject">
+        <property name="matchers">
+            <list value-type="com.dianping.ba.finance.exchange.biz.rornmatcher.RORNMatcher">
+                <ref bean="rornMatcherPos"></ref>
+                <ref bean="rornMatcherTelTransfer"></ref>
+            </list>
+        </property>
+        <property name="receiveNotifyService" ref="receiveNotifyService"/>
+    </bean>
+
+    <bean id="rornMatcherPos" class="com.dianping.ba.finance.exchange.biz.rornmatcher.RORNMatcherPos">
+    </bean>
+
+    <bean id="rornMatcherTelTransfer" class="com.dianping.ba.finance.exchange.biz.rornmatcher.RORNMatcherTelTransfer">
+    </bean>
+
+    <bean id="rornMatchFireService" class="com.dianping.ba.finance.exchange.biz.impl.RORNMatchFireServiceObject">
+        <property name="executorService" ref="executorService"/>
+        <property name="receiveNotifyService" ref="receiveNotifyService"/>
+        <property name="rornMatchService" ref="rornMatchService"/>
+        <property name="receiveOrderService" ref="receiveOrderService"/>
+    </bean>
+
+    <bean id="receiveOrderMonitorService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveOrderMonitorServiceObject">
+        <property name="receiveOrderDao" ref="receiveOrderDao"/>
+        <property name="receiveOrderRecoDao" ref="receiveOrderRecoDao"/>
+    </bean>
+
+    <bean id="receiveNotifyResultNotify" class="com.dianping.ba.finance.exchange.biz.producer.ReceiveNotifyResultNotify">
+        <property name="receiveNotifyProducer" ref="receiveNotifyResultProducer"/>
+    </bean>
+
+    <bean id="receivePayVoucherNotify" class="com.dianping.ba.finance.exchange.biz.producer.ReceivePayVoucherNotify">
+        <property name="receivePayVoucherProducer" ref="receivePayVoucherProducer"/>
+    </bean>
+
+    <bean id="receiveVoucherService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveVoucherServiceObject">
+        <property name="receiveOrderService" ref="receiveOrderService"/>
+        <property name="receiveVoucherDao" ref="receiveVoucherDao"/>
+        <property name="receivePayVoucherNotify" ref="receivePayVoucherNotify"/>
+        <property name="receiveBankService" ref="receiveBankService"/>
+
+    </bean>
+
+
 </beans>

@@ -21,6 +21,7 @@
         <result property="bankBranchName" column="BankBranchName"/>
         <result property="bankFullBranchName" column="BankFullBranchName"/>
         <result property="bankCode" column="BankCode"/>
+        <result property="bankAccountType" column="BankAccountType"/>
         <result property="status" column="Status"/>
         <result property="addTime" column="AddTime"/>
         <result property="addType" column="AddType"/>
@@ -30,7 +31,7 @@
 
     <insert id="insertPayOrder" parameterClass="map">
         <![CDATA[
-        	 INSERT INTO FC_PayOrder
+        INSERT INTO FC_PayOrder
 			(PayAmount,
 			PaySequence,
 			PayCode,
@@ -44,6 +45,7 @@
 			BankCity,
 			BankFullBranchName,
 			BankCode,
+			BankAccountType,
 			BusinessType,
 			Status,
 			AddTime,
@@ -53,10 +55,10 @@
 			AddLoginID,
 			UpdateLoginID
 			)
-			VALUES
-			(#payOrderData.payAmount#,
+			SELECT
+			#payOrderData.payAmount#,
 			#payOrderData.paySequence#,
-			#payOrderData.payCode#,
+			IFNULL(MAX(POID), 9999999) + 1,
 			#payOrderData.customerId#,
 			#payOrderData.customerBankId#,
 			#payOrderData.bankAccountNo#,
@@ -67,6 +69,7 @@
 			#payOrderData.bankCity#,
 			#payOrderData.bankFullBranchName#,
 			#payOrderData.bankCode#,
+			#payOrderData.bankAccountType#,
 			#payOrderData.businessType#,
 			#payOrderData.status#,
 			NOW(),
@@ -75,7 +78,8 @@
 			#payOrderData.memo#,
 			#payOrderData.addLoginId#,
 			#payOrderData.updateLoginId#
-			);
+			FROM
+			FC_PayOrder
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="poId">
             <![CDATA[
@@ -121,6 +125,7 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        BankAccountType,
         BusinessType,
         Status,
         AddTime,
@@ -152,6 +157,7 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        BankAccountType,
         BusinessType,
         Status,
         AddTime,
@@ -247,6 +253,7 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        BankAccountType,
         BusinessType,
         Status,
         AddTime,
@@ -290,6 +297,7 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        BankAccountType,
         BusinessType,
         Status,
         AddTime,
@@ -302,6 +310,30 @@
         <iterate open="(" close=")" conjunction="," property="payCodeList">
             #payCodeList[]#
         </iterate>
+    </select>
+
+
+    <select id="findPayOrderIdList" resultClass="java.lang.Integer" parameterClass="map">
+        SELECT
+        POID
+        FROM FC_PayOrder
+        <dynamic prepend="WHERE">
+            <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
+                PayCode = #payOrderSearchBean.payCode#
+            </isNotEmpty>
+            <isNotNull property="payOrderSearchBean.beginTime" prepend="and">
+                AddTime &gt;= #payOrderSearchBean.beginTime#
+            </isNotNull>
+            <isNotNull property="payOrderSearchBean.endTime" prepend="and">
+                AddTime &lt;= #payOrderSearchBean.endTime#
+            </isNotNull>
+            <isGreaterThan property="payOrderSearchBean.status" compareValue="0" prepend="and">
+                Status = #payOrderSearchBean.status#
+            </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
+                BusinessType = #payOrderSearchBean.businessType#
+            </isGreaterThan>
+        </dynamic>
     </select>
 
 </sqlMap>

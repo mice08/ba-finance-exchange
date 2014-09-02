@@ -53,4 +53,15 @@ public class PayOrderSearchBean implements Serializable {
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
+
+    @Override
+    public String toString() {
+        return "PayOrderSearchBean{" +
+                "businessType=" + businessType +
+                ", beginTime=" + beginTime +
+                ", endTime=" + endTime +
+                ", status=" + status +
+                ", payCode='" + payCode + '\'' +
+                '}';
+    }
 }

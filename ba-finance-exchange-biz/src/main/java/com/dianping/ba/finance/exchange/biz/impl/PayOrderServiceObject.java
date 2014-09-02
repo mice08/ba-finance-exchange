@@ -14,7 +14,6 @@ import com.dianping.ba.finance.exchange.api.enums.PayResultStatus;
 import com.dianping.ba.finance.exchange.api.enums.RefundFailedReason;
 import com.dianping.ba.finance.exchange.biz.dao.PayOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.PayOrderResultNotify;
-import com.dianping.ba.finance.exchange.biz.utils.BizUtils;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
@@ -24,7 +23,10 @@ import com.google.common.collect.Maps;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 处理付款单的Service类
@@ -46,8 +48,7 @@ public class PayOrderServiceObject implements PayOrderService {
         int times = DUPLICATE_RETRY_TIMES;
         do {
             try {
-                // 主键冲突，重新生成PayCode再插入
-                payOrderData.setPayCode(BizUtils.generatePayCode());
+                // 高并发下，payCode冲突，重试再插入
                 int poId = payOrderDao.insertPayOrder(payOrderData);
                 payOrderData.setPoId(poId);
                 return poId;
@@ -55,7 +56,7 @@ public class PayOrderServiceObject implements PayOrderService {
                 MONITOR_LOGGER.error(String.format("severity=[1] PayOrderServiceObject.createPayOrder error! payOrderData=%s", payOrderData), e);
                 times--;
             }
-        } while(times > 0);
+        } while (times > 0);
         return -1;
     }
 
@@ -236,6 +237,13 @@ public class PayOrderServiceObject implements PayOrderService {
     @Override
     public BigDecimal findPayOrderTotalAmount(PayOrderSearchBean payOrderSearchBean) {
         return payOrderDao.findPayOrderTotalAmountByCondition(payOrderSearchBean);
+    }
+
+    @Log(severity = 2)
+    @ReturnDefault
+    @Override
+    public List<Integer> findPayOrderIdList(PayOrderSearchBean payOrderSearchBean) {
+        return payOrderDao.findPayOrderIdList(payOrderSearchBean);
     }
 
     public void setPayOrderDao(PayOrderDao payOrderDao) {

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ReceiveOrderReco">
+    <typeAlias alias="ReceiveOrderRecoData" type="com.dianping.ba.finance.exchange.api.datas.ReceiveOrderRecoData"/>
+    <resultMap id="receiveOrderRecoData" class="ReceiveOrderRecoData">
+        <result property="id" column="ID"/>
+        <result property="customerId" column="CustomerID"/>
+        <result property="shopId" column="ShopID"/>
+        <result property="type" column="Type"/>
+        <result property="receiveAmount" column="ReceiveAmount"/>
+        <result property="receiveTime" column="ReceiveTime"/>
+        <result property="payChannel" column="PayChannel"/>
+        <result property="receiveType" column="ReceiveType"/>
+        <result property="bizContent" column="BizContent"/>
+        <result property="tradeNo" column="TradeNo"/>
+        <result property="bankID" column="BankID"/>
+        <result property="addTime" column="AddTime"/>
+        <result property="updateTime" column="UpdateTime"/>
+        <result property="batchId" column="BatchID"/>
+    </resultMap>
+
+    <insert id="insertReceiveOrderRecoDatas" parameterClass="map">
+        <![CDATA[
+            INSERT INTO RECO_BA_ReceiveOrder
+                        (ID,
+                         CustomerID,
+                         ShopID,
+                         Type,
+                         ReceiveAmount,
+                         ReceiveTime,
+                         PayChannel,
+                         ReceiveType,
+                         BizContent,
+                         TradeNo,
+                         BankID,
+                         AddTime,
+                         UpdateTime,
+                         BatchID)
+            VALUES
+        ]]>
+        <iterate conjunction="," property="list">
+            (#list[].id#,
+             #list[].customerId#,
+             #list[].shopId#,
+             #list[].type#,
+             #list[].receiveAmount#,
+             #list[].receiveTime#,
+             #list[].payChannel#,
+             #list[].receiveType#,
+             #list[].bizContent#,
+             #list[].tradeNo#,
+             #list[].bankID#,
+             NOW(),
+             NOW(),
+             #list[].batchId#)
+        </iterate>
+    </insert>
+</sqlMap>

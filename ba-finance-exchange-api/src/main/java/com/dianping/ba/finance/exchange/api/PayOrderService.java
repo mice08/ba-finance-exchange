@@ -69,4 +69,13 @@ public interface PayOrderService {
      * @return
      */
     public BigDecimal findPayOrderTotalAmount(PayOrderSearchBean payOrderSearchBean);
+
+
+    /**
+     * 根据查询条件返回付款单Id
+     *
+     * @param payOrderSearchBean
+     * @return
+     */
+    List<Integer> findPayOrderIdList(PayOrderSearchBean payOrderSearchBean);
 }

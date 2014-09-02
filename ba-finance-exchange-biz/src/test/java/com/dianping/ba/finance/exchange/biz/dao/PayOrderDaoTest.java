@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.biz.dao;
 import com.dianping.ba.finance.exchange.api.beans.POUpdateInfoBean;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.core.type.PageModel;
 import org.junit.Assert;
@@ -39,7 +40,7 @@ public class PayOrderDaoTest {
         payOrderData.setUpdateLoginId(-1);
         payOrderData.setUpdateTime(Calendar.getInstance().getTime());
         payOrderData.setBankAccountName("1111");
-        payOrderData.setPaySequence("P|1");
+        payOrderData.setPaySequence("P|87873");
         payOrderData.setPayCode("paycode");
         payOrderData.setCustomerId(12387);
         payOrderData.setPayAmount(BigDecimal.ONE);
@@ -53,7 +54,8 @@ public class PayOrderDaoTest {
         payOrderData.setBankProvince("province");
         payOrderData.setBankName("bankName");
 
-        payOrderDao.insertPayOrder(payOrderData);
+        int poId = payOrderDao.insertPayOrder(payOrderData);
+        Assert.assertTrue(poId > 0);
     }
 
     @Test
@@ -111,4 +113,23 @@ public class PayOrderDaoTest {
 		Assert.assertNotNull(actual);
 		System.out.print(actual.size());
 	}
+
+    @Test
+    public void testFindPayOrderIdList() throws Exception {
+        PayOrderSearchBean payOrderSearchBean = new PayOrderSearchBean();
+        payOrderSearchBean.setBusinessType(BusinessType.GROUP_PURCHASE.value());
+        payOrderSearchBean.setStatus(PayOrderStatus.INIT.value());
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.MONTH, Calendar.AUGUST);
+        cal.set(Calendar.DAY_OF_MONTH, 8);
+        cal.set(Calendar.HOUR_OF_DAY, 00);
+        cal.set(Calendar.MINUTE, 00);
+        cal.set(Calendar.SECOND, 00);
+        payOrderSearchBean.setBeginTime(cal.getTime());
+        List<Integer> actual = payOrderDao.findPayOrderIdList(payOrderSearchBean);
+        Assert.assertNotNull(actual);
+        System.out.print(actual.size());
+
+    }
 }

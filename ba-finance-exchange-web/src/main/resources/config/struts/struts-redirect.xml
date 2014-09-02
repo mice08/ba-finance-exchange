@@ -5,7 +5,26 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="payorder" namespace="/caiwu/payorder" extends="default">
+    <package name="permission" namespace="/exchange/permission" extends="default">
+        <action name="clean" class="com.dianping.ba.finance.exchange.siteweb.action.CleanPermissionInfoAction">
+            <result name="success" type="freemarker">/WEB-INF/pages/cleansuccess.ftl</result>
+            <result name="error" type="freemarker">/WEB-INF/pages/error.ftl</result>
+        </action>
+    </package>
+    <package name="receiveorder" namespace="/exchange/receiveorder" extends="default">
+        <action name="orderlist" class="com.dianping.ba.finance.exchange.siteweb.action.RedirectAction">
+            <result name="success" type="freemarker">/WEB-INF/pages/receiveorder.ftl</result>
+        </action>
+
+        <!-- 广告 POS 支付中心 http接口-->
+        <action name="DPCSReceiveNotify"
+                class="com.dianping.ba.finance.exchange.siteweb.action.PayCentreReceiveHttpAjaxAction">
+            <result name="success" type="freemarker">/WEB-INF/pages/paycentresuccess.ftl</result>
+            <result name="error" type="freemarker">/WEB-INF/pages/paycentreerror.ftl</result>
+        </action>
+
+    </package>
+    <package name="payorder" namespace="/exchange/payorder" extends="default">
         <action name="orderlist" class="com.dianping.ba.finance.exchange.siteweb.action.RedirectAction">
             <result name="success" type="freemarker">/WEB-INF/pages/payorder.ftl</result>
         </action>
@@ -15,6 +34,11 @@
             <result type="json"></result>
         </action>
 
+    </package>
+    <package name="receivenotify" namespace="/exchange/receivenotify" extends="default">
+        <action name="orderlist" class="com.dianping.ba.finance.exchange.siteweb.action.RedirectAction">
+            <result name="success" type="freemarker">/WEB-INF/pages/receivenotify.ftl</result>
+        </action>
     </package>
 
 </struts>

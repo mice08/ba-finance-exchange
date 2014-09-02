@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ReceiveNotify">
+    <typeAlias alias="ReceiveNotifyData" type="com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData"></typeAlias>
+    <resultMap id="receiveNotifyData" class="ReceiveNotifyData">
+        <result property="receiveNotifyId" column="ReceiveNotifyID"/>
+        <result property="applicationId" column="ApplicationID"/>
+        <result property="businessType" column="BusinessType"/>
+        <result property="receiveAmount" column="ReceiveAmount"/>
+        <result property="customerId" column="CustomerID"/>
+        <result property="payChannel" column="PayChannel"/>
+        <result property="receiveType" column="ReceiveType"/>
+        <result property="payTime" column="PayTime"/>
+        <result property="payerName" column="PayerName"/>
+        <result property="bizContent" column="BizContent"/>
+        <result property="bankId" column="BankID"/>
+        <result property="attachment" column="Attachment"/>
+        <result property="status" column="Status"/>
+        <result property="roMatcherId" column="ROMatcherID"/>
+        <result property="memo" column="Memo"/>
+        <result property="addTime" column="AddTime"/>
+        <result property="addLoginId" column="AddLoginID"/>
+        <result property="updateTime" column="UpdateTime"/>
+        <result property="updateLoginId" column="UpdateLoginID"/>
+    </resultMap>
+
+    <insert id="insertReceiveNotify" parameterClass="map">
+        <![CDATA[
+            INSERT INTO FC_ReceiveNotify
+                        (ApplicationID,
+                         BusinessType,
+                         ReceiveAmount,
+                         CustomerID,
+                         PayChannel,
+                         ReceiveType,
+                         PayTime,
+                         PayerName,
+                         BizContent,
+                         BankID,
+                         Attachment,
+                         Status,
+                         ROMatcherID,
+                         Memo,
+                         AddTime,
+                         AddLoginID,
+                         UpdateTime,
+                         UpdateLoginID
+                         )
+            VALUES      (#receiveNotifyData.applicationId#,
+                         #receiveNotifyData.businessType#,
+                         #receiveNotifyData.receiveAmount#,
+                         #receiveNotifyData.customerId#,
+                         #receiveNotifyData.payChannel#,
+                         #receiveNotifyData.receiveType#,
+                         #receiveNotifyData.payTime#,
+                         #receiveNotifyData.payerName#,
+                         #receiveNotifyData.bizContent#,
+                         #receiveNotifyData.bankId#,
+                         #receiveNotifyData.attachment#,
+                         #receiveNotifyData.status#,
+                         #receiveNotifyData.roMatcherId#,
+                         #receiveNotifyData.memo#,
+                         #receiveNotifyData.addTime#,
+                         #receiveNotifyData.addLoginId#,
+                         #receiveNotifyData.updateTime#,
+                         #receiveNotifyData.updateLoginId#)
+
+        ]]>
+        <selectKey resultClass="java.lang.Integer" keyProperty="receiveNotifyId">
+            <![CDATA[
+			SELECT @@IDENTITY AS id
+		]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateReceiveNotifyMatchId" parameterClass="map">
+        UPDATE FC_ReceiveNotify
+        SET    status = #setStatus#,
+        ROMatcherID = #roId#
+        WHERE  status = #preStatus#
+          AND  (ROMatcherID IS NULL
+                OR ROMatcherID = 0)
+          AND ReceiveNotifyID = #rnId#
+    </update>
+
+    <select id="getUnMatchedReceiveNotify" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+               ApplicationID,
+               BusinessType,
+               ReceiveAmount,
+               CustomerID,
+               PayChannel,
+               ReceiveType,
+               PayTime,
+               PayerName,
+               BizContent,
+               BankID,
+               Attachment,
+               Status,
+               ROMatcherID,
+               Memo,
+               AddTime,
+               AddLoginID,
+               UpdateTime,
+               UpdateLoginID
+          FROM FC_ReceiveNotify
+         WHERE Status = #status#
+           AND (ROMatcherID IS NULL
+                OR ROMatcherID = 0 )
+    </select>
+
+    <select id="findUnmatchedLeftReceiveNotify" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+               ApplicationID,
+               BusinessType,
+               ReceiveAmount,
+               CustomerID,
+               PayChannel,
+               ReceiveType,
+               PayTime,
+               PayerName,
+               BizContent,
+               BankID,
+               Attachment,
+               Status,
+               ROMatcherID,
+               Memo,
+               AddTime,
+               AddLoginID,
+               UpdateTime,
+               UpdateLoginID
+          FROM FC_ReceiveNotify
+         WHERE Status = #status#
+           AND ROMatcherID = #roId#
+           AND ApplicationID != #excludeApplicationId#
+    </select>
+
+    <update id="clearReceiveNotifyMatchInfo" parameterClass="map">
+        UPDATE FC_ReceiveNotify
+        SET    Status = #status#,
+               ROMatcherID = 0
+        WHERE  ReceiveNotifyID IN
+        <iterate open="(" close=")" conjunction="," property="rnIdList">
+            #rnIdList[]#
+        </iterate>
+    </update>
+
+    <select id="loadUnmatchedReceiveNotifyByApplicationId" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+               ApplicationID,
+               BusinessType,
+               ReceiveAmount,
+               CustomerID,
+               PayChannel,
+               ReceiveType,
+               PayTime,
+               PayerName,
+               BizContent,
+               BankID,
+               Attachment,
+               Status,
+               ROMatcherID,
+               Memo,
+               AddTime,
+               AddLoginID,
+               UpdateTime,
+               UpdateLoginID
+          FROM FC_ReceiveNotify
+         WHERE Status = #status#
+           AND BusinessType = #businessType#
+           AND ROMatcherID = 0
+           AND ApplicationID = #applicationId#
+    </select>
+    
+    <select id="paginateReceiveNotifyList" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+               ApplicationID,
+               BusinessType,
+               ReceiveAmount,
+               CustomerID,
+               PayChannel,
+               ReceiveType,
+               PayTime,
+               PayerName,
+               BizContent,
+               BankID,
+               Attachment,
+               Status,
+               ROMatcherID,
+               Memo,
+               AddTime,
+               AddLoginID,
+               UpdateTime,
+               UpdateLoginID
+          FROM FC_ReceiveNotify
+        <dynamic prepend="where">
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.businessType" compareValue="0">
+                BusinessType = #receiveNotifySearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.customerId" compareValue="0">
+                CustomerID = #receiveNotifySearchBean.customerId#
+            </isGreaterThan>
+            <isNotNull prepend="and" property="receiveNotifySearchBean.payTimeBegin">
+                PayTime &gt;= #receiveNotifySearchBean.payTimeBegin#
+            </isNotNull>
+            <isNotNull prepend="and" property="receiveNotifySearchBean.payTimeEnd">
+                PayTime &lt;= #receiveNotifySearchBean.payTimeEnd#
+            </isNotNull>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.payChannel" compareValue="0">
+                PayChannel = #receiveNotifySearchBean.payChannel#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.receiveAmount" compareValue="0">
+                ReceiveAmount = #receiveNotifySearchBean.receiveAmount#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.bankId" compareValue="0">
+                BankID = #receiveNotifySearchBean.bankId#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.status" compareValue="0">
+                Status =#receiveNotifySearchBean.status#
+            </isGreaterThan>
+        </dynamic>
+        ORDER BY Status,PayTime
+    </select>
+
+    <select id="paginateReceiveNotifyList_COUNT" resultClass="int" parameterClass="map">
+        SELECT COUNT(ReceiveNotifyID)
+        FROM FC_ReceiveNotify
+        <dynamic prepend="where">
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.businessType" compareValue="0">
+                BusinessType = #receiveNotifySearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.customerId" compareValue="0">
+                CustomerID = #receiveNotifySearchBean.customerId#
+            </isGreaterThan>
+            <isNotEmpty prepend="and" property="receiveNotifySearchBean.payTimeBegin">
+                PayTime &gt;= #receiveNotifySearchBean.payTimeBegin#
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="receiveNotifySearchBean.payTimeEnd">
+                PayTime &lt;= #receiveNotifySearchBean.payTimeEnd#
+            </isNotEmpty>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.payChannel" compareValue="0">
+                PayChannel = #receiveNotifySearchBean.payChannel#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.receiveAmount" compareValue="0">
+                ReceiveAmount = #receiveNotifySearchBean.receiveAmount#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.bankId" compareValue="0">
+                BankID = #receiveNotifySearchBean.bankId#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.status" compareValue="0">
+                Status =#receiveNotifySearchBean.status#
+            </isGreaterThan>
+        </dynamic>
+        ORDER BY Status,PayTime
+    </select>
+
+    <select id="findMatchedReceiveNotify" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+               ApplicationID,
+               BusinessType,
+               ReceiveAmount,
+               CustomerID,
+               PayChannel,
+               ReceiveType,
+               PayTime,
+               PayerName,
+               BizContent,
+               BankID,
+               Attachment,
+               Status,
+               ROMatcherID,
+               Memo,
+               AddTime,
+               AddLoginID,
+               UpdateTime,
+               UpdateLoginID
+        FROM   FC_ReceiveNotify
+        WHERE  Status = #status#
+           AND ROMatcherID = #roId#
+    </select>
+
+
+    <update id="removeReceiveNotifyMatchRelation" parameterClass="map">
+        UPDATE FC_ReceiveNotify
+        SET Status = 1,
+            ROMatcherID = 0
+        WHERE ReceiveNotifyID = #rnId#
+        AND ROMatcherID = #roId#
+        AND status = #status#
+    </update>
+
+    <select id="loadMatchedReceiveNotify" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+               ApplicationID,
+               BusinessType,
+               ReceiveAmount,
+               CustomerID,
+               PayChannel,
+               ReceiveType,
+               PayTime,
+               PayerName,
+               BizContent,
+               BankID,
+               Attachment,
+               Status,
+               ROMatcherID,
+               Memo,
+               AddTime,
+               AddLoginID,
+               UpdateTime,
+               UpdateLoginID
+          FROM FC_ReceiveNotify
+         WHERE Status = #status#
+           and ReceiveNotifyID = #rnId#
+           AND ROMatcherID = #roId#
+    </select>
+
+    <select id="loadTotalReceiveAmountByCondition" resultClass="java.math.BigDecimal" parameterClass="map">
+        SELECT IFNULL(SUM(ReceiveAmount), 0) AS totalAmount
+        FROM FC_ReceiveNotify
+        <dynamic prepend="where">
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.businessType" compareValue="0">
+                BusinessType = #receiveNotifySearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.customerId" compareValue="0">
+                CustomerID = #receiveNotifySearchBean.customerId#
+            </isGreaterThan>
+            <isNotEmpty prepend="and" property="receiveNotifySearchBean.payTimeBegin">
+                PayTime &gt;= #receiveNotifySearchBean.payTimeBegin#
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="receiveNotifySearchBean.payTimeEnd">
+                PayTime &lt;= #receiveNotifySearchBean.payTimeEnd#
+            </isNotEmpty>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.payChannel" compareValue="0">
+                PayChannel = #receiveNotifySearchBean.payChannel#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.receiveAmount" compareValue="0">
+                ReceiveAmount = #receiveNotifySearchBean.receiveAmount#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.bankId" compareValue="0">
+                BankID = #receiveNotifySearchBean.bankId#
+            </isGreaterThan>
+            <isGreaterThan prepend="and" property="receiveNotifySearchBean.status" compareValue="0">
+                Status =#receiveNotifySearchBean.status#
+            </isGreaterThan>
+        </dynamic>
+    </select>
+
+    <update id="updateReceiveNotifyConfirm" parameterClass="map">
+        UPDATE FC_ReceiveNotify
+           SET status = #setStatus#,
+               ROMatcherID = #roId#
+         WHERE ReceiveNotifyID = #rnId#
+    </update>
+
+
+    <select id="loadReceiveNotifyByApplicationId" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+        ApplicationID,
+        BusinessType,
+        ReceiveAmount,
+        CustomerID,
+        PayChannel,
+        ReceiveType,
+        PayTime,
+        PayerName,
+        BizContent,
+        BankID,
+        Attachment,
+        Status,
+        ROMatcherID,
+        Memo,
+        AddTime,
+        AddLoginID,
+        UpdateTime,
+        UpdateLoginID
+        FROM FC_ReceiveNotify
+        WHERE ApplicationID = #applicationId#
+    </select>
+
+    <select id="loadReceiveNotifyByRNID" resultMap="receiveNotifyData" parameterClass="map">
+        SELECT ReceiveNotifyID,
+        ApplicationID,
+        BusinessType,
+        ReceiveAmount,
+        CustomerID,
+        PayChannel,
+        ReceiveType,
+        PayTime,
+        PayerName,
+        BizContent,
+        BankID,
+        Attachment,
+        Status,
+        ROMatcherID,
+        Memo,
+        AddTime,
+        AddLoginID,
+        UpdateTime,
+        UpdateLoginID
+        FROM FC_ReceiveNotify
+        WHERE ReceiveNotifyID = #rnId#
+    </select>
+
+
+    <update id="updateReceiveNotifyStatus" parameterClass="map">
+        UPDATE FC_ReceiveNotify
+           SET status = #setStatus#
+         WHERE ReceiveNotifyID = #rnId#
+           AND status = #preStatus#
+    </update>
+</sqlMap>

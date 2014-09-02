@@ -5,7 +5,6 @@
     <excludes>
         <!-- index.jsp used for F5 check -->
         <pattern>/Heartbeat.html</pattern>
-        <pattern>/index.jsp</pattern>
         <pattern>/styles/*</pattern>
         <pattern>/scripts/*</pattern>
         <pattern>/images/*</pattern>
@@ -17,6 +16,7 @@
         <pattern>/account/*</pattern>
         <pattern>/dpd.jsp</pattern>
         <pattern>/caiwu/relation/getRelationHtml</pattern>
+        <pattern>/exchange/receiveorder/DPCSReceiveNotify*</pattern>
     </excludes>
 
     <decorator name="centralized">

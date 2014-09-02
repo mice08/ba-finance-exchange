@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.siteweb.action;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.portal.header.client.util.AuthenticationUtil;
 import com.dianping.combiz.web.action.AvatarAction;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.Preparable;
@@ -72,7 +73,7 @@ public abstract class WebBaseAction extends AvatarAction implements Preparable {
             if (request == null) {
                 return 0;
             }
-            String assertion = request.getRemoteUser();
+            String assertion = AuthenticationUtil.getRemoteUser(request);
             if (assertion != null) {
                 return Integer.parseInt(assertion.split("\\|")[1]);
             }

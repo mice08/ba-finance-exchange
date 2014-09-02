@@ -8,6 +8,77 @@
         <property name="iface" value="com.dianping.ba.finance.exchange.api.PayOrderService"/>
         <property name="serialize" value="hessian"/>
         <property name="callMethod" value="sync"/>
+        <property name="timeout" value="${ba-finance-exchange-web.pigeon.timeout.long}"/>
+    </bean>
+
+    <bean id="receiveBankService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName" value="http://service.dianping.com/baFinanceExchangeService/receiveBankService_1.0.0"/>
+        <property name="iface" value="com.dianping.ba.finance.exchange.api.ReceiveBankService"/>
+        <property name="serialize" value="hessian"/>
+        <property name="callMethod" value="sync"/>
+        <property name="timeout" value="5000"/>
+    </bean>
+
+    <bean id="receiveOrderService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName" value="http://service.dianping.com/baFinanceExchangeService/receiveOrderService_1.0.0"/>
+        <property name="iface" value="com.dianping.ba.finance.exchange.api.ReceiveOrderService"/>
+        <property name="serialize" value="hessian"/>
+        <property name="callMethod" value="sync"/>
+        <property name="timeout" value="5000"/>
+    </bean>
+
+    <bean id="customerInfoService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName"
+                  value="http://service.dianping.com/customerInfoService/customerInfoService_1.0.0"/>
+        <property name="iface" value="com.dianping.customerinfo.api.CustomerInfoService"/>
+        <property name="serialize" value="hessian"/>
+        <property name="callMethod" value="sync"/>
+        <property name="timeout" value="5000"/>
+        <property name="timeoutRetry" value="true"/>
+        <property name="retries" value="${ba-finance-exchange-web.pigeon.retryTimes}"/>
+    </bean>
+
+    <bean id="corporationService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName" value="http://service.dianping.com/midas/financeService/corporationService_1.0.0"/>
+        <property name="iface" value="com.dianping.midas.finance.api.service.CorporationService"/>
+        <property name="serialize" value="hessian"/>
+        <property name="callMethod" value="sync"/>
+        <property name="timeout" value="${ba-finance-exchange-web.pigeon.timeout.medium}"/>
+        <property name="timeoutRetry" value="true"/>
+        <property name="retries" value="${ba-finance-exchange-web.pigeon.retryTimes}"/>
+    </bean>
+
+    <bean id="receiveNotifyService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName" value="http://service.dianping.com/baFinanceExchangeService/receiveNotifyService_1.0.0"/>
+        <property name="iface" value="com.dianping.ba.finance.exchange.api.ReceiveNotifyService"/>
+        <property name="serialize" value="hessian"/>
+        <property name="callMethod" value="sync"/>
+        <property name="timeout" value="5000"/>
+    </bean>
+
+    <bean id="payCentreReceiveRequestHandleService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName" value="http://service.dianping.com/baFinanceExchangeService/payCentreReceiveRequestHandleService_1.0.0"/>
+        <property name="iface" value="com.dianping.ba.finance.exchange.api.PayCentreReceiveRequestHandleService"/>
+        <property name="serialize" value="hessian"/>
+        <property name="callMethod" value="sync"/>
+        <property name="timeout" value="5000"/>
+    </bean>
+
+    <bean id="mailService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName"
+                  value="http://service.dianping.com/mailService/mailService_1.0.0"/>
+        <property name="iface" value="com.dianping.mailremote.remote.MailService"/>
+        <property name="serialize" value="hessian"/>
+        <property name="callMethod" value="sync"/>
+        <property name="timeout" value="5000"/>
+    </bean>
+
+    <bean id="smsService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName"
+                  value="http://service.dianping.com/smsService/smsRemoteService_1.0.0"/>
+        <property name="iface" value="com.dianping.sms.biz.SMSService"/>
+        <property name="serialize" value="hessian"/>
+        <property name="callMethod" value="oneway"/>
         <property name="timeout" value="5000"/>
     </bean>
 
