@@ -128,24 +128,25 @@ public class MerchantsPayTemplateService implements PayTemplateService {
             templateBean.setPoId(exportBean.getPoId());
             templateBean.setPayCode(exportBean.getPayCode());
             templateBean.setOrderAmount(exportBean.getPayAmount());
-            templateBean.setBankName(exportBean.getBankFullBranchName());
+            templateBean.setBankName(exportBean.getBankName());
             templateBean.setBankAccountName(exportBean.getBankAccountName());
             templateBean.setBankAccountNo(exportBean.getBankAccountNo());
             templateBean.setBankProvince(exportBean.getBankProvince());
             templateBean.setBankCity(exportBean.getBankCity());
-            templateBean.setUse("大众点评网");
+            templateBean.setUse("大众点评网-" + exportBean.getMemo());
             templateBean.setExpectedDate(todayDate);
             BusinessExportInfoBean exportInfoBean = businessExportInfoBeanMap.get(exportBean.getBusinessType());
             if (exportInfoBean != null) {
-                templateBean.setBusinessSummary(exportInfoBean.getBusinessSummary());
+                templateBean.setBusinessSummary(exportInfoBean.getBusinessSummary()  + exportBean.getMemo());
                 templateBean.setCurrency(exportInfoBean.getCurrency());
                 templateBean.setDebitSideBankName(exportInfoBean.getDebitSideBankName());
                 templateBean.setDebitSideBankNo(exportInfoBean.getDebitSideBankNo());
                 templateBean.setPayerAccountNo(exportInfoBean.getPayerAccountNo());
                 templateBean.setPayerBranchBank(exportInfoBean.getPayerBranchBank());
                 templateBean.setSettleType(exportInfoBean.getSettleType());
-                templateBean.setUse(exportInfoBean.getUse());
+                templateBean.setUse(exportInfoBean.getUse() + exportBean.getMemo());
             }
+            templateBean.setUse(templateBean.getUse().substring(29));
             merchantsTemplateBeanLinkedList.add(templateBean);
         }
         return merchantsTemplateBeanLinkedList;

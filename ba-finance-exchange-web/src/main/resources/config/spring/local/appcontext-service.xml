@@ -45,7 +45,7 @@
         <property name="payerBranchBank" value="上海"/>
         <property name="settleType" value="普通"/>
         <property name="payerAccountNo" value="121909245310505"/>
-        <property name="use" value="大众点评网"/>
+        <property name="use" value="大众点评网团购"/>
         <property name="businessSummary" value="大众点评网团购"/>
     </bean>
 

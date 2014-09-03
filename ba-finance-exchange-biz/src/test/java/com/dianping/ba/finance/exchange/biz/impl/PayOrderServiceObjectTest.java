@@ -4,6 +4,7 @@ import com.dianping.ba.finance.exchange.api.beans.POUpdateInfoBean;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderResultBean;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.dtos.PayOrderBankInfoDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
@@ -201,5 +202,22 @@ public class PayOrderServiceObjectTest {
         List<Integer> ppIdList = payOrderServiceObjectStub.findPayOrderIdList(new PayOrderSearchBean());
         Assert.assertNotNull(ppIdList);
         Assert.assertEquals(123, ppIdList.get(0).intValue());
+    }
+
+    @Test
+    public void testLoadPayOrderByPaySequenceNull() throws Exception {
+        when(payOrderDaoMock.loadPayOrderByPaySequence(anyString())).thenReturn(null);
+        PayOrderBankInfoDTO bankInfoDTO = payOrderServiceObjectStub.loadPayOrderByPaySequence("Sequence123");
+        Assert.assertNull(bankInfoDTO);
+    }
+
+    @Test
+    public void testLoadPayOrderByPaySequencePayOrderExist() throws Exception {
+        PayOrderData poData = new PayOrderData();
+        poData.setPoId(123);
+        when(payOrderDaoMock.loadPayOrderByPaySequence(anyString())).thenReturn(poData);
+        PayOrderBankInfoDTO bankInfoDTO = payOrderServiceObjectStub.loadPayOrderByPaySequence("Sequence123");
+        Assert.assertNotNull(bankInfoDTO);
+        Assert.assertEquals(bankInfoDTO.getPoId(), poData.getPoId());
     }
 }
