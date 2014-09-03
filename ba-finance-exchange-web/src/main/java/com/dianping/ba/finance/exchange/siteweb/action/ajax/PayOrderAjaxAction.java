@@ -163,8 +163,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 	public PayOrderSearchBean buildPayOrderSearchBean() throws ParseException {
 
         PayOrderSearchBean payOrderSearchBean=new PayOrderSearchBean();
-        Date beginTime = DateUtil.isValidDate(addBeginTime) ? DateUtil.formatDate(addBeginTime, false) : null;
-        Date endTime = DateUtil.isValidDate(addEndTime) ? DateUtil.formatDate(addEndTime, true) : null;
+        Date beginTime = DateUtil.isValidDate(addBeginTime) ? DateUtil.formatDateTime(addBeginTime) : null;
+        Date endTime = DateUtil.isValidDate(addEndTime) ? DateUtil.formatDateTime(addEndTime) : null;
         payOrderSearchBean.setStatus(status);
         payOrderSearchBean.setBusinessType(businessType);
         payOrderSearchBean.setBeginTime(beginTime);
@@ -192,16 +192,16 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     private PayOrderBean convertPODataToPOBean(PayOrderData payOrderData, Map<Integer, String> customerIdNameMap) {
         PayOrderBean payOrderBean = new PayOrderBean();
         payOrderBean.setPayCode(payOrderData.getPayCode());
-        payOrderBean.setAddTime(DateUtil.formatDateToString(payOrderData.getAddTime(), "yyyy-MM-dd"));
+        payOrderBean.setAddTime(DateUtil.formatDateToString(payOrderData.getAddTime(), "yyyy-MM-dd HH:mm:ss"));
         if (payOrderData.getStatus() == PayOrderStatus.REFUND.value()) {
-            payOrderBean.setSendBackTime(DateUtil.formatDateToString(payOrderData.getUpdateTime(), "yyyy-MM-dd"));
+            payOrderBean.setSendBackTime(DateUtil.formatDateToString(payOrderData.getUpdateTime(), "yyyy-MM-dd HH:mm:ss"));
         }
         payOrderBean.setBankAccountName(payOrderData.getBankAccountName());
         payOrderBean.setBankAccountNo(payOrderData.getBankAccountNo());
         payOrderBean.setBankFullBranchName(payOrderData.getBankFullBranchName());
         payOrderBean.setCustomerName(getCustomerNameById(payOrderData.getCustomerId(), customerIdNameMap));
         payOrderBean.setMemo(payOrderData.getMemo());
-        payOrderBean.setPaidDate(DateUtil.formatDateToString(payOrderData.getPaidDate(), "yyyy-MM-dd"));
+        payOrderBean.setPaidDate(DateUtil.formatDateToString(payOrderData.getPaidDate(), "yyyy-MM-dd HH:mm:ss"));
         payOrderBean.setPayAmount(new DecimalFormat("##,###,###,###,##0.00").format(payOrderData.getPayAmount()));
         payOrderBean.setPoId(payOrderData.getPoId());
         payOrderBean.setStatusDesc(PayOrderStatus.valueOf(payOrderData.getStatus()).toString());
