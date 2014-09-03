@@ -146,6 +146,7 @@ public class MerchantsPayTemplateService implements PayTemplateService {
                 templateBean.setSettleType(exportInfoBean.getSettleType());
                 templateBean.setUse(exportInfoBean.getUse() + exportBean.getMemo());
             }
+            templateBean.setUse(templateBean.getUse().substring(29));
             merchantsTemplateBeanLinkedList.add(templateBean);
         }
         return merchantsTemplateBeanLinkedList;
