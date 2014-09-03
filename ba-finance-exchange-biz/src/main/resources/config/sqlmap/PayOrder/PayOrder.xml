@@ -336,4 +336,31 @@
         </dynamic>
     </select>
 
+    <select id="loadPayOrderByPaySequence" resultMap="payOrderData" parameterClass="map">
+        SELECT POID,
+               PayAmount,
+               PaySequence,
+               PayCode,
+               CustomerID,
+               CustomerBankId,
+               BankAccountNo,
+               BankAccountName,
+               PaidDate,
+               BankBranchName,
+               BankName,
+               BankProvince,
+               BankCity,
+               BankFullBranchName,
+               BankCode,
+               BankAccountType,
+               BusinessType,
+               Status,
+               AddTime,
+               AddType,
+               UpdateTime,
+               Memo
+        FROM   FC_PayOrder po
+        WHERE  po.PaySequence = #paySequence#
+    </select>
+
 </sqlMap>

@@ -160,6 +160,12 @@
             <result type="json"></result>
         </action>
 
+        <action name="findOrderByROId"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction"
+                method="findOrderByROId">
+            <result type="json"></result>
+        </action>
+
         <action name="rornCancelLink"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveNotifyAjaxAction"
                 method="rornCancelLink">
