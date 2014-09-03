@@ -107,4 +107,12 @@ public interface ReceiveOrderDao extends GenericDao {
     List<ReceiveCalResultData> findCalculatedReceiveResult(@DAOParam("receiveOrderSearchBean") ReceiveOrderSearchBean receiveOrderSearchBean,
                                                            @DAOParam("voucherDate")String voucherDate);
 
+    /**
+     * 根据条件查询收款记录
+     * @param receiveOrderSearchBean
+     * @return
+     */
+    @DAOAction(action = DAOActionType.QUERY)
+    List<ReceiveOrderData> findReceiveOrderBySearchBean(@DAOParam("receiveOrderSearchBean") ReceiveOrderSearchBean receiveOrderSearchBean);
+
 }

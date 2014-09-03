@@ -45,6 +45,7 @@
         <property name="receiveNotifyService" ref="receiveNotifyService"/>
         <property name="rornMatchService" ref="rornMatchService"/>
         <property name="receiveNotifyResultNotify" ref="receiveNotifyResultNotify"/>
+        <property name="bizInfoService" ref="bizInfoService"/>
     </bean>
 
     <bean id="receiveBankService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveBankServiceObject">

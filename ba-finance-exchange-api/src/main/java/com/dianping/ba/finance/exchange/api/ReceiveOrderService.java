@@ -114,4 +114,11 @@ public interface ReceiveOrderService {
      * @return
      */
     boolean cancelReceiveOrder(int roId);
+
+    /**
+     * 自动获取未确认收单尝试确认
+     * @param receiveOrderSearchBean
+     * @return
+     */
+    boolean fireAutoConfirm(ReceiveOrderSearchBean receiveOrderSearchBean);
 }
