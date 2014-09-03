@@ -137,16 +137,17 @@ public class MerchantsPayTemplateService implements PayTemplateService {
             templateBean.setExpectedDate(todayDate);
             BusinessExportInfoBean exportInfoBean = businessExportInfoBeanMap.get(exportBean.getBusinessType());
             if (exportInfoBean != null) {
-                templateBean.setBusinessSummary(exportInfoBean.getBusinessSummary()  + exportBean.getMemo());
+                String memo = exportBean.getMemo() == null ? "" : exportBean.getMemo();
+                templateBean.setBusinessSummary(exportInfoBean.getBusinessSummary()  + memo);
                 templateBean.setCurrency(exportInfoBean.getCurrency());
                 templateBean.setDebitSideBankName(exportInfoBean.getDebitSideBankName());
                 templateBean.setDebitSideBankNo(exportInfoBean.getDebitSideBankNo());
                 templateBean.setPayerAccountNo(exportInfoBean.getPayerAccountNo());
                 templateBean.setPayerBranchBank(exportInfoBean.getPayerBranchBank());
                 templateBean.setSettleType(exportInfoBean.getSettleType());
-                templateBean.setUse(exportInfoBean.getUse() + exportBean.getMemo());
+                templateBean.setUse(exportInfoBean.getUse() + memo);
             }
-            templateBean.setUse(templateBean.getUse().substring(29));
+            templateBean.setUse(templateBean.getUse().length() <= 29 ? templateBean.getUse() : templateBean.getUse().substring(0,28));
             merchantsTemplateBeanLinkedList.add(templateBean);
         }
         return merchantsTemplateBeanLinkedList;
