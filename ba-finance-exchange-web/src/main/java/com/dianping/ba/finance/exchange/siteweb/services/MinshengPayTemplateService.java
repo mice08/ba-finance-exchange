@@ -322,8 +322,9 @@ public class MinshengPayTemplateService implements PayTemplateService {
         int accountTypeInTemplate = payOrderExportBean.getBankAccountType() == 1 ? 0 : 1;
         templateBean.setBankAccountType(accountTypeInTemplate);
         BusinessType businessType = BusinessType.valueOf(payOrderExportBean.getBusinessType());
-        String usage = "大众点评-" + businessType.toString() + payOrderExportBean.getMemo();
-        templateBean.setUsage(usage.substring(20));
+        String memo = payOrderExportBean.getMemo() == null ? "" : payOrderExportBean.getMemo();
+        String usage = "大众点评-" + businessType.toString() + memo;
+        templateBean.setUsage(usage.length() <= 20 ? usage : usage.substring(0,19));
         String bankCode = payOrderExportBean.getBankCode();
         if (bankCode == null) {
             bankCode = "";
