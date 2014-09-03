@@ -131,6 +131,7 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
         payOrderData.setAddLoginId(payOrderRequestDTO.getLoginId());
         payOrderData.setUpdateTime(DateUtils.getCurrentTime());
         payOrderData.setUpdateLoginId(payOrderRequestDTO.getLoginId());
+        payOrderData.setMemo(payOrderRequestDTO.getMemo());
         return payOrderData;
     }
 
