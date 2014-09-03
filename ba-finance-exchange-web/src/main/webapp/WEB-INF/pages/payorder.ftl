@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div class="row-fluid label-colon">
-                    <div class="control-group span6">
+                    <div class="control-group span8">
                         <label class="control-label">产生日期</label>
 
                         <div class="controls">
@@ -99,19 +99,19 @@
                                 <option value="3">前天</option>
                             </select>
 
-                            <div class="input-append">
-                                <input type="text" id="addbegindate" datatype="date" name="addBeginTime"
-                                       class="input-small form_value">
+                            <div id="addbegindate" class="input-append">
+                                <input type="text" id="addbegindate_val" datatype="time" name="addBeginTime"
+                                       class="form_value"></input>
                                             <span class="add-on">
                                                 <i class="icon-calendar">
                                                 </i>
                                             </span>
                             </div>
                             至
-                            <div class="input-append">
-                                <input type="text" id="addenddate" validate="ge[addbegindate]" datatype="date"
-                                       name="addEndTime" error_msg="ge[addbegindate]:起始日期大于结束日期"
-                                       class="input-small form_value">
+                            <div id="addenddate" class="input-append">
+                                <input type="text" id="addenddate_val" validate="ge[addbegindate_val]" datatype="time"
+                                       name="addEndTime" error_msg="ge[addbegindate_val]:起始日期大于结束日期"
+                                       class="form_value">
                                             <span class="add-on">
                                                 <i class="icon-calendar">
                                                 </i>
@@ -119,7 +119,8 @@
                             </div>
                         </div>
                     </div>
-
+                </div>
+                <div class="row-fluid label-colon">
                     <div class="control-group span6">
                         <label class="control-label">状态</label>
 
@@ -129,7 +130,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <div class="row-fluid">
                     <div class="control-group span6">
@@ -188,8 +188,8 @@
                         <th width="6%" class="fs tb-header amount">付款单金额</th>
                         <th width="10%" class="fs tb-header date">产生日期</th>
                         <th width="5%" class="fs tb-header bank-account">银行账号</th>
-                        <th width="6%" class="fs tb-header paid-time">付款日期</th>
-                        <th width="6%" class="fs tb-header sendback-time">退票日期</th>
+                        <th width="10%" class="fs tb-header paid-time">付款日期</th>
+                        <th width="10%" class="fs tb-header sendback-time">退票日期</th>
                         <th width="5%" class="fs tb-header status">状态</th>
                         <th width="5%" class="fs tb-header memo">备注</th>
                     </tr>
