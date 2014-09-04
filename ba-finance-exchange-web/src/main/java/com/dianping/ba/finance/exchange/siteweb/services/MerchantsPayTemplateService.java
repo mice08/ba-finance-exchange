@@ -150,7 +150,7 @@ public class MerchantsPayTemplateService implements PayTemplateService {
                 String summary = exportInfoBean.getBusinessSummary() == null ? "" : exportInfoBean.getBusinessSummary();
                 String memo = exportBean.getMemo() == null ? "" : exportBean.getMemo();
 
-                templateBean.setUse(subString(memo + use, maxColumnLen));
+                templateBean.setUse(subString(use + memo, maxColumnLen));
                 templateBean.setBusinessSummary(subString(summary + memo, maxColumnLen));
             }
 
