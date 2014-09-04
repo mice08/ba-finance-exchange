@@ -33,9 +33,27 @@ class MerchantsPayTemplateServiceTest extends Specification {
         String fileName = "付款单"
         def responseMock = Mock(HttpServletResponse);
 
-        PayOrderExportBean commonExportBean = [bankAccountType: 1, bankName: "XX银行", payAmount: 12.0G, businessType: 1]
-        PayOrderExportBean sameBankExportBean = [bankAccountType: 0, bankName: "民生银行", payAmount: 87.87G, businessType: 2]
-        def exportBeans = [commonExportBean, sameBankExportBean];
+        PayOrderExportBean commonExportBean = [bankAccountType: 1,
+                                               bankName: "XX银行",
+                                               payAmount: 12.0G,
+                                               businessType: 1]
+        PayOrderExportBean sameBankExportBean = [bankAccountType: 0,
+                                                 bankName: "民生银行",
+                                                 payAmount: 87.87G,
+                                                 businessType: 2]
+        PayOrderExportBean validFullBranchNameExportBean = [bankAccountType: 0,
+                                                     bankName: "123456789银行",
+                                                     bankFullBranchName: "bankFullBranchName",
+                                                     payAmount: 87.87G,
+                                                     businessType: 2,
+                                                     memo: "memo123memo123memo123memo123memo123memo123memo123memo123memo123"]
+        PayOrderExportBean longBankMemoExportBean = [bankAccountType: 0,
+                                                     bankName: "123456789银行",
+                                                     bankFullBranchName: "bankFullBranchName123bankFullBranchName123bankFullBranchName123",
+                                                     payAmount: 87.87G,
+                                                     businessType: 2,
+                                                     memo: "memo123memo123memo123memo123memo123memo123memo123memo123memo123"]
+        def exportBeans = [commonExportBean, sameBankExportBean, longBankMemoExportBean, validFullBranchNameExportBean];
         BusinessExportInfoBean grouponExportInfoBean = [businessType: BusinessType.GROUP_PURCHASE, use: "团购"]
         BusinessExportInfoBean bookingExportInfoBean = [businessType: BusinessType.BOOKING, use: "预订"]
         merchantsPayTemplateServiceStub.businessExportInfoBeanMap = [1: grouponExportInfoBean, 2: bookingExportInfoBean]

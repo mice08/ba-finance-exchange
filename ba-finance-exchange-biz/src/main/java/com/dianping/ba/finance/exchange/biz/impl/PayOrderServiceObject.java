@@ -7,6 +7,7 @@ import com.dianping.ba.finance.exchange.api.beans.POUpdateInfoBean;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderResultBean;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.dtos.PayOrderBankInfoDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
@@ -17,6 +18,7 @@ import com.dianping.ba.finance.exchange.biz.producer.PayOrderResultNotify;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
+import com.dianping.finance.common.util.ConvertUtils;
 import com.dianping.finance.common.util.DateUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -245,6 +247,28 @@ public class PayOrderServiceObject implements PayOrderService {
     public List<Integer> findPayOrderIdList(PayOrderSearchBean payOrderSearchBean) {
         return payOrderDao.findPayOrderIdList(payOrderSearchBean);
     }
+
+    @Log(severity = 2)
+    @ReturnDefault
+    @Override
+    public PayOrderBankInfoDTO loadPayOrderByPaySequence(String paySequence) {
+        PayOrderData poData = payOrderDao.loadPayOrderByPaySequence(paySequence);
+        if (poData == null) {
+            return null;
+        }
+        PayOrderBankInfoDTO bankInfoDTO = buildPayOrderBankInfoDTO(poData);
+        return bankInfoDTO;
+    }
+
+    private PayOrderBankInfoDTO buildPayOrderBankInfoDTO(PayOrderData poData) {
+        try {
+            PayOrderBankInfoDTO bankInfoDTO = ConvertUtils.copy(poData, PayOrderBankInfoDTO.class);
+            return bankInfoDTO;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public void setPayOrderDao(PayOrderDao payOrderDao) {
         this.payOrderDao = payOrderDao;

@@ -6,6 +6,7 @@ import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
+import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.finance.common.util.StringUtils;
 import com.google.common.collect.Lists;
 import jxl.Workbook;
@@ -122,33 +123,53 @@ public class MerchantsPayTemplateService implements PayTemplateService {
 
     private List<MerchantsTemplateBean> buildToMerchantsTemplateBeanLinkedList(List<PayOrderExportBean> exportBeanList) {
         String todayDate = DateUtil.formatDateToString(new Date(), "yyyyMMdd");
+        int maxColumnLen = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-web.merchants.maxColumnLen", "29"));
+
         List<MerchantsTemplateBean> merchantsTemplateBeanLinkedList = Lists.newLinkedList();
         for (PayOrderExportBean exportBean : exportBeanList) {
             MerchantsTemplateBean templateBean = new MerchantsTemplateBean();
             templateBean.setPoId(exportBean.getPoId());
             templateBean.setPayCode(exportBean.getPayCode());
             templateBean.setOrderAmount(exportBean.getPayAmount());
-            templateBean.setBankName(exportBean.getBankFullBranchName());
+            templateBean.setBankName(chooseBankName(exportBean, maxColumnLen));
             templateBean.setBankAccountName(exportBean.getBankAccountName());
             templateBean.setBankAccountNo(exportBean.getBankAccountNo());
             templateBean.setBankProvince(exportBean.getBankProvince());
             templateBean.setBankCity(exportBean.getBankCity());
-            templateBean.setUse("大众点评网");
             templateBean.setExpectedDate(todayDate);
             BusinessExportInfoBean exportInfoBean = businessExportInfoBeanMap.get(exportBean.getBusinessType());
             if (exportInfoBean != null) {
-                templateBean.setBusinessSummary(exportInfoBean.getBusinessSummary());
                 templateBean.setCurrency(exportInfoBean.getCurrency());
                 templateBean.setDebitSideBankName(exportInfoBean.getDebitSideBankName());
                 templateBean.setDebitSideBankNo(exportInfoBean.getDebitSideBankNo());
                 templateBean.setPayerAccountNo(exportInfoBean.getPayerAccountNo());
                 templateBean.setPayerBranchBank(exportInfoBean.getPayerBranchBank());
                 templateBean.setSettleType(exportInfoBean.getSettleType());
-                templateBean.setUse(exportInfoBean.getUse());
+
+                String use = exportInfoBean.getUse() == null ? "" : exportInfoBean.getUse();
+                String summary = exportInfoBean.getBusinessSummary() == null ? "" : exportInfoBean.getBusinessSummary();
+                String memo = exportBean.getMemo() == null ? "" : exportBean.getMemo();
+
+                templateBean.setUse(subString(use + memo, maxColumnLen));
+                templateBean.setBusinessSummary(subString(summary + memo, maxColumnLen));
             }
+
+
             merchantsTemplateBeanLinkedList.add(templateBean);
         }
         return merchantsTemplateBeanLinkedList;
+    }
+
+    private String chooseBankName(PayOrderExportBean exportBean, int maxColumnLen) {
+        String fullBranchName = exportBean.getBankFullBranchName();
+        if (org.apache.commons.lang.StringUtils.isEmpty(fullBranchName) || fullBranchName.length() > maxColumnLen) {
+            return exportBean.getBankName();
+        }
+        return fullBranchName;
+    }
+
+    private String subString(String str, int maxColumnLen) {
+        return org.apache.commons.lang.StringUtils.substring(str, 0, maxColumnLen);
     }
 
     private void exportExcel(OutputStream os, List<MerchantsTemplateBean> merchantsTemplateBeanLinkedList) throws IOException, WriteException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
