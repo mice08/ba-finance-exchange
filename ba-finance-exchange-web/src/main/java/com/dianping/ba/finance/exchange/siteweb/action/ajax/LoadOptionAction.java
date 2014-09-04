@@ -7,10 +7,11 @@ import com.dianping.ba.finance.exchange.api.enums.CompanyIDName;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
 import com.dianping.ba.finance.exchange.siteweb.constants.OptionConstant;
+import com.dianping.ba.finance.exchange.siteweb.constants.PermissionConstant;
+import com.dianping.finance.common.util.LionConfigUtils;
+import com.dianping.finance.gabriel.impl.GabrielService;
 
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Created by Eric on 2014/5/29.
@@ -24,6 +25,7 @@ public class LoadOptionAction extends AjaxBaseAction {
     private int businessType;
 
     private ReceiveBankService receiveBankService;
+    private GabrielService gabrielService;
 
     public String loadPOStatusOption() {
         option.putAll(OptionConstant.POSTATUS_OPTION);
@@ -145,7 +147,7 @@ public class LoadOptionAction extends AjaxBaseAction {
         for (ReceiveBankData receiveBankData : receiveBankDataList) {
             if (receiveBankData.getBusinessType() == businessType) {
                 CompanyIDName companyIDName = CompanyIDName.valueOf(receiveBankData.getCompanyId());
-                if (companyIDName != null) {
+                if (needShowOption(companyIDName)) {
                     option.put(receiveBankData.getBankId(), companyIDName.getCompanyName());
                 }
             }
@@ -156,6 +158,12 @@ public class LoadOptionAction extends AjaxBaseAction {
         msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
+    }
+
+    private boolean needShowOption(CompanyIDName companyIDName) {
+        Set<String> allowedCompanyNameSet = findAllowedCompanyByPermission();
+        String useCityPermission = LionConfigUtils.getProperty("ba-finance-exchange-web.UseCityPermission","true");
+        return companyIDName != null && (useCityPermission.equals("false") || useCityPermission.equals("true") && allowedCompanyNameSet.contains(companyIDName.getCompanyName()));
     }
 
     public String loadReceiveBankOptionInQuery() {
@@ -169,11 +177,16 @@ public class LoadOptionAction extends AjaxBaseAction {
         for (ReceiveBankData receiveBankData : receiveBankDataList) {
             if (receiveBankData.getBusinessType() == businessType) {
                 CompanyIDName companyIDName = CompanyIDName.valueOf(receiveBankData.getCompanyId());
-                if (companyIDName != null) {
+                if (needShowOption(companyIDName)) {
                     option.put(receiveBankData.getBankId(), companyIDName.getCompanyName());
                 }
             }
         }
+
+        if (option.size() == 2) {
+            option.remove(0);
+        }
+
         msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
@@ -193,6 +206,17 @@ public class LoadOptionAction extends AjaxBaseAction {
         msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
+    }
+
+    public Set<String> findAllowedCompanyByPermission(){
+        Set<String> allowedCompanySet = new HashSet<String>();
+        List<Integer> permissionIdList = gabrielService.findAllPermissionIdListByLoginId(adminLoginId());
+        for (Integer permissionId : permissionIdList){
+            if (PermissionConstant.PERMISSION_CITY_OPTION.containsKey(permissionId)){
+                allowedCompanySet.addAll(PermissionConstant.PERMISSION_CITY_OPTION.get(permissionId));
+            }
+        }
+        return allowedCompanySet;
     }
 
     @Override
@@ -216,6 +240,10 @@ public class LoadOptionAction extends AjaxBaseAction {
 
     public void setReceiveBankService(ReceiveBankService receiveBankService) {
         this.receiveBankService = receiveBankService;
+    }
+
+    public void setGabrielService(GabrielService gabrielService) {
+        this.gabrielService = gabrielService;
     }
 
     public void setBusinessType(int businessType) {
