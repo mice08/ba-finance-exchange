@@ -3,8 +3,11 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.siteweb.action.WebBaseAction;
+import com.dianping.ba.finance.portal.header.client.util.AuthenticationUtil;
 import com.google.common.collect.Maps;
+import org.apache.struts2.ServletActionContext;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +36,22 @@ public abstract class AjaxBaseAction extends WebBaseAction {
 		}
 		return SUCCESS;
 	}
+
+    public int adminLoginId(){
+        try {
+            HttpServletRequest request = ServletActionContext.getRequest();
+            if (request == null) {
+                return 0;
+            }
+            String assertion = AuthenticationUtil.getRemoteUser(request);
+            if (assertion != null) {
+                return Integer.parseInt(assertion.split("\\|")[1]);
+            }
+        } catch (Exception e) {
+            logger.error(String.format("severity=[1] getLoginId error!"), e);
+        }
+        return 0;
+    }
 
 	abstract protected void jsonExecute() throws Exception;
 
