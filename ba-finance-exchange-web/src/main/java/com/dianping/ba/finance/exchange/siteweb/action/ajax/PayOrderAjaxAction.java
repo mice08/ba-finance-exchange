@@ -163,8 +163,10 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 	public PayOrderSearchBean buildPayOrderSearchBean() throws ParseException {
 
         PayOrderSearchBean payOrderSearchBean=new PayOrderSearchBean();
-        Date beginTime = DateUtil.isValidDate(addBeginTime) ? DateUtil.formatDateTime(addBeginTime) : null;
-        Date endTime = DateUtil.isValidDate(addEndTime) ? DateUtil.formatDateTime(addEndTime) : null;
+        Date beginTime = DateUtil.isValidDateTime(addBeginTime) ? DateUtil.parseDate(addBeginTime,"yyyy-MM-dd HH:mm") :
+                (DateUtil.isValidDate(addBeginTime) ? DateUtil.formatDate(addBeginTime, false) : null);
+        Date endTime = DateUtil.isValidDateTime(addEndTime) ? DateUtil.parseDate(addEndTime,"yyyy-MM-dd HH:mm") :
+                (DateUtil.isValidDate(addEndTime) ? DateUtil.formatDate(addEndTime, true) : null);
         payOrderSearchBean.setStatus(status);
         payOrderSearchBean.setBusinessType(businessType);
         payOrderSearchBean.setBeginTime(beginTime);

@@ -6,6 +6,8 @@
     <title>付款单支付</title>
     <link rel="stylesheet" href="<@ava.extStaticResource resource='/build/base-css.min.css'/>" type="text/css">
     <link rel="stylesheet" href="<@ava.extStaticResource resource='/build/common-css.css'/>" type="text/css">
+    <link rel="stylesheet" href="<@ava.extStaticResource resource='/build/bootstrap-datetimepicker.css'/>" type="text/css">
+
 </head>
 
 <body>
@@ -99,21 +101,21 @@
                                 <option value="3">前天</option>
                             </select>
 
-                            <div id="addbegindate" class="input-append">
+                            <div id="addbegindate" class="input-append date">
                                 <input type="text" id="addbegindate_val" datatype="time" name="addBeginTime"
                                        class="form_value"></input>
                                             <span class="add-on">
-                                                <i class="icon-calendar">
+                                                <i class="icon-th">
                                                 </i>
                                             </span>
                             </div>
                             至
-                            <div id="addenddate" class="input-append">
+                            <div id="addenddate" class="input-append date">
                                 <input type="text" id="addenddate_val" validate="ge[addbegindate_val]" datatype="time"
                                        name="addEndTime" error_msg="ge[addbegindate_val]:起始日期大于结束日期"
                                        class="form_value">
                                             <span class="add-on">
-                                                <i class="icon-calendar">
+                                                <i class="icon-th">
                                                 </i>
                                             </span>
                             </div>
