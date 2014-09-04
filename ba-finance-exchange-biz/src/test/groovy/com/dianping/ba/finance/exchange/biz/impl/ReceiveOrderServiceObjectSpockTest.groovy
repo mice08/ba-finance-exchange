@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.biz.impl
 import com.dianping.ba.finance.exchange.api.RORNMatchFireService
 import com.dianping.ba.finance.exchange.api.RORNMatchService
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
+import com.dianping.ba.finance.exchange.api.beans.BizInfoBean
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderResultBean
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean
@@ -16,6 +17,7 @@ import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderDao
 import com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify
+import com.dianping.ba.finance.exchange.biz.service.BizInfoService
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -36,6 +38,8 @@ class ReceiveOrderServiceObjectSpockTest extends Specification {
 
     private RORNMatchService rornMatchServiceMock;
 
+    private BizInfoService bizInfoServiceMock;
+
 
     void setup() {
         receiveOrderServiceObjectStub = []
@@ -54,6 +58,9 @@ class ReceiveOrderServiceObjectSpockTest extends Specification {
 
         rornMatchServiceMock = Mock();
         receiveOrderServiceObjectStub.rornMatchService = rornMatchServiceMock;
+
+        bizInfoServiceMock = Mock();
+        receiveOrderServiceObjectStub.bizInfoService = bizInfoServiceMock;
     }
 
     @Unroll
@@ -203,5 +210,66 @@ class ReceiveOrderServiceObjectSpockTest extends Specification {
         2 * receiveNotifyServiceMock.removeReceiveNotifyMatchRelation(_ as Integer, _ as Integer);
 
         2 * rornMatchFireServiceMock.executeMatchingForNewReceiveNotify(_ as ReceiveNotifyData);
+    }
+
+    @Unroll
+    def "fireAutoConfirm"(ReceiveOrderStatus status, Integer bankId, BusinessType businessType, Boolean result){
+        given:
+        ReceiveOrderSearchBean searchBean = [status      : status.value(),
+                                             bankId      : bankId,
+                                             businessType: businessType.value()]
+
+        receiveOrderDaoMock.findReceiveOrderBySearchBean(_ as ReceiveOrderSearchBean) >> { ReceiveOrderSearchBean b ->
+            if (b.businessType == BusinessType.GROUP_PURCHASE.value()) {
+                return null;
+            }
+            ReceiveOrderData roData = [roId        : 123,
+                                       status      : status.value(),
+                                       businessType: BusinessType.ADVERTISEMENT.value(),
+                                       receiveType : ReceiveType.AD_FEE.value()]
+            if (b.bankId == 8) {
+                roData.bizContent = "AD123"
+            } else if (b.bankId == 1) {
+                roData.bizContent = "AD456"
+            }
+
+            [roData]
+        }
+        bizInfoServiceMock.getBizInfo(_ as ReceiveOrderData) >> { ReceiveOrderData roDataForBiz ->
+            if (roDataForBiz.bizContent == "AD456") {
+                return null
+            }
+            BizInfoBean bizInfoBean = new BizInfoBean(customerId: 123)
+            bizInfoBean
+        }
+
+        receiveNotifyServiceMock.findMatchedReceiveNotify(_ as Integer) >> {
+            ReceiveNotifyData rnData = [receiveNotifyId: 789]
+            [rnData]
+        }
+        receiveOrderDaoMock.updateReceiveOrder(_ as ReceiveOrderData) >> {
+            1
+        }
+        receiveOrderDaoMock.loadReceiveOrderDataByRoId(_ as Integer) >> {
+            ReceiveOrderData roData = [roId        : 123,
+                                       status      : status.value(),
+                                       businessType: BusinessType.ADVERTISEMENT.value(),
+                                       receiveTime : new Date(),
+                                       customerId  : 123,
+                                       bizContent  : "AD",
+                                       receiveType : ReceiveType.AD_FEE.value()]
+            roData
+        }
+
+
+        expect:
+        result == receiveOrderServiceObjectStub.fireAutoConfirm(searchBean)
+
+        where:
+        status                       | bankId | businessType                | result
+        ReceiveOrderStatus.CONFIRMED | 8      | BusinessType.GROUP_PURCHASE | true
+        ReceiveOrderStatus.CONFIRMED | 7      | BusinessType.ADVERTISEMENT | true
+        ReceiveOrderStatus.CONFIRMED | 1      | BusinessType.ADVERTISEMENT | true
+        ReceiveOrderStatus.CONFIRMED | 8      | BusinessType.ADVERTISEMENT | true
     }
 }
