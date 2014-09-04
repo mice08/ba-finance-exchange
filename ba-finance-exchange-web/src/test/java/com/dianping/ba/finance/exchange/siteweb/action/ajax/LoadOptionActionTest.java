@@ -3,14 +3,18 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 import com.dianping.ba.finance.exchange.api.ReceiveBankService;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveBankData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
+import com.dianping.finance.gabriel.impl.GabrielService;
 import com.opensymphony.xwork2.Action;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,12 +27,16 @@ public class LoadOptionActionTest {
 
     private ReceiveBankService receiveBankServiceMock;
 
+    private GabrielService gabrielServiceMock;
+
     @Before
     public void setUp() {
         loadOptionActionStub = new LoadOptionAction();
 
+        gabrielServiceMock = mock(GabrielService.class);
         receiveBankServiceMock = mock(ReceiveBankService.class);
         loadOptionActionStub.setReceiveBankService(receiveBankServiceMock);
+        loadOptionActionStub.setGabrielService(gabrielServiceMock);
     }
 
     @Test
@@ -95,18 +103,14 @@ public class LoadOptionActionTest {
 
     @Test
     public void testLoadReceiveBankOptionInQuery(){
-        ReceiveBankData rbData = new ReceiveBankData();
-        rbData.setAddTime(new Date());
-        rbData.setBankId(123);
-        rbData.setBankName("bankName");
-        rbData.setBusinessType(BusinessType.ADVERTISEMENT.value());
-        rbData.setCompanyId(1);
-        when(receiveBankServiceMock.findAllReceiveBank()).thenReturn(Arrays.asList(rbData));
+        when(receiveBankServiceMock.findAllReceiveBank()).thenReturn(buildReceiveBankDataList());
+        when(gabrielServiceMock.findAllPermissionIdListByLoginId(anyInt())).thenReturn(Arrays.asList(50044));
 
         loadOptionActionStub.setBusinessType(BusinessType.ADVERTISEMENT.value());
         String result = loadOptionActionStub.loadReceiveBankOptionInQuery();
         Assert.assertEquals(Action.SUCCESS, result);
         Assert.assertEquals(AjaxBaseAction.SUCCESS_CODE, loadOptionActionStub.getCode());
+        Assert.assertEquals(1, loadOptionActionStub.getOption().size());
 
         loadOptionActionStub.setBusinessType(BusinessType.ADVERTISEMENT.value());
         result = loadOptionActionStub.loadReceiveBankOptionInQuery();
@@ -119,21 +123,36 @@ public class LoadOptionActionTest {
         Assert.assertEquals(AjaxBaseAction.ERROR_CODE, loadOptionActionStub.getCode());
     }
 
+    private List<ReceiveBankData> buildReceiveBankDataList() {
+        ReceiveBankData hanTaoData = new ReceiveBankData();
+        hanTaoData.setAddTime(new Date());
+        hanTaoData.setBankId(123);
+        hanTaoData.setBankName("bankName");
+        hanTaoData.setBusinessType(BusinessType.ADVERTISEMENT.value());
+        hanTaoData.setCompanyId(1);
+
+        ReceiveBankData guangZhouData = new ReceiveBankData();
+        guangZhouData.setAddTime(new Date());
+        guangZhouData.setBankId(1234);
+        guangZhouData.setBankName("bankName");
+        guangZhouData.setBusinessType(BusinessType.ADVERTISEMENT.value());
+        guangZhouData.setCompanyId(4);
+
+        return Arrays.asList(hanTaoData, guangZhouData);
+    }
+
     @Test
     public void testLoadReceiveBankOption() throws Exception {
-        ReceiveBankData rbData = new ReceiveBankData();
-        rbData.setAddTime(new Date());
-        rbData.setBankId(123);
-        rbData.setBankName("bankName");
-        rbData.setBusinessType(BusinessType.ADVERTISEMENT.value());
-        rbData.setCompanyId(0);
-        when(receiveBankServiceMock.findAllReceiveBank()).thenReturn(Arrays.asList(rbData));
+
+        when(receiveBankServiceMock.findAllReceiveBank()).thenReturn(buildReceiveBankDataList());
+        when(gabrielServiceMock.findAllPermissionIdListByLoginId(anyInt())).thenReturn(Arrays.asList(50044));
 
         loadOptionActionStub.setBusinessType(BusinessType.ADVERTISEMENT.value());
         String result = loadOptionActionStub.loadReceiveBankOption();
         Assert.assertEquals(Action.SUCCESS, result);
         Assert.assertEquals(AjaxBaseAction.SUCCESS_CODE, loadOptionActionStub.getCode());
-        Assert.assertEquals("错误", loadOptionActionStub.getOption().get(123));
+        Assert.assertEquals(1, loadOptionActionStub.getOption().size());
+        Assert.assertEquals("汉海广州", loadOptionActionStub.getOption().get(1234));
     }
 
     @Test
@@ -163,12 +182,10 @@ public class LoadOptionActionTest {
         rbData.setCompanyId(1);
         when(receiveBankServiceMock.findAllReceiveBank()).thenReturn(Arrays.asList(rbData));
 
-
         String result = loadOptionActionStub.loadAllReceiveBankOption();
         Assert.assertEquals(Action.SUCCESS, result);
         Assert.assertEquals(AjaxBaseAction.SUCCESS_CODE, loadOptionActionStub.getCode());
         Assert.assertEquals(2, loadOptionActionStub.getOption().size());
-
     }
 
     @Test
