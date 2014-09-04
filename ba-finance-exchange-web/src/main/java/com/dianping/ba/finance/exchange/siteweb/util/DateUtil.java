@@ -61,6 +61,22 @@ public class DateUtil {
     }
 
     /**
+     * 判断日期是否合法
+     * 例如2014-08-02 11:22
+     * @param sDate
+     * @return
+     */
+    public static boolean isValidDateTime(String sDate) {
+        try {
+            SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            dateFormate.parse(sDate);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
      * date 按照格式转换程字符串
      * @param date
      * @param formatString eg.yyyy-MM-dd
