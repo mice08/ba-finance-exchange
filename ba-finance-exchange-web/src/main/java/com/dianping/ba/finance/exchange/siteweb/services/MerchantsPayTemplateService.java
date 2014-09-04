@@ -136,27 +136,28 @@ public class MerchantsPayTemplateService implements PayTemplateService {
             templateBean.setBankAccountNo(exportBean.getBankAccountNo());
             templateBean.setBankProvince(exportBean.getBankProvince());
             templateBean.setBankCity(exportBean.getBankCity());
-            templateBean.setUse(subString(showMemo(exportBean), maxColumnLen));
             templateBean.setExpectedDate(todayDate);
             BusinessExportInfoBean exportInfoBean = businessExportInfoBeanMap.get(exportBean.getBusinessType());
             if (exportInfoBean != null) {
-                String memo = exportBean.getMemo() == null ? "" : exportBean.getMemo();
-                templateBean.setBusinessSummary(exportInfoBean.getBusinessSummary()  + memo);
                 templateBean.setCurrency(exportInfoBean.getCurrency());
                 templateBean.setDebitSideBankName(exportInfoBean.getDebitSideBankName());
                 templateBean.setDebitSideBankNo(exportInfoBean.getDebitSideBankNo());
                 templateBean.setPayerAccountNo(exportInfoBean.getPayerAccountNo());
                 templateBean.setPayerBranchBank(exportInfoBean.getPayerBranchBank());
                 templateBean.setSettleType(exportInfoBean.getSettleType());
-                templateBean.setUse(exportInfoBean.getUse() + memo);
+
+                String use = exportInfoBean.getUse() == null ? "" : exportInfoBean.getUse();
+                String summary = exportInfoBean.getBusinessSummary() == null ? "" : exportInfoBean.getBusinessSummary();
+                String memo = exportBean.getMemo() == null ? "" : exportBean.getMemo();
+
+                templateBean.setUse(subString(memo + use, maxColumnLen));
+                templateBean.setBusinessSummary(subString(summary + memo, maxColumnLen));
             }
+
+
             merchantsTemplateBeanLinkedList.add(templateBean);
         }
         return merchantsTemplateBeanLinkedList;
-    }
-
-    private String showMemo(PayOrderExportBean exportBean) {
-        return "大众点评网" + (exportBean.getMemo() == null ? "" : "-" + exportBean.getMemo());
     }
 
     private String chooseBankName(PayOrderExportBean exportBean, int maxColumnLen) {
