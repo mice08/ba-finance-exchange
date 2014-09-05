@@ -143,15 +143,17 @@ public class LoadOptionAction extends AjaxBaseAction {
             return SUCCESS;
         }
         List<ReceiveBankData> receiveBankDataList = receiveBankService.findAllReceiveBank();
-
         for (ReceiveBankData receiveBankData : receiveBankDataList) {
             if (receiveBankData.getBusinessType() == businessType) {
                 CompanyIDName companyIDName = CompanyIDName.valueOf(receiveBankData.getCompanyId());
-                if (needShowOption(companyIDName)) {
+                if (companyIDName != null) {
                     option.put(receiveBankData.getBankId(), companyIDName.getCompanyName());
                 }
             }
         }
+
+		filterOptionByPermission();
+
         if (option.size() == 2) {
             option.remove(0);
         }
@@ -160,13 +162,8 @@ public class LoadOptionAction extends AjaxBaseAction {
         return SUCCESS;
     }
 
-    private boolean needShowOption(CompanyIDName companyIDName) {
-        Set<String> allowedCompanyNameSet = findAllowedCompanyByPermission();
-        String useCityPermission = LionConfigUtils.getProperty("ba-finance-exchange-web.UseCityPermission","true");
-        return companyIDName != null && (useCityPermission.equals("false") || useCityPermission.equals("true") && allowedCompanyNameSet.contains(companyIDName.getCompanyName()));
-    }
 
-    public String loadReceiveBankOptionInQuery() {
+	public String loadReceiveBankOptionInQuery() {
         option.put(0, "全部");
         if (businessType == BusinessType.DEFAULT.value()) {
             code = ERROR_CODE;
@@ -177,11 +174,13 @@ public class LoadOptionAction extends AjaxBaseAction {
         for (ReceiveBankData receiveBankData : receiveBankDataList) {
             if (receiveBankData.getBusinessType() == businessType) {
                 CompanyIDName companyIDName = CompanyIDName.valueOf(receiveBankData.getCompanyId());
-                if (needShowOption(companyIDName)) {
+                if (companyIDName != null) {
                     option.put(receiveBankData.getBankId(), companyIDName.getCompanyName());
                 }
             }
         }
+
+		filterOptionByPermission();
 
         if (option.size() == 2) {
             option.remove(0);
@@ -191,6 +190,20 @@ public class LoadOptionAction extends AjaxBaseAction {
         code = SUCCESS_CODE;
         return SUCCESS;
     }
+
+	private void filterOptionByPermission() {
+		String useCityPermission = LionConfigUtils.getProperty("ba-finance-exchange-web.UseCityPermission", "true");
+		if (useCityPermission.equals("true") && businessType == BusinessType.ADVERTISEMENT.value()){
+			Set<String> allowedCompanyNameSet = findAllowedCompanyByPermission();
+			Iterator<Map.Entry<Object, Object>> it = option.entrySet().iterator();
+			while(it.hasNext()){
+				Map.Entry<Object, Object> entry = it.next();
+				if (!allowedCompanyNameSet.contains(entry.getValue())){
+					it.remove();
+				}
+			}
+		}
+	}
 
     public String loadAllReceiveBankOption() {
         option.put(0, "请选择收款银行账户");
