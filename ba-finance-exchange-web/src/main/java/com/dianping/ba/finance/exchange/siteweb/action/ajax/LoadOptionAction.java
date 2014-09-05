@@ -222,7 +222,10 @@ public class LoadOptionAction extends AjaxBaseAction {
     }
 
     public Set<String> findAllowedCompanyByPermission(){
-        Set<String> allowedCompanySet = new HashSet<String>();
+		if (gabrielService == null) {
+			gabrielService = GabrielService.getInstance();
+		}
+		Set<String> allowedCompanySet = new HashSet<String>();
         List<Integer> permissionIdList = gabrielService.findAllPermissionIdListByLoginId(adminLoginId());
         for (Integer permissionId : permissionIdList){
             if (PermissionConstant.PERMISSION_CITY_OPTION.containsKey(permissionId)){
