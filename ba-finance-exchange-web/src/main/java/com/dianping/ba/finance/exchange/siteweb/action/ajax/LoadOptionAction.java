@@ -202,6 +202,9 @@ public class LoadOptionAction extends AjaxBaseAction {
 					it.remove();
 				}
 			}
+            if (allowedCompanyNameSet.size() == option.size()) {
+                option.put(0, "全部");
+            }
 		}
 	}
 
