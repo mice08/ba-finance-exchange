@@ -31,5 +31,7 @@
       SELECT PaySequence
       FROM FC_PayFLow
       WHERE PPID = #ppId# AND Status = 2
+      ORDER BY AddTime DESC
+      LIMIT 0,1
     </select>
 </sqlMap>

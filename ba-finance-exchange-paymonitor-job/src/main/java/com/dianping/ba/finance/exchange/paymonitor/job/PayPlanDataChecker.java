@@ -33,6 +33,7 @@ public class PayPlanDataChecker extends DataChecker {
     @Override
     public boolean run() {
         long startTime = System.currentTimeMillis();
+        MONITOR_LOGGER.info(LogUtils.formatInfoLogMsg(startTime, "PayPlanDataChecker.run", ""));
         try{
             checkPayPlan();
         }catch (Exception e){
@@ -47,28 +48,34 @@ public class PayPlanDataChecker extends DataChecker {
     }
 
     void checkTodo() {
+        MONITOR_LOGGER.info("============checkTodo start===============");
         List<MonitorTodoData> monitorTodoDataList = payMonitorService.findUnhandldedMonitorTodoDatas();
         for(MonitorTodoData monitorTodoData : monitorTodoDataList){
             PayPlanMonitorData payPlanMonitorData = payPlanService.getPayPlanById(monitorTodoData.getPpId());
             checkPayPlanData(payPlanMonitorData, monitorTodoData);
         }
+        MONITOR_LOGGER.info("============checkTodo end===============");
     }
 
     void checkNewData() {
+        MONITOR_LOGGER.info("============checkNewData start===============");
         Date lastMonitorTime = payMonitorService.getLastMonitorTime();
         List<PayPlanMonitorData> payPlanMonitorDataList = payPlanService.findPayPlansByDate(lastMonitorTime,this.getCurrentMonitorTime());
         for(PayPlanMonitorData payPlanMonitorData : payPlanMonitorDataList){
             checkPayPlanData(payPlanMonitorData, null);
         }
+        MONITOR_LOGGER.info("============checkNewData end===============");
     }
 
     void checkPayPlanData(PayPlanMonitorData payPlanMonitorData, MonitorTodoData monitorTodoData) {
+        MONITOR_LOGGER.info("checkPayPlanData: " + payPlanMonitorData.toString());
         for(PayCheckRule payCheckRule : payCheckRuleList){
             if(!payCheckRule.filter(payPlanMonitorData)) {
                 continue;
             }
 
             PayCheckResult result = payCheckRule.check(payPlanMonitorData);
+            MONITOR_LOGGER.info("checkResult: " + result.toString());
             if(result.isValided()){
                 if(monitorTodoData != null){
                     payMonitorService.updateMonitorTodoDataToHandled(Arrays.asList(monitorTodoData.getTodoId()));
@@ -89,19 +96,23 @@ public class PayPlanDataChecker extends DataChecker {
     }
 
     private void addMonitorException(int ppId, MonitorExceptionType monitorExceptionType) {
+        MONITOR_LOGGER.info("============addMonitorException===============");
         MonitorExceptionData monitorExceptionData = new MonitorExceptionData();
         monitorExceptionData.setPpId(ppId);
         monitorExceptionData.setExceptionType(monitorExceptionType.value());
         monitorExceptionData.setAddDate(new Date());
         monitorExceptionData.setStatus(MonitorExceptionStatus.INIT.value());
+        MONITOR_LOGGER.info("monitorExceptionData: " + monitorExceptionData.toString());
         payMonitorService.addMonitorException(monitorExceptionData);
     }
 
     private void addMonitorTodo(int ppId){
+        MONITOR_LOGGER.info("============addMonitorTodo===============");
         MonitorTodoData monitorTodoData = new MonitorTodoData();
         monitorTodoData.setPpId(ppId);
         monitorTodoData.setStatus(MonitorTodoStatus.INIT.value());
         monitorTodoData.setAddDate(new Date());
+        MONITOR_LOGGER.info("monitorTodoData: " + monitorTodoData.toString());
         payMonitorService.addMonitorTodo(monitorTodoData);
     }
 
