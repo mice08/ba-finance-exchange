@@ -138,6 +138,7 @@
         <iterate open="(" close=")" conjunction="," property="poIds">
             #poIds[]#
         </iterate>
+        AND Status != 6
     </select>
 
     <select id="paginatePayOrderList" resultMap="payOrderData" parameterClass="map">
@@ -166,7 +167,8 @@
         Memo
         FROM
         FC_PayOrder
-        <dynamic prepend="WHERE">
+        WHERE Status != 6
+        <dynamic prepend="AND">
             <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
                 PayCode = #payOrderSearchBean.payCode#
             </isNotEmpty>
@@ -193,7 +195,8 @@
         COUNT(1)
         FROM
         FC_PayOrder
-        <dynamic prepend="WHERE">
+        WHERE Status != 6
+        <dynamic prepend="AND">
             <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
                 PayCode = #payOrderSearchBean.payCode#
             </isNotEmpty>
@@ -217,7 +220,9 @@
         IFNULL(SUM(PayAmount), 0) AS totalAmount
         FROM
         FC_PayOrder
-        <dynamic prepend="WHERE">
+        WHERE
+        Status != 6
+        <dynamic prepend="AND">
             <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
                 PayCode = #payOrderSearchBean.payCode#
             </isNotEmpty>
@@ -261,7 +266,8 @@
         UpdateTime,
         Memo
         FROM FC_PayOrder
-        <dynamic prepend="WHERE">
+        WHERE Status != 6
+        <dynamic prepend="AND">
             <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
                 PayCode = #payOrderSearchBean.payCode#
             </isNotEmpty>
@@ -310,6 +316,7 @@
         <iterate open="(" close=")" conjunction="," property="payCodeList">
             #payCodeList[]#
         </iterate>
+        AND Status != 6
     </select>
 
 
@@ -317,7 +324,8 @@
         SELECT
         POID
         FROM FC_PayOrder
-        <dynamic prepend="WHERE">
+        WHERE Status != 6
+        <dynamic prepend="AND">
             <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
                 PayCode = #payOrderSearchBean.payCode#
             </isNotEmpty>
@@ -361,6 +369,7 @@
                Memo
         FROM   FC_PayOrder po
         WHERE  po.PaySequence = #paySequence#
+        AND Status != 6
     </select>
 
 </sqlMap>

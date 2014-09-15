@@ -24,7 +24,15 @@ public enum PayOrderStatus {
     /**
      * 4-退票
      */
-    REFUND(4);
+    REFUND(4),
+    /**
+     * 5-暂停
+     */
+    SUSPEND(5),
+    /**
+     * 6-作废
+     */
+    INVALID(6);
 
     private int payOrderStatus;
 
@@ -42,6 +50,10 @@ public enum PayOrderStatus {
                 return PAY_SUCCESS;
             case 4:
                 return REFUND;
+            case 5:
+                return SUSPEND;
+            case 6:
+                return INVALID;
             default:
                 return DEFAULT;
         }
@@ -58,6 +70,10 @@ public enum PayOrderStatus {
                 return "支付成功";
             case 4:
                 return "退票";
+            case 5:
+                return "暂停";
+            case 6:
+                return "作废";
             default:
                 return "错误";
         }
