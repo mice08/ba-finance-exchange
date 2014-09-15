@@ -1,9 +1,11 @@
 package com.dianping.ba.finance.exchange.biz.impl
-
+import com.dianping.ba.finance.exchange.api.datas.PayOrderData
 import com.dianping.ba.finance.exchange.biz.dao.PayOrderDao
 import com.dianping.ba.finance.exchange.biz.producer.PayOrderResultNotify
 import org.junit.Before
 import org.junit.Test
+import spock.lang.Specification
+import spock.lang.Unroll
 /**
  * Created with IntelliJ IDEA.
  * User: bingqiu.yuan
@@ -11,7 +13,7 @@ import org.junit.Test
  * Time: 下午1:35
  * To change this template use File | Settings | File Templates.
  */
-class PayOrderServiceObjectGroovyTest {
+class PayOrderServiceObjectGroovyTest extends Specification {
     def exampleServiceStub = new PayOrderServiceObject();
 
     private PayOrderDao payOrderDaoMock;
@@ -20,6 +22,8 @@ class PayOrderServiceObjectGroovyTest {
 
     @Before
     void setup() {
+        payOrderDaoMock = Mock();
+        payOrderResultNotifyMock = Mock();
         exampleServiceStub.setPayOrderDao(payOrderDaoMock)
         exampleServiceStub.setPayOrderResultNotify(payOrderResultNotifyMock)
     }
@@ -43,4 +47,87 @@ class PayOrderServiceObjectGroovyTest {
         assert 1;
     }
 
+    def "pausePayOrder no payOrder"() {
+        given:
+        payOrderDaoMock.loadPayOrderByPaySequence(_ as String) >> {
+            null;
+        }
+        expect:
+        true == exampleServiceStub.pausePayOrder("sequence");
+    }
+
+    @Unroll
+    def "pausePayOrder status"(int paramStatus, boolean result) {
+        given:
+        payOrderDaoMock.loadPayOrderByPaySequence(_ as String) >> {
+            PayOrderData payOrderData = ["status":paramStatus]
+            payOrderData
+        }
+        expect:
+        result == exampleServiceStub.pausePayOrder("sequence")
+        where:
+        paramStatus || result
+        1           || true
+        2           || false
+        3           || false
+        4           || false
+        5           || false
+        6           || false
+    }
+
+    def "resumePayOrder no payOrder"() {
+        given:
+        payOrderDaoMock.loadPayOrderByPaySequence(_ as String) >> {
+            null;
+        }
+        expect:
+        true == exampleServiceStub.resumePayOrder("sequence");
+    }
+
+    @Unroll
+    def "resumePayOrder status"(int paramStatus, boolean result) {
+        given:
+        payOrderDaoMock.loadPayOrderByPaySequence(_ as String) >> {
+            PayOrderData payOrderData = ["status":paramStatus]
+            payOrderData
+        }
+        expect:
+        result == exampleServiceStub.resumePayOrder("sequence")
+        where:
+        paramStatus || result
+        1           || false
+        2           || false
+        3           || false
+        4           || false
+        5           || true
+        6           || false
+    }
+
+    def "dropPayOrder no payOrder"() {
+        given:
+        payOrderDaoMock.loadPayOrderByPaySequence(_ as String) >> {
+            null;
+        }
+        expect:
+        true == exampleServiceStub.pausePayOrder("sequence");
+    }
+
+    @Unroll
+    def "dropPayOrder status"(int paramStatus, boolean result) {
+        given:
+        payOrderDaoMock.loadPayOrderByPaySequence(_ as String) >> {
+            PayOrderData payOrderData = ["status":paramStatus]
+            payOrderData
+        }
+        expect:
+        result == exampleServiceStub.pausePayOrder("sequence")
+        where:
+        paramStatus || result
+        1           || true
+        2           || false
+        3           || false
+        4           || false
+        5           || false
+        6           || false
+    }
 }

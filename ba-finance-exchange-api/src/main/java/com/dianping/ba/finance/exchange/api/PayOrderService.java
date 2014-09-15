@@ -88,4 +88,24 @@ public interface PayOrderService {
      */
     PayOrderBankInfoDTO loadPayOrderByPaySequence(String paySequence);
 
+    /**
+     * 根据付款序列号暂停付款单
+     * @param paySequence
+     * @return
+     */
+    boolean  pausePayOrder(String paySequence);
+
+    /**
+     * 根据付款序列号恢复付款单
+     * @param paySequence
+     * @return
+     */
+    boolean resumePayOrder(String paySequence);
+
+    /**
+     * 根据付款序列号作废付款单
+     * @param paySequence
+     * @return
+     */
+    boolean dropPayOrder(String paySequence);
 }
