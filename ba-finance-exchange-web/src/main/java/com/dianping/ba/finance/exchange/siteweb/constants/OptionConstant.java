@@ -20,6 +20,7 @@ public class OptionConstant {
             put(PayOrderStatus.EXPORT_PAYING.value(), "支付中");
             put(PayOrderStatus.PAY_SUCCESS.value(), "支付成功");
             put(PayOrderStatus.REFUND.value(), "退票");
+            put(PayOrderStatus.SUSPEND.value(), "暂停");
         }
     };
 
