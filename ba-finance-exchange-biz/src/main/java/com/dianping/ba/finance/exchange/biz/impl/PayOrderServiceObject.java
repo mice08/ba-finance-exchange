@@ -260,7 +260,7 @@ public class PayOrderServiceObject implements PayOrderService {
     @Log(severity = 2)
     @ReturnDefault
     @Override
-    public boolean pausePayOrder(String paySequence) {
+    public boolean suspendPayOrder(String paySequence) {
         PayOrderData payOrderData = payOrderDao.loadPayOrderByPaySequence(paySequence);
         if(payOrderData == null) {
             return true;

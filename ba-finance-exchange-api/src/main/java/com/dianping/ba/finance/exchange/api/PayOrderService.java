@@ -93,7 +93,7 @@ public interface PayOrderService {
      * @param paySequence
      * @return
      */
-    boolean  pausePayOrder(String paySequence);
+    boolean  suspendPayOrder(String paySequence);
 
     /**
      * 根据付款序列号恢复付款单

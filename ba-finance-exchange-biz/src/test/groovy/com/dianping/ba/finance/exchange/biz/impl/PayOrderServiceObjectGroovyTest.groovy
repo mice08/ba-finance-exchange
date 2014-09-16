@@ -53,7 +53,7 @@ class PayOrderServiceObjectGroovyTest extends Specification {
             null;
         }
         expect:
-        true == exampleServiceStub.pausePayOrder("sequence");
+        true == exampleServiceStub.suspendPayOrder("sequence");
     }
 
     @Unroll
@@ -64,7 +64,7 @@ class PayOrderServiceObjectGroovyTest extends Specification {
             payOrderData
         }
         expect:
-        result == exampleServiceStub.pausePayOrder("sequence")
+        result == exampleServiceStub.suspendPayOrder("sequence")
         where:
         paramStatus || result
         1           || true
@@ -109,7 +109,7 @@ class PayOrderServiceObjectGroovyTest extends Specification {
             null;
         }
         expect:
-        true == exampleServiceStub.pausePayOrder("sequence");
+        true == exampleServiceStub.dropPayOrder("sequence");
     }
 
     @Unroll
@@ -120,7 +120,7 @@ class PayOrderServiceObjectGroovyTest extends Specification {
             payOrderData
         }
         expect:
-        result == exampleServiceStub.pausePayOrder("sequence")
+        result == exampleServiceStub.dropPayOrder("sequence")
         where:
         paramStatus || result
         1           || true
