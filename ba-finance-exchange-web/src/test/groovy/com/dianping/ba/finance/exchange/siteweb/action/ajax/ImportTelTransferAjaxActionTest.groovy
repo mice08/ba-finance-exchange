@@ -3,6 +3,7 @@ import com.dianping.ba.finance.exchange.api.ReceiveBankService
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService
 import com.dianping.ba.finance.exchange.api.datas.ReceiveBankData
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData
+import com.dianping.ba.finance.exchange.api.enums.BusinessType
 import spock.lang.Specification
 /**
  * Created by will on 14-7-1.
@@ -48,7 +49,24 @@ class ImportTelTransferAjaxActionTest extends Specification {
 
         expect:
         importTelTransferAjaxActionStub.importTelTransfer();
-        isNormal == (importTelTransferAjaxActionStub.msg["totalCount"] == 1);
+        isNormal == (importTelTransferAjaxActionStub.msg["totalCount"] == 2);
+
+        where:
+        isNormal | fileName
+        true     | "telTrans_Normal.xls"
+    }
+
+    def "ImportTelTransfer for Normal Excel AD recieve"(boolean isNormal, String fileName) {
+        given:
+        importTelTransferAjaxActionStub.telTransferFile = new File(getClass().getResource(fileName).getPath());
+        receiveBankServiceMock.loadReceiveBankByBankId(_ as Integer) >> {
+            [businessType: BusinessType.ADVERTISEMENT.value()] as ReceiveBankData;
+        }
+        receiveOrderServiceMock.createReceiveOrder(_ as ReceiveOrderData) >> 1
+
+        expect:
+        importTelTransferAjaxActionStub.importTelTransfer();
+        isNormal == (importTelTransferAjaxActionStub.msg["totalCount"] == 2);
 
         where:
         isNormal | fileName
