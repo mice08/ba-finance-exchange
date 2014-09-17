@@ -20,6 +20,7 @@ public class OptionConstant {
             put(PayOrderStatus.EXPORT_PAYING.value(), "支付中");
             put(PayOrderStatus.PAY_SUCCESS.value(), "支付成功");
             put(PayOrderStatus.REFUND.value(), "退票");
+            put(PayOrderStatus.SUSPEND.value(), "暂停");
         }
     };
 
@@ -45,6 +46,7 @@ public class OptionConstant {
         {
             put(BusinessType.DEFAULT.value(), "请选择业务类型");
             put(BusinessType.GROUP_PURCHASE.value(), "团购");
+            put(BusinessType.SHAN_HUI.value(), "闪惠");
             put(BusinessType.BOOKING.value(), "预约预订");
             put(BusinessType.PREPAID_CARD.value(), "储值卡");
         }
