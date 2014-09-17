@@ -57,6 +57,8 @@ public class CustomerNameService {
         Map<Integer, String> customerIdNameMap = Maps.newHashMap();
         // 获取团购的客户名称
         fetchTGCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
+        // 获取闪惠的客户名称
+        fetchSHCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
         // 获取广告的客户名称
         fetchADCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
 
@@ -97,6 +99,28 @@ public class CustomerNameService {
             return;
         }
         List<CustomerLite> customerLiteList = customerInfoService.getCustomerLites(tgCustomerIdList, loginId);
+        if (CollectionUtils.isEmpty(customerLiteList)) {
+            return;
+        }
+        for (CustomerLite customerLite : customerLiteList) {
+            customerIdNameMap.put(customerLite.getCustomerID(), customerLite.getCustomerName());
+        }
+    }
+
+
+    /**
+     * 闪惠的客户名
+     *
+     * @param businessTypeCustomerIdMMap
+     * @param customerIdNameMap
+     * @param loginId
+     */
+    private void fetchSHCustomerName(Multimap<Integer, Integer> businessTypeCustomerIdMMap, Map<Integer, String> customerIdNameMap, int loginId) {
+        List<Integer> shCustomerIdList = Lists.newLinkedList(businessTypeCustomerIdMMap.get(BusinessType.SHAN_HUI.value()));
+        if (CollectionUtils.isEmpty(shCustomerIdList)) {
+            return;
+        }
+        List<CustomerLite> customerLiteList = customerInfoService.getCustomerLites(shCustomerIdList, loginId);
         if (CollectionUtils.isEmpty(customerLiteList)) {
             return;
         }
@@ -167,6 +191,9 @@ public class CustomerNameService {
         if (businessType == BusinessType.GROUP_PURCHASE.value()) {
             return fetchTGCustomerSuggestion(customerName, maxSize, loginId);
         }
+        if (businessType == BusinessType.SHAN_HUI.value()) {
+            return fetchSHCustomerSuggestion(customerName, maxSize, loginId);
+        }
         if (businessType == BusinessType.ADVERTISEMENT.value()) {
             return fetchADCustomerSuggestion(customerName, maxSize, loginId);
         }
@@ -205,6 +232,21 @@ public class CustomerNameService {
     }
 
     private List<CustomerNameSuggestionBean> fetchTGCustomerSuggestion(String customerName, int maxSize, int loginId) {
+        List<CustomerShopLite> customerList = customerInfoService.searchByCustomerAndShopInfo(customerName, null, true, 0, maxSize).getY();
+        if (CollectionUtils.isEmpty(customerList)) {
+            return Collections.emptyList();
+        }
+        List<CustomerNameSuggestionBean> suggestionBeanList = Lists.newLinkedList();
+        for (CustomerShopLite customer : customerList) {
+            CustomerNameSuggestionBean suggestionBean = new CustomerNameSuggestionBean();
+            suggestionBean.setCustomerId(customer.getCustomerID());
+            suggestionBean.setCustomerName(customer.getCustomreName());
+            suggestionBeanList.add(suggestionBean);
+        }
+        return suggestionBeanList;
+    }
+
+    private List<CustomerNameSuggestionBean> fetchSHCustomerSuggestion(String customerName, int maxSize, int loginId) {
         List<CustomerShopLite> customerList = customerInfoService.searchByCustomerAndShopInfo(customerName, null, true, 0, maxSize).getY();
         if (CollectionUtils.isEmpty(customerList)) {
             return Collections.emptyList();
