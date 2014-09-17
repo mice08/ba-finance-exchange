@@ -122,7 +122,12 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
 	private void exportPayOrders(List<PayOrderExportBean> beanList) throws Exception {
 		HttpServletResponse response = getHttpServletResponse();
-        String exportBank = LionConfigUtils.getProperty("ba-finance-exchange-web.exportBank", "Minsheng");
+        String exportBank;
+        if(beanList.get(0).getBusinessType() == BusinessType.EXPENSE.value()) {
+            exportBank = LionConfigUtils.getProperty("ba-finance-exchange-web.expense.exportBank", "Merchants");
+        } else {
+            exportBank = LionConfigUtils.getProperty("ba-finance-exchange-web.exportBank", "Minsheng");
+        }
         MONITOR_LOGGER.info(String.format("exportBank=%s", exportBank));
         PayTemplateService payTemplateService = payTemplateServiceMap.get(exportBank);
         if (payTemplateService == null) {
