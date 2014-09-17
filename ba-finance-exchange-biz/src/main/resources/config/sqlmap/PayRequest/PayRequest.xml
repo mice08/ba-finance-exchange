@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="PayRequest">
+
+    <typeAlias alias="PayRequestData" type="com.dianping.ba.finance.exchange.api.datas.PayRequestData"/>
+    <resultMap id="payRequestData" class="PayRequestData">
+        <result property="prId" column="PRID"/>
+        <result property="paySequence" column="PaySequence"/>
+        <result property="businessType" column="BusinessType"/>
+        <result property="payeeName" column="PayeeName"/>
+        <result property="payAmount" column="PayAmount"/>
+        <result property="bankAccountNo" column="BankAccountNo"/>
+        <result property="bankAccountName" column="BankAccountName"/>
+        <result property="bankName" column="BankName"/>
+        <result property="bankProvince" column="BankProvince"/>
+        <result property="bankCity" column="BankCity"/>
+        <result property="bankBranchName" column="BankBranchName"/>
+        <result property="bankFullBranchName" column="BankFullBranchName"/>
+        <result property="bankCode" column="BankCode"/>
+        <result property="bankAccountType" column="BankAccountType"/>
+        <result property="payBankName" column="PayBankName"/>
+        <result property="payBankAccountNo" column="PayBankAccountNo"/>
+        <result property="requestTime" column="RequestTime"/>
+        <result property="requestMemo" column="RequestMemo"/>
+        <result property="status" column="Status"/>
+        <result property="addTime" column="AddTime"/>
+        <result property="addLoginId" column="AddLoginID"/>
+        <result property="updateTime" column="UpdateTime"/>
+        <result property="updateLoginId" column="UpdateLoginID"/>
+        <result property="memo" column="Memo"/>
+    </resultMap>
+
+    <insert id="insertPayRequest" parameterClass="map">
+        <![CDATA[
+        INSERT INTO FC_PayRequest
+			(PaySequence,
+			BusinessType,
+			PayeeName,
+			PayAmount,
+			BankAccountNo,
+			BankAccountName,
+			BankName,
+			BankProvince,
+			BankCity,
+			BankBranchName,
+			BankFullBranchName,
+			BankCode,
+			BankAccountType,
+			PayBankName,
+			PayBankAccountNo,
+			RequestTime,
+			RequestMemo,
+			Status,
+			AddTime,
+			UpdateTime,
+			AddLoginID,
+			UpdateLoginID,
+		    Memo
+			) values (
+			#payRequestData.paySequence#,
+			#payRequestData.businessType#,
+			#payRequestData.payeeName#,
+			#payRequestData.payAmount#,
+			#payRequestData.bankAccountNo#,
+			#payRequestData.bankAccountName#,
+			#payRequestData.bankName#,
+			#payRequestData.bankProvince#,
+			#payRequestData.bankCity#,
+			#payRequestData.bankBranchName#,
+			#payRequestData.bankFullBranchName#,
+			#payRequestData.bankCode#,
+			#payRequestData.bankAccountType#,
+			#payRequestData.payBankName#,
+			#payRequestData.payBankAccountNo#,
+			#payRequestData.requestTime#,
+			#payRequestData.requestMemo#,
+			#payRequestData.status#,
+			NOW(),
+			NOW(),
+		    #payRequestData.addLoginId#,
+			#payRequestData.updateLoginId#,
+			#payRequestData.memo#
+			)
+ 		]]>
+        <selectKey resultClass="java.lang.Integer" keyProperty="prId">
+            <![CDATA[
+			SELECT @@IDENTITY AS id
+		]]>
+        </selectKey>
+    </insert>
+
+    <update id="updatePayRequest" parameterClass="map">
+        UPDATE FC_PayRequest
+        SET status = #status#, memo = #memo#, UpdateTime = NOW()
+        WHERE prId = #prId#
+    </update>
+
+
+</sqlMap>

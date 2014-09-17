@@ -104,6 +104,7 @@ public enum BusinessType {
 			case 6:
 				return ADVERTISEMENT;
             //收款的业务类型，暂时没有闪惠
+            //收款的业务类型，暂时没有费用
 			default:
 				return DEFAULT;
 		}
