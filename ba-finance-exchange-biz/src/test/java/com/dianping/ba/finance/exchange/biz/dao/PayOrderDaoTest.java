@@ -99,12 +99,6 @@ public class PayOrderDaoTest {
         Assert.assertTrue(amount.compareTo(BigDecimal.ZERO) >= 0);
     }
 
-    @Test
-    public void testFindPayOrderListByPayCode() throws Exception {
-        List<String> payCodeList = Arrays.asList("MWYFUQBM", "CYCSNBWQ");
-        List<PayOrderData> payOrderDataList = payOrderDao.findPayOrderListByPayCode(payCodeList);
-        Assert.assertNotNull(payOrderDataList);
-    }
 
 	@Test
 	public void testFindPayOrderList() {
