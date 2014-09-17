@@ -7,6 +7,7 @@ import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveBankData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.dtos.TelTransferDTO;
+import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
@@ -218,13 +219,20 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
         roData.setPayerBankName(telTransferDTO.getPayerBankName());
         roData.setStatus(ReceiveOrderStatus.UNCONFIRMED.value());
         roData.setPayChannel(ReceiveOrderPayChannel.TELEGRAPHIC_TRANSFER.value());
-        roData.setReceiveType(ReceiveType.DEFAULT.value());
         roData.setAddLoginId(loginId);
         roData.setUpdateLoginId(loginId);
 
         ReceiveBankData bankData = receiveBankService.loadReceiveBankByBankId(bankId);
         roData.setBusinessType(bankData.getBusinessType());
         roData.setBankID(bankData.getBankId());
+
+        // 广告只有一种收款单类型，所以默认为广告款
+        if (bankData.getBusinessType() == BusinessType.ADVERTISEMENT.value()) {
+            roData.setReceiveType(ReceiveType.AD_FEE.value());
+        } else {
+            roData.setReceiveType(ReceiveType.DEFAULT.value());
+        }
+
         return roData;
     }
 

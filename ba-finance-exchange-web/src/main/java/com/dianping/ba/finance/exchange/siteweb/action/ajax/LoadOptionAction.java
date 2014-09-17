@@ -7,10 +7,11 @@ import com.dianping.ba.finance.exchange.api.enums.CompanyIDName;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
 import com.dianping.ba.finance.exchange.siteweb.constants.OptionConstant;
+import com.dianping.ba.finance.exchange.siteweb.constants.PermissionConstant;
+import com.dianping.finance.common.util.LionConfigUtils;
+import com.dianping.finance.gabriel.impl.GabrielService;
 
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Created by Eric on 2014/5/29.
@@ -24,6 +25,7 @@ public class LoadOptionAction extends AjaxBaseAction {
     private int businessType;
 
     private ReceiveBankService receiveBankService;
+    private GabrielService gabrielService;
 
     public String loadPOStatusOption() {
         option.putAll(OptionConstant.POSTATUS_OPTION);
@@ -141,7 +143,6 @@ public class LoadOptionAction extends AjaxBaseAction {
             return SUCCESS;
         }
         List<ReceiveBankData> receiveBankDataList = receiveBankService.findAllReceiveBank();
-
         for (ReceiveBankData receiveBankData : receiveBankDataList) {
             if (receiveBankData.getBusinessType() == businessType) {
                 CompanyIDName companyIDName = CompanyIDName.valueOf(receiveBankData.getCompanyId());
@@ -150,6 +151,9 @@ public class LoadOptionAction extends AjaxBaseAction {
                 }
             }
         }
+
+		filterOptionByPermission();
+
         if (option.size() == 2) {
             option.remove(0);
         }
@@ -158,7 +162,8 @@ public class LoadOptionAction extends AjaxBaseAction {
         return SUCCESS;
     }
 
-    public String loadReceiveBankOptionInQuery() {
+
+	public String loadReceiveBankOptionInQuery() {
         option.put(0, "全部");
         if (businessType == BusinessType.DEFAULT.value()) {
             code = ERROR_CODE;
@@ -174,10 +179,35 @@ public class LoadOptionAction extends AjaxBaseAction {
                 }
             }
         }
+
+		filterOptionByPermission();
+
+        if (option.size() == 2) {
+            option.remove(0);
+        }
+
         msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
     }
+
+	private void filterOptionByPermission() {
+		String useCityPermission = LionConfigUtils.getProperty("ba-finance-exchange-web.UseCityPermission", "true");
+		if (useCityPermission.equals("true") && businessType == BusinessType.ADVERTISEMENT.value()){
+			Set<String> allowedCompanyNameSet = findAllowedCompanyByPermission();
+			Iterator<Map.Entry<Object, Object>> it = option.entrySet().iterator();
+			while(it.hasNext()){
+				Map.Entry<Object, Object> entry = it.next();
+				if (!allowedCompanyNameSet.contains(entry.getValue())){
+					it.remove();
+				}
+			}
+            if (allowedCompanyNameSet.size() > 0
+                    && allowedCompanyNameSet.size() == option.size()) {
+                option.put(0, "全部");
+            }
+		}
+	}
 
     public String loadAllReceiveBankOption() {
         option.put(0, "请选择收款银行账户");
@@ -193,6 +223,20 @@ public class LoadOptionAction extends AjaxBaseAction {
         msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
+    }
+
+    public Set<String> findAllowedCompanyByPermission(){
+		if (gabrielService == null) {
+			gabrielService = GabrielService.getInstance();
+		}
+		Set<String> allowedCompanySet = new HashSet<String>();
+        List<Integer> permissionIdList = gabrielService.findAllPermissionIdListByLoginId(adminLoginId());
+        for (Integer permissionId : permissionIdList){
+            if (PermissionConstant.PERMISSION_CITY_OPTION.containsKey(permissionId)){
+                allowedCompanySet.addAll(PermissionConstant.PERMISSION_CITY_OPTION.get(permissionId));
+            }
+        }
+        return allowedCompanySet;
     }
 
     @Override
@@ -216,6 +260,10 @@ public class LoadOptionAction extends AjaxBaseAction {
 
     public void setReceiveBankService(ReceiveBankService receiveBankService) {
         this.receiveBankService = receiveBankService;
+    }
+
+    public void setGabrielService(GabrielService gabrielService) {
+        this.gabrielService = gabrielService;
     }
 
     public void setBusinessType(int businessType) {

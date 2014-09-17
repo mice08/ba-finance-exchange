@@ -6,10 +6,7 @@ import com.dianping.ba.finance.exchange.api.RORNMatchFireService;
 import com.dianping.ba.finance.exchange.api.RORNMatchService;
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
-import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifyResultBean;
-import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderResultBean;
-import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
-import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
+import com.dianping.ba.finance.exchange.api.beans.*;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveCalResultData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
@@ -17,10 +14,12 @@ import com.dianping.ba.finance.exchange.api.enums.*;
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderDao;
 import com.dianping.ba.finance.exchange.biz.producer.ReceiveNotifyResultNotify;
 import com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify;
+import com.dianping.ba.finance.exchange.biz.service.BizInfoService;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 import com.dianping.finance.common.util.DateUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
@@ -46,6 +45,9 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
     private ReceiveNotifyService receiveNotifyService;
 
     private ReceiveNotifyResultNotify receiveNotifyResultNotify;
+
+    private BizInfoService bizInfoService;
+
 
     @Log(severity = 1, logBefore = true, logAfter = true)
     @ReturnDefault
@@ -377,6 +379,68 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         return id > 0;
     }
 
+    @Log(severity = 2, logBefore = true, logAfter = true)
+    @ReturnDefault
+    @Override
+    public boolean fireAutoConfirm(ReceiveOrderSearchBean receiveOrderSearchBean) {
+        List<ReceiveOrderData> roDataList = receiveOrderDao.findReceiveOrderBySearchBean(receiveOrderSearchBean);
+        if (CollectionUtils.isEmpty(roDataList)) {
+            MONITOR_LOGGER.error(String.format("ReceiveOrderServiceObject.fireAutoConfirm no receiveOrder"));
+            return true;
+        }
+        MONITOR_LOGGER.info(String.format("ReceiveOrderServiceObject.fireAutoConfirm getReceiveOrderSize=%d", roDataList.size()));
+
+        tryConfirm(roDataList);
+
+        return true;
+    }
+
+    private void tryConfirm(List<ReceiveOrderData> roDataList) {
+        for (ReceiveOrderData roData : roDataList) {
+            if (StringUtils.isEmpty(roData.getBizContent())) {
+                MONITOR_LOGGER.info(String.format("BizContent empty receiveOrder=%s", roData));
+                continue;
+            }
+            BizInfoBean bean = bizInfoService.getBizInfo(roData);
+            if (bean == null || bean.getCustomerId() <= 0) {
+                MONITOR_LOGGER.info(String.format("No customerId! BizInfoBean=%s , receiveOrder=%s", bean, roData));
+                continue;
+            }
+
+            MONITOR_LOGGER.info(String.format("Got customerId=%s receiveOrder=%s", bean.getCustomerId(), roData));
+            roData.setCustomerId(bean.getCustomerId());
+
+            // 先获取已匹配的收款通知
+            List<ReceiveNotifyData> receiveNotifyDataList = receiveNotifyService.findMatchedReceiveNotify(roData.getRoId());
+
+            ReceiveOrderUpdateBean updateBean = buildReceiveOrderUpdateBeanForJobConfirm(roData);
+            int u = updateReceiveOrderConfirm(updateBean);
+            if (u > 0) {
+                MONITOR_LOGGER.info(String.format("Confirmed by job receiveOrder=%s", roData));
+                if (CollectionUtils.isNotEmpty(receiveNotifyDataList)) {
+                    for (ReceiveNotifyData receiveNotifyData : receiveNotifyDataList) {
+                        receiveNotifyService.removeReceiveNotifyMatchRelation(receiveNotifyData.getReceiveNotifyId(), receiveNotifyData.getRoMatcherId());
+                        rornMatchFireService.executeMatchingForNewReceiveNotify(receiveNotifyData);
+                    }
+                }
+            }
+        }
+    }
+
+    private ReceiveOrderUpdateBean buildReceiveOrderUpdateBeanForJobConfirm(ReceiveOrderData roData) {
+        ReceiveOrderUpdateBean updateBean = new ReceiveOrderUpdateBean();
+        updateBean.setBizContent(roData.getBizContent());
+        updateBean.setCustomerId(roData.getCustomerId());
+        updateBean.setMemo(roData.getMemo());
+        updateBean.setReceiveTime(new Date());
+        updateBean.setReceiveType(ReceiveType.valueOf(roData.getReceiveType()));
+        updateBean.setRoId(roData.getRoId());
+        updateBean.setShopId(roData.getShopId());
+        updateBean.setStatus(ReceiveOrderStatus.CONFIRMED.value());
+        updateBean.setUpdateLoginId(0);
+        return updateBean;
+    }
+
     public void setReceiveOrderDao(ReceiveOrderDao receiveOrderDao) {
         this.receiveOrderDao = receiveOrderDao;
     }
@@ -399,5 +463,9 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
 
     public void setReceiveNotifyResultNotify(ReceiveNotifyResultNotify receiveNotifyResultNotify) {
         this.receiveNotifyResultNotify = receiveNotifyResultNotify;
+    }
+
+    public void setBizInfoService(BizInfoService bizInfoService) {
+        this.bizInfoService = bizInfoService;
     }
 }

@@ -4,6 +4,7 @@ import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveCalResultData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
+import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.core.type.PageModel;
@@ -213,5 +214,15 @@ public class ReceiveOrderDaoTest {
         String voucherDate = DateUtils.format("yyyy-MM-01", startCal.getTime());
         List<ReceiveCalResultData> receiveCalResultDataList = receiveOrderDao.findCalculatedReceiveResult(searchBean, voucherDate);
         Assert.assertFalse(receiveCalResultDataList.isEmpty());
+    }
+
+    @Test
+    public void testFindReceiveOrderBySearchBean() throws Exception {
+        ReceiveOrderSearchBean searchBean = new ReceiveOrderSearchBean();
+        searchBean.setBusinessType(BusinessType.ADVERTISEMENT.value());
+        searchBean.setStatus(ReceiveOrderStatus.UNCONFIRMED.value());
+        List<ReceiveOrderData> roDataList = receiveOrderDao.findReceiveOrderBySearchBean(searchBean);
+        Assert.assertFalse(roDataList.isEmpty());
+
     }
 }
