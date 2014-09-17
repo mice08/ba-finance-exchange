@@ -35,7 +35,12 @@ public enum BusinessType {
     /**
      * 闪惠
      */
-    SHAN_HUI(6);
+    SHAN_HUI(6),
+
+    /**
+     * 费用
+     */
+    EXPENSE(7);
 
     private int businessType;
 
@@ -58,6 +63,8 @@ public enum BusinessType {
                 return "广告" ;
             case 6:
                 return "闪惠";
+            case 7:
+                return "费用";
             default:
                 return "默认";
         }
@@ -77,6 +84,8 @@ public enum BusinessType {
                 return ADVERTISEMENT;
             case 6:
                 return SHAN_HUI;
+            case 7:
+                return EXPENSE;
             default:
                 return DEFAULT;
         }
