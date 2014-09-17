@@ -50,6 +50,8 @@ public class PayOrderData implements Serializable {
 
     private int customerId;
 
+    private String payeeName;
+
     private int customerBankId;
 
     private String bankAccountNo;
@@ -69,6 +71,10 @@ public class PayOrderData implements Serializable {
     private String bankCode;
 
     private int bankAccountType;
+
+    private String payBankName;
+
+    private String payBankAccountNo;
 
     private int addLoginId;
 
@@ -272,6 +278,30 @@ public class PayOrderData implements Serializable {
         this.customerId = customerId;
     }
 
+    public String getPayeeName() {
+        return payeeName;
+    }
+
+    public void setPayeeName(String payeeName) {
+        this.payeeName = payeeName;
+    }
+
+    public String getPayBankAccountNo() {
+        return payBankAccountNo;
+    }
+
+    public void setPayBankAccountNo(String payBankAccountNo) {
+        this.payBankAccountNo = payBankAccountNo;
+    }
+
+    public String getPayBankName() {
+        return payBankName;
+    }
+
+    public void setPayBankName(String payBankName) {
+        this.payBankName = payBankName;
+    }
+
     @Override
     public String toString() {
         return "PayOrderData{" +
@@ -286,6 +316,7 @@ public class PayOrderData implements Serializable {
                 ", paySequence='" + paySequence + '\'' +
                 ", payCode='" + payCode + '\'' +
                 ", customerId=" + customerId +
+                ", payeeName='" + payeeName + '\'' +
                 ", customerBankId=" + customerBankId +
                 ", bankAccountNo='" + bankAccountNo + '\'' +
                 ", bankAccountName='" + bankAccountName + '\'' +
@@ -296,6 +327,8 @@ public class PayOrderData implements Serializable {
                 ", bankFullBranchName='" + bankFullBranchName + '\'' +
                 ", bankCode='" + bankCode + '\'' +
                 ", bankAccountType=" + bankAccountType +
+                ", payBankName='" + payBankName + '\'' +
+                ", payBankAccountNo='" + payBankAccountNo + '\'' +
                 ", addLoginId=" + addLoginId +
                 ", updateLoginId=" + updateLoginId +
                 ", addType=" + addType +
