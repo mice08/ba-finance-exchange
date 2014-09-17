@@ -122,12 +122,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
 	private void exportPayOrders(List<PayOrderExportBean> beanList) throws Exception {
 		HttpServletResponse response = getHttpServletResponse();
-        String exportBank;
-        if(beanList.get(0).getBusinessType() == BusinessType.EXPENSE.value()) {
-            exportBank = LionConfigUtils.getProperty("ba-finance-exchange-web.expense.exportBank", "Merchants");
-        } else {
-            exportBank = LionConfigUtils.getProperty("ba-finance-exchange-web.exportBank", "Minsheng");
-        }
+        String exportBank = selectExportBank(beanList.get(0));
         MONITOR_LOGGER.info(String.format("exportBank=%s", exportBank));
         PayTemplateService payTemplateService = payTemplateServiceMap.get(exportBank);
         if (payTemplateService == null) {
@@ -135,6 +130,16 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         }
         payTemplateService.createExcelAndDownload(response, "付款单", beanList);
 	}
+
+    private String selectExportBank(PayOrderExportBean payOrderExportBean) {
+        String exportBank;
+        if(payOrderExportBean.getBusinessType() == BusinessType.EXPENSE.value()) {
+            exportBank = LionConfigUtils.getProperty("ba-finance-exchange-web.expense.exportBank", "Merchants");
+        } else {
+            exportBank = LionConfigUtils.getProperty("ba-finance-exchange-web.exportBank", "Minsheng");
+        }
+        return exportBank;
+    }
 
 	protected HttpServletResponse getHttpServletResponse() {
 		return ServletActionContext.getResponse();
