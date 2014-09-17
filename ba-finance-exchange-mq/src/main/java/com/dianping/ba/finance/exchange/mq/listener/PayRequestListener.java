@@ -2,7 +2,7 @@ package com.dianping.ba.finance.exchange.mq.listener;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
-import com.dianping.ba.finance.exchange.api.PayOrderRequestHandleService;
+import com.dianping.ba.finance.exchange.api.PayRequestHandleService;
 import com.dianping.ba.finance.exchange.api.dtos.PayRequestDTO;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.swallow.SwallowMessageListener;
@@ -16,22 +16,22 @@ public class PayRequestListener extends SwallowMessageListener {
 
     private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.mq.monitor.PayRequestListener");
 
-    private PayOrderRequestHandleService payOrderRequestHandleService;
+    private PayRequestHandleService payRequestHandleService;
 
     @Log(logBefore = true, logAfter = true, severity = 1)
     @Override
     public void onMessage(Message message) throws BackoutMessageException {
-        MONITOR_LOGGER.info(String.format("PayOrderRequestListener.onMessage, message=%s", message));
+        MONITOR_LOGGER.info(String.format("PayRequestListener.onMessage, message=%s", message));
         try {
             PayRequestDTO payRequestDTO = message.transferContentToBean(PayRequestDTO.class);
-//            payOrderRequestHandleService.handlePayOrderRequest(payOrderRequestDTO);
+            payRequestHandleService.handleNewPayRequest(payRequestDTO);
         } catch (Exception e) {
-            MONITOR_LOGGER.error(String.format("severity=[2] PayOrderRequestListener.onMessage error, message=%s", message), e);
+            MONITOR_LOGGER.error(String.format("severity=[2] PayRequestListener.onMessage error, message=%s", message), e);
             throw new BackoutMessageException(e);
         }
     }
 
-    public void setPayOrderRequestHandleService(PayOrderRequestHandleService payOrderRequestHandleService) {
-        this.payOrderRequestHandleService = payOrderRequestHandleService;
+    public void setPayRequestHandleService(PayRequestHandleService payRequestHandleService) {
+        this.payRequestHandleService = payRequestHandleService;
     }
 }
