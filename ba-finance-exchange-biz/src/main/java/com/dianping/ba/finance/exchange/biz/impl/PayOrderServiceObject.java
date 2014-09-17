@@ -25,10 +25,7 @@ import com.google.common.collect.Maps;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 处理付款单的Service类
@@ -258,6 +255,72 @@ public class PayOrderServiceObject implements PayOrderService {
         }
         PayOrderBankInfoDTO bankInfoDTO = buildPayOrderBankInfoDTO(poData);
         return bankInfoDTO;
+    }
+
+    @Log(severity = 2)
+    @ReturnDefault
+    @Override
+    public boolean suspendPayOrder(String paySequence) {
+        PayOrderData payOrderData = payOrderDao.loadPayOrderByPaySequence(paySequence);
+        if(payOrderData == null) {
+            return true;
+        }
+
+        if(payOrderData.getStatus() == PayOrderStatus.INIT.value()) {
+            POUpdateInfoBean poUpdateInfoBean = new POUpdateInfoBean();
+            poUpdateInfoBean.setPoIdList(Arrays.asList(payOrderData.getPoId()));
+            poUpdateInfoBean.setPreStatus(payOrderData.getStatus());
+            poUpdateInfoBean.setUpdateStatus(PayOrderStatus.SUSPEND.value());
+            poUpdateInfoBean.setLoginId(payOrderData.getAddLoginId());
+            payOrderDao.updatePayOrders(poUpdateInfoBean);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Log(severity = 2)
+    @ReturnDefault
+    @Override
+    public boolean resumePayOrder(String paySequence) {
+        PayOrderData payOrderData = payOrderDao.loadPayOrderByPaySequence(paySequence);
+        if(payOrderData == null) {
+            return true;
+        }
+
+        if(payOrderData.getStatus() == PayOrderStatus.SUSPEND.value()) {
+            POUpdateInfoBean poUpdateInfoBean = new POUpdateInfoBean();
+            poUpdateInfoBean.setPoIdList(Arrays.asList(payOrderData.getPoId()));
+            poUpdateInfoBean.setPreStatus(payOrderData.getStatus());
+            poUpdateInfoBean.setUpdateStatus(PayOrderStatus.INIT.value());
+            poUpdateInfoBean.setLoginId(payOrderData.getAddLoginId());
+            payOrderDao.updatePayOrders(poUpdateInfoBean);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Log(severity = 2)
+    @ReturnDefault
+    @Override
+    public boolean dropPayOrder(String paySequence) {
+        PayOrderData payOrderData = payOrderDao.loadPayOrderByPaySequence(paySequence);
+        if(payOrderData == null) {
+            return true;
+        }
+
+        if(payOrderData.getStatus() == PayOrderStatus.INIT.value() || payOrderData.getStatus() == PayOrderStatus.SUSPEND.value()) {
+            POUpdateInfoBean poUpdateInfoBean = new POUpdateInfoBean();
+            poUpdateInfoBean.setPoIdList(Arrays.asList(payOrderData.getPoId()));
+            poUpdateInfoBean.setPreStatus(payOrderData.getStatus());
+            poUpdateInfoBean.setUpdateStatus(PayOrderStatus.INVALID.value());
+            poUpdateInfoBean.setLoginId(payOrderData.getAddLoginId());
+            payOrderDao.updatePayOrders(poUpdateInfoBean);
+            return true;
+        }
+
+        return false;
     }
 
     private PayOrderBankInfoDTO buildPayOrderBankInfoDTO(PayOrderData poData) {

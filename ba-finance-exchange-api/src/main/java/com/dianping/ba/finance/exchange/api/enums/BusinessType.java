@@ -30,7 +30,12 @@ public enum BusinessType {
     /**
      * 本地广告
      */
-    ADVERTISEMENT(5);
+    ADVERTISEMENT(5),
+
+    /**
+     * 闪惠
+     */
+    SHAN_HUI(6);
 
     private int businessType;
 
@@ -51,6 +56,8 @@ public enum BusinessType {
                 return "储值卡" ;
             case 5:
                 return "广告" ;
+            case 6:
+                return "闪惠";
             default:
                 return "默认";
         }
@@ -68,6 +75,8 @@ public enum BusinessType {
                 return PREPAID_CARD;
             case 5:
                 return ADVERTISEMENT;
+            case 6:
+                return SHAN_HUI;
             default:
                 return DEFAULT;
         }
@@ -85,6 +94,7 @@ public enum BusinessType {
 				return PREPAID_CARD;
 			case 6:
 				return ADVERTISEMENT;
+            //收款的业务类型，暂时没有闪惠
 			default:
 				return DEFAULT;
 		}

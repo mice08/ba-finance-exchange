@@ -57,6 +57,7 @@ class CustomerNameServiceTest extends Specification {
         businessType                        | customerId | customerName
         BusinessType.GROUP_PURCHASE.value() | 87871      | "客户名称87871"
         BusinessType.ADVERTISEMENT.value()  | 87872      | "客户名称-广告-87872"
+        BusinessType.SHAN_HUI.value()       | 87871      | "客户名称87871"
         BusinessType.PREPAID_CARD.value()   | 87872      | null
     }
 
@@ -109,6 +110,7 @@ class CustomerNameServiceTest extends Specification {
         customerNameParam | businessType                        | customerId | customerName
         "商户"              | BusinessType.GROUP_PURCHASE.value() | 123        | "商户-客户名称"
         "商户"              | BusinessType.ADVERTISEMENT.value()  | 125        | "商户-客户名称-广告"
+        "商户"              | BusinessType.SHAN_HUI.value()       | 123        | "商户-客户名称"
         "商户"              | BusinessType.PREPAID_CARD.value()   | null       | null
     }
 
