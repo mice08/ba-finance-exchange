@@ -61,8 +61,7 @@ public class PayOrderDaoTest {
     @Test
     public void testUpdatePayOrders() {
         List<Integer> poIds =new ArrayList<Integer>();
-        poIds.add(3121);
-        poIds.add(3116);
+        poIds.add(10138210);
         POUpdateInfoBean poUpdateInfoBean = new POUpdateInfoBean();
         poUpdateInfoBean.setPoIdList(poIds);
         poUpdateInfoBean.setLoginId(878787);

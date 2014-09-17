@@ -12,7 +12,6 @@ import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
-import com.dianping.ba.finance.exchange.siteweb.util.ListUtil;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.util.ConvertUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
@@ -174,7 +173,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         payOrderSearchBean.setBeginTime(beginTime);
         payOrderSearchBean.setEndTime(endTime);
         if (StringUtils.isNotBlank(poIds)) {
-            payOrderSearchBean.setPoIdList(ListUtil.convertStringArrayToIntegerList(poIds.split(",")));
+            payOrderSearchBean.setPoIdList(com.dianping.finance.common.util.StringUtils.splitStringToList(poIds, ","));
         }
         return payOrderSearchBean;
     }

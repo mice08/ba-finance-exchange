@@ -102,7 +102,7 @@
             PaidDate = #updateInfoBean.paidDate#,
         </isNotNull>
         <isNotNull property="updateInfoBean.memo">
-            Memo = #updateInfoBean.memo#,
+            Memo = CONCAT(Memo, ";", #updateInfoBean.memo#),
         </isNotNull>
         UpdateTime = now(),
         UpdateLoginID = #updateInfoBean.loginId#
