@@ -193,7 +193,7 @@
                         <th width="10%" class="fs tb-header paid-time">付款日期</th>
                         <th width="10%" class="fs tb-header sendback-time">退票日期</th>
                         <th width="5%" class="fs tb-header status">状态</th>
-                        <th width="10%" class="fs tb-header memo">备注</th>
+                        <th width="15%" class="fs tb-header memo">备注</th>
                     </tr>
                     </thead>
 
@@ -211,7 +211,7 @@
 </div>
 <script id="NoRowsTemplate" type="text/x-jquery-tmpl">
 <tr>
-<td colspan="9">没有查询到任何记录</td>
+<td colspan="7">没有查询到任何记录</td>
 </tr>
 </script>
 

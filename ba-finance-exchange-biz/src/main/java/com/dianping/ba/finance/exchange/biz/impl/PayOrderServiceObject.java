@@ -310,7 +310,7 @@ public class PayOrderServiceObject implements PayOrderService {
             return true;
         }
 
-        if(payOrderData.getStatus() == PayOrderStatus.INIT.value()) {
+        if(payOrderData.getStatus() == PayOrderStatus.INIT.value() || payOrderData.getStatus() == PayOrderStatus.SUSPEND.value()) {
             POUpdateInfoBean poUpdateInfoBean = new POUpdateInfoBean();
             poUpdateInfoBean.setPoIdList(Arrays.asList(payOrderData.getPoId()));
             poUpdateInfoBean.setPreStatus(payOrderData.getStatus());
