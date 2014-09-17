@@ -136,14 +136,14 @@ public class MerchantsPayTemplateService implements PayTemplateService {
             templateBean.setBankAccountNo(exportBean.getBankAccountNo());
             templateBean.setBankProvince(exportBean.getBankProvince());
             templateBean.setBankCity(exportBean.getBankCity());
+            templateBean.setPayerAccountNo(exportBean.getPayBankAccountNo());
+            templateBean.setPayerBranchBank(exportBean.getPayBankName());
             templateBean.setExpectedDate(todayDate);
             BusinessExportInfoBean exportInfoBean = businessExportInfoBeanMap.get(exportBean.getBusinessType());
             if (exportInfoBean != null) {
                 templateBean.setCurrency(exportInfoBean.getCurrency());
                 templateBean.setDebitSideBankName(exportInfoBean.getDebitSideBankName());
                 templateBean.setDebitSideBankNo(exportInfoBean.getDebitSideBankNo());
-                templateBean.setPayerAccountNo(exportInfoBean.getPayerAccountNo());
-                templateBean.setPayerBranchBank(exportInfoBean.getPayerBranchBank());
                 templateBean.setSettleType(exportInfoBean.getSettleType());
 
                 String use = exportInfoBean.getUse() == null ? "" : exportInfoBean.getUse();
