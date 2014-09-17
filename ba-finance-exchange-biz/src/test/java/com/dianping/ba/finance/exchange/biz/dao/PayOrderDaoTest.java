@@ -85,6 +85,7 @@ public class PayOrderDaoTest {
     public void testPaginatePayOrderList() {
         PayOrderSearchBean payOrderSearchBean = new PayOrderSearchBean();
         payOrderSearchBean.setBusinessType(1);
+        payOrderSearchBean.setPoIdList(Arrays.asList(10001012, 10001013));
         PageModel pageModel = payOrderDao.paginatePayOrderList(payOrderSearchBean, 1, 20);
         Assert.assertNotNull(pageModel);
     }
@@ -93,6 +94,7 @@ public class PayOrderDaoTest {
     public void testFindPayOrderTotalAmountByCondition() {
         PayOrderSearchBean payOrderSearchBean = new PayOrderSearchBean();
         payOrderSearchBean.setBusinessType(1);
+        payOrderSearchBean.setPoIdList(Arrays.asList(10001012, 10001013));
         BigDecimal amount = payOrderDao.findPayOrderTotalAmountByCondition(payOrderSearchBean);
         Assert.assertTrue(amount.compareTo(BigDecimal.ZERO) >= 0);
     }
@@ -108,8 +110,8 @@ public class PayOrderDaoTest {
 	public void testFindPayOrderList() {
 		PayOrderSearchBean payOrderSearchBean = new PayOrderSearchBean();
 		payOrderSearchBean.setBusinessType(1);
-		payOrderSearchBean.setStatus(1);
-		List<PayOrderData> actual = payOrderDao.findPayOrderList(payOrderSearchBean);
+        payOrderSearchBean.setPoIdList(Arrays.asList(10001012, 10001013));
+        List<PayOrderData> actual = payOrderDao.findPayOrderList(payOrderSearchBean);
 		Assert.assertNotNull(actual);
 		System.out.print(actual.size());
 	}

@@ -12,6 +12,7 @@ import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
+import com.dianping.ba.finance.exchange.siteweb.util.ListUtil;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.util.ConvertUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
@@ -58,7 +59,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     //付款计划总金额
     private String totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO);
 
-    private String payCode;
+    private String poIds;
 
     private String addDate;
 
@@ -157,22 +158,23 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
 	private PayOrderExportBean buildPayOrderExportBean(PayOrderData order) throws Exception {
 		PayOrderExportBean exportBean = ConvertUtils.copy(order, PayOrderExportBean.class);
+        exportBean.setPayCode(String.valueOf(order.getPoId()));
 		return exportBean;
 	}
 
 	public PayOrderSearchBean buildPayOrderSearchBean() throws ParseException {
 
         PayOrderSearchBean payOrderSearchBean=new PayOrderSearchBean();
-        Date beginTime = DateUtil.isValidDateTime(addBeginTime) ? DateUtil.parseDate(addBeginTime,"yyyy-MM-dd HH:mm") :
+        Date beginTime = DateUtil.isValidDateTime(addBeginTime) ? DateUtil.parseDate(addBeginTime, "yyyy-MM-dd HH:mm") :
                 (DateUtil.isValidDate(addBeginTime) ? DateUtil.formatDate(addBeginTime, false) : null);
-        Date endTime = DateUtil.isValidDateTime(addEndTime) ? DateUtil.parseDate(addEndTime,"yyyy-MM-dd HH:mm") :
+        Date endTime = DateUtil.isValidDateTime(addEndTime) ? DateUtil.parseDate(addEndTime, "yyyy-MM-dd HH:mm") :
                 (DateUtil.isValidDate(addEndTime) ? DateUtil.formatDate(addEndTime, true) : null);
         payOrderSearchBean.setStatus(status);
         payOrderSearchBean.setBusinessType(businessType);
         payOrderSearchBean.setBeginTime(beginTime);
         payOrderSearchBean.setEndTime(endTime);
-        if (StringUtils.isNotBlank(payCode)) {
-            payOrderSearchBean.setPayCode(payCode);
+        if (StringUtils.isNotBlank(poIds)) {
+            payOrderSearchBean.setPoIdList(ListUtil.convertStringArrayToIntegerList(poIds.split(",")));
         }
         return payOrderSearchBean;
     }
@@ -193,7 +195,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     private PayOrderBean convertPODataToPOBean(PayOrderData payOrderData, Map<Integer, String> customerIdNameMap) {
         PayOrderBean payOrderBean = new PayOrderBean();
-        payOrderBean.setPayCode(payOrderData.getPayCode());
+        payOrderBean.setPayCode(String.valueOf(payOrderData.getPoId()));
         payOrderBean.setAddTime(DateUtil.formatDateToString(payOrderData.getAddTime(), "yyyy-MM-dd HH:mm:ss"));
         if (payOrderData.getStatus() == PayOrderStatus.REFUND.value()) {
             payOrderBean.setSendBackTime(DateUtil.formatDateToString(payOrderData.getUpdateTime(), "yyyy-MM-dd HH:mm:ss"));
@@ -319,11 +321,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         this.addEndTime = addEndTime;
     }
 
-    public String getPayCode() {
-        return payCode;
-    }
-
-    public void setPayCode(String payCode) {
-        this.payCode = payCode;
+    public void setPoIds(String poIds) {
+        this.poIds = poIds;
     }
 }
