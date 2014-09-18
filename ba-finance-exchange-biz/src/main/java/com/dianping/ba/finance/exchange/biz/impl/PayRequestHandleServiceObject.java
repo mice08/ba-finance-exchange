@@ -172,6 +172,11 @@ public class PayRequestHandleServiceObject implements PayRequestHandleService {
         payOrderData.setUpdateLoginId(0);
         payOrderData.setMemo(payRequestDTO.getMemo());
 
+        payOrderData.setPayeeName(payRequestDTO.getPayeeName());
+        payOrderData.setPayBankName(payRequestDTO.getPayBankName());
+        payOrderData.setPayBankAccountNo(payRequestDTO.getPayBankAccountNo());
+
+
         return payOrderData;
     }
 
