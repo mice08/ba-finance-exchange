@@ -49,6 +49,18 @@
         <property name="businessSummary" value="大众点评网团购"/>
     </bean>
 
+    <bean id="expenseExportInfoBean"
+          class="com.dianping.ba.finance.exchange.siteweb.beans.BusinessExportInfoBean">
+        <property name="businessType" value="EXPENSE"/>
+        <property name="currency" value="人民币"/>
+        <property name="payerBranchBank" value="上海"/>
+        <property name="settleType" value="普通"/>
+        <!--使用付款单中的打款账号-->
+        <!--<property name="payerAccountNo" value="121909245310505"/>-->
+        <property name="use" value="大众点评网团购"/>
+        <property name="businessSummary" value="大众点评网团购"/>
+    </bean>
+
     <bean id="bookingExportInfoBean"
           class="com.dianping.ba.finance.exchange.siteweb.beans.BusinessExportInfoBean">
         <property name="businessType" value="BOOKING"/>
