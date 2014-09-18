@@ -20,6 +20,7 @@ import com.dianping.finance.common.swallow.SwallowEventBean;
 import com.dianping.finance.common.swallow.SwallowProducer;
 import com.dianping.finance.common.util.CopyUtils;
 import com.dianping.finance.common.util.DateUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -92,6 +93,12 @@ public class PayRequestHandleServiceObject implements PayRequestHandleService {
     }
 
     private boolean isValidRequest(PayRequestData payRequestData, PayRequestDTO payRequestDTO, PayRequestResultDTO payRequestResultDTO) {
+        // 字段非空校验
+        if (isFieldsEmpty(payRequestDTO, payRequestResultDTO)) {
+            payRequestService.updatePayRequest(payRequestData.getPrId(), PayRequestStatus.INVALID_FIELDS, payRequestResultDTO.getMemo());
+            payRequestResultDTO.setStatus(PayResultStatus.REQUEST_FAIL.value());
+            return false;
+        }
         // 校验超时
         if (isTimeout(payRequestDTO)) {
             payRequestService.updatePayRequest(payRequestData.getPrId(), PayRequestStatus.TIMEOUT, PayRequestStatus.TIMEOUT.toString());
@@ -107,6 +114,46 @@ public class PayRequestHandleServiceObject implements PayRequestHandleService {
             return false;
         }
         return true;
+    }
+
+    private boolean isFieldsEmpty(PayRequestDTO payRequestDTO, PayRequestResultDTO payRequestResultDTO) {
+        if (StringUtils.isBlank(payRequestDTO.getBankAccountNo())) {
+            payRequestResultDTO.setMemo("银行账号为空");
+            return true;
+        }
+        if (StringUtils.isBlank(payRequestDTO.getBankAccountName())) {
+            payRequestResultDTO.setMemo("账户名为空");
+            return true;
+        }
+        if (StringUtils.isBlank(payRequestDTO.getBankBranchName())) {
+            payRequestResultDTO.setMemo("支行名为空");
+            return true;
+        }
+        if (StringUtils.isBlank(payRequestDTO.getBankName())) {
+            payRequestResultDTO.setMemo("开户行名为空");
+            return true;
+        }
+        if (StringUtils.isBlank(payRequestDTO.getBankFullBranchName())) {
+            payRequestResultDTO.setMemo("银行全称为空");
+            return true;
+        }
+        if (StringUtils.isBlank(payRequestDTO.getBankCode())) {
+            payRequestResultDTO.setMemo("联行号为空");
+            return true;
+        }
+        if (payRequestDTO.getBankAccountType() <= 0) {
+            payRequestResultDTO.setMemo("银行账号类型为空");
+            return true;
+        }
+        if (StringUtils.isBlank(payRequestDTO.getPayBankAccountNo())) {
+            payRequestResultDTO.setMemo("打款账号为空");
+            return true;
+        }
+        if (StringUtils.isBlank(payRequestDTO.getPayBankName())) {
+            payRequestResultDTO.setMemo("打款银行为空");
+            return true;
+        }
+        return false;
     }
 
     private void payResultNotify(PayRequestResultDTO payRequestResultDTO, int businessType) {

@@ -5,6 +5,7 @@ import com.dianping.ba.finance.exchange.api.PayRequestService;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.datas.PayRequestData;
 import com.dianping.ba.finance.exchange.api.dtos.PayRequestDTO;
+import com.dianping.ba.finance.exchange.api.enums.BankAccountType;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.PayRequestStatus;
 import com.dianping.ba.finance.exchange.biz.constants.EventConstant;
@@ -67,6 +68,15 @@ public class PayRequestHandleServiceObjectTest {
         payRequestDTO.setPaySequence("TS312");
         payRequestDTO.setBusinessType(BusinessType.EXPENSE.value());
         payRequestDTO.setPayAmount(BigDecimal.TEN);
+        payRequestDTO.setBankAccountNo("bankAccountNo");
+        payRequestDTO.setBankAccountName("bankAccountName");
+        payRequestDTO.setBankBranchName("branchName");
+        payRequestDTO.setBankName("bankName");
+        payRequestDTO.setBankFullBranchName("fullBranchName");
+        payRequestDTO.setBankCode("bankCode");
+        payRequestDTO.setBankAccountType(BankAccountType.PERSONAL.value());
+        payRequestDTO.setPayBankAccountNo("payBankAccountNo");
+        payRequestDTO.setPayBankName("payBankName");
 
         Calendar requestCal = Calendar.getInstance();
         requestCal.set(Calendar.MINUTE, requestCal.get(Calendar.MINUTE) - 16); // 16分钟前发送的消息
@@ -91,6 +101,15 @@ public class PayRequestHandleServiceObjectTest {
         payRequestDTO.setPaySequence("TS312");
         payRequestDTO.setBusinessType(BusinessType.EXPENSE.value());
         payRequestDTO.setPayAmount(BigDecimal.TEN);
+        payRequestDTO.setBankAccountNo("bankAccountNo");
+        payRequestDTO.setBankAccountName("bankAccountName");
+        payRequestDTO.setBankBranchName("branchName");
+        payRequestDTO.setBankName("bankName");
+        payRequestDTO.setBankFullBranchName("fullBranchName");
+        payRequestDTO.setBankCode("bankCode");
+        payRequestDTO.setBankAccountType(BankAccountType.PERSONAL.value());
+        payRequestDTO.setPayBankAccountNo("payBankAccountNo");
+        payRequestDTO.setPayBankName("payBankName");
 
         Calendar requestCal = Calendar.getInstance();
         payRequestDTO.setRequestTime(requestCal.getTime());
@@ -112,6 +131,15 @@ public class PayRequestHandleServiceObjectTest {
         payRequestDTO.setPaySequence("TS312");
         payRequestDTO.setBusinessType(BusinessType.EXPENSE.value());
         payRequestDTO.setPayAmount(new BigDecimal(-100));
+        payRequestDTO.setBankAccountNo("bankAccountNo");
+        payRequestDTO.setBankAccountName("bankAccountName");
+        payRequestDTO.setBankBranchName("branchName");
+        payRequestDTO.setBankName("bankName");
+        payRequestDTO.setBankFullBranchName("fullBranchName");
+        payRequestDTO.setBankCode("bankCode");
+        payRequestDTO.setBankAccountType(BankAccountType.PERSONAL.value());
+        payRequestDTO.setPayBankAccountNo("payBankAccountNo");
+        payRequestDTO.setPayBankName("payBankName");
 
         Calendar requestCal = Calendar.getInstance();
         payRequestDTO.setRequestTime(requestCal.getTime());
@@ -131,6 +159,15 @@ public class PayRequestHandleServiceObjectTest {
         payRequestDTO.setPaySequence("TS312");
         payRequestDTO.setBusinessType(BusinessType.EXPENSE.value());
         payRequestDTO.setPayAmount(BigDecimal.TEN);
+        payRequestDTO.setBankAccountNo("bankAccountNo");
+        payRequestDTO.setBankAccountName("bankAccountName");
+        payRequestDTO.setBankBranchName("branchName");
+        payRequestDTO.setBankName("bankName");
+        payRequestDTO.setBankFullBranchName("fullBranchName");
+        payRequestDTO.setBankCode("bankCode");
+        payRequestDTO.setBankAccountType(BankAccountType.PERSONAL.value());
+        payRequestDTO.setPayBankAccountNo("payBankAccountNo");
+        payRequestDTO.setPayBankName("payBankName");
 
         Calendar requestCal = Calendar.getInstance();
         payRequestDTO.setRequestTime(requestCal.getTime());
@@ -141,6 +178,276 @@ public class PayRequestHandleServiceObjectTest {
 
         verify(payRequestServiceMock, timeout(5000).times(1)).insertPayRequest(any(PayRequestData.class));
         verify(payRequestServiceMock, timeout(5000).times(1)).updatePayRequest(anyInt(), eq(PayRequestStatus.SUCCESS), anyString());
+        verify(payRequestProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+
+    }
+
+    @Test
+    public void testHandleNewPayRequestSuccessBankAccountNo() throws Exception {
+        PayRequestDTO payRequestDTO = new PayRequestDTO();
+        payRequestDTO.setBusinessType(123);
+        payRequestDTO.setPaySequence("TS312");
+        payRequestDTO.setBusinessType(BusinessType.EXPENSE.value());
+        payRequestDTO.setPayAmount(BigDecimal.TEN);
+//        payRequestDTO.setBankAccountNo("bankAccountNo");
+        payRequestDTO.setBankAccountName("bankAccountName");
+        payRequestDTO.setBankBranchName("branchName");
+        payRequestDTO.setBankName("bankName");
+        payRequestDTO.setBankFullBranchName("fullBranchName");
+        payRequestDTO.setBankCode("bankCode");
+        payRequestDTO.setBankAccountType(BankAccountType.PERSONAL.value());
+        payRequestDTO.setPayBankAccountNo("payBankAccountNo");
+        payRequestDTO.setPayBankName("payBankName");
+
+        Calendar requestCal = Calendar.getInstance();
+        payRequestDTO.setRequestTime(requestCal.getTime());
+
+        when(payOrderServiceMock.createPayOrder(any(PayOrderData.class))).thenReturn(1);
+
+        payRequestHandleServiceObjectStub.handleNewPayRequest(payRequestDTO);
+
+        verify(payRequestServiceMock, timeout(5000).times(1)).insertPayRequest(any(PayRequestData.class));
+        verify(payRequestServiceMock, timeout(5000).times(1)).updatePayRequest(anyInt(), eq(PayRequestStatus.INVALID_FIELDS), anyString());
+        verify(payRequestProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+
+    }
+
+    @Test
+    public void testHandleNewPayRequestSuccessBankAccountName() throws Exception {
+        PayRequestDTO payRequestDTO = new PayRequestDTO();
+        payRequestDTO.setBusinessType(123);
+        payRequestDTO.setPaySequence("TS312");
+        payRequestDTO.setBusinessType(BusinessType.EXPENSE.value());
+        payRequestDTO.setPayAmount(BigDecimal.TEN);
+        payRequestDTO.setBankAccountNo("bankAccountNo");
+//        payRequestDTO.setBankAccountName("bankAccountName");
+        payRequestDTO.setBankBranchName("branchName");
+        payRequestDTO.setBankName("bankName");
+        payRequestDTO.setBankFullBranchName("fullBranchName");
+        payRequestDTO.setBankCode("bankCode");
+        payRequestDTO.setBankAccountType(BankAccountType.PERSONAL.value());
+        payRequestDTO.setPayBankAccountNo("payBankAccountNo");
+        payRequestDTO.setPayBankName("payBankName");
+
+        Calendar requestCal = Calendar.getInstance();
+        payRequestDTO.setRequestTime(requestCal.getTime());
+
+        when(payOrderServiceMock.createPayOrder(any(PayOrderData.class))).thenReturn(1);
+
+        payRequestHandleServiceObjectStub.handleNewPayRequest(payRequestDTO);
+
+        verify(payRequestServiceMock, timeout(5000).times(1)).insertPayRequest(any(PayRequestData.class));
+        verify(payRequestServiceMock, timeout(5000).times(1)).updatePayRequest(anyInt(), eq(PayRequestStatus.INVALID_FIELDS), anyString());
+        verify(payRequestProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+
+    }
+
+    @Test
+    public void testHandleNewPayRequestEmptyBranchName() throws Exception {
+        PayRequestDTO payRequestDTO = new PayRequestDTO();
+        payRequestDTO.setBusinessType(123);
+        payRequestDTO.setPaySequence("TS312");
+        payRequestDTO.setBusinessType(BusinessType.EXPENSE.value());
+        payRequestDTO.setPayAmount(BigDecimal.TEN);
+        payRequestDTO.setBankAccountNo("bankAccountNo");
+        payRequestDTO.setBankAccountName("bankAccountName");
+//        payRequestDTO.setBankBranchName("branchName");
+        payRequestDTO.setBankName("bankName");
+        payRequestDTO.setBankFullBranchName("fullBranchName");
+        payRequestDTO.setBankCode("bankCode");
+        payRequestDTO.setBankAccountType(BankAccountType.PERSONAL.value());
+        payRequestDTO.setPayBankAccountNo("payBankAccountNo");
+        payRequestDTO.setPayBankName("payBankName");
+
+        Calendar requestCal = Calendar.getInstance();
+        payRequestDTO.setRequestTime(requestCal.getTime());
+
+        when(payOrderServiceMock.createPayOrder(any(PayOrderData.class))).thenReturn(1);
+
+        payRequestHandleServiceObjectStub.handleNewPayRequest(payRequestDTO);
+
+        verify(payRequestServiceMock, timeout(5000).times(1)).insertPayRequest(any(PayRequestData.class));
+        verify(payRequestServiceMock, timeout(5000).times(1)).updatePayRequest(anyInt(), eq(PayRequestStatus.INVALID_FIELDS), anyString());
+        verify(payRequestProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+
+    }
+
+    @Test
+    public void testHandleNewPayRequestEmptyBankName() throws Exception {
+        PayRequestDTO payRequestDTO = new PayRequestDTO();
+        payRequestDTO.setBusinessType(123);
+        payRequestDTO.setPaySequence("TS312");
+        payRequestDTO.setBusinessType(BusinessType.EXPENSE.value());
+        payRequestDTO.setPayAmount(BigDecimal.TEN);
+        payRequestDTO.setBankAccountNo("bankAccountNo");
+        payRequestDTO.setBankAccountName("bankAccountName");
+        payRequestDTO.setBankBranchName("branchName");
+//        payRequestDTO.setBankName("bankName");
+        payRequestDTO.setBankFullBranchName("fullBranchName");
+        payRequestDTO.setBankCode("bankCode");
+        payRequestDTO.setBankAccountType(BankAccountType.PERSONAL.value());
+        payRequestDTO.setPayBankAccountNo("payBankAccountNo");
+        payRequestDTO.setPayBankName("payBankName");
+
+        Calendar requestCal = Calendar.getInstance();
+        payRequestDTO.setRequestTime(requestCal.getTime());
+
+        when(payOrderServiceMock.createPayOrder(any(PayOrderData.class))).thenReturn(1);
+
+        payRequestHandleServiceObjectStub.handleNewPayRequest(payRequestDTO);
+
+        verify(payRequestServiceMock, timeout(5000).times(1)).insertPayRequest(any(PayRequestData.class));
+        verify(payRequestServiceMock, timeout(5000).times(1)).updatePayRequest(anyInt(), eq(PayRequestStatus.INVALID_FIELDS), anyString());
+        verify(payRequestProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+
+    }
+
+    @Test
+    public void testHandleNewPayRequestEmptyFullBranchName() throws Exception {
+        PayRequestDTO payRequestDTO = new PayRequestDTO();
+        payRequestDTO.setBusinessType(123);
+        payRequestDTO.setPaySequence("TS312");
+        payRequestDTO.setBusinessType(BusinessType.EXPENSE.value());
+        payRequestDTO.setPayAmount(BigDecimal.TEN);
+        payRequestDTO.setBankAccountNo("bankAccountNo");
+        payRequestDTO.setBankAccountName("bankAccountName");
+        payRequestDTO.setBankBranchName("branchName");
+        payRequestDTO.setBankName("bankName");
+//        payRequestDTO.setBankFullBranchName("fullBranchName");
+        payRequestDTO.setBankCode("bankCode");
+        payRequestDTO.setBankAccountType(BankAccountType.PERSONAL.value());
+        payRequestDTO.setPayBankAccountNo("payBankAccountNo");
+        payRequestDTO.setPayBankName("payBankName");
+
+        Calendar requestCal = Calendar.getInstance();
+        payRequestDTO.setRequestTime(requestCal.getTime());
+
+        when(payOrderServiceMock.createPayOrder(any(PayOrderData.class))).thenReturn(1);
+
+        payRequestHandleServiceObjectStub.handleNewPayRequest(payRequestDTO);
+
+        verify(payRequestServiceMock, timeout(5000).times(1)).insertPayRequest(any(PayRequestData.class));
+        verify(payRequestServiceMock, timeout(5000).times(1)).updatePayRequest(anyInt(), eq(PayRequestStatus.INVALID_FIELDS), anyString());
+        verify(payRequestProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+
+    }
+
+    @Test
+    public void testHandleNewPayRequestEmptyBankCode() throws Exception {
+        PayRequestDTO payRequestDTO = new PayRequestDTO();
+        payRequestDTO.setBusinessType(123);
+        payRequestDTO.setPaySequence("TS312");
+        payRequestDTO.setBusinessType(BusinessType.EXPENSE.value());
+        payRequestDTO.setPayAmount(BigDecimal.TEN);
+        payRequestDTO.setBankAccountNo("bankAccountNo");
+        payRequestDTO.setBankAccountName("bankAccountName");
+        payRequestDTO.setBankBranchName("branchName");
+        payRequestDTO.setBankName("bankName");
+        payRequestDTO.setBankFullBranchName("fullBranchName");
+//        payRequestDTO.setBankCode("bankCode");
+        payRequestDTO.setBankAccountType(BankAccountType.PERSONAL.value());
+        payRequestDTO.setPayBankAccountNo("payBankAccountNo");
+        payRequestDTO.setPayBankName("payBankName");
+
+        Calendar requestCal = Calendar.getInstance();
+        payRequestDTO.setRequestTime(requestCal.getTime());
+
+        when(payOrderServiceMock.createPayOrder(any(PayOrderData.class))).thenReturn(1);
+
+        payRequestHandleServiceObjectStub.handleNewPayRequest(payRequestDTO);
+
+        verify(payRequestServiceMock, timeout(5000).times(1)).insertPayRequest(any(PayRequestData.class));
+        verify(payRequestServiceMock, timeout(5000).times(1)).updatePayRequest(anyInt(), eq(PayRequestStatus.INVALID_FIELDS), anyString());
+        verify(payRequestProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+
+    }
+
+    @Test
+    public void testHandleNewPayRequestEmptyBankAccountType() throws Exception {
+        PayRequestDTO payRequestDTO = new PayRequestDTO();
+        payRequestDTO.setBusinessType(123);
+        payRequestDTO.setPaySequence("TS312");
+        payRequestDTO.setBusinessType(BusinessType.EXPENSE.value());
+        payRequestDTO.setPayAmount(BigDecimal.TEN);
+        payRequestDTO.setBankAccountNo("bankAccountNo");
+        payRequestDTO.setBankAccountName("bankAccountName");
+        payRequestDTO.setBankBranchName("branchName");
+        payRequestDTO.setBankName("bankName");
+        payRequestDTO.setBankFullBranchName("fullBranchName");
+        payRequestDTO.setBankCode("bankCode");
+//        payRequestDTO.setBankAccountType(BankAccountType.PERSONAL.value());
+        payRequestDTO.setPayBankAccountNo("payBankAccountNo");
+        payRequestDTO.setPayBankName("payBankName");
+
+        Calendar requestCal = Calendar.getInstance();
+        payRequestDTO.setRequestTime(requestCal.getTime());
+
+        when(payOrderServiceMock.createPayOrder(any(PayOrderData.class))).thenReturn(1);
+
+        payRequestHandleServiceObjectStub.handleNewPayRequest(payRequestDTO);
+
+        verify(payRequestServiceMock, timeout(5000).times(1)).insertPayRequest(any(PayRequestData.class));
+        verify(payRequestServiceMock, timeout(5000).times(1)).updatePayRequest(anyInt(), eq(PayRequestStatus.INVALID_FIELDS), anyString());
+        verify(payRequestProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+
+    }
+
+    @Test
+    public void testHandleNewPayRequestEmptyPayBankAccountNo() throws Exception {
+        PayRequestDTO payRequestDTO = new PayRequestDTO();
+        payRequestDTO.setBusinessType(123);
+        payRequestDTO.setPaySequence("TS312");
+        payRequestDTO.setBusinessType(BusinessType.EXPENSE.value());
+        payRequestDTO.setPayAmount(BigDecimal.TEN);
+        payRequestDTO.setBankAccountNo("bankAccountNo");
+        payRequestDTO.setBankAccountName("bankAccountName");
+        payRequestDTO.setBankBranchName("branchName");
+        payRequestDTO.setBankName("bankName");
+        payRequestDTO.setBankFullBranchName("fullBranchName");
+        payRequestDTO.setBankCode("bankCode");
+        payRequestDTO.setBankAccountType(BankAccountType.PERSONAL.value());
+//        payRequestDTO.setPayBankAccountNo("payBankAccountNo");
+        payRequestDTO.setPayBankName("payBankName");
+
+        Calendar requestCal = Calendar.getInstance();
+        payRequestDTO.setRequestTime(requestCal.getTime());
+
+        when(payOrderServiceMock.createPayOrder(any(PayOrderData.class))).thenReturn(1);
+
+        payRequestHandleServiceObjectStub.handleNewPayRequest(payRequestDTO);
+
+        verify(payRequestServiceMock, timeout(5000).times(1)).insertPayRequest(any(PayRequestData.class));
+        verify(payRequestServiceMock, timeout(5000).times(1)).updatePayRequest(anyInt(), eq(PayRequestStatus.INVALID_FIELDS), anyString());
+        verify(payRequestProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+
+    }
+
+    @Test
+    public void testHandleNewPayRequestEmptyPayBankName() throws Exception {
+        PayRequestDTO payRequestDTO = new PayRequestDTO();
+        payRequestDTO.setBusinessType(123);
+        payRequestDTO.setPaySequence("TS312");
+        payRequestDTO.setBusinessType(BusinessType.EXPENSE.value());
+        payRequestDTO.setPayAmount(BigDecimal.TEN);
+        payRequestDTO.setBankAccountNo("bankAccountNo");
+        payRequestDTO.setBankAccountName("bankAccountName");
+        payRequestDTO.setBankBranchName("branchName");
+        payRequestDTO.setBankName("bankName");
+        payRequestDTO.setBankFullBranchName("fullBranchName");
+        payRequestDTO.setBankCode("bankCode");
+        payRequestDTO.setBankAccountType(BankAccountType.PERSONAL.value());
+        payRequestDTO.setPayBankAccountNo("payBankAccountNo");
+//        payRequestDTO.setPayBankName("payBankName");
+
+        Calendar requestCal = Calendar.getInstance();
+        payRequestDTO.setRequestTime(requestCal.getTime());
+
+        when(payOrderServiceMock.createPayOrder(any(PayOrderData.class))).thenReturn(1);
+
+        payRequestHandleServiceObjectStub.handleNewPayRequest(payRequestDTO);
+
+        verify(payRequestServiceMock, timeout(5000).times(1)).insertPayRequest(any(PayRequestData.class));
+        verify(payRequestServiceMock, timeout(5000).times(1)).updatePayRequest(anyInt(), eq(PayRequestStatus.INVALID_FIELDS), anyString());
         verify(payRequestProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
 
     }

@@ -37,7 +37,12 @@ public enum PayRequestStatus implements Serializable {
     /**
      * 非法的金额
      */
-    INVALID_AMOUNT(6, "非法的金额");
+    INVALID_AMOUNT(6, "非法的金额"),
+
+    /**
+     * 非法字段
+     */
+    INVALID_FIELDS(7, "非法的字段");
 
     private int status;
 
