@@ -111,6 +111,7 @@ public class PayOrderServiceObject implements PayOrderService {
             payOrderResultBean.setPaySequence(payOrderData.getPaySequence());
             payOrderResultBean.setStatus(PayResultStatus.PAY_REFUND);
             payOrderResultBean.setMemo(payOrderData.getMemo());
+            payOrderResultBean.setBusinessType(payOrderData.getBusinessType());
             payOrderResultNotify.payResultNotify(payOrderResultBean);
         }
     }
@@ -199,6 +200,7 @@ public class PayOrderServiceObject implements PayOrderService {
                 payOrderResultBean.setPaidAmount(payOrderData.getPayAmount());
                 payOrderResultBean.setPaySequence(payOrderData.getPaySequence());
                 payOrderResultBean.setStatus(PayResultStatus.PAY_SUCCESS);
+                payOrderResultBean.setBusinessType(payOrderData.getBusinessType());
                 payOrderResultNotify.payResultNotify(payOrderResultBean);
             }
         }

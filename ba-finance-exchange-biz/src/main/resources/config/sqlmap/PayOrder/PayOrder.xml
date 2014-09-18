@@ -85,7 +85,8 @@
 			#payOrderData.memo#,
 			#payOrderData.addLoginId#,
 			#payOrderData.updateLoginId#
-			)
+			FROM
+			FC_PayOrder
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="poId">
             <![CDATA[
@@ -320,8 +321,11 @@
         FROM FC_PayOrder
         WHERE Status != 6
         <dynamic prepend="AND">
-            <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
-                PayCode = #payOrderSearchBean.payCode#
+            <isNotEmpty property="payOrderSearchBean.poIdList" prepend="and">
+                POID IN
+                <iterate open="(" close=")" conjunction="," property="payOrderSearchBean.poIdList">
+                    #payOrderSearchBean.poIdList[]#
+                </iterate>
             </isNotEmpty>
             <isNotNull property="payOrderSearchBean.beginTime" prepend="and">
                 AddTime &gt;= #payOrderSearchBean.beginTime#
