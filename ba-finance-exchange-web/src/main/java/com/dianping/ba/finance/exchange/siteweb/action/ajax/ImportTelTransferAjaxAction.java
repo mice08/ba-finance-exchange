@@ -257,6 +257,9 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
             TelTransferDTO telTransferDTO = new TelTransferDTO();
             for (int c = 0; c < TEMPLATE_COLUMN.length; ++c) {
                 String value = sheet.getCell(c, r).getContents();
+                if (value != null) {
+                    value = value.trim();
+                }
                 BeanUtils.setProperty(telTransferDTO, TEMPLATE_COLUMN[c], value);
             }
             telTransferDTOList.add(telTransferDTO);
