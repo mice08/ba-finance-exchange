@@ -84,9 +84,7 @@
 			NOW(),
 			#payOrderData.memo#,
 			#payOrderData.addLoginId#,
-			#payOrderData.updateLoginId#
-			FROM
-			FC_PayOrder
+			#payOrderData.updateLoginId#)
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="poId">
             <![CDATA[
