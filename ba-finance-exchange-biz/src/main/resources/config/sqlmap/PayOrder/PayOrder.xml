@@ -60,7 +60,7 @@
 			AddLoginID,
 			UpdateLoginID
 			)
-			SELECT
+			values (
 			#payOrderData.payAmount#,
 			#payOrderData.paySequence#,
 			#payOrderData.customerId#,
@@ -85,8 +85,7 @@
 			#payOrderData.memo#,
 			#payOrderData.addLoginId#,
 			#payOrderData.updateLoginId#
-			FROM
-			FC_PayOrder
+			)
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="poId">
             <![CDATA[
