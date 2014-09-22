@@ -9,6 +9,7 @@ import com.dianping.finance.common.aop.annotation.ReturnDefault;
 import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.finance.common.util.StringUtils;
 import com.google.common.collect.Lists;
+import jodd.util.StringUtil;
 import jxl.Workbook;
 import jxl.biff.DisplayFormat;
 import jxl.format.Alignment;
@@ -136,13 +137,19 @@ public class MerchantsPayTemplateService implements PayTemplateService {
             templateBean.setBankAccountNo(exportBean.getBankAccountNo());
             templateBean.setBankProvince(exportBean.getBankProvince());
             templateBean.setBankCity(exportBean.getBankCity());
+            templateBean.setPayerAccountNo(exportBean.getPayBankAccountNo());
+
             templateBean.setExpectedDate(todayDate);
             BusinessExportInfoBean exportInfoBean = businessExportInfoBeanMap.get(exportBean.getBusinessType());
             if (exportInfoBean != null) {
                 templateBean.setCurrency(exportInfoBean.getCurrency());
                 templateBean.setDebitSideBankName(exportInfoBean.getDebitSideBankName());
                 templateBean.setDebitSideBankNo(exportInfoBean.getDebitSideBankNo());
-                templateBean.setPayerAccountNo(exportInfoBean.getPayerAccountNo());
+
+                if(StringUtil.isBlank(templateBean.getPayerAccountNo())) {
+                    templateBean.setPayerAccountNo(exportInfoBean.getPayerAccountNo());
+                }
+
                 templateBean.setPayerBranchBank(exportInfoBean.getPayerBranchBank());
                 templateBean.setSettleType(exportInfoBean.getSettleType());
 

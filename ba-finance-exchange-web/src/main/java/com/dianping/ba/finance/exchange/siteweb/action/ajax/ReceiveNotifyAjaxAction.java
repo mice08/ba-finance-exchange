@@ -8,11 +8,14 @@ import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveBankData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.enums.*;
-import com.dianping.ba.finance.exchange.siteweb.beans.*;
+import com.dianping.ba.finance.exchange.siteweb.beans.CustomerInfoBean;
+import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveInfoBean;
+import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveNotifyBean;
+import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveNotifyConfirmBean;
+import com.dianping.ba.finance.exchange.siteweb.constants.Constant;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
-import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -71,7 +74,7 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 	@Override
 	protected void jsonExecute() {
 		if (businessType == BusinessType.DEFAULT.value()) {
-			totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO);
+			totalAmount = new DecimalFormat(Constant.DECIMAL_FORMAT).format(BigDecimal.ZERO);
             msg.put("totalAmount", totalAmount);
             code = ERROR_CODE;
 			return;
@@ -80,7 +83,7 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 			ReceiveNotifySearchBean searchBean = buildRNSearchBean();
 			receiveNotifyModel = receiveNotifyService.paginateReceiveNotifyList(searchBean, page, pageSize);
 			receiveNotifyModel.setRecords(buildReceiveNotifyBeans((List<ReceiveNotifyData>) receiveNotifyModel.getRecords()));
-			totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(receiveNotifyService.loadTotalReceiveAmountByCondition(searchBean));
+			totalAmount = new DecimalFormat(Constant.DECIMAL_FORMAT).format(receiveNotifyService.loadTotalReceiveAmountByCondition(searchBean));
             msg.put("totalAmount", totalAmount);
             msg.put("receiveNotifyModel", receiveNotifyModel);
             code = SUCCESS_CODE;
@@ -127,7 +130,7 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 		bean.setBizContent(receiveNotifyData.getBizContent());
 		bean.setMemo(receiveNotifyData.getMemo());
 		bean.setPayerName(receiveNotifyData.getPayerName());
-		bean.setReceiveAmount(receiveNotifyData.getReceiveAmount());
+		bean.setReceiveAmount(new DecimalFormat(Constant.DECIMAL_FORMAT).format(receiveNotifyData.getReceiveAmount()));
 		bean.setPayTime(DateUtil.formatDateToString(receiveNotifyData.getPayTime(), "yyyy-MM-dd"));
 		bean.setPayerName(receiveNotifyData.getPayerName());
 		bean.setBusinessType(BusinessType.valueOf(receiveNotifyData.getBusinessType()).toString());

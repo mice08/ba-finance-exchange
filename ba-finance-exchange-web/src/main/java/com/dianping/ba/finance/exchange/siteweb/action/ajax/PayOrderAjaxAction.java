@@ -58,7 +58,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     //付款计划总金额
     private String totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO);
 
-    private String payCode;
+    private String poIds;
 
     private String addDate;
 
@@ -122,7 +122,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
 	private void exportPayOrders(List<PayOrderExportBean> beanList) throws Exception {
 		HttpServletResponse response = getHttpServletResponse();
-        String exportBank = LionConfigUtils.getProperty("ba-finance-exchange-web.exportBank", "Minsheng");
+        String exportBank = selectExportBank(beanList.get(0));
         MONITOR_LOGGER.info(String.format("exportBank=%s", exportBank));
         PayTemplateService payTemplateService = payTemplateServiceMap.get(exportBank);
         if (payTemplateService == null) {
@@ -130,6 +130,16 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         }
         payTemplateService.createExcelAndDownload(response, "付款单", beanList);
 	}
+
+    private String selectExportBank(PayOrderExportBean payOrderExportBean) {
+        String exportBank;
+        if(payOrderExportBean.getBusinessType() == BusinessType.EXPENSE.value()) {
+            exportBank = LionConfigUtils.getProperty("ba-finance-exchange-web.expense.exportBank", "Merchants");
+        } else {
+            exportBank = LionConfigUtils.getProperty("ba-finance-exchange-web.exportBank", "Minsheng");
+        }
+        return exportBank;
+    }
 
 	protected HttpServletResponse getHttpServletResponse() {
 		return ServletActionContext.getResponse();
@@ -157,22 +167,23 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
 	private PayOrderExportBean buildPayOrderExportBean(PayOrderData order) throws Exception {
 		PayOrderExportBean exportBean = ConvertUtils.copy(order, PayOrderExportBean.class);
+        exportBean.setPayCode(String.valueOf(order.getPoId()));
 		return exportBean;
 	}
 
 	public PayOrderSearchBean buildPayOrderSearchBean() throws ParseException {
 
         PayOrderSearchBean payOrderSearchBean=new PayOrderSearchBean();
-        Date beginTime = DateUtil.isValidDateTime(addBeginTime) ? DateUtil.parseDate(addBeginTime,"yyyy-MM-dd HH:mm") :
+        Date beginTime = DateUtil.isValidDateTime(addBeginTime) ? DateUtil.parseDate(addBeginTime, "yyyy-MM-dd HH:mm") :
                 (DateUtil.isValidDate(addBeginTime) ? DateUtil.formatDate(addBeginTime, false) : null);
-        Date endTime = DateUtil.isValidDateTime(addEndTime) ? DateUtil.parseDate(addEndTime,"yyyy-MM-dd HH:mm") :
+        Date endTime = DateUtil.isValidDateTime(addEndTime) ? DateUtil.parseDate(addEndTime, "yyyy-MM-dd HH:mm") :
                 (DateUtil.isValidDate(addEndTime) ? DateUtil.formatDate(addEndTime, true) : null);
         payOrderSearchBean.setStatus(status);
         payOrderSearchBean.setBusinessType(businessType);
         payOrderSearchBean.setBeginTime(beginTime);
         payOrderSearchBean.setEndTime(endTime);
-        if (StringUtils.isNotBlank(payCode)) {
-            payOrderSearchBean.setPayCode(payCode);
+        if (StringUtils.isNotBlank(poIds)) {
+            payOrderSearchBean.setPoIdList(com.dianping.finance.common.util.StringUtils.splitStringToList(poIds, ","));
         }
         return payOrderSearchBean;
     }
@@ -193,7 +204,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     private PayOrderBean convertPODataToPOBean(PayOrderData payOrderData, Map<Integer, String> customerIdNameMap) {
         PayOrderBean payOrderBean = new PayOrderBean();
-        payOrderBean.setPayCode(payOrderData.getPayCode());
+        payOrderBean.setPayCode(String.valueOf(payOrderData.getPoId()));
         payOrderBean.setAddTime(DateUtil.formatDateToString(payOrderData.getAddTime(), "yyyy-MM-dd HH:mm:ss"));
         if (payOrderData.getStatus() == PayOrderStatus.REFUND.value()) {
             payOrderBean.setSendBackTime(DateUtil.formatDateToString(payOrderData.getUpdateTime(), "yyyy-MM-dd HH:mm:ss"));
@@ -201,7 +212,11 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         payOrderBean.setBankAccountName(payOrderData.getBankAccountName());
         payOrderBean.setBankAccountNo(payOrderData.getBankAccountNo());
         payOrderBean.setBankFullBranchName(payOrderData.getBankFullBranchName());
-        payOrderBean.setCustomerName(getCustomerNameById(payOrderData.getCustomerId(), customerIdNameMap));
+        if(payOrderData.getBusinessType() == BusinessType.EXPENSE.value()) {
+            payOrderBean.setCustomerName(payOrderData.getPayeeName());
+        } else {
+            payOrderBean.setCustomerName(getCustomerNameById(payOrderData.getCustomerId(), customerIdNameMap));
+        }
         payOrderBean.setMemo(payOrderData.getMemo());
         payOrderBean.setPaidDate(DateUtil.formatDateToString(payOrderData.getPaidDate(), "yyyy-MM-dd HH:mm:ss"));
         payOrderBean.setPayAmount(new DecimalFormat("##,###,###,###,##0.00").format(payOrderData.getPayAmount()));
@@ -315,11 +330,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         this.addEndTime = addEndTime;
     }
 
-    public String getPayCode() {
-        return payCode;
-    }
-
-    public void setPayCode(String payCode) {
-        this.payCode = payCode;
+    public void setPoIds(String poIds) {
+        this.poIds = poIds;
     }
 }

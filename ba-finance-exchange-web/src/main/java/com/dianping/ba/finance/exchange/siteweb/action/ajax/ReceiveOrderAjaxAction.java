@@ -11,6 +11,7 @@ import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderPaginateData;
 import com.dianping.ba.finance.exchange.api.enums.*;
 import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveOrderBean;
+import com.dianping.ba.finance.exchange.siteweb.constants.Constant;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
@@ -92,7 +93,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
     protected void jsonExecute() {
         if (businessType == BusinessType.DEFAULT.value()) {
             code = ERROR_CODE;
-            totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO);
+            totalAmount = new DecimalFormat(Constant.DECIMAL_FORMAT).format(BigDecimal.ZERO);
             msg.put("totalAmount", totalAmount);
             return;
         }
@@ -101,7 +102,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
             ReceiveOrderSearchBean receiveOrderSearchBean = buildROSearchBean();
             receiveOrderModel = receiveOrderService.paginateReceiveOrderList(receiveOrderSearchBean, page, pageSize);
             receiveOrderModel.setRecords(buildReceiveOrderBeans((List<ReceiveOrderData>) receiveOrderModel.getRecords()));
-            totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(receiveOrderService.loadReceiveOrderTotalAmountByCondition(receiveOrderSearchBean));
+            totalAmount = new DecimalFormat(Constant.DECIMAL_FORMAT).format(receiveOrderService.loadReceiveOrderTotalAmountByCondition(receiveOrderSearchBean));
             msg.put("totalAmount", totalAmount);
             msg.put("receiveOrderModel", receiveOrderModel);
             code = SUCCESS_CODE;
@@ -268,7 +269,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderBean.setApplicationId(String.valueOf(receiveOrderData.getApplicationId()));
         receiveOrderBean.setShopId(receiveOrderData.getShopId());
         receiveOrderBean.setPayerName(receiveOrderData.getPayerAccountName());
-        receiveOrderBean.setReceiveAmount(new DecimalFormat("##,###,###,###,##0.00").format(receiveOrderData.getReceiveAmount()));
+        receiveOrderBean.setReceiveAmount(new DecimalFormat(Constant.DECIMAL_FORMAT).format(receiveOrderData.getReceiveAmount()));
         receiveOrderBean.setReceiveTime(DateUtil.formatDateToString(receiveOrderData.getReceiveTime(), "yyyy-MM-dd"));
 		//根据bankId获取银行账户
 		//根据bankId获取银行名

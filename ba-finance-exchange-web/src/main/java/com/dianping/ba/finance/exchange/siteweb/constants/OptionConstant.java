@@ -49,6 +49,7 @@ public class OptionConstant {
             put(BusinessType.SHAN_HUI.value(), "闪惠");
             put(BusinessType.BOOKING.value(), "预约预订");
             put(BusinessType.PREPAID_CARD.value(), "储值卡");
+            put(BusinessType.EXPENSE.value(), "费用");
         }
     };
 

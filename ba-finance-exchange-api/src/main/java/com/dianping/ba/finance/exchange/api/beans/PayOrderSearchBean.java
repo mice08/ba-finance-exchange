@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.api.beans;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Eric on 2014/6/11.
@@ -12,7 +13,7 @@ public class PayOrderSearchBean implements Serializable {
     private Date beginTime;
     private Date endTime;
     private int status;
-    private String payCode;
+    private List<Integer> poIdList;
 
     public int getBusinessType() {
         return businessType;
@@ -30,12 +31,12 @@ public class PayOrderSearchBean implements Serializable {
         this.status = status;
     }
 
-    public String getPayCode() {
-        return payCode;
+    public List<Integer> getPoIdList() {
+        return poIdList;
     }
 
-    public void setPayCode(String payCode) {
-        this.payCode = payCode;
+    public void setPoIdList(List<Integer> poIdList) {
+        this.poIdList = poIdList;
     }
 
     public Date getBeginTime() {
@@ -61,7 +62,7 @@ public class PayOrderSearchBean implements Serializable {
                 ", beginTime=" + beginTime +
                 ", endTime=" + endTime +
                 ", status=" + status +
-                ", payCode='" + payCode + '\'' +
+                ", poIdList=" + poIdList +
                 '}';
     }
 }

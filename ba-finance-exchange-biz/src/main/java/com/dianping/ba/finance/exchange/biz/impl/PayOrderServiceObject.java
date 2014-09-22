@@ -68,11 +68,11 @@ public class PayOrderServiceObject implements PayOrderService {
             return refundResultDTO;
         }
         // 获取PO实体
-        List<String> payCodeList = buildPayCodeList(refundDTOList);
-        List<PayOrderData> payOrderDataList = payOrderDao.findPayOrderListByPayCode(payCodeList);
-        Map<String, PayOrderData> payCodePOMap = buildPayCodePOMap(payOrderDataList);
+        List<Integer> poidList = buildPOIDList(refundDTOList);
+        List<PayOrderData> payOrderDataList = payOrderDao.findPayOrderListByPoIdList(poidList);
+        Map<String, PayOrderData> poMap = buildPOMap(payOrderDataList);
         // 过滤查询不到的及状态不为支付成功的PO
-        List<PayOrderData> filteredPOList = filterInvalidedPayOrder(refundResultDTO, refundDTOList, payCodePOMap);
+        List<PayOrderData> filteredPOList = filterInvalidedPayOrder(refundResultDTO, refundDTOList, poMap);
 
         if (filteredPOList.isEmpty()) {
             return refundResultDTO;
@@ -111,6 +111,7 @@ public class PayOrderServiceObject implements PayOrderService {
             payOrderResultBean.setPaySequence(payOrderData.getPaySequence());
             payOrderResultBean.setStatus(PayResultStatus.PAY_REFUND);
             payOrderResultBean.setMemo(payOrderData.getMemo());
+            payOrderResultBean.setBusinessType(payOrderData.getBusinessType());
             payOrderResultNotify.payResultNotify(payOrderResultBean);
         }
     }
@@ -127,11 +128,11 @@ public class PayOrderServiceObject implements PayOrderService {
         return amount;
     }
 
-    private List<PayOrderData> filterInvalidedPayOrder(RefundResultDTO refundResultDTO, List<RefundDTO> refundDTOList, Map<String, PayOrderData> payCodePOMap) {
+    private List<PayOrderData> filterInvalidedPayOrder(RefundResultDTO refundResultDTO, List<RefundDTO> refundDTOList, Map<String, PayOrderData> poMap) {
         List<PayOrderData> filteredPOList = Lists.newLinkedList();
         for (RefundDTO refundDTO : refundDTOList) {
             String payCode = refundDTO.getRefundId();
-            PayOrderData poData = payCodePOMap.get(payCode);
+            PayOrderData poData = poMap.get(payCode);
             if (poData == null) {
                 refundResultDTO.addFailedRefund(payCode, RefundFailedReason.INFO_EMPTY);
                 continue;
@@ -147,23 +148,23 @@ public class PayOrderServiceObject implements PayOrderService {
         return filteredPOList;
     }
 
-    private Map<String, PayOrderData> buildPayCodePOMap(List<PayOrderData> payOrderDataList) {
+    private Map<String, PayOrderData> buildPOMap(List<PayOrderData> payOrderDataList) {
         if (CollectionUtils.isEmpty(payOrderDataList)) {
             return Collections.emptyMap();
         }
         Map<String, PayOrderData> payCodePOMap = Maps.newHashMap();
         for (PayOrderData poData : payOrderDataList) {
-            payCodePOMap.put(poData.getPayCode(), poData);
+            payCodePOMap.put(String.valueOf(poData.getPoId()), poData);
         }
         return payCodePOMap;
     }
 
-    private List<String> buildPayCodeList(List<RefundDTO> refundDTOList) {
-        List<String> payCodeList = Lists.newLinkedList();
+    private List<Integer> buildPOIDList(List<RefundDTO> refundDTOList) {
+        List<Integer> poIdList = Lists.newLinkedList();
         for (RefundDTO refundDTO : refundDTOList) {
-            payCodeList.add(refundDTO.getRefundId());
+            poIdList.add(Integer.parseInt((refundDTO.getRefundId())));
         }
-        return payCodeList;
+        return poIdList;
     }
 
     @Log(logBefore = true, logAfter = true)
@@ -199,6 +200,7 @@ public class PayOrderServiceObject implements PayOrderService {
                 payOrderResultBean.setPaidAmount(payOrderData.getPayAmount());
                 payOrderResultBean.setPaySequence(payOrderData.getPaySequence());
                 payOrderResultBean.setStatus(PayResultStatus.PAY_SUCCESS);
+                payOrderResultBean.setBusinessType(payOrderData.getBusinessType());
                 payOrderResultNotify.payResultNotify(payOrderResultBean);
             }
         }

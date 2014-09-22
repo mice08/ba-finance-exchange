@@ -1,20 +1,23 @@
-package com.dianping.ba.finance.exchange.siteweb.beans;
+package com.dianping.ba.finance.exchange.api.datas;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
- * Description：
- * User: liufeng.ren
- * Date: 14-6-11
- * Time: 下午1:51
+ * 付款请求
  */
-public class PayOrderExportBean {
+public class PayRequestData implements Serializable {
 
-    private int poId;
-    /**
-     * 凭证号
-     */
-	private String payCode;
+    private static final long serialVersionUID = 1L;
+
+    private int prId;
+
+    private String paySequence;
+
+    private int businessType;
+
+    private String payeeName;
 
     private BigDecimal payAmount;
 
@@ -40,30 +43,52 @@ public class PayOrderExportBean {
 
     private String payBankAccountNo;
 
-    /**
-     * 业务类型
-     */
-    private int businessType;
+    private Date requestTime;
+
+    private String requestMemo;
+
+    private int status;
+
+    private Date addTime;
+
+    private int addLoginId;
+
+    private Date updateTime;
+
+    private int updateLoginId;
 
     private String memo;
 
-    public PayOrderExportBean() {
+    public int getPrId() {
+        return prId;
     }
 
-    public int getPoId() {
-        return poId;
+    public void setPrId(int prId) {
+        this.prId = prId;
     }
 
-    public void setPoId(int poId) {
-        this.poId = poId;
+    public String getPaySequence() {
+        return paySequence;
     }
 
-    public String getPayCode() {
-        return payCode;
+    public void setPaySequence(String paySequence) {
+        this.paySequence = paySequence;
     }
 
-    public void setPayCode(String payCode) {
-        this.payCode = payCode;
+    public int getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(int businessType) {
+        this.businessType = businessType;
+    }
+
+    public String getPayeeName() {
+        return payeeName;
+    }
+
+    public void setPayeeName(String payeeName) {
+        this.payeeName = payeeName;
     }
 
     public BigDecimal getPayAmount() {
@@ -146,14 +171,6 @@ public class PayOrderExportBean {
         this.bankAccountType = bankAccountType;
     }
 
-    public int getBusinessType() {
-        return businessType;
-    }
-
-    public void setBusinessType(int businessType) {
-        this.businessType = businessType;
-    }
-
     public String getPayBankName() {
         return payBankName;
     }
@@ -170,6 +187,62 @@ public class PayOrderExportBean {
         this.payBankAccountNo = payBankAccountNo;
     }
 
+    public Date getRequestTime() {
+        return requestTime;
+    }
+
+    public void setRequestTime(Date requestTime) {
+        this.requestTime = requestTime;
+    }
+
+    public String getRequestMemo() {
+        return requestMemo;
+    }
+
+    public void setRequestMemo(String requestMemo) {
+        this.requestMemo = requestMemo;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public Date getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(Date addTime) {
+        this.addTime = addTime;
+    }
+
+    public int getAddLoginId() {
+        return addLoginId;
+    }
+
+    public void setAddLoginId(int addLoginId) {
+        this.addLoginId = addLoginId;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public int getUpdateLoginId() {
+        return updateLoginId;
+    }
+
+    public void setUpdateLoginId(int updateLoginId) {
+        this.updateLoginId = updateLoginId;
+    }
+
     public String getMemo() {
         return memo;
     }
@@ -180,9 +253,11 @@ public class PayOrderExportBean {
 
     @Override
     public String toString() {
-        return "PayOrderExportBean{" +
-                "poId=" + poId +
-                ", payCode='" + payCode + '\'' +
+        return "PayRequestData{" +
+                "prId=" + prId +
+                ", paySequence='" + paySequence + '\'' +
+                ", businessType=" + businessType +
+                ", payeeName='" + payeeName + '\'' +
                 ", payAmount=" + payAmount +
                 ", bankAccountNo='" + bankAccountNo + '\'' +
                 ", bankAccountName='" + bankAccountName + '\'' +
@@ -195,7 +270,13 @@ public class PayOrderExportBean {
                 ", bankAccountType=" + bankAccountType +
                 ", payBankName='" + payBankName + '\'' +
                 ", payBankAccountNo='" + payBankAccountNo + '\'' +
-                ", businessType=" + businessType +
+                ", requestTime=" + requestTime +
+                ", requestMemo='" + requestMemo + '\'' +
+                ", status=" + status +
+                ", addTime=" + addTime +
+                ", addLoginId=" + addLoginId +
+                ", updateTime=" + updateTime +
+                ", updateLoginId=" + updateLoginId +
                 ", memo='" + memo + '\'' +
                 '}';
     }
