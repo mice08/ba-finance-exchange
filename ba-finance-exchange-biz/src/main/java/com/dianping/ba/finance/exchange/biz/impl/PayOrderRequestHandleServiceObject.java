@@ -55,6 +55,7 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
         payOrderResultBean.setPaySequence(payOrderRequestDTO.getPaySequence());
         payOrderResultBean.setPaidAmount(BigDecimal.ZERO);
         payOrderResultBean.setLoginId(payOrderRequestDTO.getLoginId());
+        payOrderResultBean.setBusinessType(payOrderRequestDTO.getBusinessType());
 
         // 校验该付款请求
         if (!checkRequest(payOrderRequestDTO, payOrderResultBean)) {
