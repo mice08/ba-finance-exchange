@@ -19,6 +19,8 @@ public class UpdateReceiveNotifyStatusAjaxAction extends AjaxBaseAction {
 
 	private int rnId;
 
+    private String rejectReason;
+
     private ReceiveNotifyService receiveNotifyService;
 
     @Override
@@ -43,7 +45,7 @@ public class UpdateReceiveNotifyStatusAjaxAction extends AjaxBaseAction {
             return SUCCESS;
         }
         try {
-            int u = receiveNotifyService.updateReceiveNotifyStatus(rnId, ReceiveNotifyStatus.INIT, ReceiveNotifyStatus.CONFIRMED);
+            int u = receiveNotifyService.updateReceiveNotifyStatus(rnId, ReceiveNotifyStatus.INIT, ReceiveNotifyStatus.CONFIRMED, "");
             if (u > 0) {
                 msg.put(msgKey, "更新成功");
             } else {
@@ -64,7 +66,7 @@ public class UpdateReceiveNotifyStatusAjaxAction extends AjaxBaseAction {
             return SUCCESS;
         }
         try {
-            int u = receiveNotifyService.updateReceiveNotifyStatus(rnId, ReceiveNotifyStatus.INIT, ReceiveNotifyStatus.REJECT);
+            int u = receiveNotifyService.updateReceiveNotifyStatus(rnId, ReceiveNotifyStatus.INIT, ReceiveNotifyStatus.REJECT, rejectReason);
             if (u > 0) {
                 msg.put(msgKey, "更新成功");
             } else {
@@ -84,5 +86,9 @@ public class UpdateReceiveNotifyStatusAjaxAction extends AjaxBaseAction {
 
     public void setReceiveNotifyService(ReceiveNotifyService receiveNotifyService) {
         this.receiveNotifyService = receiveNotifyService;
+    }
+
+    public void setRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
     }
 }
