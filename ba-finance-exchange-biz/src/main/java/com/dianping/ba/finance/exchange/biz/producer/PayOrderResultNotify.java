@@ -29,7 +29,8 @@ public class PayOrderResultNotify {
     public void payResultNotify(PayOrderResultBean payOrderResultBean) {
         PayResultNotifyDTO payResultNotifyDTO = buildPayResultNotifyDTO(payOrderResultBean);
         SwallowEventBean eventBean = null;
-        if (payOrderResultBean.getBusinessType() == BusinessType.GROUP_PURCHASE.value()) {
+        if (payOrderResultBean.getBusinessType() == BusinessType.GROUP_PURCHASE.value()
+                || payOrderResultBean.getBusinessType() == BusinessType.SHAN_HUI.value()) {
             eventBean = new SwallowEventBean(EXCHANGE_PAY_RESULT_EVENT_KEY, payResultNotifyDTO);
         } else if (payOrderResultBean.getBusinessType() == BusinessType.EXPENSE.value()) {
             eventBean = new SwallowEventBean(EventConstant.EXPENSE_PAY_RESULT_EVENT_KEY, payResultNotifyDTO);
