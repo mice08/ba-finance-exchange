@@ -5,6 +5,7 @@ import com.dianping.avatar.dao.annotation.DAOAction;
 import com.dianping.avatar.dao.annotation.DAOActionType;
 import com.dianping.avatar.dao.annotation.DAOParam;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean;
+import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifyUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.core.type.PageModel;
 
@@ -86,8 +87,6 @@ public interface ReceiveNotifyDao extends GenericDao {
 
 
     @DAOAction(action = DAOActionType.UPDATE)
-    int updateReceiveNotifyStatus(@DAOParam("rnId") int rnId,
-                                  @DAOParam("preStatus") int preStatus,
-                                  @DAOParam("setStatus") int setStatus);
+    int updateReceiveNotifyStatus(@DAOParam("receiveNotifyUpdateBean") ReceiveNotifyUpdateBean receiveNotifyUpdateBean);
 }
 
