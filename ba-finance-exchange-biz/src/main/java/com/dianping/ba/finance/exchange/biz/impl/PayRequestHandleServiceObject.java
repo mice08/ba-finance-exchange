@@ -137,11 +137,11 @@ public class PayRequestHandleServiceObject implements PayRequestHandleService {
             payRequestResultDTO.setMemo("银行全称为空");
             return true;
         }
-//        if (payRequestDTO.getBusinessType() != BusinessType.EXPENSE.value()
-//                && StringUtils.isBlank(payRequestDTO.getBankCode())) {
-//            payRequestResultDTO.setMemo("联行号为空");
-//            return true;
-//        }
+        if (payRequestDTO.getBusinessType() != BusinessType.EXPENSE.value()
+                && StringUtils.isBlank(payRequestDTO.getBankCode())) {
+            payRequestResultDTO.setMemo("联行号为空");
+            return true;
+        }
         if (payRequestDTO.getBankAccountType() <= 0) {
             payRequestResultDTO.setMemo("银行账号类型为空");
             return true;
