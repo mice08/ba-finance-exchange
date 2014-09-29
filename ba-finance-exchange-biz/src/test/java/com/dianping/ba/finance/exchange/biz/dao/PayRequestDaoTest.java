@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
+import com.dianping.ba.finance.exchange.api.datas.ExpensePayRequestData;
 import com.dianping.ba.finance.exchange.api.datas.PayRequestData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import junit.framework.Assert;
@@ -11,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -56,5 +58,13 @@ public class PayRequestDaoTest {
         int u = payRequestDao.updatePayRequest(1, 2, "memo123");
         Assert.assertTrue(u > 0);
 
+    }
+
+    @Test
+    public void testFindExpensePayDataByDate() throws Exception {
+        Date startTime = null;
+        Date endTime = new Date();
+        List<ExpensePayRequestData> expensePayRequestDataList = payRequestDao.findExpensePayDataByDate(BusinessType.EXPENSE.value(), startTime, endTime);
+        Assert.assertTrue(expensePayRequestDataList.size() > 0);
     }
 }
