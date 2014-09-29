@@ -58,7 +58,7 @@
         <property name="settleType" value="普通"/>
         <!--使用付款单中的打款账号-->
         <!--<property name="payerAccountNo" value="121909245310505"/>-->
-        <property name="use" value="大众点评网团购"/>
+        <property name="use" value=""/>
         <property name="businessSummary" value="大众点评网团购"/>
     </bean>
 
