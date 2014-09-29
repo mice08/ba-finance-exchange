@@ -9,7 +9,7 @@
         <result property="businessType" column="BusinessType"/>
         <result property="payeeName" column="PayeeName"/>
         <result property="payAmount" column="PayAmount"/>
-        <result property="bankAccountNo" column="BankAccountNo"/>
+        <result property="paySequence" column="BankAccountNo"/>
         <result property="bankAccountName" column="BankAccountName"/>
         <result property="bankName" column="BankName"/>
         <result property="bankProvince" column="BankProvince"/>
@@ -28,6 +28,12 @@
         <result property="updateTime" column="UpdateTime"/>
         <result property="updateLoginId" column="UpdateLoginID"/>
         <result property="memo" column="Memo"/>
+    </resultMap>
+
+    <typeAlias alias="ExpensePayRequestData" type="com.dianping.ba.finance.exchange.api.datas.ExpensePayRequestData"/>
+    <resultMap id="expensePayRequestData" class="ExpensePayRequestData">
+        <result property="paySequence" column="PaySequence"/>
+        <result property="totalPayAmount" column="TotalPayAmount"/>
     </resultMap>
 
     <insert id="insertPayRequest" parameterClass="map">
@@ -61,7 +67,7 @@
 			#payRequestData.businessType#,
 			#payRequestData.payeeName#,
 			#payRequestData.payAmount#,
-			#payRequestData.bankAccountNo#,
+			#payRequestData.paySequence#,
 			#payRequestData.bankAccountName#,
 			#payRequestData.bankName#,
 			#payRequestData.bankProvince#,
@@ -95,5 +101,17 @@
         WHERE prId = #prId#
     </update>
 
-
+    <select id="findExpensePayDataByDate" resultMap="expensePayRequestData" parameterClass="map">
+        SELECT PaySequence, SUM(PayAmount) AS TotalPayAmount
+        FROM FC_PayRequest
+        WHERE
+        BusinessType = #businessType#
+        <isNotNull prepend="AND" property="startTime">
+            AddTime &gt;= #startTime#
+        </isNotNull>
+        <isNotNull prepend="AND" property="endTime">
+            AddTime &lt; #endTime#
+        </isNotNull>
+        GROUP BY PaySequence
+    </select>
 </sqlMap>
