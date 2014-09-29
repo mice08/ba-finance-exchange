@@ -168,4 +168,8 @@
         <property name="payRequestProducer" ref="payOrderProducer"/>
     </bean>
 
+    <bean id="expenseService" class="com.dianping.ba.finance.exchange.biz.impl.ExpenseServiceObject">
+        <property name="payRequestDao" ref="payRequestDao"/>
+    </bean>
+
 </beans>
