@@ -27,6 +27,10 @@
                     <groupId>com.dianping</groupId>
                     <artifactId>dp-finance-common-util</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.dianping.cat</groupId>
+                    <artifactId>cat-client</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -397,7 +401,7 @@
             <groupId>com.dianping</groupId>
             <artifactId>ba-finance-common-biz</artifactId>
             <type>pom</type>
-            <version>0.1.4-SNAPSHOT</version>
+            <version>0.1.9-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <artifactId>commons-fileupload</artifactId>
