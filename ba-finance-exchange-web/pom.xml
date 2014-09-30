@@ -27,6 +27,10 @@
                     <groupId>com.dianping</groupId>
                     <artifactId>dp-finance-common-util</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.dianping.cat</groupId>
+                    <artifactId>cat-client</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
