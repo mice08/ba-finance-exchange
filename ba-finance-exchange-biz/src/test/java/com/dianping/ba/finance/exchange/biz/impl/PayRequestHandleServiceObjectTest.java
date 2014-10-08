@@ -333,36 +333,6 @@ public class PayRequestHandleServiceObjectTest {
     }
 
     @Test
-    public void testHandleNewPayRequestEmptyBankCode() throws Exception {
-        PayRequestDTO payRequestDTO = new PayRequestDTO();
-        payRequestDTO.setBusinessType(123);
-        payRequestDTO.setPaySequence("TS312");
-        payRequestDTO.setBusinessType(BusinessType.EXPENSE.value());
-        payRequestDTO.setPayAmount(BigDecimal.TEN);
-        payRequestDTO.setBankAccountNo("bankAccountNo");
-        payRequestDTO.setBankAccountName("bankAccountName");
-        payRequestDTO.setBankBranchName("branchName");
-        payRequestDTO.setBankName("bankName");
-        payRequestDTO.setBankFullBranchName("fullBranchName");
-//        payRequestDTO.setBankCode("bankCode");
-        payRequestDTO.setBankAccountType(BankAccountType.PERSONAL.value());
-        payRequestDTO.setPayBankAccountNo("payBankAccountNo");
-        payRequestDTO.setPayBankName("payBankName");
-
-        Calendar requestCal = Calendar.getInstance();
-        payRequestDTO.setRequestTime(requestCal.getTime());
-
-        when(payOrderServiceMock.createPayOrder(any(PayOrderData.class))).thenReturn(1);
-
-        payRequestHandleServiceObjectStub.handleNewPayRequest(payRequestDTO);
-
-        verify(payRequestServiceMock, timeout(5000).times(1)).insertPayRequest(any(PayRequestData.class));
-        verify(payRequestServiceMock, timeout(5000).times(1)).updatePayRequest(anyInt(), eq(PayRequestStatus.INVALID_FIELDS), anyString());
-        verify(payRequestProducerMock, timeout(5000).times(1)).fireSwallowEvent(any(SwallowEventBean.class));
-
-    }
-
-    @Test
     public void testHandleNewPayRequestEmptyBankAccountType() throws Exception {
         PayRequestDTO payRequestDTO = new PayRequestDTO();
         payRequestDTO.setBusinessType(123);
