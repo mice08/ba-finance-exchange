@@ -11,6 +11,7 @@ import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
+import com.dianping.ba.finance.exchange.siteweb.services.CSVExportService;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.core.type.PageModel;
 import com.google.common.collect.Maps;
@@ -20,10 +21,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.util.*;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -38,6 +37,8 @@ public class ReceiveOrderAjaxActionTest {
 
     private ReceiveBankService receiveBankServiceMock;
 
+    private CSVExportService csvExportServiceMock;
+
     @Before
     public void setUp() throws Exception {
         receiveOrderAjaxActionStub = new ReceiveOrderAjaxAction();
@@ -50,6 +51,9 @@ public class ReceiveOrderAjaxActionTest {
 
         receiveBankServiceMock = mock(ReceiveBankService.class);
         receiveOrderAjaxActionStub.setReceiveBankService(receiveBankServiceMock);
+
+        csvExportServiceMock = mock(CSVExportService.class);
+        receiveOrderAjaxActionStub.setCsvExportService(csvExportServiceMock);
     }
 
     @Test
@@ -242,4 +246,11 @@ public class ReceiveOrderAjaxActionTest {
         verify(receiveOrderServiceMock, times(1)).cancelReceiveOrder(anyInt());
     }
 
+    @Test
+    public void testExportReceiveOrders() throws ParseException {
+        List<ReceiveOrderData> receiveOrderDataList1 = new ArrayList<ReceiveOrderData>();
+        when(receiveOrderServiceMock.findReceiverOrderList(any(ReceiveOrderSearchBean.class))).thenReturn(receiveOrderDataList1);
+        String result = receiveOrderAjaxActionStub.exportReceiveOrders();
+        Assert.assertTrue(null == result);
+    }
 }

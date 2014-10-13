@@ -395,6 +395,11 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         return true;
     }
 
+    @Override
+    public List<ReceiveOrderData> findReceiverOrderList(ReceiveOrderSearchBean receiveOrderSearchBean) {
+        return receiveOrderDao.findReceiveOrderBySearchBean(receiveOrderSearchBean);
+    }
+
     private void tryConfirm(List<ReceiveOrderData> roDataList) {
         for (ReceiveOrderData roData : roDataList) {
             if (StringUtils.isEmpty(roData.getBizContent())) {

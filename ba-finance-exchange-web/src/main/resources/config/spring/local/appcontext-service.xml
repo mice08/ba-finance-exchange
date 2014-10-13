@@ -101,4 +101,6 @@
     <bean id="monitorSmsService" class="com.dianping.ba.finance.exchange.siteweb.services.MonitorSmsService">
         <property name="smsService" ref="smsService"/>
     </bean>
+
+    <bean id="csvExportService" class="com.dianping.ba.finance.exchange.siteweb.services.CSVExportService"/>
 </beans>
