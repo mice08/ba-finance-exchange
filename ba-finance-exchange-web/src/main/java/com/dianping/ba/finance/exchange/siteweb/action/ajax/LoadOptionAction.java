@@ -100,7 +100,12 @@ public class LoadOptionAction extends AjaxBaseAction {
             option.put(ReceiveType.DEFAULT.value(), "全部");
             option.put(ReceiveType.TG_SHELVING_FEE.value(), ReceiveType.TG_SHELVING_FEE.getDescription());
             option.put(ReceiveType.TG_SECURITY_DEPOSIT.value(), ReceiveType.TG_SECURITY_DEPOSIT.getDescription());
-            option.put(ReceiveType.TG_GUARANTEE.value(), ReceiveType.TG_GUARANTEE.getDescription());
+
+            boolean hiddenGuarantee = Boolean.valueOf(LionConfigUtils.getProperty("ba-finance-exchange-web.hidden.TgGuarantee", "false"));
+            if (!hiddenGuarantee) {
+                option.put(ReceiveType.TG_GUARANTEE.value(), ReceiveType.TG_GUARANTEE.getDescription());
+            }
+
             option.put(ReceiveType.TG_EXTRA_FEE.value(), ReceiveType.TG_EXTRA_FEE.getDescription());
             option.put(ReceiveType.TG_COMPENSATION.value(), ReceiveType.TG_COMPENSATION.getDescription());
             option.put(ReceiveType.TG_SUPER_REFUND.value(), ReceiveType.TG_SUPER_REFUND.getDescription());
