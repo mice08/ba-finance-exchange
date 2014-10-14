@@ -21,8 +21,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Map;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -244,13 +245,5 @@ public class ReceiveOrderAjaxActionTest {
         receiveOrderAjaxActionStub.setRoId(123);
         receiveOrderAjaxActionStub.cancelReceiveOrder();
         verify(receiveOrderServiceMock, times(1)).cancelReceiveOrder(anyInt());
-    }
-
-    @Test
-    public void testExportReceiveOrders() throws ParseException {
-        List<ReceiveOrderData> receiveOrderDataList1 = new ArrayList<ReceiveOrderData>();
-        when(receiveOrderServiceMock.findReceiverOrderList(any(ReceiveOrderSearchBean.class))).thenReturn(receiveOrderDataList1);
-        String result = receiveOrderAjaxActionStub.exportReceiveOrders();
-        Assert.assertTrue(null == result);
     }
 }

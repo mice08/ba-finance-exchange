@@ -380,10 +380,6 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
     public String exportReceiveOrders() throws ParseException {
         ReceiveOrderSearchBean receiveOrderSearchBean = buildROSearchBean();
         List<ReceiveOrderData> receiveOrderDataList = receiveOrderService.findReceiverOrderList(receiveOrderSearchBean);
-        if (CollectionUtils.isEmpty(receiveOrderDataList)) {
-            MONITOR_LOGGER.info(String.format("severity=[2] ReceiveOrderAjaxAction.exportReceiveOrders No ReceiveOrder found! receiveOrderSearchBean=%s", receiveOrderSearchBean));
-            return null;
-        }
         List<ReceiveOrderBean> exportBeanList = buildReceiveOrderBeans(receiveOrderDataList);
         HttpServletResponse response = getHttpServletResponse();
         String fileName = "收款单";
