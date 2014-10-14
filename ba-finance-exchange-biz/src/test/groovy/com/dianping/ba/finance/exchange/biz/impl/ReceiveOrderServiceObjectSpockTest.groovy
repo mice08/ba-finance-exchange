@@ -1,5 +1,4 @@
 package com.dianping.ba.finance.exchange.biz.impl
-
 import com.dianping.ba.finance.exchange.api.RORNMatchFireService
 import com.dianping.ba.finance.exchange.api.RORNMatchService
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
@@ -10,17 +9,12 @@ import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderUpdateBean
 import com.dianping.ba.finance.exchange.api.datas.ReceiveCalResultData
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData
-import com.dianping.ba.finance.exchange.api.enums.BusinessType
-import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus
-import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel
-import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus
-import com.dianping.ba.finance.exchange.api.enums.ReceiveType
+import com.dianping.ba.finance.exchange.api.enums.*
 import com.dianping.ba.finance.exchange.biz.dao.ReceiveOrderDao
 import com.dianping.ba.finance.exchange.biz.producer.ReceiveOrderResultNotify
 import com.dianping.ba.finance.exchange.biz.service.BizInfoService
 import spock.lang.Specification
 import spock.lang.Unroll
-
 /**
  * Created by noahshen on 14-7-28.
  */
@@ -271,5 +265,14 @@ class ReceiveOrderServiceObjectSpockTest extends Specification {
         ReceiveOrderStatus.CONFIRMED | 7      | BusinessType.ADVERTISEMENT | true
         ReceiveOrderStatus.CONFIRMED | 1      | BusinessType.ADVERTISEMENT | true
         ReceiveOrderStatus.CONFIRMED | 8      | BusinessType.ADVERTISEMENT | true
+    }
+
+    def "findReceiverOrderList"() {
+        setup:
+        ReceiveOrderSearchBean receiveOrderSearchBean = [];
+        when:
+        receiveOrderServiceObjectStub.findReceiverOrderList(receiveOrderSearchBean);
+        then:
+        1 * receiveOrderDaoMock.findReceiveOrderBySearchBean(_ as ReceiveOrderSearchBean);
     }
 }

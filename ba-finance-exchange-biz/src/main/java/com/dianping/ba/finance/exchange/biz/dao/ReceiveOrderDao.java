@@ -114,5 +114,4 @@ public interface ReceiveOrderDao extends GenericDao {
      */
     @DAOAction(action = DAOActionType.QUERY)
     List<ReceiveOrderData> findReceiveOrderBySearchBean(@DAOParam("receiveOrderSearchBean") ReceiveOrderSearchBean receiveOrderSearchBean);
-
 }
