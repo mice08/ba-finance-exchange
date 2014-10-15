@@ -14,11 +14,4 @@ public interface ReceiveNotifyRecordService {
      * @return
      */
     int insertReceiveNotifyRecord(ReceiveNotifyRecordData receiveNotifyRecordData);
-
-    /**
-     * 修改customerId
-     * @param oldCustomerId
-     * @param newCustomerId
-     */
-    void changeCustomer(int oldCustomerId, int newCustomerId);
 }

@@ -114,6 +114,13 @@ public interface PayOrderService {
      * @param oldCustomerId
      * @param newCustomerId
      */
-    void changeCustomer(int oldCustomerId, int newCustomerId);
+    int changeCustomer(int oldCustomerId, int newCustomerId);
+
+    /**
+     * 根据PaySequence获取付款单
+     * @param sequence
+     * @return
+     */
+    PayOrderData loadPayOrderDataByPaySequence(String sequence);
 
 }

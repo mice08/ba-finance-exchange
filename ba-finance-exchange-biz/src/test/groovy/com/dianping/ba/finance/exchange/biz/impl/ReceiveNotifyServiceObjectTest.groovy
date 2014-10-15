@@ -268,12 +268,4 @@ class ReceiveNotifyServiceObjectTest extends Specification {
         878723  | ReceiveNotifyStatus.CONFIRMED | 1
 
     }
-
-    def "changeCustomer"() {
-        setup:
-        when:
-        receiveNotifyServiceStub.changeCustomer(1, 123);
-        then:
-        1 * receiveNotifyDaoMock.updateCustomerId(_ as Integer, _ as Integer);
-    }
 }

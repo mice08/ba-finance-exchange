@@ -401,8 +401,8 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
     }
 
     @Override
-    public void changeCustomer(int oldCustomerId, int newCustomerId) {
-        receiveOrderDao.updateCustomerId(oldCustomerId, newCustomerId);
+    public int changeCustomer(int oldCustomerId, int newCustomerId) {
+        return receiveOrderDao.updateCustomerId(oldCustomerId, newCustomerId);
     }
 
     private void tryConfirm(List<ReceiveOrderData> roDataList) {

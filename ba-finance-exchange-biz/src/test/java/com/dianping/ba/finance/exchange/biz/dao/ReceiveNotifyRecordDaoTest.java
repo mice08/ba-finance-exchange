@@ -45,12 +45,4 @@ public class ReceiveNotifyRecordDaoTest {
 
         Assert.assertTrue(recordId > 0);
     }
-
-    @Test
-    public void testUpdateCustomerId() {
-        int newCustomerId = 123321;
-        int oldCustomerId = 1;
-        int result = receiveNotifyRecordDao.updateCustomerId(oldCustomerId, newCustomerId);
-        Assert.assertTrue(result > 0);
-    }
 }

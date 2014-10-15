@@ -15,11 +15,6 @@ public class ReceiveNotifyRecordServiceObject implements ReceiveNotifyRecordServ
         return receiveNotifyRecordDao.insertReceiveNotifyRecord(receiveNotifyRecordData);
     }
 
-    @Override
-    public void changeCustomer(int oldCustomerId, int newCustomerId) {
-        receiveNotifyRecordDao.updateCustomerId(oldCustomerId, newCustomerId);
-    }
-
     public void setReceiveNotifyRecordDao(ReceiveNotifyRecordDao receiveNotifyRecordDao) {
         this.receiveNotifyRecordDao = receiveNotifyRecordDao;
     }

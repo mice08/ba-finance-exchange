@@ -150,13 +150,4 @@ public class ReceiveNotifyDaoTest {
         int u = receiveNotifyDao.updateReceiveNotifyStatus(receiveNotifyUpdateBean);
         Assert.assertEquals(1, u);
     }
-
-
-    @Test
-    public void testUpdateCustomerId() {
-        int newCustomerId = 123321;
-        int oldCustomerId = 8;
-        int result = receiveNotifyDao.updateCustomerId(oldCustomerId, newCustomerId);
-        Assert.assertTrue(result > 0);
-    }
 }

@@ -376,6 +376,7 @@
         SET CustomerId = #newCustomerId#
         WHERE
         CustomerId = #oldCustomerId#
+        AND BusinessType = 1
     </update>
 
 

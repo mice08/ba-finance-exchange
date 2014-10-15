@@ -134,5 +134,5 @@ public interface ReceiveOrderService {
      * @param oldCustomerId
      * @param newCustomerId
      */
-    void changeCustomer(int oldCustomerId, int newCustomerId);
+    int changeCustomer(int oldCustomerId, int newCustomerId);
 }
