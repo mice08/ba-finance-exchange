@@ -138,4 +138,12 @@ class PayOrderServiceObjectGroovyTest extends Specification {
         then:
         1 * payOrderDaoMock.updateCustomerId(_ as Integer, _ as Integer);
     }
+
+    def "loadPayOrderDataByPaySequence"() {
+        setup:
+        when:
+        exampleServiceStub.loadPayOrderDataByPaySequence("aaa")
+        then:
+        1 * payOrderDaoMock.loadPayOrderByPaySequence(_ as String);
+    }
 }
