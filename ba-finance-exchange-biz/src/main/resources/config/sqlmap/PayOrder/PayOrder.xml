@@ -371,4 +371,13 @@
         AND Status != 6
     </select>
 
+    <update id="updateCustomerId" parameterClass="map">
+        UPDATE FC_PayOrder
+        SET CustomerId = #newCustomerId#
+        WHERE
+        CustomerId = #oldCustomerId#
+        AND BusinessType = 1
+    </update>
+
+
 </sqlMap>

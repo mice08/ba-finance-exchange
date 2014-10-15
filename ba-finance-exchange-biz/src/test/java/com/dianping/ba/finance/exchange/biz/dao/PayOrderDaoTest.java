@@ -134,4 +134,12 @@ public class PayOrderDaoTest {
         Assert.assertNotNull(poData);
 
     }
+
+    @Test
+    public void testUpdateCustomerId() {
+        int newCustomerId = 123321;
+        int oldCustomerId = 321004;
+        int result = payOrderDao.updateCustomerId(oldCustomerId, newCustomerId);
+        Assert.assertTrue(result > 0);
+    }
 }

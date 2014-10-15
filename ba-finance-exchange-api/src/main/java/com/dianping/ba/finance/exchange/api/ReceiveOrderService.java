@@ -128,4 +128,11 @@ public interface ReceiveOrderService {
      * @return
      */
     List<ReceiveOrderData> findReceiverOrderList(ReceiveOrderSearchBean receiveOrderSearchBean);
+
+    /**
+     * 修改customerId
+     * @param oldCustomerId
+     * @param newCustomerId
+     */
+    int changeCustomer(int oldCustomerId, int newCustomerId);
 }
