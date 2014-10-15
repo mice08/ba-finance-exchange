@@ -377,6 +377,7 @@
         WHERE
         CustomerId = #oldCustomerId#
         AND BusinessType = 1
+        AND Status != 6
     </update>
 
 
