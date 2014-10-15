@@ -38,4 +38,12 @@ public class ReceiveVoucherDaoTest {
         int voucherId = receiveVoucherDao.insertReceiveVoucherData(rvData);
         Assert.assertTrue(voucherId > 0);
     }
+
+    @Test
+    public void testUpdateCustomerId() {
+        int newCustomerId = 123321;
+        int oldCustomerId = 123;
+        int result = receiveVoucherDao.updateCustomerId(oldCustomerId, newCustomerId);
+        Assert.assertTrue(result > 0);
+    }
 }

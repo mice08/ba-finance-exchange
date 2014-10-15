@@ -13,4 +13,12 @@ public interface ReceiveVoucherService {
      * @param date
      */
     void generateUnconfirmedReceiveVoucher(Date date);
+
+    /**
+     * 修改customerId
+     * @param oldCustomerId
+     * @param newCustomerId
+     */
+    void changeCustomer(int oldCustomerId, int newCustomerId);
+
 }

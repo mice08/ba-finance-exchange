@@ -400,6 +400,11 @@ public class ReceiveOrderServiceObject implements ReceiveOrderService {
         return receiveOrderDao.findReceiveOrderBySearchBean(receiveOrderSearchBean);
     }
 
+    @Override
+    public void changeCustomer(int oldCustomerId, int newCustomerId) {
+        receiveOrderDao.updateCustomerId(oldCustomerId, newCustomerId);
+    }
+
     private void tryConfirm(List<ReceiveOrderData> roDataList) {
         for (ReceiveOrderData roData : roDataList) {
             if (StringUtils.isEmpty(roData.getBizContent())) {

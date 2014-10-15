@@ -225,4 +225,12 @@ public class ReceiveOrderDaoTest {
         Assert.assertFalse(roDataList.isEmpty());
 
     }
+
+    @Test
+    public void testUpdateCustomerId() {
+        int newCustomerId = 123321;
+        int oldCustomerId = 100;
+        int result = receiveOrderDao.updateCustomerId(oldCustomerId, newCustomerId);
+        Assert.assertTrue(result > 0);
+    }
 }

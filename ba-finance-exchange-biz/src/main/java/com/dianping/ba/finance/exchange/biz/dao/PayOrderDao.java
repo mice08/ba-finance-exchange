@@ -84,4 +84,8 @@ public interface PayOrderDao extends GenericDao {
      */
     @DAOAction(action = DAOActionType.LOAD)
     PayOrderData loadPayOrderByPaySequence(@DAOParam("paySequence") String paySequence);
+
+    @DAOAction(action = DAOActionType.UPDATE)
+    int updateCustomerId(@DAOParam("oldCustomerId") int oldCustomerId,
+                         @DAOParam("newCustomerId") int newCustomerId);
 }

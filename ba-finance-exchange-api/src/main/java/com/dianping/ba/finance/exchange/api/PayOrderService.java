@@ -108,4 +108,12 @@ public interface PayOrderService {
      * @return
      */
     boolean dropPayOrder(String paySequence);
+
+    /**
+     * 修改customerId
+     * @param oldCustomerId
+     * @param newCustomerId
+     */
+    void changeCustomer(int oldCustomerId, int newCustomerId);
+
 }

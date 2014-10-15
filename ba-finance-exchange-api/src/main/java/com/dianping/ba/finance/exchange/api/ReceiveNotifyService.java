@@ -128,4 +128,10 @@ public interface ReceiveNotifyService {
      */
     int updateReceiveNotifyStatus(int rnId, ReceiveNotifyStatus preStatus, ReceiveNotifyStatus setStatus, String memo);
 
+    /**
+     * 修改customerId
+     * @param oldCustomerId
+     * @param newCustomerId
+     */
+    void changeCustomer(int oldCustomerId, int newCustomerId);
 }

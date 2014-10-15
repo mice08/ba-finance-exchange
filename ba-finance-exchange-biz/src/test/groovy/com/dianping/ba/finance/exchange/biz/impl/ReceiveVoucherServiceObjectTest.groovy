@@ -103,4 +103,12 @@ class ReceiveVoucherServiceObjectTest extends Specification {
         }
         0 * receivePayVoucherNotifyMock.notifyVoucher(_ as ReceiveVoucherNotifyBean)
     }
+
+    def "changeCustomer"() {
+        setup:
+        when:
+        receiveVoucherServiceObjectStub.changeCustomer(1, 123);
+        then:
+        1 * receiveVoucherDaoMock.updateCustomerId(_ as Integer, _ as Integer);
+    }
 }

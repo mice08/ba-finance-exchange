@@ -26,4 +26,12 @@ class ReceiveNotifyRecordServiceObjectTest extends Specification {
         then:
             1 * receiveNotifyRecordDaoMock.insertReceiveNotifyRecord(_ as ReceiveNotifyRecordData);
     }
+
+    def "changeCustomer"() {
+        setup:
+        when:
+        receiveNotifyRecordServiceStub.changeCustomer(1, 123);
+        then:
+        1 * receiveNotifyRecordDaoMock.updateCustomerId(_ as Integer, _ as Integer);
+    }
 }

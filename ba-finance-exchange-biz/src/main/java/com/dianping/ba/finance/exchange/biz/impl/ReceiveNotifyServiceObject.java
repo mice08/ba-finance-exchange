@@ -141,6 +141,11 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
         return u;
     }
 
+    @Override
+    public void changeCustomer(int oldCustomerId, int newCustomerId) {
+        receiveNotifyDao.updateCustomerId(oldCustomerId, newCustomerId);
+    }
+
     private ReceiveNotifyResultBean buildReceiveNotifyResultBean(ReceiveNotifyData rnData, ReceiveNotifyResultStatus status) {
         ReceiveNotifyResultBean receiveNotifyResultBean = new ReceiveNotifyResultBean();
         receiveNotifyResultBean.setApplicationId(rnData.getApplicationId());

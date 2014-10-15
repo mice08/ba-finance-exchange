@@ -552,4 +552,11 @@
             ROID ASC
     </select>
 
+    <update id="updateCustomerId" parameterClass="map">
+        UPDATE FC_ReceiveOrder
+        SET CustomerId = #newCustomerId#
+        WHERE
+        CustomerId = #oldCustomerId#
+    </update>
+
 </sqlMap>

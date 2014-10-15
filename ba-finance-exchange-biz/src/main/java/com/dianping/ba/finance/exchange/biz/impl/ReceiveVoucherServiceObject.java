@@ -74,6 +74,11 @@ public class ReceiveVoucherServiceObject implements ReceiveVoucherService {
         }
     }
 
+    @Override
+    public void changeCustomer(int oldCustomerId, int newCustomerId) {
+        receiveVoucherDao.updateCustomerId(oldCustomerId, newCustomerId);
+    }
+
     private ReceiveVoucherNotifyBean buildReceiveVoucherNotifyBean(ReceiveVoucherData rvData) {
         ReceiveVoucherNotifyBean notifyBean = new ReceiveVoucherNotifyBean();
         notifyBean.setAmount(rvData.getAmount());

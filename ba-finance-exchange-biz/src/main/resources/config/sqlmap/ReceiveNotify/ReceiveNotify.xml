@@ -410,4 +410,11 @@
          WHERE ReceiveNotifyID = #receiveNotifyUpdateBean.rnId#
            AND status = #receiveNotifyUpdateBean.preStatus#
     </update>
+
+    <update id="updateCustomerId" parameterClass="map">
+        UPDATE FC_ReceiveNotify
+        SET CustomerId = #newCustomerId#
+        WHERE
+        CustomerId = #oldCustomerId#
+    </update>
 </sqlMap>

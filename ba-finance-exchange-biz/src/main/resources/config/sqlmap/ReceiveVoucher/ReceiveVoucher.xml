@@ -54,4 +54,10 @@
         </selectKey>
     </insert>
 
+    <update id="updateCustomerId" parameterClass="map">
+        UPDATE FC_ReceiveVoucher
+        SET CustomerId = #newCustomerId#
+        WHERE
+        CustomerId = #oldCustomerId#
+    </update>
 </sqlMap>

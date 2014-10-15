@@ -18,4 +18,8 @@ public interface ReceiveNotifyRecordDao extends GenericDao {
      */
     @DAOAction(action = DAOActionType.INSERT)
     int insertReceiveNotifyRecord(@DAOParam("receiveNotifyRecordData")ReceiveNotifyRecordData receiveNotifyRecordData);
+
+    @DAOAction(action = DAOActionType.UPDATE)
+    int updateCustomerId(@DAOParam("oldCustomerId") int oldCustomerId,
+                         @DAOParam("newCustomerId") int newCustomerId);
 }

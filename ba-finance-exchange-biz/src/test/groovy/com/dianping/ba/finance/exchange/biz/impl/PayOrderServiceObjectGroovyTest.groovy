@@ -130,4 +130,12 @@ class PayOrderServiceObjectGroovyTest extends Specification {
         5           || true
         6           || false
     }
+
+    def "changeCustomer"() {
+        setup:
+        when:
+        exampleServiceStub.changeCustomer(1, 123);
+        then:
+        1 * payOrderDaoMock.updateCustomerId(_ as Integer, _ as Integer);
+    }
 }

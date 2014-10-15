@@ -275,4 +275,12 @@ class ReceiveOrderServiceObjectSpockTest extends Specification {
         then:
         1 * receiveOrderDaoMock.findReceiveOrderBySearchBean(_ as ReceiveOrderSearchBean);
     }
+
+    def "changeCustomer"() {
+        setup:
+        when:
+        receiveOrderServiceObjectStub.changeCustomer(1, 124);
+        then:
+        1 * receiveOrderDaoMock.updateCustomerId(_ as Integer, _ as Integer);
+    }
 }

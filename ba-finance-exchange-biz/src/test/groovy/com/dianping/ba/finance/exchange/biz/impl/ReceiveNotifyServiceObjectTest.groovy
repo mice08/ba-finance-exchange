@@ -1,5 +1,4 @@
 package com.dianping.ba.finance.exchange.biz.impl
-
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
 import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean
 import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifyUpdateBean
@@ -268,5 +267,13 @@ class ReceiveNotifyServiceObjectTest extends Specification {
         8787123 | ReceiveNotifyStatus.REJECT    | 1
         878723  | ReceiveNotifyStatus.CONFIRMED | 1
 
+    }
+
+    def "changeCustomer"() {
+        setup:
+        when:
+        receiveNotifyServiceStub.changeCustomer(1, 123);
+        then:
+        1 * receiveNotifyDaoMock.updateCustomerId(_ as Integer, _ as Integer);
     }
 }

@@ -88,5 +88,9 @@ public interface ReceiveNotifyDao extends GenericDao {
 
     @DAOAction(action = DAOActionType.UPDATE)
     int updateReceiveNotifyStatus(@DAOParam("receiveNotifyUpdateBean") ReceiveNotifyUpdateBean receiveNotifyUpdateBean);
+
+    @DAOAction(action = DAOActionType.UPDATE)
+    int updateCustomerId(@DAOParam("oldCustomerId") int oldCustomerId,
+                         @DAOParam("newCustomerId") int newCustomerId);
 }
 
