@@ -88,5 +88,6 @@ public interface ReceiveNotifyDao extends GenericDao {
 
     @DAOAction(action = DAOActionType.UPDATE)
     int updateReceiveNotifyStatus(@DAOParam("receiveNotifyUpdateBean") ReceiveNotifyUpdateBean receiveNotifyUpdateBean);
+
 }
 

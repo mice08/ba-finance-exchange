@@ -12,12 +12,15 @@ import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderPaginateData;
 import com.dianping.ba.finance.exchange.api.enums.*;
 import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveOrderBean;
 import com.dianping.ba.finance.exchange.siteweb.constants.Constant;
+import com.dianping.ba.finance.exchange.siteweb.services.CSVExportService;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
 
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -88,6 +91,8 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
     private CustomerNameService customerNameService;
 
 	private ReceiveBankService receiveBankService;
+
+    private CSVExportService csvExportService;
 
     @Override
     protected void jsonExecute() {
@@ -372,6 +377,21 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         return roData;
     }
 
+    public String exportReceiveOrders() throws ParseException {
+        ReceiveOrderSearchBean receiveOrderSearchBean = buildROSearchBean();
+        List<ReceiveOrderData> receiveOrderDataList = receiveOrderService.findReceiverOrderList(receiveOrderSearchBean);
+        List<ReceiveOrderBean> exportBeanList = buildReceiveOrderBeans(receiveOrderDataList);
+        HttpServletResponse response = getHttpServletResponse();
+        String fileName = "收款单";
+        try {
+            csvExportService.createCSVAndDownload(response, fileName, exportBeanList);
+            return SUCCESS;
+        } catch (Exception e) {
+            MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.exportReceiveOrders", e);
+            return ERROR;
+        }
+    }
+
     public void setBusinessType(int businessType) {
         this.businessType = businessType;
     }
@@ -535,4 +555,12 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 	public void setReceiveBankService(ReceiveBankService receiveBankService) {
 		this.receiveBankService = receiveBankService;
 	}
+
+    protected HttpServletResponse getHttpServletResponse() {
+        return ServletActionContext.getResponse();
+    }
+
+    public void setCsvExportService(CSVExportService csvExportService) {
+        this.csvExportService = csvExportService;
+    }
 }

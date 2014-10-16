@@ -108,4 +108,19 @@ public interface PayOrderService {
      * @return
      */
     boolean dropPayOrder(String paySequence);
+
+    /**
+     * 修改customerId
+     * @param oldCustomerId
+     * @param newCustomerId
+     */
+    int changeCustomer(int oldCustomerId, int newCustomerId);
+
+    /**
+     * 根据PaySequence获取付款单
+     * @param sequence
+     * @return
+     */
+    PayOrderData loadPayOrderDataByPaySequence(String sequence);
+
 }
