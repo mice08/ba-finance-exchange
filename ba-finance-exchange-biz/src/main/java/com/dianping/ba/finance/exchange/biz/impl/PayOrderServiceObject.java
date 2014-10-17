@@ -325,6 +325,16 @@ public class PayOrderServiceObject implements PayOrderService {
         return false;
     }
 
+    @Override
+    public int changeCustomer(int oldCustomerId, int newCustomerId) {
+        return payOrderDao.updateCustomerId(oldCustomerId, newCustomerId);
+    }
+
+    @Override
+    public PayOrderData loadPayOrderDataByPaySequence(String sequence) {
+        return payOrderDao.loadPayOrderByPaySequence(sequence);
+    }
+
     private PayOrderBankInfoDTO buildPayOrderBankInfoDTO(PayOrderData poData) {
         try {
             PayOrderBankInfoDTO bankInfoDTO = ConvertUtils.copy(poData, PayOrderBankInfoDTO.class);

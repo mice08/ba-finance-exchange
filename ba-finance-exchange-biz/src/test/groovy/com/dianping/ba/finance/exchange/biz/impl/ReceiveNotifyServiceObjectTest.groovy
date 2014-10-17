@@ -1,5 +1,4 @@
 package com.dianping.ba.finance.exchange.biz.impl
-
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
 import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean
 import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifyUpdateBean
