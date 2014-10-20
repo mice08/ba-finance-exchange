@@ -385,6 +385,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         String fileName = "收款单";
         try {
             csvExportService.createCSVAndDownload(response, fileName, exportBeanList);
+            code = SUCCESS_CODE;
             return SUCCESS;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.exportReceiveOrders", e);
