@@ -557,7 +557,7 @@
         SET CustomerId = #newCustomerId#
         WHERE
         CustomerId = #oldCustomerId#
-        AND BusinessType = 1
+        AND BusinessType in (1, 6)
     </update>
 
 </sqlMap>
