@@ -411,6 +411,10 @@
                     <artifactId>commons-fileupload</artifactId>
                     <groupId>commons-fileupload</groupId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-orm</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
