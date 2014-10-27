@@ -407,14 +407,8 @@
             <type>pom</type>
             <version>0.1.9-SNAPSHOT</version>
             <exclusions>
-                <exclusion>
-                    <artifactId>commons-fileupload</artifactId>
-                    <groupId>commons-fileupload</groupId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-orm</artifactId>
-                </exclusion>
+                pha
+
             </exclusions>
         </dependency>
         <dependency>
