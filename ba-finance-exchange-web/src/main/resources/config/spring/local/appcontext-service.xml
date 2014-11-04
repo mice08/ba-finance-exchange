@@ -92,6 +92,7 @@
         <property name="corporationService" ref="corporationService"/>
         <property name="monitorMailService" ref="monitorMailService"/>
         <property name="monitorSmsService" ref="monitorSmsService"/>
+        <property name="expensePayeeService" ref="expensePayeeService"/>
     </bean>
 
     <bean id="monitorMailService" class="com.dianping.ba.finance.exchange.siteweb.services.MonitorMailService">
