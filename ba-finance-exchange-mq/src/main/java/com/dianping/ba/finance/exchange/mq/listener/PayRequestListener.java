@@ -10,8 +10,9 @@ import com.dianping.swallow.common.message.Message;
 import com.dianping.swallow.consumer.BackoutMessageException;
 
 /**
- * 付款计划请求消息监听器
+ * 原为了费用接入付款单提供的Listener，已废弃
  */
+@Deprecated
 public class PayRequestListener extends SwallowMessageListener {
 
     private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.mq.monitor.PayRequestListener");
