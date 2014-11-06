@@ -82,4 +82,15 @@
         <property name="timeout" value="5000"/>
     </bean>
 
+
+    <bean id="expensePayeeService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName"
+                  value="http://service.dianping.com/expenseService/ExpensePayeeService_1.0.0"/>
+        <property name="iface" value="com.dianping.ba.finance.expense.api.ExpensePayeeService"/>
+        <property name="serialize" value="hessian"/>
+        <property name="callMethod" value="sync"/>
+        <property name="timeoutRetry" value="true"/>
+        <property name="retries" value="${ba-finance-exchange-web.pigeon.retryTimes}"/>
+        <property name="timeout" value="${ba-finance-exchange-web.pigeon.timeout.medium}"/>
+    </bean>
 </beans>

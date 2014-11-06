@@ -159,14 +159,14 @@
         <property name="payRequestDao" ref="payRequestDao"/>
     </bean>
     
-    <bean id="payRequestHandleService"
-          class="com.dianping.ba.finance.exchange.biz.impl.PayRequestHandleServiceObject">
-        <property name="payOrderService" ref="payOrderService"/>
-        <property name="timeout" value="${ba-finance-exchange-service.payrequest.timeout}"/>
-        <property name="executorService" ref="executorService"/>
-        <property name="payRequestService" ref="payRequestService"/>
-        <property name="payRequestProducer" ref="payOrderProducer"/>
-    </bean>
+    <!--<bean id="payRequestHandleService"-->
+          <!--class="com.dianping.ba.finance.exchange.biz.impl.PayRequestHandleServiceObject">-->
+        <!--<property name="payOrderService" ref="payOrderService"/>-->
+        <!--<property name="timeout" value="${ba-finance-exchange-service.payrequest.timeout}"/>-->
+        <!--<property name="executorService" ref="executorService"/>-->
+        <!--<property name="payRequestService" ref="payRequestService"/>-->
+        <!--<property name="payRequestProducer" ref="payOrderProducer"/>-->
+    <!--</bean>-->
 
     <bean id="expenseService" class="com.dianping.ba.finance.exchange.biz.impl.ExpenseServiceObject">
         <property name="payRequestDao" ref="payRequestDao"/>

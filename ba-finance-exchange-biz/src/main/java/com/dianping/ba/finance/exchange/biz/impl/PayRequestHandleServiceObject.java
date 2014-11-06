@@ -27,8 +27,9 @@ import java.util.Date;
 import java.util.concurrent.ExecutorService;
 
 /**
- * 处理付款请求的Service类
+ * 处理付款请求的Service类，原开放给费用的Service，已废弃
  */
+@Deprecated
 public class PayRequestHandleServiceObject implements PayRequestHandleService {
 
     private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.biz.monitor.PayRequestHandleServiceObject");

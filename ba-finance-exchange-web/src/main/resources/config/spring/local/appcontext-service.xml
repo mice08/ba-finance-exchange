@@ -68,8 +68,7 @@
         <property name="currency" value="人民币"/>
         <property name="payerBranchBank" value="上海"/>
         <property name="settleType" value="普通"/>
-        <!--使用付款单中的打款账号-->
-        <!--<property name="payerAccountNo" value="121909245310505"/>-->
+        <property name="payerAccountNo" value="121909245310903"/>
         <property name="use" value=""/>
         <property name="businessSummary" value="大众点评-费用"/>
     </bean>
@@ -92,6 +91,7 @@
         <property name="corporationService" ref="corporationService"/>
         <property name="monitorMailService" ref="monitorMailService"/>
         <property name="monitorSmsService" ref="monitorSmsService"/>
+        <property name="expensePayeeService" ref="expensePayeeService"/>
     </bean>
 
     <bean id="monitorMailService" class="com.dianping.ba.finance.exchange.siteweb.services.MonitorMailService">
