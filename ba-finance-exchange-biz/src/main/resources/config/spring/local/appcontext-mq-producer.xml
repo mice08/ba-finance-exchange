@@ -48,7 +48,7 @@
 
     <bean id="exEPPayResultClient" init-method="init"
           class="com.dianping.finance.common.swallow.SwallowClientWrapper">
-        <property name="topic" value="${ba-finance-exchange-service.ex.ep.pay.result.notice.topic.name}"/>
+        <property name="topic" value="${ba-finance-exchange-service.ex.fs.pay.result.notice.topic.name}"/>
         <property name="mode" value="ASYNC_MODE"/>
     </bean>
 
