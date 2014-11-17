@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.impl
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData
+import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus
 import com.dianping.ba.finance.exchange.biz.dao.PayOrderDao
 import com.dianping.ba.finance.exchange.biz.producer.PayOrderResultNotify
 import org.junit.Before
@@ -122,13 +123,13 @@ class PayOrderServiceObjectGroovyTest extends Specification {
         expect:
         result == exampleServiceStub.dropPayOrder("sequence")
         where:
-        paramStatus || result
-        1           || true
-        2           || false
-        3           || false
-        4           || false
-        5           || true
-        6           || false
+        paramStatus                          || result
+        PayOrderStatus.INIT.value()          || true
+        PayOrderStatus.EXPORT_PAYING.value() || true
+        PayOrderStatus.PAY_SUCCESS.value()   || false
+        PayOrderStatus.REFUND.value()        || false
+        PayOrderStatus.SUSPEND.value()       || true
+        PayOrderStatus.INVALID.value()       || false
     }
 
     def "changeCustomer"() {
