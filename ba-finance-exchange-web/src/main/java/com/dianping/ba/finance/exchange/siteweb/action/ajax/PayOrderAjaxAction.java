@@ -96,7 +96,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 	public String payOrderExportForPay() throws Exception {
 		try {
 			PayOrderSearchBean searchBean = buildPayOrderSearchBean();
-			List<PayOrderData> dataList = payOrderService.findPayOrderList(searchBean);
+            OPERATION_LOGGER.log(OperationType.UPDATE, "导出支付", searchBean.toString(), String.valueOf(getLoginId()));
+            List<PayOrderData> dataList = payOrderService.findPayOrderList(searchBean);
             if (CollectionUtils.isEmpty(dataList)) {
                 MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderExportForPay No PayOrder found! searchBean=%s", searchBean));
                 return null;
