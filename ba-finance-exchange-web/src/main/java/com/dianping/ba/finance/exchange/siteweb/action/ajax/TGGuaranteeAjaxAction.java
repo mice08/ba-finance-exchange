@@ -60,7 +60,7 @@ public class TGGuaranteeAjaxAction extends AjaxBaseAction {
         }
         Map<String, String> guaranteeInfoMap = Maps.newHashMap();
         for (GuaranteeInfoBean guaranteeInfoBean : guaranteeInfoBeanList) {
-            guaranteeInfoMap.put(guaranteeInfoBean.getGuaranteeBillId(), String.format("%s,未归还金额:%s", guaranteeInfoBean.getGuaranteeBillId(), guaranteeInfoBean.getLeftAmount()));
+            guaranteeInfoMap.put(guaranteeInfoBean.getGuaranteeBillId(), String.format("%s(未归还金额:%s)", guaranteeInfoBean.getGuaranteeBillId(), guaranteeInfoBean.getLeftAmount()));
         }
         return guaranteeInfoMap;
     }
