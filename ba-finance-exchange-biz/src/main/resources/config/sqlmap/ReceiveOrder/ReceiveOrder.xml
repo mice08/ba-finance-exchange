@@ -191,6 +191,9 @@
             <isGreaterThan property="receiveOrderSearchBean.bankId" prepend="and" compareValue="0">
                 ro.BankID = #receiveOrderSearchBean.bankId#
             </isGreaterThan>
+            <isNotNull property="receiveOrderSearchBean.amount" prepend="and">
+                ro.ReceiveAmount = #receiveOrderSearchBean.amount#
+            </isNotNull>
         </dynamic>
         ) AS t
         ORDER BY MatchedCount DESC,
@@ -232,6 +235,9 @@
             <isGreaterThan property="receiveOrderSearchBean.bankId" prepend="and" compareValue="0">
                 BankID = #receiveOrderSearchBean.bankId#
             </isGreaterThan>
+            <isNotNull property="receiveOrderSearchBean.amount" prepend="and">
+                ro.ReceiveAmount = #receiveOrderSearchBean.amount#
+            </isNotNull>
         </dynamic>
     </select>
 

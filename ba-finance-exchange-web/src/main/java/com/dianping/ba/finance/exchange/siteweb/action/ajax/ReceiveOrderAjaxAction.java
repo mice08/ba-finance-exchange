@@ -83,6 +83,8 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     private int rnId;
 
+    private String amount;
+
 
     //查询结果，付款计划列表
     private PageModel receiveOrderModel = new PageModel();
@@ -331,6 +333,9 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderSearchBean.setReceiveTimeEnd(DateUtil.isValidDate(receiveTimeEnd) ? DateUtil.formatDate(receiveTimeEnd, true) : null);
         receiveOrderSearchBean.setReceiveType(receiveType);
         receiveOrderSearchBean.setBankId(bankId);
+        if (StringUtils.isNotBlank(amount)) {
+            receiveOrderSearchBean.setAmount(new BigDecimal(amount));
+        }
         return receiveOrderSearchBean;
     }
 
@@ -566,7 +571,11 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         this.rnId = rnId;
     }
 
-	public void setReceiveBankService(ReceiveBankService receiveBankService) {
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public void setReceiveBankService(ReceiveBankService receiveBankService) {
 		this.receiveBankService = receiveBankService;
 	}
 

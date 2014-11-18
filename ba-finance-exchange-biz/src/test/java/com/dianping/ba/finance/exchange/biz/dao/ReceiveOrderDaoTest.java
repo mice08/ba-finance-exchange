@@ -62,6 +62,7 @@ public class ReceiveOrderDaoTest {
 		ReceiveOrderSearchBean searchBean = new ReceiveOrderSearchBean();
 //		searchBean.setCustomerId(8787);
 		searchBean.setBusinessType(5);
+        searchBean.setAmount(new BigDecimal("8787.00"));
 //
 //		Calendar receiveTimeBeginCal = Calendar.getInstance();
 //		receiveTimeBeginCal.set(Calendar.MONTH, 05);
