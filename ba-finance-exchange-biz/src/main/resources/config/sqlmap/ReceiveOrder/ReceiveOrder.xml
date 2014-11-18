@@ -275,6 +275,9 @@
             <isGreaterThan property="receiveOrderSearchBean.bankId" prepend="and" compareValue="0">
                 BankID = #receiveOrderSearchBean.bankId#
             </isGreaterThan>
+            <isNotNull property="receiveOrderSearchBean.amount" prepend="and">
+                ReceiveAmount = #receiveOrderSearchBean.amount#
+            </isNotNull>
         </dynamic>
     </select>
 
