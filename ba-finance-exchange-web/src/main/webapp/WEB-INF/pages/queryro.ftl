@@ -136,9 +136,7 @@
                 <div class="control-group span6">
                     <label class="control-label">金额</label>
                     <div class="controls">
-                        <input type="text" id="q-amount" name="amount" class="form_value"
-                               validate="n"
-                               error_msg="n:请输入数字">
+                        <input type="text" id="q-amount" name="amount" class="form_value">
                     </div>
                 </div>
 

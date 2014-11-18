@@ -334,7 +334,13 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderSearchBean.setReceiveType(receiveType);
         receiveOrderSearchBean.setBankId(bankId);
         if (StringUtils.isNotBlank(amount)) {
-            receiveOrderSearchBean.setAmount(new BigDecimal(amount));
+            BigDecimal receiveAmount = null;
+            try {
+                receiveAmount = new BigDecimal(amount);
+            } catch (Exception e) {
+                MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.parse amount error!", e);
+            }
+            receiveOrderSearchBean.setAmount(receiveAmount);
         }
         return receiveOrderSearchBean;
     }
