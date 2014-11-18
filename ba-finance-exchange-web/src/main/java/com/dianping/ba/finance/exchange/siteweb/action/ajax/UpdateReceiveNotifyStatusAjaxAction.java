@@ -2,8 +2,11 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.auditlog.api.enums.OperationType;
+import com.dianping.ba.finance.auditlog.client.OperationLogger;
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
+import com.dianping.finance.common.util.LionConfigUtils;
 
 import java.util.Map;
 
@@ -17,7 +20,9 @@ public class UpdateReceiveNotifyStatusAjaxAction extends AjaxBaseAction {
 	 */
 	private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.web.monitor.UpdateReceiveNotifyStatusAjaxAction");
 
-	private int rnId;
+    private static final OperationLogger OPERATION_LOGGER = new OperationLogger("Exchange", "PayOrder", LionConfigUtils.getProperty("ba-finance-exchange-web.auditlog.token"));
+
+    private int rnId;
 
     private String rejectReason;
 
@@ -45,6 +50,7 @@ public class UpdateReceiveNotifyStatusAjaxAction extends AjaxBaseAction {
             return SUCCESS;
         }
         try {
+            OPERATION_LOGGER.log(OperationType.UPDATE, "确认收款通知", String.format("rnId: %s", rnId), String.valueOf(getLoginId()));
             int u = receiveNotifyService.updateReceiveNotifyStatus(rnId, ReceiveNotifyStatus.INIT, ReceiveNotifyStatus.CONFIRMED, "");
             if (u > 0) {
                 msg.put(msgKey, "更新成功");
@@ -66,6 +72,7 @@ public class UpdateReceiveNotifyStatusAjaxAction extends AjaxBaseAction {
             return SUCCESS;
         }
         try {
+            OPERATION_LOGGER.log(OperationType.UPDATE, "驳回收款通知", String.format("rnId: %s, rejectReason: %s", rnId, rejectReason), String.valueOf(getLoginId()));
             int u = receiveNotifyService.updateReceiveNotifyStatus(rnId, ReceiveNotifyStatus.INIT, ReceiveNotifyStatus.REJECT, rejectReason);
             if (u > 0) {
                 msg.put(msgKey, "更新成功");

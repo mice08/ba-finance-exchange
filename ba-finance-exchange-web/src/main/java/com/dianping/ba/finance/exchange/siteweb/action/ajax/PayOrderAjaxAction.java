@@ -2,6 +2,8 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.auditlog.api.enums.OperationType;
+import com.dianping.ba.finance.auditlog.client.OperationLogger;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
@@ -35,6 +37,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
      * 记录需要监控的业务日志
      */
     private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.web.monitor.PayOrderAjaxAction");
+
+    private static final OperationLogger OPERATION_LOGGER = new OperationLogger("Exchange", "PayOrder", LionConfigUtils.getProperty("ba-finance-exchange-web.auditlog.token"));
 
     private static final Set<Integer> ALLOWED_EXPORT_STATUS = Sets.newHashSet(PayOrderStatus.INIT.value(), PayOrderStatus.EXPORT_PAYING.value());
 
@@ -76,6 +80,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         }
         try {
             PayOrderSearchBean payOrderSearchBean = buildPayOrderSearchBean();
+            OPERATION_LOGGER.log(OperationType.QUERY, "查询付款单", payOrderSearchBean.toString(), String.valueOf(getLoginId()));
             payOrderModel = payOrderService.paginatePayOrderList(payOrderSearchBean, page, pageSize);
             payOrderModel.setRecords(buildPayOrderBeans((List<PayOrderData>) payOrderModel.getRecords()));
             totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(payOrderService.findPayOrderTotalAmount(payOrderSearchBean));
