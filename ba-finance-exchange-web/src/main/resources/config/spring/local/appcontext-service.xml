@@ -103,4 +103,8 @@
     </bean>
 
     <bean id="csvExportService" class="com.dianping.ba.finance.exchange.siteweb.services.CSVExportService"/>
+
+    <bean id="tgGuaranteeService" class="com.dianping.ba.finance.exchange.siteweb.services.TGGuaranteeService">
+        <property name="deductionRuleService" ref="deductionRuleService"/>
+    </bean>
 </beans>

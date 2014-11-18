@@ -194,6 +194,12 @@
             <result type="json"></result>
         </action>
 
+        <action name="findGuaranteeInfoByCustomerId"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.TGGuaranteeAjaxAction"
+                method="findGuaranteeInfoByCustomerId">
+            <result type="json"></result>
+        </action>
+
     </package>
 
 </struts>
