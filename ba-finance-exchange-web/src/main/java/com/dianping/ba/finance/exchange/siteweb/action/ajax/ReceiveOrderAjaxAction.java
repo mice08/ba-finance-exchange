@@ -26,6 +26,7 @@ import org.apache.struts2.ServletActionContext;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.*;
 
@@ -336,7 +337,13 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         if (StringUtils.isNotBlank(amount)) {
             BigDecimal receiveAmount = null;
             try {
-                receiveAmount = new BigDecimal(amount);
+                DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+                symbols.setGroupingSeparator(',');
+                symbols.setDecimalSeparator('.');
+                String pattern = "#,###,###,##0.0#";
+                DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+                decimalFormat.setParseBigDecimal(true);
+                receiveAmount = (BigDecimal) decimalFormat.parse(amount);
             } catch (Exception e) {
                 MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.parse amount error!", e);
             }
