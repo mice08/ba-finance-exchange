@@ -2,9 +2,7 @@ package com.dianping.ba.finance.exchange.biz.producer;
 
 import com.dianping.ba.finance.exchange.api.beans.PayOrderResultBean;
 import com.dianping.ba.finance.exchange.api.dtos.PayResultNotifyDTO;
-import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.PayResultStatus;
-import com.dianping.ba.finance.exchange.biz.constants.EventConstant;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.swallow.SwallowEventBean;
 import com.dianping.finance.common.swallow.SwallowProducer;
@@ -28,16 +26,8 @@ public class PayOrderResultNotify {
     @Log(severity = 1, logBefore = true, logAfter = true)
     public void payResultNotify(PayOrderResultBean payOrderResultBean) {
         PayResultNotifyDTO payResultNotifyDTO = buildPayResultNotifyDTO(payOrderResultBean);
-        SwallowEventBean eventBean = null;
-        if (payOrderResultBean.getBusinessType() == BusinessType.GROUP_PURCHASE.value()
-                || payOrderResultBean.getBusinessType() == BusinessType.SHAN_HUI.value()) {
-            eventBean = new SwallowEventBean(EXCHANGE_PAY_RESULT_EVENT_KEY, payResultNotifyDTO);
-        } else if (payOrderResultBean.getBusinessType() == BusinessType.EXPENSE.value()) {
-            eventBean = new SwallowEventBean(EventConstant.EXPENSE_PAY_RESULT_EVENT_KEY, payResultNotifyDTO);
-        }
-        if (eventBean != null) {
-            payOrderProducer.fireSwallowEvent(eventBean);
-        }
+        SwallowEventBean eventBean = new SwallowEventBean(EXCHANGE_PAY_RESULT_EVENT_KEY, payResultNotifyDTO);
+        payOrderProducer.fireSwallowEvent(eventBean);
     }
 
     private PayResultNotifyDTO buildPayResultNotifyDTO(PayOrderResultBean payOrderResultBean) {

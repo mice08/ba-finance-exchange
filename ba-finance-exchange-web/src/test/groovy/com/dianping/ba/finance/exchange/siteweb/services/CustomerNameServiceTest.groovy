@@ -75,6 +75,8 @@ class CustomerNameServiceTest extends Specification {
         BusinessType.SHAN_HUI.value()       | 87871      | "客户名称87871"
         BusinessType.EXPENSE.value()        | 87871      | "客户名称87871"
         BusinessType.PREPAID_CARD.value()   | 87872      | null
+        BusinessType.BOOKING.value()        | 87871      | "客户名称87871"
+
     }
 
     @Unroll

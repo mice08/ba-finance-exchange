@@ -70,8 +70,23 @@ public class CustomerNameService {
         fetchADCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
         // 费用客户名
         fetchEPCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
-
+        // 获取预订的客户名称
+        fetchBKCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
         return customerIdNameMap;
+    }
+
+    private void fetchBKCustomerName(Multimap<Integer, Integer> businessTypeCustomerIdMMap, Map<Integer, String> customerIdNameMap, int loginId) {
+        List<Integer> bkCustomerIdList = Lists.newLinkedList(businessTypeCustomerIdMMap.get(BusinessType.BOOKING.value()));
+        if (CollectionUtils.isEmpty(bkCustomerIdList)) {
+            return;
+        }
+        List<CustomerLite> customerLiteList = customerInfoService.getCustomerLites(bkCustomerIdList, loginId);
+        if (CollectionUtils.isEmpty(customerLiteList)) {
+            return;
+        }
+        for (CustomerLite customerLite : customerLiteList) {
+            customerIdNameMap.put(customerLite.getCustomerID(), customerLite.getCustomerName());
+        }
     }
 
     private void fetchADCustomerName(Multimap<Integer, Integer> businessTypeCustomerIdMMap, Map<Integer, String> customerIdNameMap, int loginId) {
@@ -229,7 +244,25 @@ public class CustomerNameService {
         if (businessType == BusinessType.EXPENSE.value()) {
             return fetchEPCustomerSuggestion(customerName, maxSize, loginId);
         }
+        if (businessType == BusinessType.BOOKING.value()) {
+            return fetchBKCustomerSuggestion(customerName, maxSize, loginId);
+        }
         return Collections.emptyList();
+    }
+
+    private List<CustomerNameSuggestionBean> fetchBKCustomerSuggestion(String customerName, int maxSize, int loginId) {
+        List<CustomerShopLite> customerList = customerInfoService.searchByCustomerAndShopInfo(customerName, null, true, 0, maxSize).getY();
+        if (CollectionUtils.isEmpty(customerList)) {
+            return Collections.emptyList();
+        }
+        List<CustomerNameSuggestionBean> suggestionBeanList = Lists.newLinkedList();
+        for (CustomerShopLite customer : customerList) {
+            CustomerNameSuggestionBean suggestionBean = new CustomerNameSuggestionBean();
+            suggestionBean.setCustomerId(customer.getCustomerID());
+            suggestionBean.setCustomerName(customer.getCustomreName());
+            suggestionBeanList.add(suggestionBean);
+        }
+        return suggestionBeanList;
     }
 
 
