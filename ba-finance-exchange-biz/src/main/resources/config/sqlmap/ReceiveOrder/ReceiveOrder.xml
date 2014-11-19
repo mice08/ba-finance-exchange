@@ -555,6 +555,9 @@
                 <isGreaterThan property="receiveOrderSearchBean.bankId" prepend="and" compareValue="0">
                     ro.BankID = #receiveOrderSearchBean.bankId#
                 </isGreaterThan>
+                <isNotNull property="receiveOrderSearchBean.amount" prepend="and">
+                    ro.ReceiveAmount = #receiveOrderSearchBean.amount#
+                </isNotNull>
             </dynamic>
             ORDER BY
             AddTime DESC,
