@@ -79,9 +79,9 @@
         <property name="currency" value="人民币"/>
         <property name="payerBranchBank" value="上海"/>
         <property name="settleType" value="普通"/>
-        <property name="payerAccountNo" value="121909245310704"/>
+        <property name="payerAccountNo" value="121912651310702"/>
         <property name="use" value="大众点评网"/>
-        <property name="businessSummary" value="预约预订业务"/>
+        <property name="businessSummary" value="大众点评-预约预订"/>
     </bean>
 
 
