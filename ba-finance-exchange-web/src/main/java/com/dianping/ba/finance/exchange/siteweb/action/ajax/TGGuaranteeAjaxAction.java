@@ -7,8 +7,6 @@ import com.dianping.ba.finance.auditlog.client.OperationLogger;
 import com.dianping.ba.finance.exchange.siteweb.beans.GuaranteeInfoBean;
 import com.dianping.ba.finance.exchange.siteweb.services.TGGuaranteeService;
 import com.dianping.finance.common.util.LionConfigUtils;
-import com.google.common.collect.Maps;
-import org.apache.commons.collections.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -50,7 +48,7 @@ public class TGGuaranteeAjaxAction extends AjaxBaseAction {
             OPERATION_LOGGER.log(OperationType.QUERY, "查询某个客户的保底单", String.format("CustomerId: %s", customerId), String.valueOf(getLoginId()));
             List<GuaranteeInfoBean> guaranteeInfoBeanList = tgGuaranteeService.getGuaranteeByCustomer(customerId);
 
-            msg.put("guarantee", buildGuaranteeInfo(guaranteeInfoBeanList));
+            msg.put("guarantee", guaranteeInfoBeanList);
             code = SUCCESS_CODE;
             return SUCCESS;
 		} catch (Exception e) {
@@ -60,16 +58,16 @@ public class TGGuaranteeAjaxAction extends AjaxBaseAction {
 		}
 	}
 
-    private Map<String, String> buildGuaranteeInfo(List<GuaranteeInfoBean> guaranteeInfoBeanList) {
-        if (CollectionUtils.isEmpty(guaranteeInfoBeanList)) {
-            return Collections.emptyMap();
-        }
-        Map<String, String> guaranteeInfoMap = Maps.newHashMap();
-        for (GuaranteeInfoBean guaranteeInfoBean : guaranteeInfoBeanList) {
-            guaranteeInfoMap.put(guaranteeInfoBean.getGuaranteeBillId(), String.format("%s(未归还金额:%s)", guaranteeInfoBean.getGuaranteeBillId(), guaranteeInfoBean.getLeftAmount()));
-        }
-        return guaranteeInfoMap;
-    }
+//    private Map<String, String> buildGuaranteeInfo(List<GuaranteeInfoBean> guaranteeInfoBeanList) {
+//        if (CollectionUtils.isEmpty(guaranteeInfoBeanList)) {
+//            return Collections.emptyMap();
+//        }
+//        Map<String, String> guaranteeInfoMap = Maps.newHashMap();
+//        for (GuaranteeInfoBean guaranteeInfoBean : guaranteeInfoBeanList) {
+//            guaranteeInfoMap.put(guaranteeInfoBean.getGuaranteeBillId(), String.format("%s(未归还金额:%s)", guaranteeInfoBean.getGuaranteeBillId(), guaranteeInfoBean.getLeftAmount()));
+//        }
+//        return guaranteeInfoMap;
+//    }
 
     @Override
     public int getCode() {
