@@ -203,6 +203,9 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     }
 
     private BigDecimal parseAmount(String amountStr) {
+        if (StringUtils.isBlank(amountStr)) {
+            return null;
+        }
         try {
             DecimalFormatSymbols symbols = new DecimalFormatSymbols();
             symbols.setGroupingSeparator(',');
