@@ -25,6 +25,7 @@ import org.apache.struts2.ServletActionContext;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.*;
 
@@ -71,6 +72,11 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     private Map<String, PayTemplateService> payTemplateServiceMap;
 
     private CustomerNameService customerNameService;
+
+    private String startAmount;
+
+    private String endAmount;
+
     @Override
     protected void jsonExecute() throws Exception {
         if (businessType == BusinessType.DEFAULT.value()) {
@@ -188,10 +194,27 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         payOrderSearchBean.setBusinessType(businessType);
         payOrderSearchBean.setBeginTime(beginTime);
         payOrderSearchBean.setEndTime(endTime);
+        payOrderSearchBean.setStartAmount(parseAmount(startAmount));
+        payOrderSearchBean.setEndAmount(parseAmount(endAmount));
         if (StringUtils.isNotBlank(poIds)) {
             payOrderSearchBean.setPoIdList(com.dianping.finance.common.util.StringUtils.splitStringToList(poIds, ","));
         }
         return payOrderSearchBean;
+    }
+
+    private BigDecimal parseAmount(String amountStr) {
+        try {
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+            symbols.setGroupingSeparator(',');
+            symbols.setDecimalSeparator('.');
+            String pattern = "#,###,###,##0.0#";
+            DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+            decimalFormat.setParseBigDecimal(true);
+            return (BigDecimal) decimalFormat.parse(amountStr);
+        } catch (Exception e) {
+            MONITOR_LOGGER.error("severity=[1] PayOrderAjaxAction parse amount error!", e);
+        }
+        return null;
     }
 
     private List<PayOrderBean> buildPayOrderBeans(List<PayOrderData> payOrderDataList) {
@@ -334,5 +357,13 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     public void setPoIds(String poIds) {
         this.poIds = poIds;
+    }
+
+    public void setStartAmount(String startAmount) {
+        this.startAmount = startAmount;
+    }
+
+    public void setEndAmount(String endAmount) {
+        this.endAmount = endAmount;
     }
 }

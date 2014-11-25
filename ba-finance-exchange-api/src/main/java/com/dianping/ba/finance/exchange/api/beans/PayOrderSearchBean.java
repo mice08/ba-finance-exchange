@@ -1,6 +1,7 @@
 package com.dianping.ba.finance.exchange.api.beans;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,8 @@ public class PayOrderSearchBean implements Serializable {
     private Date endTime;
     private int status;
     private List<Integer> poIdList;
+    private BigDecimal startAmount;
+    private BigDecimal endAmount;
 
     public int getBusinessType() {
         return businessType;
@@ -55,6 +58,22 @@ public class PayOrderSearchBean implements Serializable {
         this.endTime = endTime;
     }
 
+    public BigDecimal getStartAmount() {
+        return startAmount;
+    }
+
+    public void setStartAmount(BigDecimal startAmount) {
+        this.startAmount = startAmount;
+    }
+
+    public BigDecimal getEndAmount() {
+        return endAmount;
+    }
+
+    public void setEndAmount(BigDecimal endAmount) {
+        this.endAmount = endAmount;
+    }
+
     @Override
     public String toString() {
         return "PayOrderSearchBean{" +
@@ -63,6 +82,8 @@ public class PayOrderSearchBean implements Serializable {
                 ", endTime=" + endTime +
                 ", status=" + status +
                 ", poIdList=" + poIdList +
+                ", startAmount=" + startAmount +
+                ", endAmount=" + endAmount +
                 '}';
     }
 }

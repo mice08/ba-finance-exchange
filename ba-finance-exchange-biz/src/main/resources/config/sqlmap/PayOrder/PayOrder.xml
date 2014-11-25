@@ -198,6 +198,12 @@
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
             </isGreaterThan>
+            <isNotNull property="payOrderSearchBean.startAmount" prepend="and">
+                PayAmount &gt;= #payOrderSearchBean.startAmount#
+            </isNotNull>
+            <isNotNull property="payOrderSearchBean.endAmount" prepend="and">
+                PayAmount &lt;= #payOrderSearchBean.endAmount#
+            </isNotNull>
         </dynamic>
         ORDER BY
         AddTime DESC,
@@ -229,6 +235,12 @@
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
             </isGreaterThan>
+            <isNotNull property="payOrderSearchBean.startAmount" prepend="and">
+                PayAmount &gt;= #payOrderSearchBean.startAmount#
+            </isNotNull>
+            <isNotNull property="payOrderSearchBean.endAmount" prepend="and">
+                PayAmount &lt;= #payOrderSearchBean.endAmount#
+            </isNotNull>
         </dynamic>
     </select>
 
@@ -258,6 +270,12 @@
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
             </isGreaterThan>
+            <isNotNull property="payOrderSearchBean.startAmount" prepend="and">
+                PayAmount &gt;= #payOrderSearchBean.startAmount#
+            </isNotNull>
+            <isNotNull property="payOrderSearchBean.endAmount" prepend="and">
+                PayAmount &lt;= #payOrderSearchBean.endAmount#
+            </isNotNull>
         </dynamic>
     </select>
 
@@ -309,6 +327,12 @@
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
             </isGreaterThan>
+            <isNotNull property="payOrderSearchBean.startAmount" prepend="and">
+                PayAmount &gt;= #payOrderSearchBean.startAmount#
+            </isNotNull>
+            <isNotNull property="payOrderSearchBean.endAmount" prepend="and">
+                PayAmount &lt;= #payOrderSearchBean.endAmount#
+            </isNotNull>
         </dynamic>
     </select>
 

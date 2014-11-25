@@ -142,4 +142,15 @@ public class PayOrderDaoTest {
         int result = payOrderDao.updateCustomerId(oldCustomerId, newCustomerId);
         Assert.assertTrue(result > 0);
     }
+
+
+    @Test
+    public void testPaginatePayOrderListByAmount() {
+        PayOrderSearchBean payOrderSearchBean = new PayOrderSearchBean();
+        payOrderSearchBean.setBusinessType(1);
+        payOrderSearchBean.setStartAmount(new BigDecimal(100.00));
+        payOrderSearchBean.setEndAmount(new BigDecimal(101.00));
+        PageModel pageModel = payOrderDao.paginatePayOrderList(payOrderSearchBean, 1, 20);
+        Assert.assertNotNull(pageModel);
+    }
 }
