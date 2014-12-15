@@ -50,6 +50,7 @@ public class OptionConstant {
             put(BusinessType.BOOKING.value(), "预约预订");
             put(BusinessType.PREPAID_CARD.value(), "储值卡");
             put(BusinessType.EXPENSE.value(), "费用");
+            put(BusinessType.SHAN_FU.value(), "闪付");
         }
     };
 
