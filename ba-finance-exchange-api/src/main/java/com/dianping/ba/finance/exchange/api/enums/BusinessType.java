@@ -40,7 +40,12 @@ public enum BusinessType {
     /**
      * 费用
      */
-    EXPENSE(7);
+    EXPENSE(7),
+
+    /**
+     * 闪付
+     */
+    SHAN_FU(8);
 
     private int businessType;
 
@@ -65,6 +70,8 @@ public enum BusinessType {
                 return "闪惠";
             case 7:
                 return "费用";
+            case 8:
+                return "闪付";
             default:
                 return "默认";
         }
@@ -86,6 +93,8 @@ public enum BusinessType {
                 return SHAN_HUI;
             case 7:
                 return EXPENSE;
+            case 8:
+                return SHAN_FU;
             default:
                 return DEFAULT;
         }
@@ -105,6 +114,7 @@ public enum BusinessType {
 				return ADVERTISEMENT;
             //收款的业务类型，暂时没有闪惠
             //收款的业务类型，暂时没有费用
+            //收款的业务类型，暂时没有闪付
 			default:
 				return DEFAULT;
 		}
