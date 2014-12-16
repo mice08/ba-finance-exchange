@@ -35,6 +35,7 @@
                 <entry key="2" value-ref="bookingExportInfoBean"/>
                 <entry key="7" value-ref="expenseExportInfoBean"/>
                 <entry key="6" value-ref="shanhuiExportInfoBean"/>
+                <entry key="8" value-ref="shanfuExportInfoBean"/>
             </map>
         </property>
     </bean>
@@ -60,6 +61,17 @@
         <property name="payerAccountNo" value="121909245310505"/>
         <property name="use" value="大众点评网闪惠"/>
         <property name="businessSummary" value="大众点评网闪惠"/>
+    </bean>
+
+    <bean id="shanfuExportInfoBean"
+          class="com.dianping.ba.finance.exchange.siteweb.beans.BusinessExportInfoBean">
+        <property name="businessType" value="SHAN_HUI"/>
+        <property name="currency" value="人民币"/>
+        <property name="payerBranchBank" value="上海"/>
+        <property name="settleType" value="普通"/>
+        <property name="payerAccountNo" value="121909245310505"/>
+        <property name="use" value="大众点评网闪付"/>
+        <property name="businessSummary" value="大众点评网闪付"/>
     </bean>
 
     <bean id="expenseExportInfoBean"
