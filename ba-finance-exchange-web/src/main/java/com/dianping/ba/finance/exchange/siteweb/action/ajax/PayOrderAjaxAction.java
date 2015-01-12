@@ -16,6 +16,7 @@ import com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.util.ConvertUtils;
+import com.dianping.finance.common.util.JsonUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
@@ -77,6 +78,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     private String endAmount;
 
+    private int bankId;
+
     @Override
     protected void jsonExecute() throws Exception {
         if (businessType == BusinessType.DEFAULT.value()) {
@@ -108,7 +111,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
                 MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderExportForPay No PayOrder found! searchBean=%s", searchBean));
                 return null;
             }
-			List<PayOrderExportBean> beanList = buildPayOrderExportBeanList(dataList);
+			List<PayOrderExportBean> beanList = buildPayOrderExportBeanList(dataList, bankId);
             if (CollectionUtils.isEmpty(beanList)) {
                 MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderExportForPay No matched PayOrderBean found! searchBean=%s", searchBean));
                 return null;
@@ -157,14 +160,23 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 		return ServletActionContext.getResponse();
 	}
 
-	private List<PayOrderExportBean> buildPayOrderExportBeanList(List<PayOrderData> payOrderDataList) throws Exception {
+	private List<PayOrderExportBean> buildPayOrderExportBeanList(List<PayOrderData> payOrderDataList, int bankId) throws Exception {
 		if (CollectionUtils.isEmpty(payOrderDataList)) {
 			return Collections.emptyList();
 		}
 		List orderExportBeanList = new ArrayList<PayOrderExportBean>();
+        String allBanks = LionConfigUtils.getProperty("ba-finance-exchange-web.payBankInfo", "");
+        Map<String, Object> bankNoMap = JsonUtils.fromStrToMap(allBanks);
+        String key = String.valueOf(businessType);
+        String bankAccountNo = null;
+        if(bankId > 0 && bankNoMap.containsKey(key)) {
+            List<String> bankInfoList = (List<String>) bankNoMap.get(key);
+            String bankAccountInfo = bankInfoList.get(bankId-1);
+            bankAccountNo = (bankAccountInfo.split("\\|"))[0];
+        }
 		for (PayOrderData order : payOrderDataList){
 			if (orderCanExport(order)){
-				PayOrderExportBean exportBean = buildPayOrderExportBean(order);
+				PayOrderExportBean exportBean = buildPayOrderExportBean(order, bankAccountNo);
 				orderExportBeanList.add(exportBean);
 			}
 		}
@@ -177,8 +189,9 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
                 ALLOWED_EXPORT_STATUS.contains(order.getStatus());
 	}
 
-	private PayOrderExportBean buildPayOrderExportBean(PayOrderData order) throws Exception {
+	private PayOrderExportBean buildPayOrderExportBean(PayOrderData order, String payBankAccountNo) throws Exception {
 		PayOrderExportBean exportBean = ConvertUtils.copy(order, PayOrderExportBean.class);
+        exportBean.setPayBankAccountNo(payBankAccountNo);
         exportBean.setPayCode(String.valueOf(order.getPoId()));
 		return exportBean;
 	}
@@ -368,5 +381,9 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     public void setEndAmount(String endAmount) {
         this.endAmount = endAmount;
+    }
+
+    public void setBankId(int bankId) {
+        this.bankId = bankId;
     }
 }

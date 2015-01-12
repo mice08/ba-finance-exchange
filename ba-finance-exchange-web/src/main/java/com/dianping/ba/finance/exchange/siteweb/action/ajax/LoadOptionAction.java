@@ -8,9 +8,12 @@ import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
 import com.dianping.ba.finance.exchange.siteweb.constants.OptionConstant;
 import com.dianping.ba.finance.exchange.siteweb.constants.PermissionConstant;
+import com.dianping.finance.common.util.JsonUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.finance.gabriel.impl.GabrielService;
+import com.dianping.search.common.json.JsonUtil;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -223,6 +226,23 @@ public class LoadOptionAction extends AjaxBaseAction {
                 BusinessType businessTypeEnum = BusinessType.valueOf(receiveBankData.getBusinessType());
                 String name = String.format("%s(%s)", companyIDName.getCompanyName(), businessTypeEnum.toString());
                 option.put(receiveBankData.getBankId(), name);
+            }
+        }
+        msg.put("option", option);
+        code = SUCCESS_CODE;
+        return SUCCESS;
+    }
+
+    public String loadAllPayerBankOption() throws IOException {
+        int index = 0;
+        option.put(index, "请选择付款银行账户");
+        String allBanks = LionConfigUtils.getProperty("ba-finance-exchange-web.payBankInfo", "");
+        Map<String, Object> bankNoMap = JsonUtils.fromStrToMap(allBanks);
+        String key = String.valueOf(businessType);
+        if(bankNoMap.containsKey(key)) {
+            List<String> bankInfoList = (List<String>) bankNoMap.get(key);
+            for(String bankInfo : bankInfoList) {
+                option.put(++index, bankInfo);
             }
         }
         msg.put("option", option);
