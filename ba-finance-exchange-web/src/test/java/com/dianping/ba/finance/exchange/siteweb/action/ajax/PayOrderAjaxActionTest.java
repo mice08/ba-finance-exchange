@@ -104,7 +104,7 @@ public class PayOrderAjaxActionTest {
 
 		Assert.assertNull(actual);
 		verify(payOrderServiceMock, atLeastOnce()).updatePayOrderToPaying(anyList(), anyInt());
-		verify(payTemplateServiceMock, atLeastOnce()).createExcelAndDownload(any(HttpServletResponse.class), anyString(), anyList());
+		verify(payTemplateServiceMock, atLeastOnce()).createExcelAndDownload(any(HttpServletResponse.class), anyString(), anyList(), anyInt());
 	}
 	@Test
 
@@ -122,7 +122,7 @@ public class PayOrderAjaxActionTest {
 
 		Assert.assertNull(actual);
 		verify(payOrderServiceMock, atLeastOnce()).updatePayOrderToPaying(anyList(), anyInt());
-		verify(payTemplateServiceMock, atLeastOnce()).createExcelAndDownload(any(HttpServletResponse.class), anyString(), anyList());
+		verify(payTemplateServiceMock, atLeastOnce()).createExcelAndDownload(any(HttpServletResponse.class), anyString(), anyList(), anyInt());
 	}
 
 	private class PayOrderAjaxAction4Test extends PayOrderAjaxAction {

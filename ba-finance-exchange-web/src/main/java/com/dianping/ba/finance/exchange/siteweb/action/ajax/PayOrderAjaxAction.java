@@ -111,7 +111,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
                 MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderExportForPay No PayOrder found! searchBean=%s", searchBean));
                 return null;
             }
-			List<PayOrderExportBean> beanList = buildPayOrderExportBeanList(dataList, bankId);
+			List<PayOrderExportBean> beanList = buildPayOrderExportBeanList(dataList);
             if (CollectionUtils.isEmpty(beanList)) {
                 MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderExportForPay No matched PayOrderBean found! searchBean=%s", searchBean));
                 return null;
@@ -143,7 +143,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         if (payTemplateService == null) {
             throw new RuntimeException("不支持该银行的支付模板!exportBank=" + exportBank);
         }
-        payTemplateService.createExcelAndDownload(response, "付款单", beanList);
+        payTemplateService.createExcelAndDownload(response, "付款单", beanList, bankId);
 	}
 
     private String selectExportBank(PayOrderExportBean payOrderExportBean) {
@@ -160,23 +160,14 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 		return ServletActionContext.getResponse();
 	}
 
-	private List<PayOrderExportBean> buildPayOrderExportBeanList(List<PayOrderData> payOrderDataList, int bankId) throws Exception {
+	private List<PayOrderExportBean> buildPayOrderExportBeanList(List<PayOrderData> payOrderDataList) throws Exception {
 		if (CollectionUtils.isEmpty(payOrderDataList)) {
 			return Collections.emptyList();
 		}
 		List orderExportBeanList = new ArrayList<PayOrderExportBean>();
-        String allBanks = LionConfigUtils.getProperty("ba-finance-exchange-web.payBankInfo", "");
-        Map<String, Object> bankNoMap = JsonUtils.fromStrToMap(allBanks);
-        String key = String.valueOf(businessType);
-        String bankAccountNo = null;
-        if(bankId > 0 && bankNoMap.containsKey(key)) {
-            List<String> bankInfoList = (List<String>) bankNoMap.get(key);
-            String bankAccountInfo = bankInfoList.get(bankId-1);
-            bankAccountNo = (bankAccountInfo.split("\\|"))[0];
-        }
 		for (PayOrderData order : payOrderDataList){
 			if (orderCanExport(order)){
-				PayOrderExportBean exportBean = buildPayOrderExportBean(order, bankAccountNo);
+				PayOrderExportBean exportBean = buildPayOrderExportBean(order);
 				orderExportBeanList.add(exportBean);
 			}
 		}
@@ -189,9 +180,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
                 ALLOWED_EXPORT_STATUS.contains(order.getStatus());
 	}
 
-	private PayOrderExportBean buildPayOrderExportBean(PayOrderData order, String payBankAccountNo) throws Exception {
+	private PayOrderExportBean buildPayOrderExportBean(PayOrderData order) throws Exception {
 		PayOrderExportBean exportBean = ConvertUtils.copy(order, PayOrderExportBean.class);
-        exportBean.setPayBankAccountNo(payBankAccountNo);
         exportBean.setPayCode(String.valueOf(order.getPoId()));
 		return exportBean;
 	}
