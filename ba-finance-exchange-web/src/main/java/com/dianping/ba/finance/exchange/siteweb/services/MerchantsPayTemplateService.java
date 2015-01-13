@@ -6,6 +6,7 @@ import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
+import com.dianping.finance.common.util.JsonUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.finance.common.util.StringUtils;
 import com.google.common.collect.Lists;
@@ -115,16 +116,19 @@ public class MerchantsPayTemplateService implements PayTemplateService {
     @Log(severity = 1)
     @ReturnDefault
     @Override
-    public void createExcelAndDownload(HttpServletResponse response, String fileName, List<PayOrderExportBean> exportBeanList) throws Exception {
-        List<MerchantsTemplateBean> merchantsTemplateBeanLinkedList = buildToMerchantsTemplateBeanLinkedList(exportBeanList);
+    public void createExcelAndDownload(HttpServletResponse response, String fileName, List<PayOrderExportBean> exportBeanList, int payBankId) throws Exception {
+        List<MerchantsTemplateBean> merchantsTemplateBeanLinkedList = buildToMerchantsTemplateBeanLinkedList(exportBeanList, payBankId);
         initResponse(response, fileName);
         OutputStream os = response.getOutputStream();
         exportExcel(os, merchantsTemplateBeanLinkedList);
     }
 
-    private List<MerchantsTemplateBean> buildToMerchantsTemplateBeanLinkedList(List<PayOrderExportBean> exportBeanList) {
+    private List<MerchantsTemplateBean> buildToMerchantsTemplateBeanLinkedList(List<PayOrderExportBean> exportBeanList, int payBankId) throws IOException {
         String todayDate = DateUtil.formatDateToString(new Date(), "yyyyMMdd");
         int maxColumnLen = Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-web.merchants.maxColumnLen", "29"));
+
+        String allBanks = LionConfigUtils.getProperty("ba-finance-exchange-web.payBankInfo", "");
+        Map<String, Object> bankNoMap = JsonUtils.fromStrToMap(allBanks);
 
         List<MerchantsTemplateBean> merchantsTemplateBeanLinkedList = Lists.newLinkedList();
         for (PayOrderExportBean exportBean : exportBeanList) {
@@ -145,12 +149,6 @@ public class MerchantsPayTemplateService implements PayTemplateService {
                 templateBean.setCurrency(exportInfoBean.getCurrency());
                 templateBean.setDebitSideBankName(exportInfoBean.getDebitSideBankName());
                 templateBean.setDebitSideBankNo(exportInfoBean.getDebitSideBankNo());
-
-                if(StringUtil.isBlank(templateBean.getPayerAccountNo())) {
-                    templateBean.setPayerAccountNo(exportInfoBean.getPayerAccountNo());
-                }
-
-                templateBean.setPayerBranchBank(exportInfoBean.getPayerBranchBank());
                 templateBean.setSettleType(exportInfoBean.getSettleType());
 
                 String use = exportInfoBean.getUse() == null ? "" : exportInfoBean.getUse();
@@ -160,7 +158,14 @@ public class MerchantsPayTemplateService implements PayTemplateService {
                 templateBean.setUse(subString(use + memo, maxColumnLen));
                 templateBean.setBusinessSummary(subString(summary + memo, maxColumnLen));
             }
-
+            String key = String.valueOf(exportBean.getBusinessType());
+            if(payBankId > 0 && bankNoMap.containsKey(key)) {
+                List<String> bankInfoList = (List<String>) bankNoMap.get(key);
+                String bankAccountInfo = bankInfoList.get(payBankId-1);
+                String[] temp = bankAccountInfo.split("\\|");
+                templateBean.setPayerAccountNo(temp[0]);
+                templateBean.setPayerBranchBank(temp[2]);
+            }
 
             merchantsTemplateBeanLinkedList.add(templateBean);
         }

@@ -50,6 +50,37 @@
         </button>
     </div>
 </div>
+<div id="bank-select" class="modal hide fade"
+     style="z-index:50;"
+     tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header section-title">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 id="myModalLabel">选择银行账号</h4>
+    </div>
+    <div class="modal-body">
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <label class="control-label">付款银行账户</label>
+                    <div class="">
+                        <select id="payer-bankId" name="bankId" class="form_value"
+                                validate="ne[0]" style="width:100%"
+                                error_msg="ne[0]:请选择付款银行账户">
+                            <option value="0">请选择付款银行账户</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default btn-fs-default btn-fs-xs" data-dismiss="modal" aria-hidden="true">取消
+        </button>
+        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-select">确定</button>
+    </div>
+</div>
 
 <div id="relation-result" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-header section-title">
@@ -175,7 +206,7 @@
                     <span class="number-char totalAmount">0</span> 元
                     &nbsp;&nbsp;
                     <a id="order-export" class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
-                       href="###" style="display: none">
+                       href="#bank-select" data-toggle="modal" style="display: none">
                         <span class="glyphicon glyphicon-save"></span>导出支付</a>
                     &nbsp;&nbsp;
                     <a id="pay-success" class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton" href="#"

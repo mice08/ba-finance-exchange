@@ -149,7 +149,7 @@ public class MinshengPayTemplateService implements PayTemplateService {
     @Log(severity = 1)
     @ReturnDefault
     @Override
-    public void createExcelAndDownload(HttpServletResponse response, String fileName, List<PayOrderExportBean> exportBeanList) throws Exception {
+    public void createExcelAndDownload(HttpServletResponse response, String fileName, List<PayOrderExportBean> exportBeanList, int payBankId) throws Exception {
         List<CommonTemplateBean> commonTemplateBeanList = Lists.newLinkedList();
         List<SameBankPersonalTemplateBean> sameBankPersonalTemplateBeanList = Lists.newLinkedList();
         // 按照账户类型分组

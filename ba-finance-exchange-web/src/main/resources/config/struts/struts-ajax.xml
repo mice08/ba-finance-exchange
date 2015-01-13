@@ -95,6 +95,12 @@
             <result type="json"></result>
         </action>
 
+        <action name="loadAllPayerBankOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadAllPayerBankOption">
+            <result type="json"></result>
+        </action>
+
         <action name="loadReceiveOrderPayChannelOption"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
                 method="loadReceiveOrderPayChannelOption">

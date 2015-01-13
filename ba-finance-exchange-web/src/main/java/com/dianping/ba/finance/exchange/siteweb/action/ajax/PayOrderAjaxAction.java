@@ -16,6 +16,7 @@ import com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.util.ConvertUtils;
+import com.dianping.finance.common.util.JsonUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
@@ -76,6 +77,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     private String startAmount;
 
     private String endAmount;
+
+    private int bankId;
 
     @Override
     protected void jsonExecute() throws Exception {
@@ -140,7 +143,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         if (payTemplateService == null) {
             throw new RuntimeException("不支持该银行的支付模板!exportBank=" + exportBank);
         }
-        payTemplateService.createExcelAndDownload(response, "付款单", beanList);
+        payTemplateService.createExcelAndDownload(response, "付款单", beanList, bankId);
 	}
 
     private String selectExportBank(PayOrderExportBean payOrderExportBean) {
@@ -368,5 +371,9 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     public void setEndAmount(String endAmount) {
         this.endAmount = endAmount;
+    }
+
+    public void setBankId(int bankId) {
+        this.bankId = bankId;
     }
 }
