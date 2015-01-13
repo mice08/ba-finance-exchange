@@ -149,12 +149,6 @@ public class MerchantsPayTemplateService implements PayTemplateService {
                 templateBean.setCurrency(exportInfoBean.getCurrency());
                 templateBean.setDebitSideBankName(exportInfoBean.getDebitSideBankName());
                 templateBean.setDebitSideBankNo(exportInfoBean.getDebitSideBankNo());
-
-//                if(StringUtil.isBlank(templateBean.getPayerAccountNo())) {
-//                    templateBean.setPayerAccountNo(exportInfoBean.getPayerAccountNo());
-//                }
-//
-//                templateBean.setPayerBranchBank(exportInfoBean.getPayerBranchBank());
                 templateBean.setSettleType(exportInfoBean.getSettleType());
 
                 String use = exportInfoBean.getUse() == null ? "" : exportInfoBean.getUse();
