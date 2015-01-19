@@ -241,6 +241,11 @@ public class LoadOptionAction extends AjaxBaseAction {
         String key = String.valueOf(businessType);
         if(bankNoMap.containsKey(key)) {
             List<String> bankInfoList = (List<String>) bankNoMap.get(key);
+
+            if(bankInfoList.size() == 1) {
+                option.remove(0);
+            }
+
             for(String bankInfo : bankInfoList) {
                 option.put(++index, bankInfo);
             }
