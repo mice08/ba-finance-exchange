@@ -46,6 +46,7 @@ public class OptionConstant {
         {
             put(BusinessType.DEFAULT.value(), "请选择业务类型");
             put(BusinessType.GROUP_PURCHASE.value(), "团购");
+            put(BusinessType.ADVERTISEMENT.value(), "广告");
             put(BusinessType.SHAN_HUI.value(), "闪惠");
             put(BusinessType.BOOKING.value(), "预约预订");
             put(BusinessType.PREPAID_CARD.value(), "储值卡");
