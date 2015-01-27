@@ -45,7 +45,12 @@ public enum BusinessType {
     /**
      * 闪付
      */
-    SHAN_FU(8);
+    SHAN_FU(8),
+
+    /**
+     * 电影
+     */
+    MOVIE(9);
 
     private int businessType;
 
@@ -72,6 +77,8 @@ public enum BusinessType {
                 return "费用";
             case 8:
                 return "闪付";
+            case 9:
+                return "电影";
             default:
                 return "默认";
         }
@@ -95,6 +102,8 @@ public enum BusinessType {
                 return EXPENSE;
             case 8:
                 return SHAN_FU;
+            case 9:
+                return MOVIE;
             default:
                 return DEFAULT;
         }

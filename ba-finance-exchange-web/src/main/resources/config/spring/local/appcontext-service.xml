@@ -37,6 +37,7 @@
                 <entry key="6" value-ref="shanhuiExportInfoBean"/>
                 <entry key="8" value-ref="shanfuExportInfoBean"/>
                 <entry key="5" value-ref="adExportInfoBean"/>
+                <entry key="9" value-ref="mvExportInfoBean"/>
             </map>
         </property>
     </bean>
@@ -106,6 +107,17 @@
         <property name="payerAccountNo" value="121912651310702"/>
         <property name="use" value="大众点评网"/>
         <property name="businessSummary" value="大众点评-推广"/>
+    </bean>
+
+    <bean id="mvExportInfoBean"
+          class="com.dianping.ba.finance.exchange.siteweb.beans.BusinessExportInfoBean">
+        <property name="businessType" value="MOVIE"/>
+        <property name="currency" value="人民币"/>
+        <property name="payerBranchBank" value="上海"/>
+        <property name="settleType" value="普通"/>
+        <property name="payerAccountNo" value="121912651310702"/>
+        <property name="use" value="大众点评网"/>
+        <property name="businessSummary" value="大众点评-电影"/>
     </bean>
 
 

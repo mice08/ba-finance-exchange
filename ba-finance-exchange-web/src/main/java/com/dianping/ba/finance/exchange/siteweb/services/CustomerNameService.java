@@ -74,9 +74,24 @@ public class CustomerNameService {
         fetchEPCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
         // 获取预订的客户名称
         fetchBKCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
+        // 获取电影的客户名称
+        fetchMVCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
         return customerIdNameMap;
     }
 
+    private void fetchMVCustomerName(Multimap<Integer, Integer> businessTypeCustomerIdMMap, Map<Integer, String> customerIdNameMap, int loginId) {
+        List<Integer> bkCustomerIdList = Lists.newLinkedList(businessTypeCustomerIdMMap.get(BusinessType.MOVIE.value()));
+        if (CollectionUtils.isEmpty(bkCustomerIdList)) {
+            return;
+        }
+        List<CustomerLite> customerLiteList = customerInfoService.getCustomerLites(bkCustomerIdList, loginId);
+        if (CollectionUtils.isEmpty(customerLiteList)) {
+            return;
+        }
+        for (CustomerLite customerLite : customerLiteList) {
+            customerIdNameMap.put(customerLite.getCustomerID(), customerLite.getCustomerName());
+        }
+    }
 
 
     private void fetchBKCustomerName(Multimap<Integer, Integer> businessTypeCustomerIdMMap, Map<Integer, String> customerIdNameMap, int loginId) {

@@ -52,6 +52,7 @@ public class OptionConstant {
             put(BusinessType.PREPAID_CARD.value(), "储值卡");
             put(BusinessType.EXPENSE.value(), "费用");
             put(BusinessType.SHAN_FU.value(), "闪付");
+            put(BusinessType.MOVIE.value(), "电影");
         }
     };
 
