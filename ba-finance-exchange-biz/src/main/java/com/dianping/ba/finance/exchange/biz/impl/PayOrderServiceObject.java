@@ -349,6 +349,13 @@ public class PayOrderServiceObject implements PayOrderService {
         return payOrderDao.loadPayOrderByPaySequence(sequence);
     }
 
+    @Log(logBefore = true, logAfter = true)
+    @Override
+    public int updatePayOrderStatus(String payCode, int status, String message) {
+
+        return 0;
+    }
+
     private PayOrderBankInfoDTO buildPayOrderBankInfoDTO(PayOrderData poData) {
         try {
             PayOrderBankInfoDTO bankInfoDTO = ConvertUtils.copy(poData, PayOrderBankInfoDTO.class);

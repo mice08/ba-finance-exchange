@@ -123,4 +123,12 @@ public interface PayOrderService {
      */
     PayOrderData loadPayOrderDataByPaySequence(String sequence);
 
+    /**
+     * 根据付款单号更新状态
+     * @param payCode
+     * @param status
+     * @return
+     */
+    int updatePayOrderStatus(String payCode, int status, String message);
+
 }
