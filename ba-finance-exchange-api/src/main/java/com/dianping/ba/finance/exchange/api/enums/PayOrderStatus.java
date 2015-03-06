@@ -40,7 +40,7 @@ public enum PayOrderStatus {
     /**
      * 8-支付失败
      */
-    PAY_FAILED(9)
+    PAY_FAILED(9),
     ;
 
     private int payOrderStatus;
@@ -66,7 +66,7 @@ public enum PayOrderStatus {
             case 7:
                 return BANK_PAYING;
             case 8:
-                return PAY_FAILED
+                return PAY_FAILED;
             default:
                 return DEFAULT;
         }
