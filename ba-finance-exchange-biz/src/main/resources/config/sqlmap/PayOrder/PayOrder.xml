@@ -404,5 +404,11 @@
         AND Status != 6
     </update>
 
+    <update id="updatePayOrderStatus" parameterClass="map">
+        UPDATE FC_PayOrder
+        SET Status = #status#, Memo = #memo#
+        WHERE PayCode = #payCode#
+    </update>
+
 
 </sqlMap>

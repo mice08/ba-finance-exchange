@@ -352,8 +352,12 @@ public class PayOrderServiceObject implements PayOrderService {
     @Log(logBefore = true, logAfter = true)
     @Override
     public int updatePayOrderStatus(String payCode, int status, String message) {
-
-        return 0;
+        try {
+            return payOrderDao.updatePayOrderStatus(payCode, status, message);
+        } catch (Exception e) {
+            MONITOR_LOGGER.error(String.format("severity=[1], PayOrderService.updatePayOrderStatus fail!, payCode=[%s]&status=[%d]&message=[%s]", payCode, status, message), e);
+            return 0;
+        }
     }
 
     private PayOrderBankInfoDTO buildPayOrderBankInfoDTO(PayOrderData poData) {
