@@ -23,6 +23,10 @@
             <result name="error" type="freemarker">/WEB-INF/pages/paycentreerror.ftl</result>
         </action>
 
+        <action name="orderexport" class="com.dianping.ba.finance.exchange.siteweb.action.ajax.ReceiveOrderAjaxAction"
+                method="exportReceiveOrders">
+            <result type="json"/>
+        </action>
     </package>
     <package name="payorder" namespace="/exchange/payorder" extends="default">
         <action name="orderlist" class="com.dianping.ba.finance.exchange.siteweb.action.RedirectAction">

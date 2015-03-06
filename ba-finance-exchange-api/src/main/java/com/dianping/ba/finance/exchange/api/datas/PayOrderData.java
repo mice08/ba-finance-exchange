@@ -79,6 +79,12 @@ public class PayOrderData implements Serializable {
      */
     private int addType;
 
+    private String payeeName;
+
+    private String payBankName;
+
+    private String payBankAccountNo;
+
     public int getPoId() {
         return poId;
     }
@@ -272,6 +278,30 @@ public class PayOrderData implements Serializable {
         this.customerId = customerId;
     }
 
+    public String getPayeeName() {
+        return payeeName;
+    }
+
+    public void setPayeeName(String payeeName) {
+        this.payeeName = payeeName;
+    }
+
+    public String getPayBankName() {
+        return payBankName;
+    }
+
+    public void setPayBankName(String payBankName) {
+        this.payBankName = payBankName;
+    }
+
+    public String getPayBankAccountNo() {
+        return payBankAccountNo;
+    }
+
+    public void setPayBankAccountNo(String payBankAccountNo) {
+        this.payBankAccountNo = payBankAccountNo;
+    }
+
     @Override
     public String toString() {
         return "PayOrderData{" +
@@ -299,6 +329,9 @@ public class PayOrderData implements Serializable {
                 ", addLoginId=" + addLoginId +
                 ", updateLoginId=" + updateLoginId +
                 ", addType=" + addType +
+                ", payeeName='" + payeeName + '\'' +
+                ", payBankName='" + payBankName + '\'' +
+                ", payBankAccountNo='" + payBankAccountNo + '\'' +
                 '}';
     }
 }

@@ -32,7 +32,16 @@ public enum PayOrderStatus {
     /**
      * 6-作废
      */
-    INVALID(6);
+    INVALID(6),
+    /**
+     * 7-银行支付中
+     */
+    BANK_PAYING(7),
+    /**
+     * 8-支付失败
+     */
+    PAY_FAILED(9),
+    ;
 
     private int payOrderStatus;
 
@@ -54,6 +63,10 @@ public enum PayOrderStatus {
                 return SUSPEND;
             case 6:
                 return INVALID;
+            case 7:
+                return BANK_PAYING;
+            case 8:
+                return PAY_FAILED;
             default:
                 return DEFAULT;
         }
@@ -74,6 +87,10 @@ public enum PayOrderStatus {
                 return "暂停";
             case 6:
                 return "作废";
+            case 7:
+                return "银行支付中";
+            case 8:
+                return "支付失败";
             default:
                 return "错误";
         }
