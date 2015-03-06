@@ -8,23 +8,22 @@ import java.io.Serializable;
 public class BankPayResultDTO implements Serializable {
 
     private String instId;
-    private int status;
+    private int code;
     private String message;
 
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
     public String getInstId() {
         return instId;
     }
 
     public void setInstId(String instId) {
         this.instId = instId;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public String getMessage() {
