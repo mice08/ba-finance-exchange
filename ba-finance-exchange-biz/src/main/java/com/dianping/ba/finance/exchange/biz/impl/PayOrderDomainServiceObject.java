@@ -7,6 +7,7 @@ import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.dtos.BankPayRequestDTO;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
+import com.dianping.ba.finance.exchange.api.enums.PayType;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.swallow.producer.Producer;
 import com.google.common.collect.Sets;
@@ -42,7 +43,8 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
             payOrderService.batchUpdatePayOrderStatus(idList, PayOrderStatus.SUBMIT_FOR_PAY.value(), PayOrderStatus.BANK_PAYING.value(), loginId);
             for(PayOrderData data: payOrderDataList){
                 if(idList.contains(data.getPoId())){
-
+                    BankPayRequestDTO requestDTO = buildBankPayRequest(data);
+                    bankPayProducer.sendMessage(requestDTO);
                 }
             }
         } catch (Exception e) {
@@ -65,7 +67,7 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
 
     private boolean orderCanBankPay(PayOrderData order) {
         //todo check business type
-        return order.getPayAmount().compareTo(BigDecimal.ZERO) > 0 && ALLOWED_BANK_PAY_STATUS.contains(order.getStatus());
+        return order.getPayAmount().compareTo(BigDecimal.ZERO) > 0 && ALLOWED_BANK_PAY_STATUS.contains(order.getStatus()) && order.getPayType() == PayType.GROUPON_SETTLE.getPayType();
     }
 
     private BankPayRequestDTO buildBankPayRequest(PayOrderData payOrderData){
