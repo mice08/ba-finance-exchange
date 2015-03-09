@@ -4,6 +4,7 @@ import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.auditlog.api.enums.OperationType;
 import com.dianping.ba.finance.auditlog.client.OperationLogger;
+import com.dianping.ba.finance.exchange.api.PayOrderDomainService;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
@@ -21,6 +22,7 @@ import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
@@ -79,6 +81,9 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     private int bankId;
 
+    @Autowired
+    private PayOrderDomainService payOrderDomainService;
+
     @Override
     protected void jsonExecute() throws Exception {
         if (businessType == BusinessType.DEFAULT.value()) {
@@ -126,13 +131,21 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     public String payOrderBankPay() throws Exception {
         try {
-
+            PayOrderSearchBean searchBean = buildPayOrderSearchBean();
+            OPERATION_LOGGER.log(OperationType.UPDATE, "直联支付", searchBean.toString(), String.valueOf(getLoginId()));
+            List<Integer> idList = payOrderService.findPayOrderIdList(searchBean);
+            if (CollectionUtils.isEmpty(idList)) {
+                MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No PayOrder found! searchBean=%s", searchBean));
+                return SUCCESS;
+            }
+            payOrderDomainService.pay(idList, getLoginId());
             return SUCCESS;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPay", e);
             return ERROR;
         }
     }
+
 
 	private void updatePayOrderStatus(List<PayOrderExportBean> beanList, int loginId){
 		if(!CollectionUtils.isEmpty(beanList)){
