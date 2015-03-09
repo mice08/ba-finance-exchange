@@ -250,14 +250,14 @@
                         导入退票
                     </a>
                     <a id="btn-bankpay-request" href="#bankpay-request" role="button"
-                       style=""
+                       style="display:none;"
                        class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
                        data-toggle="modal">
                         <span class="glyphicon glyphicon-ok"></span>
                         提交付款单
                     </a>
                     <a id="btn-bankpay-order" href="#bankpay-order" role="button"
-                       style=""
+                       style="display:none;"
                        class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
                        data-toggle="modal">
                         <span class="glyphicon glyphicon-ok"></span>

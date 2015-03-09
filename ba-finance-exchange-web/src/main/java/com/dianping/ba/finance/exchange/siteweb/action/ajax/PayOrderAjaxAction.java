@@ -132,7 +132,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     public String payOrderBankPay() throws Exception {
         try {
             PayOrderSearchBean searchBean = buildPayOrderSearchBean();
-            OPERATION_LOGGER.log(OperationType.UPDATE, "提交直联支付", searchBean.toString(), String.valueOf(getLoginId()));
+            OPERATION_LOGGER.log(OperationType.UPDATE, "直联支付", searchBean.toString(), String.valueOf(getLoginId()));
             List<Integer> idList = payOrderService.findPayOrderIdList(searchBean);
             if (CollectionUtils.isEmpty(idList)) {
                 MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No PayOrder found! searchBean=%s", searchBean));
