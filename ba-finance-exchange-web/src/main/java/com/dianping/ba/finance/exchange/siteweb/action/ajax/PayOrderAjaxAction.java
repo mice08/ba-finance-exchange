@@ -12,6 +12,7 @@ import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
+import com.dianping.ba.finance.exchange.siteweb.enums.SubmitAction;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
@@ -19,6 +20,7 @@ import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.util.ConvertUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
 import com.google.common.collect.Sets;
+import jodd.util.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
@@ -129,13 +131,33 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 		}
 	}
 
+    private List<Integer> getSubmitOrderIdList(int submitAction) throws ParseException {
+        List<Integer> orderIdList = StringUtil.isBlank(poIds) ? new ArrayList<Integer>() : com.dianping.finance.common.util.StringUtils.splitStringToList(poIds, ",");
+
+        if (CollectionUtils.isEmpty(orderIdList)) {
+            PayOrderSearchBean searchBean = buildPayOrderSearchBean();
+            if (submitAction == SubmitAction.PAY_ORDER.getCode()) {
+                OPERATION_LOGGER.log(OperationType.UPDATE, "直联支付(全选)", searchBean.toString(), String.valueOf(getLoginId()));
+            } else {
+                OPERATION_LOGGER.log(OperationType.UPDATE, "提交付款单(全选)", searchBean.toString(), String.valueOf(getLoginId()));
+            }
+            orderIdList = payOrderService.findPayOrderIdList(searchBean);
+        } else {
+            if (submitAction == SubmitAction.PAY_ORDER.getCode()) {
+                OPERATION_LOGGER.log(OperationType.UPDATE, "直联支付(勾选)", "付款单ID: " + orderIdList, String.valueOf(getLoginId()));
+            } else {
+                OPERATION_LOGGER.log(OperationType.UPDATE, "提交付款单(勾选)", "付款单ID: " + orderIdList, String.valueOf(getLoginId()));
+            }
+        }
+        return orderIdList;
+    }
+
     public String payOrderBankPay() throws Exception {
         try {
-            PayOrderSearchBean searchBean = buildPayOrderSearchBean();
-            OPERATION_LOGGER.log(OperationType.UPDATE, "直联支付", searchBean.toString(), String.valueOf(getLoginId()));
-            List<Integer> idList = payOrderService.findPayOrderIdList(searchBean);
+            List<Integer> idList = getSubmitOrderIdList(SubmitAction.PAY_ORDER.getCode());
             if (CollectionUtils.isEmpty(idList)) {
-                MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No PayOrder found! searchBean=%s", searchBean));
+                MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No PayOrder found! " +
+                        "businessType=[%d]&addBeginTime=[%s]&addEndTime=[%s]&poIds[%s]&status=[%d]", businessType, addBeginTime, addEndTime, poIds, status));
                 return SUCCESS;
             }
             payOrderDomainService.pay(idList, getLoginId());
@@ -148,11 +170,10 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     public String payOrderBankPayRequest() throws Exception {
         try {
-            PayOrderSearchBean searchBean = buildPayOrderSearchBean();
-            OPERATION_LOGGER.log(OperationType.UPDATE, "提交付款单", searchBean.toString(), String.valueOf(getLoginId()));
-            List<Integer> idList = payOrderService.findPayOrderIdList(searchBean);
+            List<Integer> idList = getSubmitOrderIdList(SubmitAction.PAY_REQUEST.getCode());
             if (CollectionUtils.isEmpty(idList)) {
-                MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No PayOrder found! searchBean=%s", searchBean));
+                MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No PayOrder found! " +
+                        "businessType=[%d]&addBeginTime=[%s]&addEndTime=[%s]&poIds[%s]&status=[%d]", businessType, addBeginTime, addEndTime, poIds, status));
                 return SUCCESS;
             }
             int submitNum = payOrderService.batchUpdatePayOrderStatus(idList, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), getLoginId());
