@@ -49,6 +49,10 @@ public enum PayOrderStatus {
      * 11-系统异常
      */
     SYSTEM_ERROR(11),
+    /**
+     * 12-提交失败
+     */
+    SUBMIT_FAILED(12),
     ;
 
     private int payOrderStatus;

@@ -17,6 +17,11 @@
             <result type="json"></result>
         </action>
 
+        <action name="orderbankpayrequest" class="com.dianping.ba.finance.exchange.siteweb.action.ajax.PayOrderAjaxAction"
+                method="payOrderBankPayRequest">
+            <result type="json"></result>
+        </action>
+
         <action name="loadPOStatusOption"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
                 method="loadPOStatusOption">
