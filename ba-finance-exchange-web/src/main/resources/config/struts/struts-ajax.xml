@@ -95,6 +95,12 @@
             <result type="json"></result>
         </action>
 
+        <action name="loadAllPayerBankOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadAllPayerBankOption">
+            <result type="json"></result>
+        </action>
+
         <action name="loadReceiveOrderPayChannelOption"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
                 method="loadReceiveOrderPayChannelOption">
@@ -191,6 +197,12 @@
         <action name="rejectReceiveNotify"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.UpdateReceiveNotifyStatusAjaxAction"
                 method="rejectReceiveNotify">
+            <result type="json"></result>
+        </action>
+
+        <action name="findGuaranteeInfoByCustomerId"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.TGGuaranteeAjaxAction"
+                method="findGuaranteeInfoByCustomerId">
             <result type="json"></result>
         </action>
 
