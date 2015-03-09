@@ -32,6 +32,9 @@ public class BankPayResultListener extends SwallowMessageListener {
         }
     }
 
+    public void setPayOrderDomainService(PayOrderDomainService payOrderDomainService) {
+        this.payOrderDomainService = payOrderDomainService;
+    }
 
 
 }
