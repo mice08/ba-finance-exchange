@@ -32,6 +32,7 @@
         <result property="addType" column="AddType"/>
         <result property="updateTime" column="UpdateTime"/>
         <result property="memo" column="Memo"/>
+        <result property="payeeBankAccountId" column="PayeeBankAccountID"/>
     </resultMap>
 
     <insert id="insertPayOrder" parameterClass="map">
@@ -56,6 +57,7 @@
 			PayType,
 			PayBankName,
 			PayBankAccountNo,
+			PayeeBankAccountID,
 			Status,
 			AddTime,
 			AddType,
@@ -84,6 +86,7 @@
 			#payOrderData.payType#,
 			#payOrderData.payBankName#,
 			#payOrderData.payBankAccountNo#,
+			#payOrderData.payeeBankAccountId#,
 			#payOrderData.status#,
 			NOW(),
 			#payOrderData.addType#,
@@ -143,6 +146,7 @@
         PayType,
         PayBankName,
         PayBankAccountNo,
+        PayeeBankAccountID,
         Status,
         AddTime,
         AddType,
@@ -181,6 +185,7 @@
         PayType,
         PayBankName,
         PayBankAccountNo,
+        PayeeBankAccountID,
         Status,
         AddTime,
         AddType,
@@ -313,6 +318,7 @@
         PayType,
         PayBankName,
         PayBankAccountNo,
+        PayeeBankAccountID,
         Status,
         AddTime,
         AddType,
@@ -399,6 +405,7 @@
                PayType,
                PayBankName,
                PayBankAccountNo,
+               PayeeBankAccountID,
                Status,
                AddTime,
                AddType,
@@ -447,6 +454,7 @@
         PayType,
         PayBankName,
         PayBankAccountNo,
+        PayeeBankAccountID,
         Status,
         AddTime,
         AddType,

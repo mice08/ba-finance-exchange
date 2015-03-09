@@ -67,9 +67,13 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
     }
 
     private boolean orderCanBankPay(PayOrderData order) {
-        //todo check business type
-        return order.getPayAmount().compareTo(BigDecimal.ZERO) > 0 && ALLOWED_BANK_PAY_STATUS.contains(order.getStatus()) && order.getPayType() == PayType.GROUPON_SETTLE.getPayType();
+        return order.getPayAmount().compareTo(BigDecimal.ZERO) > 0 &&
+                ALLOWED_BANK_PAY_STATUS.contains(order.getStatus()) &&
+                (order.getPayType() == PayType.GROUPON_SETTLE.getPayType() ||
+                        order.getPayType() == PayType.SHAN_HUI_SETTLE.getPayType() ||
+                        order.getPayType() == PayType.SHAN_FU_SETTLE.getPayType());
     }
+
 
     private BankPayRequestDTO buildBankPayRequest(PayOrderData payOrderData){
         BankPayRequestDTO requestDTO = new BankPayRequestDTO();
