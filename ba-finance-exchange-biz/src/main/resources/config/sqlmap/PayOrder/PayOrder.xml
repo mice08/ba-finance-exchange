@@ -410,5 +410,36 @@
         WHERE POID = #poId#
     </update>
 
+    <select id="loadPayOrderByPayPOID" resultMap="payOrderData" parameterClass="map">
+        SELECT POID,
+        PayAmount,
+        PaySequence,
+        PayCode,
+        CustomerID,
+        PayeeName,
+        CustomerBankId,
+        BankAccountNo,
+        BankAccountName,
+        PaidDate,
+        BankBranchName,
+        BankName,
+        BankProvince,
+        BankCity,
+        BankFullBranchName,
+        BankCode,
+        BankAccountType,
+        BusinessType,
+        PayBankName,
+        PayBankAccountNo,
+        Status,
+        AddTime,
+        AddType,
+        UpdateTime,
+        Memo
+        FROM   FC_PayOrder po
+        WHERE  po.POID = #poId#
+    </select>
+
+
 
 </sqlMap>

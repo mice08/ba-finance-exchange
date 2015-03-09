@@ -24,6 +24,7 @@ import com.dianping.finance.common.util.LionConfigUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -353,6 +354,12 @@ public class PayOrderServiceObject implements PayOrderService {
     @Override
     public int updatePayOrderStatus(int poId, int status, String message) {
         try {
+            if (!StringUtils.isEmpty(message)) {
+                PayOrderData data = payOrderDao.loadPayOrderByPayPOID(poId);
+                if (data != null) {
+                    message += "|" + data.getMemo();
+                }
+            }
             return payOrderDao.updatePayOrderStatus(poId, status, message);
         } catch (Exception e) {
             MONITOR_LOGGER.error(String.format("severity=[1], PayOrderService.updatePayOrderStatus fail!, payCode=[%s]&status=[%d]&message=[%s]", poId, status, message), e);

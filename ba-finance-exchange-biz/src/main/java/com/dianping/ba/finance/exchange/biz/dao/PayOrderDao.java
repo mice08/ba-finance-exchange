@@ -98,4 +98,12 @@ public interface PayOrderDao extends GenericDao {
      */
     @DAOAction(action = DAOActionType.UPDATE)
     int updatePayOrderStatus(@DAOParam("poId") int poId, @DAOParam("status") int status, @DAOParam("memo") String memo);
+
+    /**
+     * 根据付款单号查找付款单
+     * @param poId
+     * @return
+     */
+    @DAOAction(action = DAOActionType.LOAD)
+    PayOrderData loadPayOrderByPayPOID(@DAOParam("poId") int poId);
 }
