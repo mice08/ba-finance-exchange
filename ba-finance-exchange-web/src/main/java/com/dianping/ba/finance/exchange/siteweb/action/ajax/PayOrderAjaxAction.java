@@ -146,6 +146,22 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         }
     }
 
+    public String payOrderBankPayRequest() throws Exception {
+        try {
+            PayOrderSearchBean searchBean = buildPayOrderSearchBean();
+            OPERATION_LOGGER.log(OperationType.UPDATE, "提交付款单", searchBean.toString(), String.valueOf(getLoginId()));
+            List<Integer> idList = payOrderService.findPayOrderIdList(searchBean);
+            if (CollectionUtils.isEmpty(idList)) {
+                MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No PayOrder found! searchBean=%s", searchBean));
+                return SUCCESS;
+            }
+            int submitNum = payOrderService.batchUpdatePayOrderStatus(idList, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), getLoginId());
+            return SUCCESS;
+        } catch (Exception e) {
+            MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPayRequest", e);
+            return ERROR;
+        }
+    }
 
 	private void updatePayOrderStatus(List<PayOrderExportBean> beanList, int loginId){
 		if(!CollectionUtils.isEmpty(beanList)){

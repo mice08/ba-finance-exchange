@@ -23,6 +23,7 @@
         <result property="bankBranchName" column="BankBranchName"/>
         <result property="bankFullBranchName" column="BankFullBranchName"/>
         <result property="bankCode" column="BankCode"/>
+        <result property="masterBankCode" column="MasterBankCode"/>
         <result property="bankAccountType" column="BankAccountType"/>
         <result property="payBankName" column="PayBankName"/>
         <result property="payBankAccountNo" column="PayBankAccountNo"/>
@@ -31,6 +32,7 @@
         <result property="addType" column="AddType"/>
         <result property="updateTime" column="UpdateTime"/>
         <result property="memo" column="Memo"/>
+        <result property="payeeBankAccountId" column="PayeeBankAccountID"/>
     </resultMap>
 
     <insert id="insertPayOrder" parameterClass="map">
@@ -49,11 +51,13 @@
 			BankCity,
 			BankFullBranchName,
 			BankCode,
+			MasterBankCode,
 			BankAccountType,
 			BusinessType,
 			PayType,
 			PayBankName,
 			PayBankAccountNo,
+			PayeeBankAccountID,
 			Status,
 			AddTime,
 			AddType,
@@ -76,11 +80,13 @@
 			#payOrderData.bankCity#,
 			#payOrderData.bankFullBranchName#,
 			#payOrderData.bankCode#,
+			#payOrderData.masterBankCode#,
 			#payOrderData.bankAccountType#,
 			#payOrderData.businessType#,
 			#payOrderData.payType#,
 			#payOrderData.payBankName#,
 			#payOrderData.payBankAccountNo#,
+			#payOrderData.payeeBankAccountId#,
 			#payOrderData.status#,
 			NOW(),
 			#payOrderData.addType#,
@@ -134,11 +140,13 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        MasterBankCode,
         BankAccountType,
         BusinessType,
         PayType,
         PayBankName,
         PayBankAccountNo,
+        PayeeBankAccountID,
         Status,
         AddTime,
         AddType,
@@ -171,11 +179,13 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        MasterBankCode,
         BankAccountType,
         BusinessType,
         PayType,
         PayBankName,
         PayBankAccountNo,
+        PayeeBankAccountID,
         Status,
         AddTime,
         AddType,
@@ -302,11 +312,13 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        MasterBankCode,
         BankAccountType,
         BusinessType,
         PayType,
         PayBankName,
         PayBankAccountNo,
+        PayeeBankAccountID,
         Status,
         AddTime,
         AddType,
@@ -387,11 +399,13 @@
                BankCity,
                BankFullBranchName,
                BankCode,
+               MasterBankCode,
                BankAccountType,
                BusinessType,
                PayType,
                PayBankName,
                PayBankAccountNo,
+               PayeeBankAccountID,
                Status,
                AddTime,
                AddType,
@@ -434,11 +448,13 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        MasterBankCode,
         BankAccountType,
         BusinessType,
         PayType,
         PayBankName,
         PayBankAccountNo,
+        PayeeBankAccountID,
         Status,
         AddTime,
         AddType,
@@ -447,6 +463,15 @@
         FROM   FC_PayOrder po
         WHERE  po.POID = #poId#
     </select>
+
+    <update id="updatePayOrderListStatus" parameterClass="map">
+        UPDATE FC_PayOrder
+        SET Status = #postStatus#, UpdateLoginID = #loginId#
+        WHERE POID = #poId# and Status IN
+        <iterate open="(" close=")" conjunction="," property="preStatusList">
+            #preStatusList[]#
+        </iterate>
+    </update>
 
 
 
