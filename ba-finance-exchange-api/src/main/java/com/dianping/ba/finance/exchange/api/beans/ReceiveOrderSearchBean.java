@@ -1,10 +1,11 @@
 package com.dianping.ba.finance.exchange.api.beans;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * Created by Eric on 2014/6/11.
+ *
  */
 public class ReceiveOrderSearchBean implements Serializable {
 
@@ -31,6 +32,8 @@ public class ReceiveOrderSearchBean implements Serializable {
     private Date addTimeBegin;
 
     private Date addTimeEnd;
+
+    private BigDecimal amount;
 
     public ReceiveOrderSearchBean() {
     }
@@ -131,6 +134,14 @@ public class ReceiveOrderSearchBean implements Serializable {
         this.addTimeEnd = addTimeEnd;
     }
 
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
     @Override
     public String toString() {
         return "ReceiveOrderSearchBean{" +
@@ -146,6 +157,7 @@ public class ReceiveOrderSearchBean implements Serializable {
                 ", bankReceiveTimeEnd=" + bankReceiveTimeEnd +
                 ", addTimeBegin=" + addTimeBegin +
                 ", addTimeEnd=" + addTimeEnd +
+                ", amount=" + amount +
                 '}';
     }
 }
