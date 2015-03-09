@@ -14,6 +14,7 @@ import com.dianping.ba.finance.exchange.api.enums.AccountEntrySourceType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.PayType;
 import com.dianping.finance.common.aop.annotation.Log;
+import com.dianping.finance.common.util.ListUtils;
 import com.dianping.swallow.producer.Producer;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
@@ -50,6 +51,10 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
         try {
             List<PayOrderData> payOrderDataList = payOrderService.findPayOrderByIdList(poIds);
             List<Integer> idList = buildPayOrderListForBankPay(payOrderDataList);
+            if(CollectionUtils.isEmpty(idList)){
+                MONITOR_LOGGER.warn(String.format("No pay order to pay! poIds=[%s]", ListUtils.listToString(poIds, ",")));
+                return 0;
+            }
             payOrderService.batchUpdatePayOrderStatus(idList, Arrays.asList(PayOrderStatus.SUBMIT_FOR_PAY.value()), PayOrderStatus.BANK_PAYING.value(), loginId);
             for(PayOrderData data: payOrderDataList){
                 if(idList.contains(data.getPoId())){
