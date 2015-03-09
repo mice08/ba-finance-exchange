@@ -32,7 +32,7 @@ public class BankPayResultListener extends SwallowMessageListener {
             PayOrderStatus payOrderStatus = parsePayOrderStatus(bankPayResultDTO.getCode());
             if(payOrderStatus != PayOrderStatus.BANK_PAYING){
                 int poId = NumberUtils.toInt(bankPayResultDTO.getInstId());
-                int result = payOrderService.updatePayOrderStatus(poId, payOrderStatus.value(), bankPayResultDTO.getMessage());
+                int result = payOrderService.updatePayOrderStatus(poId, PayOrderStatus.BANK_PAYING.value(), payOrderStatus.value(), bankPayResultDTO.getMessage());
                 if(result != 1){
                     MONITOR_LOGGER.error(String.format("severity=1], update pay order status failed!. bankPayResultDTO=[%s]", ToStringBuilder.reflectionToString(bankPayResultDTO)));
                 }
