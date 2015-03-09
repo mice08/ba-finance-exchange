@@ -113,4 +113,13 @@
             </bean>
         </property>
     </bean>
+
+    <bean id="payRequestDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.PayRequestDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="PayRequest"/>
+            </bean>
+        </property>
+    </bean>
 </beans>

@@ -132,6 +132,15 @@
                     </div>
                 </div>
             </div>
+            <div class="row-fluid label-colon">
+                <div class="control-group span6">
+                    <label class="control-label">金额</label>
+                    <div class="controls">
+                        <input type="text" id="q-amount" name="amount" class="form_value">
+                    </div>
+                </div>
+
+            </div>
 
 
             <div class="row-fluid">
