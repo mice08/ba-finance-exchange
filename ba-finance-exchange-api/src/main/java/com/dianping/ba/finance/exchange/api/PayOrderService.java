@@ -126,9 +126,18 @@ public interface PayOrderService {
     /**
      * 根据付款单号更新状态
      * @param poId
-     * @param status
+     * @param preStatus
+     * @param postStatus
      * @return
      */
-    int updatePayOrderStatus(int poId, int status, String message);
+    int updatePayOrderStatus(int poId, int preStatus, int postStatus, String message);
+
+    /**
+     * 批量更新付款单状态
+     * @param poIds
+     * @param loginId
+     * @return
+     */
+    int batchUpdatePayOrderStatus(List<Integer> poIds, int preStatus,int postStatus, int loginId);
 
 }

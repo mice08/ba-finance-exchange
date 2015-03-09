@@ -413,8 +413,8 @@
 
     <update id="updatePayOrderStatus" parameterClass="map">
         UPDATE FC_PayOrder
-        SET Status = #status#, Memo = #memo#
-        WHERE POID = #poId#
+        SET Status = #postStatus#, Memo = #memo#
+        WHERE POID = #poId# and Status = #preStatus#
     </update>
 
     <select id="loadPayOrderByPayPOID" resultMap="payOrderData" parameterClass="map">

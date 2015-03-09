@@ -43,6 +43,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     private static final Set<Integer> ALLOWED_EXPORT_STATUS = Sets.newHashSet(PayOrderStatus.INIT.value(), PayOrderStatus.EXPORT_PAYING.value());
 
+    private static final Set<Integer> ALLOWED_BANK_PAY_STATUS = Sets.newHashSet(PayOrderStatus.SUBMIT_FOR_PAY.value());
+
     //查询结果，付款计划列表
     private PageModel payOrderModel = new PageModel();
     //第几页
@@ -126,12 +128,43 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     public String payOrderBankPay() throws Exception {
         try {
-
+            PayOrderSearchBean searchBean = buildPayOrderSearchBean();
+            OPERATION_LOGGER.log(OperationType.UPDATE, "直联支付", searchBean.toString(), String.valueOf(getLoginId()));
+            List<PayOrderData> dataList = payOrderService.findPayOrderList(searchBean);
+            if (CollectionUtils.isEmpty(dataList)) {
+                MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No PayOrder found! searchBean=%s", searchBean));
+                return SUCCESS;
+            }
+            List<Integer> idList = buildPayOrderListForBankPay(dataList);
+            if (CollectionUtils.isEmpty(idList)) {
+                MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No matched pay order found! searchBean=%s", searchBean));
+                return SUCCESS;
+            }
+            payOrderService.batchUpdatePayOrderStatus(idList, PayOrderStatus.SUBMIT_FOR_PAY.value(), PayOrderStatus.BANK_PAYING.value(), getLoginId());
+            //todo submit to bank
             return SUCCESS;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPay", e);
             return ERROR;
         }
+    }
+
+    private List<Integer> buildPayOrderListForBankPay(List<PayOrderData> dataList) {
+        if (CollectionUtils.isEmpty(dataList)) {
+            return new ArrayList<Integer>();
+        }
+        List<Integer> idList = new ArrayList<Integer>();
+        for (PayOrderData data : dataList) {
+            if (orderCanBankPay(data)) {
+                idList.add(data.getPoId());
+            }
+        }
+        return idList;
+    }
+
+    private boolean orderCanBankPay(PayOrderData order) {
+        //todo check business type
+        return order.getPayAmount().compareTo(BigDecimal.ZERO) > 0 && ALLOWED_BANK_PAY_STATUS.contains(order.getStatus());
     }
 
 	private void updatePayOrderStatus(List<PayOrderExportBean> beanList, int loginId){
