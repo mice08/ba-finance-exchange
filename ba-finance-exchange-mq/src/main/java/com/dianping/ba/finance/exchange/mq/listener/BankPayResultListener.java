@@ -10,6 +10,7 @@ import com.dianping.finance.common.swallow.SwallowMessageListener;
 import com.dianping.swallow.common.message.Message;
 import com.dianping.swallow.consumer.BackoutMessageException;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -30,7 +31,8 @@ public class BankPayResultListener extends SwallowMessageListener {
             BankPayResultDTO bankPayResultDTO = message.transferContentToBean(BankPayResultDTO.class);
             PayOrderStatus payOrderStatus = parsePayOrderStatus(bankPayResultDTO.getCode());
             if(payOrderStatus != PayOrderStatus.BANK_PAYING){
-                int result = payOrderService.updatePayOrderStatus(bankPayResultDTO.getInstId(), payOrderStatus.value(), bankPayResultDTO.getMessage());
+                int poId = NumberUtils.toInt(bankPayResultDTO.getInstId());
+                int result = payOrderService.updatePayOrderStatus(poId, payOrderStatus.value(), bankPayResultDTO.getMessage());
                 if(result != 1){
                     MONITOR_LOGGER.error(String.format("severity=1], update pay order status failed!. bankPayResultDTO=[%s]", ToStringBuilder.reflectionToString(bankPayResultDTO)));
                 }
