@@ -181,6 +181,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
                 return SUCCESS;
             }
             int submitNum = payOrderService.batchUpdatePayOrderStatus(idList, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), getLoginId());
+            msg.put("successCount", submitNum);
+            msg.put("failedCount", idList.size() - submitNum);
             code = SUCCESS_CODE;
             return SUCCESS;
         } catch (Exception e) {
