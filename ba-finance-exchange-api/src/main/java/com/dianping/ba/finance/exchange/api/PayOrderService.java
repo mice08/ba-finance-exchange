@@ -125,10 +125,10 @@ public interface PayOrderService {
 
     /**
      * 根据付款单号更新状态
-     * @param payCode
+     * @param poId
      * @param status
      * @return
      */
-    int updatePayOrderStatus(String payCode, int status, String message);
+    int updatePayOrderStatus(int poId, int status, String message);
 
 }

@@ -16,7 +16,6 @@ import com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.util.ConvertUtils;
-import com.dianping.finance.common.util.JsonUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
@@ -124,6 +123,16 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 			return ERROR;
 		}
 	}
+
+    public String payOrderBankPay() throws Exception {
+        try {
+
+            return SUCCESS;
+        } catch (Exception e) {
+            MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPay", e);
+            return ERROR;
+        }
+    }
 
 	private void updatePayOrderStatus(List<PayOrderExportBean> beanList, int loginId){
 		if(!CollectionUtils.isEmpty(beanList)){

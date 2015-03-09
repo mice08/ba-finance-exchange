@@ -351,11 +351,11 @@ public class PayOrderServiceObject implements PayOrderService {
 
     @Log(logBefore = true, logAfter = true)
     @Override
-    public int updatePayOrderStatus(String payCode, int status, String message) {
+    public int updatePayOrderStatus(int poId, int status, String message) {
         try {
-            return payOrderDao.updatePayOrderStatus(payCode, status, message);
+            return payOrderDao.updatePayOrderStatus(poId, status, message);
         } catch (Exception e) {
-            MONITOR_LOGGER.error(String.format("severity=[1], PayOrderService.updatePayOrderStatus fail!, payCode=[%s]&status=[%d]&message=[%s]", payCode, status, message), e);
+            MONITOR_LOGGER.error(String.format("severity=[1], PayOrderService.updatePayOrderStatus fail!, payCode=[%s]&status=[%d]&message=[%s]", poId, status, message), e);
             return 0;
         }
     }

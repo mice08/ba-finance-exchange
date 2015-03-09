@@ -407,7 +407,7 @@
     <update id="updatePayOrderStatus" parameterClass="map">
         UPDATE FC_PayOrder
         SET Status = #status#, Memo = #memo#
-        WHERE PayCode = #payCode#
+        WHERE POID = #poId#
     </update>
 
 
