@@ -96,7 +96,7 @@
         <h4 id="bankPayRequestLabel">提交付款单</h4>
     </div>
     <div class="modal-body">
-        <div><span>请输入动态验证码:</span><input type="text" id="verify-token"></div>
+        <div><span style="font-size:14px; margin-right:10px;">请输入动态验证码：</span><input type="text" id="verify-token"></div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-request" data-dismiss="modal"
@@ -238,7 +238,7 @@
                        style=""
                        class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
                        data-toggle="modal">
-                        <span class="glyphicon glyphicon-open"></span>
+                        <span class="glyphicon glyphicon-ok"></span>
                         提交付款单
                     </a>
                 </div>
