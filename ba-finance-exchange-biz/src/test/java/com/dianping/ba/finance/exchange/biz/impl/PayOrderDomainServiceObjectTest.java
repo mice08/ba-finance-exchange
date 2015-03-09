@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.ba.finance.exchange.api.AccountService;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.dtos.BankAccountDTO;
 import com.dianping.ba.finance.exchange.api.enums.PayType;
 import com.dianping.swallow.producer.Producer;
 import junit.framework.Assert;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -51,6 +53,10 @@ public class PayOrderDomainServiceObjectTest {
         orderData.setPayType(PayType.GROUPON_SETTLE.getPayType());
         dataList.add(orderData);
         when(payOrderServiceMock.findPayOrderByIdList(anyList())).thenReturn(dataList);
+        BankAccountDTO accountDTO = new BankAccountDTO();
+        accountDTO.setBankAccountName("abc");
+        accountDTO.setBankAccountNo("1001");
+        when(accountServiceMock.loadBankAccount(anyInt())).thenReturn(accountDTO);
         int actual = payOrderDomainServiceObjectStub.pay(poIds, -1);
 
         Assert.assertEquals(1, actual);
