@@ -70,20 +70,19 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
 
     private BankPayRequestDTO buildBankPayRequest(PayOrderData payOrderData){
         BankPayRequestDTO requestDTO = new BankPayRequestDTO();
-//        requestDTO.setInsId(String.valueOf(payOrderData.getPoId()));
-//        requestDTO.setAccountNo();
-//        requestDTO.setAccountName();
-//        requestDTO.setAccountToNo(payOrderData.getBankAccountNo());
-//        requestDTO.setAccountToName(payOrderData.getBankAccountName());
-//        requestDTO.setBankId();
-//        requestDTO.setBankToId();
-//        requestDTO.setAccountType();
-//        requestDTO.setAccountToType(payOrderData.getBankAccountType());
-//        requestDTO.setBankBranchCode(payOrderData.getBankCode());
-//        requestDTO.setBankCode();
-//        requestDTO.setBankName(payOrderData.getBankName());
-//        requestDTO.setAmount(payOrderData.getPayAmount());
-//        requestDTO.setDescription(payOrderData.getMemo());
+        requestDTO.setInsId(String.valueOf(payOrderData.getPoId()));
+        //todo call service to get account no and name
+        requestDTO.setAccountNo("");
+        requestDTO.setAccountName("");
+        requestDTO.setAccountToNo(payOrderData.getBankAccountNo());
+        requestDTO.setAccountToName(payOrderData.getBankAccountName());
+        requestDTO.setAccountType(1);
+        requestDTO.setAccountToType(payOrderData.getBankAccountType());
+        requestDTO.setBankBranchCode(payOrderData.getBankCode());
+        requestDTO.setBankCode(payOrderData.getMasterBankCode());
+        requestDTO.setBankName(payOrderData.getBankName());
+        requestDTO.setAmount(payOrderData.getPayAmount());
+        requestDTO.setDescription(payOrderData.getMemo());
         return requestDTO;
     }
 }

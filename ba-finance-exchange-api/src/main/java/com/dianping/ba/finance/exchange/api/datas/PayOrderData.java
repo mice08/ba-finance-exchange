@@ -85,6 +85,16 @@ public class PayOrderData implements Serializable {
 
     private String payBankAccountNo;
 
+    private String masterBankCode;
+
+    public String getMasterBankCode() {
+        return masterBankCode;
+    }
+
+    public void setMasterBankCode(String masterBankCode) {
+        this.masterBankCode = masterBankCode;
+    }
+
     public int getPoId() {
         return poId;
     }
