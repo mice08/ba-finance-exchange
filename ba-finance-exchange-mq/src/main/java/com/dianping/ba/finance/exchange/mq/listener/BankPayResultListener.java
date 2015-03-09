@@ -2,6 +2,7 @@ package com.dianping.ba.finance.exchange.mq.listener;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.exchange.api.BankPayResultHandleService;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.dtos.BankPayResultDTO;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
@@ -21,22 +22,14 @@ public class BankPayResultListener extends SwallowMessageListener {
     private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.mq.monitor.PayRequestResultListener");
 
     @Autowired
-    private PayOrderService payOrderService;
+    private BankPayResultHandleService bankPayResultHandleService;
 
     @Log(logBefore = true, logAfter = true, severity = 1)
     @Override
     public void onMessage(Message message) throws BackoutMessageException {
         MONITOR_LOGGER.info(String.format("BankPayResultListener.onMessage, message=%s", message));
         try {
-            BankPayResultDTO bankPayResultDTO = message.transferContentToBean(BankPayResultDTO.class);
-            PayOrderStatus payOrderStatus = parsePayOrderStatus(bankPayResultDTO.getCode());
-            if(payOrderStatus != PayOrderStatus.BANK_PAYING){
-                int poId = NumberUtils.toInt(bankPayResultDTO.getInstId());
-                int result = payOrderService.updatePayOrderStatus(poId, PayOrderStatus.BANK_PAYING.value(), payOrderStatus.value(), bankPayResultDTO.getMessage());
-                if(result != 1){
-                    MONITOR_LOGGER.error(String.format("severity=1], update pay order status failed!. bankPayResultDTO=[%s]", ToStringBuilder.reflectionToString(bankPayResultDTO)));
-                }
-            }
+            bankPayResultHandleService.handleBankPayResult(message.transferContentToBean(BankPayResultDTO.class));
         } catch (Exception e) {
             MONITOR_LOGGER.error(String.format("severity=[2] BankPayResultListener.onMessage error, message=%s", message), e);
             throw new BackoutMessageException(e);
