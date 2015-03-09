@@ -7,6 +7,7 @@ import com.dianping.ba.finance.exchange.api.PayOrderDomainService;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.dtos.AccountEntryRequestDTO;
+import com.dianping.ba.finance.exchange.api.dtos.BankAccountDTO;
 import com.dianping.ba.finance.exchange.api.dtos.BankPayRequestDTO;
 import com.dianping.ba.finance.exchange.api.dtos.BankPayResultDTO;
 import com.dianping.ba.finance.exchange.api.enums.AccountEntrySourceType;
@@ -44,7 +45,7 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
 
     @Override
     @Log(logBefore = true, logAfter = true)
-    public void pay(List<Integer> poIds, int loginId) {
+    public int pay(List<Integer> poIds, int loginId) {
         MONITOR_LOGGER.info(String.format("PayOrderDomainServiceObject.pay request size [%d]", poIds.size()));
         try {
             List<PayOrderData> payOrderDataList = payOrderService.findPayOrderByIdList(poIds);
@@ -56,12 +57,15 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
                     bankPayProducer.sendMessage(requestDTO);
                 }
             }
+            return idList.size();
         } catch (Exception e) {
             MONITOR_LOGGER.error(String.format("severity=[1],PayOrderDomainServiceObject.pay fail!, poIds=[%s]&loginId=[%d]", poIds, loginId), e);
+            return -1;
         }
     }
 
     @Override
+    @Log(logBefore = true, logAfter = true)
     public boolean handleBankPayResult(BankPayResultDTO bankPayResultDTO) {
         PayOrderStatus payOrderStatus = parsePayOrderStatus(bankPayResultDTO.getCode());
         if (payOrderStatus == PayOrderStatus.BANK_PAYING) {
@@ -123,9 +127,9 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
     private BankPayRequestDTO buildBankPayRequest(PayOrderData payOrderData){
         BankPayRequestDTO requestDTO = new BankPayRequestDTO();
         requestDTO.setInsId(String.valueOf(payOrderData.getPoId()));
-        //todo call service to get account no and name
-        requestDTO.setAccountNo("");
-        requestDTO.setAccountName("");
+        BankAccountDTO payeeBankAccountDTO = accountService.loadBankAccount(payOrderData.getPayeeBankAccountId());
+        requestDTO.setAccountNo(payeeBankAccountDTO.getBankAccountNo());
+        requestDTO.setAccountName(payeeBankAccountDTO.getBankAccountName());
         requestDTO.setAccountToNo(payOrderData.getBankAccountNo());
         requestDTO.setAccountToName(payOrderData.getBankAccountName());
         requestDTO.setAccountType(1);

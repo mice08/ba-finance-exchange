@@ -138,7 +138,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
                 MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No PayOrder found! searchBean=%s", searchBean));
                 return SUCCESS;
             }
-            payOrderDomainService.pay(idList, getLoginId());
+            int successNum = payOrderDomainService.pay(idList, getLoginId());
             return SUCCESS;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPay", e);
