@@ -350,6 +350,11 @@ public class PayOrderServiceObject implements PayOrderService {
         return payOrderDao.loadPayOrderByPaySequence(sequence);
     }
 
+    @Override
+    public PayOrderData loadPayOrderDataByPOID(int poId) {
+        return payOrderDao.loadPayOrderByPayPOID(poId);
+    }
+
     @Log(logBefore = true, logAfter = true)
     @Override
     public int updatePayOrderStatus(int poId, int preStatus, int postStatus, String message) {

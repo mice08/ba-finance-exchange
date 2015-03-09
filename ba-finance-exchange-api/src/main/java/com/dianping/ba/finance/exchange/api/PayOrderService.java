@@ -124,6 +124,13 @@ public interface PayOrderService {
     PayOrderData loadPayOrderDataByPaySequence(String sequence);
 
     /**
+     * 根据POID获取付款单
+     * @param poId
+     * @return
+     */
+    PayOrderData loadPayOrderDataByPOID(int poId);
+
+    /**
      * 根据付款单号更新状态
      * @param poId
      * @param preStatus

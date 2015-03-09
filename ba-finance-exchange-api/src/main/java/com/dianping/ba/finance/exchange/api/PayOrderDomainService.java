@@ -1,5 +1,7 @@
 package com.dianping.ba.finance.exchange.api;
 
+import com.dianping.ba.finance.exchange.api.dtos.BankPayResultDTO;
+
 import java.util.List;
 
 /**
@@ -13,4 +15,6 @@ public interface PayOrderDomainService {
      * @param loginId
      */
     void pay(List<Integer> poIds, int loginId);
+
+    boolean handleBankPayResult(BankPayResultDTO bankPayResultDTO);
 }
