@@ -175,4 +175,6 @@
     <bean id="payOrderDomainService" class="com.dianping.ba.finance.exchange.biz.impl.PayOrderDomainServiceObject">
     </bean>
 
+    <bean id="accountService" class="com.dianping.ba.finance.exchange.biz.impl.AccountServiceObject"></bean>
+
 </beans>
