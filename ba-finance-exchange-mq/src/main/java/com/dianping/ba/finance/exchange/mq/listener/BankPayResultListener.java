@@ -41,15 +41,6 @@ public class BankPayResultListener extends SwallowMessageListener {
         }
     }
 
-    private PayOrderStatus parsePayOrderStatus(int code) {
-        if (code == 1 || code == 2003 || code == 2004) {
-            return PayOrderStatus.BANK_PAYING;
-        } else if (code == 2000) {
-            return PayOrderStatus.PAY_SUCCESS;
-        } else if (code == 2001 || code == -1) {
-            return PayOrderStatus.PAY_FAILED;
-        }
-        return PayOrderStatus.BANK_PAYING;
-    }
+
 
 }
