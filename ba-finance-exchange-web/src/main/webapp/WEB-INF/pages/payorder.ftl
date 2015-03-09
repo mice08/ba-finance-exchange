@@ -89,6 +89,21 @@
     <div class="modal-body">
     </div>
 </div>
+<div id="bankpay-request" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="bankPayRequestLabel"
+     aria-hidden="true">
+    <div class="modal-header section-title">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 id="bankPayRequestLabel">提交付款单</h4>
+    </div>
+    <div class="modal-body">
+        <div><span>请输入动态验证码:</span><input type="text" id="verify-token"></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-request" data-dismiss="modal"
+                aria-hidden="true">确定
+        </button>
+    </div>
+</div>
 <form>
 <!-- @ main -->
 <!--内容-->
@@ -218,6 +233,13 @@
                        data-toggle="modal">
                         <span class="glyphicon glyphicon-open"></span>
                         导入退票
+                    </a>
+                    <a id="btn-bankpay-request" href="#bankpay-request" role="button"
+                       style=""
+                       class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
+                       data-toggle="modal">
+                        <span class="glyphicon glyphicon-open"></span>
+                        提交付款单
                     </a>
                 </div>
             </div>
