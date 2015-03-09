@@ -16,6 +16,21 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.dianping.dpsf</groupId>
+            <artifactId>dpsf-net</artifactId>
+            <version>2.3.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping</groupId>
+            <artifactId>avatar-cache</artifactId>
+            <version>2.5.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping.lion</groupId>
+            <artifactId>lion-client</artifactId>
+            <version>0.4.5</version>
+        </dependency>
+        <dependency>
             <groupId>com.dianping.lion</groupId>
             <artifactId>lion-${env}</artifactId>
             <version>1.0.0</version>
@@ -24,6 +39,20 @@
             <groupId>com.dianping</groupId>
             <artifactId>ba-finance-exchange-monitor-biz</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.dianping.lion</groupId>
+                    <artifactId>lion-client</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.dianping</groupId>
+                    <artifactId>avatar-cache</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.dianping.dpsf</groupId>
+                    <artifactId>dpsf-net</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.dianping</groupId>

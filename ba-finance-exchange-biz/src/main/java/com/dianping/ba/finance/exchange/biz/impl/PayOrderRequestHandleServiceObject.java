@@ -55,6 +55,7 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
         payOrderResultBean.setPaySequence(payOrderRequestDTO.getPaySequence());
         payOrderResultBean.setPaidAmount(BigDecimal.ZERO);
         payOrderResultBean.setLoginId(payOrderRequestDTO.getLoginId());
+        payOrderResultBean.setBusinessType(payOrderRequestDTO.getBusinessType());
 
         // 校验该付款请求
         if (!checkRequest(payOrderRequestDTO, payOrderResultBean)) {
@@ -111,6 +112,7 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
         PayOrderData payOrderData = new PayOrderData();
         payOrderData.setPaySequence(payOrderRequestDTO.getPaySequence());
         payOrderData.setBusinessType(payOrderRequestDTO.getBusinessType());
+        payOrderData.setPayType(payOrderRequestDTO.getPayType());
         payOrderData.setPayAmount(payOrderRequestDTO.getPayAmount());
         payOrderData.setStatus(PayOrderStatus.INIT.value());
         payOrderData.setCustomerId(payOrderRequestDTO.getCustomerId());
