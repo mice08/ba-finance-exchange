@@ -386,8 +386,11 @@ public class PayOrderServiceObject implements PayOrderService {
     @Log(logBefore = true, logAfter = true)
     @Override
     public List<PayOrderData> findPayOrderByIdList(List<Integer> poIds) {
-        //todo
-        return null;
+        List<PayOrderData> dataList = payOrderDao.findPayOrderListByPoIdList(poIds);
+        if (dataList == null) {
+            return Collections.emptyList();
+        }
+        return dataList;
     }
 
     private PayOrderBankInfoDTO buildPayOrderBankInfoDTO(PayOrderData poData) {
