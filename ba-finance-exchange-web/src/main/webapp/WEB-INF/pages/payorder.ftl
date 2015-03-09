@@ -108,7 +108,7 @@
      aria-hidden="true">
     <div class="modal-header section-title">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 id="bankPayOrderLabel">民生直联支付</h4>
+        <h4 id="bankPayOrderLabel">直联支付</h4>
     </div>
     <div class="modal-body">
         <div><span style="font-size:14px; margin-right:10px;">请输入动态验证码：</span><input type="text" id="order-token"></div>
@@ -261,7 +261,7 @@
                        class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
                        data-toggle="modal">
                         <span class="glyphicon glyphicon-ok"></span>
-                        民生直联支付
+                        直联支付
                     </a>
                 </div>
             </div>
