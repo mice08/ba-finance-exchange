@@ -123,8 +123,9 @@ public interface ReceiveNotifyService {
      * @param rnId
      * @param preStatus
      * @param setStatus
+     * @param memo
      * @return
      */
-    int updateReceiveNotifyStatus(int rnId, ReceiveNotifyStatus preStatus, ReceiveNotifyStatus setStatus);
+    int updateReceiveNotifyStatus(int rnId, ReceiveNotifyStatus preStatus, ReceiveNotifyStatus setStatus, String memo);
 
 }

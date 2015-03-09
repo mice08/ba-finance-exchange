@@ -2,6 +2,8 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.auditlog.api.enums.OperationType;
+import com.dianping.ba.finance.auditlog.client.OperationLogger;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.finance.common.util.LionConfigUtils;
@@ -12,7 +14,6 @@ import org.apache.commons.collections.CollectionUtils;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -28,7 +29,9 @@ public class PaySuccessAjaxAction extends PayOrderAjaxAction {
 	 */
 	private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.web.monitor.PaySuccessAjaxAction");
 
-	private String poIds;
+    private static final OperationLogger OPERATION_LOGGER = new OperationLogger("Exchange", "PayOrder", LionConfigUtils.getProperty("ba-finance-exchange-web.auditlog.token"));
+
+    private String poIds;
 
 	protected static final String msgKey = "message";
 
@@ -53,10 +56,15 @@ public class PaySuccessAjaxAction extends PayOrderAjaxAction {
 
 	private List<Integer> getSubmitOrderIdList() throws ParseException {
 		List<Integer> orderIdList = StringUtil.isBlank(poIds)? new ArrayList<Integer>() : StringUtils.splitStringToList(poIds, ",");
-		if (CollectionUtils.isEmpty(orderIdList)){
+
+
+        if (CollectionUtils.isEmpty(orderIdList)){
 			PayOrderSearchBean searchBean = buildPayOrderSearchBean();
-			orderIdList = payOrderService.findPayOrderIdList(searchBean);
-		}
+            OPERATION_LOGGER.log(OperationType.UPDATE, "确认支付(全选)", searchBean.toString(), String.valueOf(getLoginId()));
+            orderIdList = payOrderService.findPayOrderIdList(searchBean);
+		} else {
+            OPERATION_LOGGER.log(OperationType.UPDATE, "确认支付(勾选)", "付款单ID: " + orderIdList, String.valueOf(getLoginId()));
+        }
 		return orderIdList;
 	}
 
