@@ -158,12 +158,15 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
             if (CollectionUtils.isEmpty(idList)) {
                 MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No PayOrder found! " +
                         "businessType=[%d]&addBeginTime=[%s]&addEndTime=[%s]&poIds[%s]&status=[%d]", businessType, addBeginTime, addEndTime, poIds, status));
+                code = SUCCESS_CODE;
                 return SUCCESS;
             }
             payOrderDomainService.pay(idList, getLoginId());
+            code = SUCCESS_CODE;
             return SUCCESS;
         } catch (Exception e) {
-            MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPay", e);
+            MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPay fail!", e);
+            code = ERROR_CODE;
             return ERROR;
         }
     }
@@ -174,12 +177,15 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
             if (CollectionUtils.isEmpty(idList)) {
                 MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No PayOrder found! " +
                         "businessType=[%d]&addBeginTime=[%s]&addEndTime=[%s]&poIds[%s]&status=[%d]", businessType, addBeginTime, addEndTime, poIds, status));
+                code = SUCCESS_CODE;
                 return SUCCESS;
             }
             int submitNum = payOrderService.batchUpdatePayOrderStatus(idList, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), getLoginId());
+            code = SUCCESS_CODE;
             return SUCCESS;
         } catch (Exception e) {
-            MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPayRequest", e);
+            MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPayRequest fail!", e);
+            code = ERROR_CODE;
             return ERROR;
         }
     }
