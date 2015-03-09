@@ -23,6 +23,8 @@ public class PayOrderData implements Serializable {
      */
     private int businessType;
 
+    private int payType;
+
     /**
      * 交易状态；1初始；2导出支付中; 3成功；4失败
      */
@@ -117,6 +119,14 @@ public class PayOrderData implements Serializable {
 
     public void setBusinessType(int businessType) {
         this.businessType = businessType;
+    }
+
+    public int getPayType() {
+        return payType;
+    }
+
+    public void setPayType(int payType) {
+        this.payType = payType;
     }
 
     public String getBankAccountNo() {
@@ -318,6 +328,7 @@ public class PayOrderData implements Serializable {
                 "poId=" + poId +
                 ", payAmount=" + payAmount +
                 ", businessType=" + businessType +
+                ", payType=" + payType +
                 ", status=" + status +
                 ", addTime=" + addTime +
                 ", paidDate=" + paidDate +
