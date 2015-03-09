@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -40,7 +41,7 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
         try {
             List<PayOrderData> payOrderDataList = payOrderService.findPayOrderByIdList(poIds);
             List<Integer> idList = buildPayOrderListForBankPay(payOrderDataList);
-            payOrderService.batchUpdatePayOrderStatus(idList, PayOrderStatus.SUBMIT_FOR_PAY.value(), PayOrderStatus.BANK_PAYING.value(), loginId);
+            payOrderService.batchUpdatePayOrderStatus(idList, Arrays.asList(PayOrderStatus.SUBMIT_FOR_PAY.value()), PayOrderStatus.BANK_PAYING.value(), loginId);
             for(PayOrderData data: payOrderDataList){
                 if(idList.contains(data.getPoId())){
                     BankPayRequestDTO requestDTO = buildBankPayRequest(data);
