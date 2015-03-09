@@ -23,6 +23,7 @@
         <result property="bankBranchName" column="BankBranchName"/>
         <result property="bankFullBranchName" column="BankFullBranchName"/>
         <result property="bankCode" column="BankCode"/>
+        <result property="masterBankCode" column="MasterBankCode"/>
         <result property="bankAccountType" column="BankAccountType"/>
         <result property="payBankName" column="PayBankName"/>
         <result property="payBankAccountNo" column="PayBankAccountNo"/>
@@ -49,6 +50,7 @@
 			BankCity,
 			BankFullBranchName,
 			BankCode,
+			MasterBankCode,
 			BankAccountType,
 			BusinessType,
 			PayType,
@@ -76,6 +78,7 @@
 			#payOrderData.bankCity#,
 			#payOrderData.bankFullBranchName#,
 			#payOrderData.bankCode#,
+			#payOrderData.masterBankCode#,
 			#payOrderData.bankAccountType#,
 			#payOrderData.businessType#,
 			#payOrderData.payType#,
@@ -134,6 +137,7 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        MasterBankCode,
         BankAccountType,
         BusinessType,
         PayType,
@@ -171,6 +175,7 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        MasterBankCode,
         BankAccountType,
         BusinessType,
         PayType,
@@ -302,6 +307,7 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        MasterBankCode,
         BankAccountType,
         BusinessType,
         PayType,
@@ -387,6 +393,7 @@
                BankCity,
                BankFullBranchName,
                BankCode,
+               MasterBankCode,
                BankAccountType,
                BusinessType,
                PayType,
@@ -434,6 +441,7 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        MasterBankCode,
         BankAccountType,
         BusinessType,
         PayType,
@@ -447,6 +455,15 @@
         FROM   FC_PayOrder po
         WHERE  po.POID = #poId#
     </select>
+
+    <update id="updatePayOrderListStatus" parameterClass="map">
+        UPDATE FC_PayOrder
+        SET Status = #postStatus#, UpdateLoginID = #loginId#
+        WHERE POID = #poId# and Status IN
+        <iterate open="(" close=")" conjunction="," property="preStatusList">
+            #preStatusList[]#
+        </iterate>
+    </update>
 
 
 

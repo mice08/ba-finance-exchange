@@ -145,7 +145,7 @@ public interface PayOrderService {
      * @param loginId
      * @return
      */
-    int batchUpdatePayOrderStatus(List<Integer> poIds, int preStatus,int postStatus, int loginId);
+    int batchUpdatePayOrderStatus(List<Integer> poIds, List<Integer> preStatusList,int postStatus, int loginId);
 
     /**
      * 根据付款单号获取付款单信息
