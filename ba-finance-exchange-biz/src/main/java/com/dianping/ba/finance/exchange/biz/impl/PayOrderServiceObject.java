@@ -374,14 +374,9 @@ public class PayOrderServiceObject implements PayOrderService {
 
     @Log(logBefore = true, logAfter = true)
     @Override
-    public int batchUpdatePayOrderStatus(List<Integer> poIds, int preStatus, int postStatus, int loginId) {
+    public int batchUpdatePayOrderStatus(List<Integer> poIds, List<Integer> preStatusList, int postStatus, int loginId) {
         try {
-            POUpdateInfoBean poUpdateInfoBean = new POUpdateInfoBean();
-            poUpdateInfoBean.setPoIdList(poIds);
-            poUpdateInfoBean.setLoginId(loginId);
-            poUpdateInfoBean.setPreStatus(preStatus);
-            poUpdateInfoBean.setUpdateStatus(postStatus);
-            return payOrderDao.updatePayOrders(poUpdateInfoBean);
+            return payOrderDao.updatePayOrderListStatus(poIds, preStatusList, postStatus, loginId);
         } catch (Exception e) {
             MONITOR_LOGGER.error(String.format("severity=[1] PayOrderService.batchUpdatePayOrderStatus error! poIds=%s", poIds), e);
             return -1;
@@ -391,7 +386,11 @@ public class PayOrderServiceObject implements PayOrderService {
     @Log(logBefore = true, logAfter = true)
     @Override
     public List<PayOrderData> findPayOrderByIdList(List<Integer> poIds) {
-        return null;
+        List<PayOrderData> dataList = payOrderDao.findPayOrderListByPoIdList(poIds);
+        if (dataList == null) {
+            return Collections.emptyList();
+        }
+        return dataList;
     }
 
     private PayOrderBankInfoDTO buildPayOrderBankInfoDTO(PayOrderData poData) {

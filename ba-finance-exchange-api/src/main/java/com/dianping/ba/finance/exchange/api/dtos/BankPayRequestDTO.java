@@ -13,8 +13,6 @@ public class BankPayRequestDTO implements Serializable {
     private String accountName;
     private String accountToNo;
     private String accountToName;
-    private int bankId;
-    private int bankToId;
     private int accountType;
     private int accountToType;
     private String bankCode;
@@ -76,22 +74,6 @@ public class BankPayRequestDTO implements Serializable {
 
     public void setAccountToName(String accountToName) {
         this.accountToName = accountToName;
-    }
-
-    public int getBankId() {
-        return bankId;
-    }
-
-    public void setBankId(int bankId) {
-        this.bankId = bankId;
-    }
-
-    public int getBankToId() {
-        return bankToId;
-    }
-
-    public void setBankToId(int bankToId) {
-        this.bankToId = bankToId;
     }
 
     public int getAccountType() {

@@ -14,7 +14,7 @@ public interface PayOrderDomainService {
      * @param poIds
      * @param loginId
      */
-    void pay(List<Integer> poIds, int loginId);
+    int pay(List<Integer> poIds, int loginId);
 
     boolean handleBankPayResult(BankPayResultDTO bankPayResultDTO);
 }

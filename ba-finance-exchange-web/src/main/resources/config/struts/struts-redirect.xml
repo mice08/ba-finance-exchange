@@ -36,10 +36,6 @@
                 method="payOrderExportForPay">
             <result type="json"></result>
         </action>
-        <action name="orderbankpay" class="com.dianping.ba.finance.exchange.siteweb.action.ajax.PayOrderAjaxAction"
-                method="payOrderBankPay">
-            <result type="json"></result>
-        </action>
     </package>
     <package name="receivenotify" namespace="/exchange/receivenotify" extends="default">
         <action name="orderlist" class="com.dianping.ba.finance.exchange.siteweb.action.RedirectAction">
