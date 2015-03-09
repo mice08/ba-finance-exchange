@@ -11,6 +11,9 @@
         <property name="producerClient" ref="producerClient"/>
     </bean>
 
+    <bean id="accountService" class="com.dianping.ba.finance.exchange.biz.impl.AccountServiceObject">
+    </bean>
+
     <bean id="exchangeOrderService" class="com.dianping.ba.finance.exchange.biz.impl.ExchangeOrderServiceObject">
         <property name="exchangeOrderDao" ref="exchangeOrderDao"/>
         <property name="exchangeOrderStatusChangeNotify" ref="exchangeOrderStatusChangeNotify"/>
