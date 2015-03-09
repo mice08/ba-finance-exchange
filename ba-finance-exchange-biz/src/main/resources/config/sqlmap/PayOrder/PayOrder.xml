@@ -14,6 +14,7 @@
         <result property="payeeName" column="PayeeName"/>
         <result property="customerBankId" column="CustomerBankID"/>
         <result property="businessType" column="BusinessType"/>
+        <result property="payType" column="PayType"/>
         <result property="bankAccountNo" column="BankAccountNo"/>
         <result property="bankAccountName" column="BankAccountName"/>
         <result property="bankName" column="BankName"/>
@@ -50,6 +51,7 @@
 			BankCode,
 			BankAccountType,
 			BusinessType,
+			PayType,
 			PayBankName,
 			PayBankAccountNo,
 			Status,
@@ -76,6 +78,7 @@
 			#payOrderData.bankCode#,
 			#payOrderData.bankAccountType#,
 			#payOrderData.businessType#,
+			#payOrderData.payType#,
 			#payOrderData.payBankName#,
 			#payOrderData.payBankAccountNo#,
 			#payOrderData.status#,
@@ -133,6 +136,7 @@
         BankCode,
         BankAccountType,
         BusinessType,
+        PayType,
         PayBankName,
         PayBankAccountNo,
         Status,
@@ -169,6 +173,7 @@
         BankCode,
         BankAccountType,
         BusinessType,
+        PayType,
         PayBankName,
         PayBankAccountNo,
         Status,
@@ -299,6 +304,7 @@
         BankCode,
         BankAccountType,
         BusinessType,
+        PayType,
         PayBankName,
         PayBankAccountNo,
         Status,
@@ -383,6 +389,7 @@
                BankCode,
                BankAccountType,
                BusinessType,
+               PayType,
                PayBankName,
                PayBankAccountNo,
                Status,
@@ -406,9 +413,41 @@
 
     <update id="updatePayOrderStatus" parameterClass="map">
         UPDATE FC_PayOrder
-        SET Status = #status#, Memo = #memo#
-        WHERE PayCode = #payCode#
+        SET Status = #postStatus#, Memo = #memo#
+        WHERE POID = #poId# and Status = #preStatus#
     </update>
+
+    <select id="loadPayOrderByPayPOID" resultMap="payOrderData" parameterClass="map">
+        SELECT POID,
+        PayAmount,
+        PaySequence,
+        PayCode,
+        CustomerID,
+        PayeeName,
+        CustomerBankId,
+        BankAccountNo,
+        BankAccountName,
+        PaidDate,
+        BankBranchName,
+        BankName,
+        BankProvince,
+        BankCity,
+        BankFullBranchName,
+        BankCode,
+        BankAccountType,
+        BusinessType,
+        PayType,
+        PayBankName,
+        PayBankAccountNo,
+        Status,
+        AddTime,
+        AddType,
+        UpdateTime,
+        Memo
+        FROM   FC_PayOrder po
+        WHERE  po.POID = #poId#
+    </select>
+
 
 
 </sqlMap>

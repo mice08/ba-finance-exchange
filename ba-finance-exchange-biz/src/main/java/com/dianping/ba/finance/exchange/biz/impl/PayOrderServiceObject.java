@@ -24,6 +24,7 @@ import com.dianping.finance.common.util.LionConfigUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -351,12 +352,34 @@ public class PayOrderServiceObject implements PayOrderService {
 
     @Log(logBefore = true, logAfter = true)
     @Override
-    public int updatePayOrderStatus(String payCode, int status, String message) {
+    public int updatePayOrderStatus(int poId, int preStatus, int postStatus, String message) {
         try {
-            return payOrderDao.updatePayOrderStatus(payCode, status, message);
+            if (!StringUtils.isEmpty(message)) {
+                PayOrderData data = payOrderDao.loadPayOrderByPayPOID(poId);
+                if (data != null) {
+                    message += "|" + data.getMemo();
+                }
+            }
+            return payOrderDao.updatePayOrderStatus(poId, preStatus, postStatus, message);
         } catch (Exception e) {
-            MONITOR_LOGGER.error(String.format("severity=[1], PayOrderService.updatePayOrderStatus fail!, payCode=[%s]&status=[%d]&message=[%s]", payCode, status, message), e);
+            MONITOR_LOGGER.error(String.format("severity=[1], PayOrderService.updatePayOrderStatus fail!, payCode=[%s]&status=[%d]&message=[%s]", poId, postStatus, message), e);
             return 0;
+        }
+    }
+
+    @Log(logBefore = true, logAfter = true)
+    @Override
+    public int batchUpdatePayOrderStatus(List<Integer> poIds, int preStatus, int postStatus, int loginId) {
+        try {
+            POUpdateInfoBean poUpdateInfoBean = new POUpdateInfoBean();
+            poUpdateInfoBean.setPoIdList(poIds);
+            poUpdateInfoBean.setLoginId(loginId);
+            poUpdateInfoBean.setPreStatus(preStatus);
+            poUpdateInfoBean.setUpdateStatus(postStatus);
+            return payOrderDao.updatePayOrders(poUpdateInfoBean);
+        } catch (Exception e) {
+            MONITOR_LOGGER.error(String.format("severity=[1] PayOrderService.batchUpdatePayOrderStatus error! poIds=%s", poIds), e);
+            return -1;
         }
     }
 

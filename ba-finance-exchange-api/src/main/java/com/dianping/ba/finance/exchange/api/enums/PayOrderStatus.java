@@ -38,9 +38,17 @@ public enum PayOrderStatus {
      */
     BANK_PAYING(7),
     /**
-     * 8-支付失败
+     * 8-支付失败(银行帐号异常)
      */
     PAY_FAILED(9),
+    /**
+     * 10-提交支付中
+     */
+    SUBMIT_FOR_PAY(10),
+    /**
+     * 11-系统异常
+     */
+    SYSTEM_ERROR(11),
     ;
 
     private int payOrderStatus;
