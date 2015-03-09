@@ -12,7 +12,7 @@ import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
-import com.dianping.ba.finance.exchange.siteweb.enums.SubmitAction;
+import com.dianping.ba.finance.exchange.siteweb.enums.SubmitType;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
@@ -136,14 +136,14 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
         if (CollectionUtils.isEmpty(orderIdList)) {
             PayOrderSearchBean searchBean = buildPayOrderSearchBean();
-            if (submitAction == SubmitAction.PAY_ORDER.getCode()) {
+            if (submitAction == SubmitType.PAY_ORDER.getCode()) {
                 OPERATION_LOGGER.log(OperationType.UPDATE, "直联支付(全选)", searchBean.toString(), String.valueOf(getLoginId()));
             } else {
                 OPERATION_LOGGER.log(OperationType.UPDATE, "提交付款单(全选)", searchBean.toString(), String.valueOf(getLoginId()));
             }
             orderIdList = payOrderService.findPayOrderIdList(searchBean);
         } else {
-            if (submitAction == SubmitAction.PAY_ORDER.getCode()) {
+            if (submitAction == SubmitType.PAY_ORDER.getCode()) {
                 OPERATION_LOGGER.log(OperationType.UPDATE, "直联支付(勾选)", "付款单ID: " + orderIdList, String.valueOf(getLoginId()));
             } else {
                 OPERATION_LOGGER.log(OperationType.UPDATE, "提交付款单(勾选)", "付款单ID: " + orderIdList, String.valueOf(getLoginId()));
@@ -154,32 +154,40 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     public String payOrderBankPay() throws Exception {
         try {
-            List<Integer> idList = getSubmitOrderIdList(SubmitAction.PAY_ORDER.getCode());
+            List<Integer> idList = getSubmitOrderIdList(SubmitType.PAY_ORDER.getCode());
             if (CollectionUtils.isEmpty(idList)) {
                 MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No PayOrder found! " +
                         "businessType=[%d]&addBeginTime=[%s]&addEndTime=[%s]&poIds[%s]&status=[%d]", businessType, addBeginTime, addEndTime, poIds, status));
+                code = SUCCESS_CODE;
                 return SUCCESS;
             }
             payOrderDomainService.pay(idList, getLoginId());
+            code = SUCCESS_CODE;
             return SUCCESS;
         } catch (Exception e) {
-            MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPay", e);
+            MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPay fail!", e);
+            code = ERROR_CODE;
             return ERROR;
         }
     }
 
     public String payOrderBankPayRequest() throws Exception {
         try {
-            List<Integer> idList = getSubmitOrderIdList(SubmitAction.PAY_REQUEST.getCode());
+            List<Integer> idList = getSubmitOrderIdList(SubmitType.PAY_REQUEST.getCode());
             if (CollectionUtils.isEmpty(idList)) {
                 MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No PayOrder found! " +
                         "businessType=[%d]&addBeginTime=[%s]&addEndTime=[%s]&poIds[%s]&status=[%d]", businessType, addBeginTime, addEndTime, poIds, status));
+                code = SUCCESS_CODE;
                 return SUCCESS;
             }
             int submitNum = payOrderService.batchUpdatePayOrderStatus(idList, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), getLoginId());
+            msg.put("successCount", submitNum);
+            msg.put("failedCount", idList.size() - submitNum);
+            code = SUCCESS_CODE;
             return SUCCESS;
         } catch (Exception e) {
-            MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPayRequest", e);
+            MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPayRequest fail!", e);
+            code = ERROR_CODE;
             return ERROR;
         }
     }
@@ -434,5 +442,9 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     public void setBankId(int bankId) {
         this.bankId = bankId;
+    }
+
+    public void setPayOrderDomainService(PayOrderDomainService payOrderDomainService) {
+        this.payOrderDomainService = payOrderDomainService;
     }
 }
