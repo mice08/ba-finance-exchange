@@ -383,6 +383,12 @@ public class PayOrderServiceObject implements PayOrderService {
         }
     }
 
+    @Log(logBefore = true, logAfter = true)
+    @Override
+    public List<PayOrderData> findPayOrderByIdList(List<Integer> poIds) {
+        return null;
+    }
+
     private PayOrderBankInfoDTO buildPayOrderBankInfoDTO(PayOrderData poData) {
         try {
             PayOrderBankInfoDTO bankInfoDTO = ConvertUtils.copy(poData, PayOrderBankInfoDTO.class);
