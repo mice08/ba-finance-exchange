@@ -53,4 +53,25 @@
         </selectKey>
     </insert>
 
+    <select id="findAccountEntryByTime" parameterClass="map" resultMap="accountEntryData">
+        <![CDATA[
+        SELECT ID,
+        EntryNo,
+		SourceType,
+		InstID,
+		Amount,
+		Direction,
+		AccountID,
+		BankAccountID,
+		AccountBalance,
+		Description,
+		AddTime,
+		Memo
+		FROM FC_AccountEntry
+		WHERE AddTime <= #endTime#
+        AND AddTime >= #startTime#
+		LIMIT #start#,#size#
+		]]>
+    </select>
+
 </sqlMap>

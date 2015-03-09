@@ -5,11 +5,9 @@ import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.exchange.api.AccountService;
 import com.dianping.ba.finance.exchange.api.BankPayResultHandleService;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
-import com.dianping.ba.finance.exchange.api.datas.AccountEntryData;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
-import com.dianping.ba.finance.exchange.api.dtos.AccountEntryDTO;
+import com.dianping.ba.finance.exchange.api.dtos.AccountEntryRequestDTO;
 import com.dianping.ba.finance.exchange.api.dtos.BankPayResultDTO;
-import com.dianping.ba.finance.exchange.api.enums.AccountEntryDirection;
 import com.dianping.ba.finance.exchange.api.enums.AccountEntrySourceType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -46,7 +44,7 @@ public class BankPayResultHandleServiceObject implements BankPayResultHandleServ
 
     private boolean addAccountEntry(int poId) {
         PayOrderData payOrder = payOrderService.loadPayOrderDataByPOID(poId);
-        AccountEntryDTO entry = new AccountEntryDTO();
+        AccountEntryRequestDTO entry = new AccountEntryRequestDTO();
         entry.setInstId(String.valueOf(poId));
         entry.setSourceType(AccountEntrySourceType.BANK.getSourceType());
         entry.setAmount(payOrder.getPayAmount());//todo:desc

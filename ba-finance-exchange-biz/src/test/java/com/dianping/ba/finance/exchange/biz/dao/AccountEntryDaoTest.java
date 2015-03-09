@@ -10,10 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -42,5 +39,13 @@ public class AccountEntryDaoTest {
         data.setInstId("1");
         int result = accountEntryDao.insertAccountEntry(data);
         Assert.assertTrue(result > 0);
+    }
+
+    @Test
+    public void testFindAccountEntryByTime() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2014);
+        List<AccountEntryData> list = accountEntryDao.findAccountEntryByTime(0,1, cal.getTime(), new Date());
+        Assert.assertNotNull(list);
     }
 }

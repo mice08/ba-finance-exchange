@@ -22,4 +22,5 @@
     <sqlMap resource="config/sqlmap/PayRequest/PayRequest.xml"/>
     <sqlMap resource="config/sqlmap/Account/AccountEntry.xml"/>
     <sqlMap resource="config/sqlmap/Account/Account.xml"/>
+    <sqlMap resource="config/sqlmap/Account/BankAccount.xml"/>
 </sqlMapConfig>

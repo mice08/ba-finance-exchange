@@ -6,6 +6,7 @@ import com.dianping.avatar.dao.annotation.DAOActionType;
 import com.dianping.avatar.dao.annotation.DAOParam;
 import com.dianping.ba.finance.exchange.api.datas.AccountEntryData;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,5 +16,8 @@ public interface AccountEntryDao extends GenericDao {
 
     @DAOAction(action = DAOActionType.INSERT)
     int insertAccountEntry(@DAOParam("accountEntry") AccountEntryData accountEntry);
+
+    @DAOAction(action = DAOActionType.QUERY)
+    List<AccountEntryData> findAccountEntryByTime(@DAOParam("start") int start, @DAOParam("size") int size, @DAOParam("startTime") Date startTime, @DAOParam("endTime") Date endTime);
 
 }
