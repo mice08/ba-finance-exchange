@@ -18,5 +18,4 @@ public interface ReceiveVoucherDao extends GenericDao {
      */
     @DAOAction(action = DAOActionType.INSERT)
     int insertReceiveVoucherData(@DAOParam("receiveVoucherData") ReceiveVoucherData receiveVoucherData);
-
 }
