@@ -1,6 +1,6 @@
 package com.dianping.ba.finance.exchange.siteweb.enums;
 
-public enum SubmitAction {
+public enum SubmitType {
     DEFAULT(-1,  "默认错误"),
 
     PAY_REQUEST(1, "提交支付"),
@@ -9,13 +9,13 @@ public enum SubmitAction {
     int code;
     String message;
 
-    SubmitAction(int code, String message) {
+    SubmitType(int code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public static SubmitAction getByCode(int code) {
-        for (SubmitAction action : SubmitAction.values()) {
+    public static SubmitType getByCode(int code) {
+        for (SubmitType action : SubmitType.values()) {
             if (action.getCode() == code) {
                 return action;
             }

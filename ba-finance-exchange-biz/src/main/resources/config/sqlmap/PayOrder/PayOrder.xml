@@ -467,7 +467,11 @@
     <update id="updatePayOrderListStatus" parameterClass="map">
         UPDATE FC_PayOrder
         SET Status = #postStatus#, UpdateLoginID = #loginId#
-        WHERE POID = #poId# AND Status IN
+        WHERE POID IN
+        <iterate open="(" close=")" conjunction="," property="poIds">
+            #poIds[]#
+        </iterate>
+        AND Status IN
         <iterate open="(" close=")" conjunction="," property="preStatusList">
             #preStatusList[]#
         </iterate>
