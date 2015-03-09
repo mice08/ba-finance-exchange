@@ -141,4 +141,17 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
         requestDTO.setDescription(payOrderData.getMemo());
         return requestDTO;
     }
+
+
+    public void setPayOrderService(PayOrderService payOrderService) {
+        this.payOrderService = payOrderService;
+    }
+
+    public void setBankPayProducer(Producer bankPayProducer) {
+        this.bankPayProducer = bankPayProducer;
+    }
+
+    public void setAccountService(AccountService accountService) {
+        this.accountService = accountService;
+    }
 }
