@@ -4,6 +4,7 @@ import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.auditlog.api.enums.OperationType;
 import com.dianping.ba.finance.auditlog.client.OperationLogger;
+import com.dianping.ba.finance.exchange.api.PayOrderDomainService;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
@@ -21,6 +22,7 @@ import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
@@ -42,8 +44,6 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     private static final OperationLogger OPERATION_LOGGER = new OperationLogger("Exchange", "PayOrder", LionConfigUtils.getProperty("ba-finance-exchange-web.auditlog.token"));
 
     private static final Set<Integer> ALLOWED_EXPORT_STATUS = Sets.newHashSet(PayOrderStatus.INIT.value(), PayOrderStatus.EXPORT_PAYING.value());
-
-    private static final Set<Integer> ALLOWED_BANK_PAY_STATUS = Sets.newHashSet(PayOrderStatus.SUBMIT_FOR_PAY.value());
 
     //查询结果，付款计划列表
     private PageModel payOrderModel = new PageModel();
@@ -80,6 +80,9 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     private String endAmount;
 
     private int bankId;
+
+    @Autowired
+    private PayOrderDomainService payOrderDomainService;
 
     @Override
     protected void jsonExecute() throws Exception {
@@ -130,18 +133,12 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         try {
             PayOrderSearchBean searchBean = buildPayOrderSearchBean();
             OPERATION_LOGGER.log(OperationType.UPDATE, "直联支付", searchBean.toString(), String.valueOf(getLoginId()));
-            List<PayOrderData> dataList = payOrderService.findPayOrderList(searchBean);
-            if (CollectionUtils.isEmpty(dataList)) {
+            List<Integer> idList = payOrderService.findPayOrderIdList(searchBean);
+            if (CollectionUtils.isEmpty(idList)) {
                 MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No PayOrder found! searchBean=%s", searchBean));
                 return SUCCESS;
             }
-            List<Integer> idList = buildPayOrderListForBankPay(dataList);
-            if (CollectionUtils.isEmpty(idList)) {
-                MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No matched pay order found! searchBean=%s", searchBean));
-                return SUCCESS;
-            }
-            payOrderService.batchUpdatePayOrderStatus(idList, PayOrderStatus.SUBMIT_FOR_PAY.value(), PayOrderStatus.BANK_PAYING.value(), getLoginId());
-            //todo submit to bank
+            payOrderDomainService.pay(idList, getLoginId());
             return SUCCESS;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPay", e);
@@ -149,23 +146,6 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         }
     }
 
-    private List<Integer> buildPayOrderListForBankPay(List<PayOrderData> dataList) {
-        if (CollectionUtils.isEmpty(dataList)) {
-            return new ArrayList<Integer>();
-        }
-        List<Integer> idList = new ArrayList<Integer>();
-        for (PayOrderData data : dataList) {
-            if (orderCanBankPay(data)) {
-                idList.add(data.getPoId());
-            }
-        }
-        return idList;
-    }
-
-    private boolean orderCanBankPay(PayOrderData order) {
-        //todo check business type
-        return order.getPayAmount().compareTo(BigDecimal.ZERO) > 0 && ALLOWED_BANK_PAY_STATUS.contains(order.getStatus());
-    }
 
 	private void updatePayOrderStatus(List<PayOrderExportBean> beanList, int loginId){
 		if(!CollectionUtils.isEmpty(beanList)){
