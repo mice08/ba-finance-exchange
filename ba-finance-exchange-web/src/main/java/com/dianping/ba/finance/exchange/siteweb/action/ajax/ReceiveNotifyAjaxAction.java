@@ -2,17 +2,23 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.auditlog.api.enums.OperationType;
+import com.dianping.ba.finance.auditlog.client.OperationLogger;
 import com.dianping.ba.finance.exchange.api.ReceiveBankService;
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveBankData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.enums.*;
-import com.dianping.ba.finance.exchange.siteweb.beans.*;
+import com.dianping.ba.finance.exchange.siteweb.beans.CustomerInfoBean;
+import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveInfoBean;
+import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveNotifyBean;
+import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveNotifyConfirmBean;
+import com.dianping.ba.finance.exchange.siteweb.constants.Constant;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
-import com.google.common.collect.Maps;
+import com.dianping.finance.common.util.LionConfigUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,7 +40,9 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 	 */
 	private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.web.monitor.ReceiveNotifyAjaxAction");
 
-	private String applicationId;
+    private static final OperationLogger OPERATION_LOGGER = new OperationLogger("Exchange", "ReceiveNotify", LionConfigUtils.getProperty("ba-finance-exchange-web.auditlog.token"));
+
+    private String applicationId;
 
 	private int roMatcherId;
 
@@ -71,16 +79,17 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 	@Override
 	protected void jsonExecute() {
 		if (businessType == BusinessType.DEFAULT.value()) {
-			totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO);
+			totalAmount = new DecimalFormat(Constant.DECIMAL_FORMAT).format(BigDecimal.ZERO);
             msg.put("totalAmount", totalAmount);
             code = ERROR_CODE;
 			return;
 		}
 		try {
 			ReceiveNotifySearchBean searchBean = buildRNSearchBean();
-			receiveNotifyModel = receiveNotifyService.paginateReceiveNotifyList(searchBean, page, pageSize);
+            OPERATION_LOGGER.log(OperationType.QUERY, "查询收款通知", searchBean.toString(), String.valueOf(getLoginId()));
+            receiveNotifyModel = receiveNotifyService.paginateReceiveNotifyList(searchBean, page, pageSize);
 			receiveNotifyModel.setRecords(buildReceiveNotifyBeans((List<ReceiveNotifyData>) receiveNotifyModel.getRecords()));
-			totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(receiveNotifyService.loadTotalReceiveAmountByCondition(searchBean));
+			totalAmount = new DecimalFormat(Constant.DECIMAL_FORMAT).format(receiveNotifyService.loadTotalReceiveAmountByCondition(searchBean));
             msg.put("totalAmount", totalAmount);
             msg.put("receiveNotifyModel", receiveNotifyModel);
             code = SUCCESS_CODE;
@@ -127,7 +136,7 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 		bean.setBizContent(receiveNotifyData.getBizContent());
 		bean.setMemo(receiveNotifyData.getMemo());
 		bean.setPayerName(receiveNotifyData.getPayerName());
-		bean.setReceiveAmount(receiveNotifyData.getReceiveAmount());
+		bean.setReceiveAmount(new DecimalFormat(Constant.DECIMAL_FORMAT).format(receiveNotifyData.getReceiveAmount()));
 		bean.setPayTime(DateUtil.formatDateToString(receiveNotifyData.getPayTime(), "yyyy-MM-dd"));
 		bean.setPayerName(receiveNotifyData.getPayerName());
 		bean.setBusinessType(BusinessType.valueOf(receiveNotifyData.getBusinessType()).toString());
@@ -165,7 +174,8 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 
 	public String rornCancelLink() {
 		try {
-			receiveNotifyService.removeReceiveNotifyMatchRelation(rnId, roMatcherId);
+            OPERATION_LOGGER.log(OperationType.UPDATE, "取消收款通知关联", String.format("收款通知ID: %s, 收款单ID: %s", rnId, roMatcherId), String.valueOf(getLoginId()));
+            receiveNotifyService.removeReceiveNotifyMatchRelation(rnId, roMatcherId);
 			code = SUCCESS_CODE;
 		} catch (Exception e) {
 			MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.rornCancelLink error!", e);
@@ -176,7 +186,8 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 
 	public String findNotifiesByROId() {
 		try {
-			List<ReceiveNotifyData> list = receiveNotifyService.findMatchedReceiveNotify(roMatcherId);
+            OPERATION_LOGGER.log(OperationType.QUERY, "根据收款单ID查询收款通知", String.format("收款单ID: %s", roMatcherId), String.valueOf(getLoginId()));
+            List<ReceiveNotifyData> list = receiveNotifyService.findMatchedReceiveNotify(roMatcherId);
 
 			records = buildReceiveNotifyConfirmList(list);
             msg.put("records", records);
@@ -202,7 +213,8 @@ public class ReceiveNotifyAjaxAction extends AjaxBaseAction {
 		}
 
 		try {
-			ReceiveNotifyData rnData = receiveNotifyService.loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus.INIT, businessType, applicationId);
+            OPERATION_LOGGER.log(OperationType.QUERY, "获取收款通知信息", String.format("businessType: %s, applicationId: %s", businessType, applicationId), String.valueOf(getLoginId()));
+            ReceiveNotifyData rnData = receiveNotifyService.loadUnmatchedReceiveNotifyByApplicationId(ReceiveNotifyStatus.INIT, businessType, applicationId);
 			if (rnData != null) {
 				ReceiveInfoBean receiveInfoBean = buildReceiveInfoBean(rnData);
 				msg.put("receiveInfo", receiveInfoBean);

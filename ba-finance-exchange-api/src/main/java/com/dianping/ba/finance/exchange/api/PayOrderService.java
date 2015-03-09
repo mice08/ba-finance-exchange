@@ -108,4 +108,50 @@ public interface PayOrderService {
      * @return
      */
     boolean dropPayOrder(String paySequence);
+
+    /**
+     * 修改customerId
+     * @param oldCustomerId
+     * @param newCustomerId
+     */
+    int changeCustomer(int oldCustomerId, int newCustomerId);
+
+    /**
+     * 根据PaySequence获取付款单
+     * @param sequence
+     * @return
+     */
+    PayOrderData loadPayOrderDataByPaySequence(String sequence);
+
+    /**
+     * 根据POID获取付款单
+     * @param poId
+     * @return
+     */
+    PayOrderData loadPayOrderDataByPOID(int poId);
+
+    /**
+     * 根据付款单号更新状态
+     * @param poId
+     * @param preStatus
+     * @param postStatus
+     * @return
+     */
+    int updatePayOrderStatus(int poId, int preStatus, int postStatus, String message);
+
+    /**
+     * 批量更新付款单状态
+     * @param poIds
+     * @param loginId
+     * @return
+     */
+    int batchUpdatePayOrderStatus(List<Integer> poIds, int preStatus,int postStatus, int loginId);
+
+    /**
+     * 根据付款单号获取付款单信息
+     * @param poIds
+     * @return
+     */
+    List<PayOrderData> findPayOrderByIdList(List<Integer> poIds);
+
 }

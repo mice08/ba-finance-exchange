@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Account">
+
+    <typeAlias alias="AccountEntryData" type="com.dianping.ba.finance.exchange.api.datas.AccountEntryData"/>
+    <resultMap id="accountEntryData" class="AccountEntryData">
+        <result property="id" column="ID"/>
+        <result property="entryNo" column="EntryNo"/>
+        <result property="sourceType" column="SourceType"/>
+        <result property="instId" column="InstID"/>
+        <result property="amount" column="Amount"/>
+        <result property="direction" column="Direction"/>
+        <result property="accountId" column="AccountID"/>
+        <result property="bankAccountId" column="BankAccountID"/>
+        <result property="accountBalance" column="AccountBalance"/>
+        <result property="description" column="Description"/>
+        <result property="addTime" column="AddTime"/>
+        <result property="memo" column="Memo"/>
+    </resultMap>
+
+    <insert id="insertAccountEntry" parameterClass="map">
+        <![CDATA[
+        INSERT INTO FC_AccountEntry
+			(EntryNo,
+			SourceType,
+			InstID,
+			Amount,
+			Direction,
+			AccountID,
+			BankAccountID,
+			AccountBalance,
+			Description,
+			AddTime,
+			Memo
+			)
+			values (
+			#accountEntry.entryNo#,
+			#accountEntry.sourceType#,
+			#accountEntry.instId#,
+			#accountEntry.amount#,
+			#accountEntry.direction#,
+			#accountEntry.accountId#,
+			#accountEntry.bankAccountId#,
+			#accountEntry.accountBalance#,
+			#accountEntry.description#,
+			NOW(),
+			#accountEntry.memo#)
+ 		]]>
+        <selectKey resultClass="java.lang.Integer" keyProperty="id">
+            <![CDATA[
+			SELECT @@IDENTITY AS id
+		]]>
+        </selectKey>
+    </insert>
+
+    <select id="findAccountEntryByTime" parameterClass="map" resultMap="accountEntryData">
+        <![CDATA[
+        SELECT ID,
+        EntryNo,
+		SourceType,
+		InstID,
+		Amount,
+		Direction,
+		AccountID,
+		BankAccountID,
+		AccountBalance,
+		Description,
+		AddTime,
+		Memo
+		FROM FC_AccountEntry
+		WHERE AddTime <= #endTime#
+        AND AddTime >= #startTime#
+		LIMIT #start#,#size#
+		]]>
+    </select>
+
+</sqlMap>

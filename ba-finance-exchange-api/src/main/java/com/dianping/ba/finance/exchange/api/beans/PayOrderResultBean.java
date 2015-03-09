@@ -22,6 +22,8 @@ public class PayOrderResultBean implements Serializable {
     private int loginId;
     private BigDecimal paidAmount;
     private String memo;
+    private int businessType;
+
 
     public String getPaySequence() {
         return paySequence;
@@ -71,14 +73,24 @@ public class PayOrderResultBean implements Serializable {
         this.memo = memo;
     }
 
+    public int getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(int businessType) {
+        this.businessType = businessType;
+    }
+
     @Override
     public String toString() {
         return "PayOrderResultBean{" +
                 "paySequence='" + paySequence + '\'' +
                 ", status=" + status +
                 ", poId=" + poId +
+                ", loginId=" + loginId +
                 ", paidAmount=" + paidAmount +
                 ", memo='" + memo + '\'' +
+                ", businessType=" + businessType +
                 '}';
     }
 }
