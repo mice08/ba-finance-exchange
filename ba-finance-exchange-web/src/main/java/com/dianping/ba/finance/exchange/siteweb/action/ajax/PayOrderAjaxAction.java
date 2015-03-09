@@ -443,4 +443,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     public void setBankId(int bankId) {
         this.bankId = bankId;
     }
+
+    public void setPayOrderDomainService(PayOrderDomainService payOrderDomainService) {
+        this.payOrderDomainService = payOrderDomainService;
+    }
 }
