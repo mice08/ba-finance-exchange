@@ -285,6 +285,7 @@
                         <th width="10%" class="fs tb-header paid-time">付款日期</th>
                         <th width="10%" class="fs tb-header sendback-time">退票日期</th>
                         <th width="5%" class="fs tb-header status">状态</th>
+                        <th width="5%" class="fs tb-header pay-type">业务类型</th>
                         <th width="15%" class="fs tb-header memo">备注</th>
                     </tr>
                     </thead>
@@ -332,6 +333,7 @@
         <td class="fs tb-item amount number-char">{{= record.sendBackTime}}</td>
         {{/if}}
         <td class="fs tb-item plan-date number-char">{{= record.statusDesc}}</td>
+        <td class="fs tb-item pay-type">{{= record.payType}}</td>
         <td class="fs tb-item status">{{= record.memo}}</td>
     </tr>
     {{/each}}
