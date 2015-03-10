@@ -22,6 +22,7 @@ import com.dianping.finance.common.util.LionConfigUtils;
 import com.google.common.collect.Sets;
 import jodd.util.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +85,9 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     private int payType;
 
     private int bankId;
+
+    private String rejectMemo;
+
 
     @Autowired
     private PayOrderDomainService payOrderDomainService;
@@ -189,6 +193,28 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
             return SUCCESS;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPayRequest fail!", e);
+            code = ERROR_CODE;
+            return ERROR;
+        }
+    }
+
+    public String payOrderRejectRequest() throws Exception {
+        try{
+            if(StringUtils.isBlank(poIds)){
+                MONITOR_LOGGER.warn("No pay order need to be rejected!");
+                code = SUCCESS_CODE;
+                return SUCCESS;
+            }
+            String[] orderIdList = poIds.trim().split(",");
+
+            for(String orderId: orderIdList){
+                int poId = NumberUtils.toInt(orderId);
+                payOrderService.updatePayOrderStatus(poId, PayOrderStatus.SUBMIT_FOR_PAY.value(), PayOrderStatus.INIT.value(), rejectMemo);
+            }
+            code = SUCCESS_CODE;
+            return SUCCESS;
+        } catch (Exception e){
+            MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderRejectRequest fail!", e);
             code = ERROR_CODE;
             return ERROR;
         }
@@ -458,4 +484,13 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     public void setPayType(int payType) {
         this.payType = payType;
     }
+
+    public String getRejectMemo() {
+        return rejectMemo;
+    }
+
+    public void setRejectMemo(String rejectMemo) {
+        this.rejectMemo = rejectMemo;
+    }
+
 }
