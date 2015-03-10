@@ -81,6 +81,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     private String endAmount;
 
+    private int payType;
+
     private int bankId;
 
     @Autowired
@@ -262,6 +264,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
                 (DateUtil.isValidDate(addEndTime) ? DateUtil.formatDate(addEndTime, true) : null);
         payOrderSearchBean.setStatus(status);
         payOrderSearchBean.setBusinessType(businessType);
+        payOrderSearchBean.setPayType(payType);
         payOrderSearchBean.setBeginTime(beginTime);
         payOrderSearchBean.setEndTime(endTime);
         payOrderSearchBean.setStartAmount(parseAmount(startAmount));
@@ -446,5 +449,13 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     public void setPayOrderDomainService(PayOrderDomainService payOrderDomainService) {
         this.payOrderDomainService = payOrderDomainService;
+    }
+
+    public int getPayType() {
+        return payType;
+    }
+
+    public void setPayType(int payType) {
+        this.payType = payType;
     }
 }
