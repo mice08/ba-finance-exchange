@@ -10,6 +10,7 @@ public class AccountEntryRequestDTO implements Serializable {
 
     private int sourceType;
     private String instId;
+    private String description;
     private BigDecimal amount;
     private int bankAccountId;
 
@@ -43,5 +44,13 @@ public class AccountEntryRequestDTO implements Serializable {
 
     public void setBankAccountId(int bankAccountId) {
         this.bankAccountId = bankAccountId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

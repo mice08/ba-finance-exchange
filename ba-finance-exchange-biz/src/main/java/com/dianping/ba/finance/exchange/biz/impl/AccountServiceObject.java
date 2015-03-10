@@ -15,6 +15,7 @@ import com.dianping.ba.finance.exchange.api.enums.AccountEntrySourceType;
 import com.dianping.ba.finance.exchange.biz.dao.AccountDao;
 import com.dianping.ba.finance.exchange.biz.dao.AccountEntryDao;
 import com.dianping.ba.finance.exchange.biz.dao.BankAccountDao;
+import com.dianping.ba.finance.exchange.biz.utils.SerialNoHelper;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.util.ConvertUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -93,8 +94,9 @@ public class AccountServiceObject implements AccountService {
         accountEntry.setAccountBalance(accountUpdateInfo.getBalance());
         accountEntry.setAccountId(account.getId());
         accountEntry.setAmount(accountEntryRequestDTO.getAmount());
+        accountEntry.setDescription(accountEntryRequestDTO.getDescription() == null ? "" : accountEntryRequestDTO.getDescription());
         accountEntry.setBankAccountId(accountEntryRequestDTO.getBankAccountId());
-        accountEntry.setEntryNo(""); //todo: entry no generation
+        accountEntry.setEntryNo(SerialNoHelper.generateSerialNo("AE", 15));
         accountEntry.setInstId(accountEntryRequestDTO.getInstId());
         return accountEntry;
     }

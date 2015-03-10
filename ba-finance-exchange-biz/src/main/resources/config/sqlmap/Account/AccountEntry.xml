@@ -68,7 +68,7 @@
 		AddTime,
 		Memo
 		FROM FC_AccountEntry
-		WHERE AddTime <= #endTime#
+		WHERE AddTime < #endTime#
         AND AddTime >= #startTime#
 		LIMIT #start#,#size#
 		]]>
