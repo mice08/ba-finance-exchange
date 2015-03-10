@@ -1,8 +1,5 @@
 package com.dianping.ba.finance.exchange.siteweb.beans;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 /**
  * Created by Eric on 2014/6/11.
  */
@@ -22,6 +19,7 @@ public class PayOrderBean {
     private String memo;
     private String paidDate;
     private int queryStatus;
+    private String payType;
 
     public String getPayCode() {
         return payCode;
@@ -133,5 +131,13 @@ public class PayOrderBean {
 
     public void setSendBackTime(String sendBackTime) {
         this.sendBackTime = sendBackTime;
+    }
+
+    public String getPayType() {
+        return payType;
+    }
+
+    public void setPayType(String payType) {
+        this.payType = payType;
     }
 }

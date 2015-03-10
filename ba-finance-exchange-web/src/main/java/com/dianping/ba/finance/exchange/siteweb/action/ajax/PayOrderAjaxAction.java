@@ -10,6 +10,7 @@ import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
+import com.dianping.ba.finance.exchange.api.enums.PayType;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
 import com.dianping.ba.finance.exchange.siteweb.enums.SubmitAction;
@@ -80,6 +81,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     private String startAmount;
 
     private String endAmount;
+
+    private int payType;
 
     private int bankId;
 
@@ -254,6 +257,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
                 (DateUtil.isValidDate(addEndTime) ? DateUtil.formatDate(addEndTime, true) : null);
         payOrderSearchBean.setStatus(status);
         payOrderSearchBean.setBusinessType(businessType);
+        payOrderSearchBean.setPayType(payType);
         payOrderSearchBean.setBeginTime(beginTime);
         payOrderSearchBean.setEndTime(endTime);
         payOrderSearchBean.setStartAmount(parseAmount(startAmount));
@@ -308,6 +312,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         payOrderBean.setBankFullBranchName(payOrderData.getBankFullBranchName());
         payOrderBean.setCustomerName(getCustomerNameById(payOrderData.getCustomerId(), customerIdNameMap));
         payOrderBean.setMemo(payOrderData.getMemo());
+        payOrderBean.setPayType(PayType.valueOf(payOrderData.getPayType()).toString());
         payOrderBean.setPaidDate(DateUtil.formatDateToString(payOrderData.getPaidDate(), "yyyy-MM-dd HH:mm:ss"));
         payOrderBean.setPayAmount(new DecimalFormat("##,###,###,###,##0.00").format(payOrderData.getPayAmount()));
         payOrderBean.setPoId(payOrderData.getPoId());
@@ -434,5 +439,13 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     public void setBankId(int bankId) {
         this.bankId = bankId;
+    }
+
+    public int getPayType() {
+        return payType;
+    }
+
+    public void setPayType(int payType) {
+        this.payType = payType;
     }
 }
