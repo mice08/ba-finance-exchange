@@ -14,7 +14,9 @@ import com.dianping.ba.finance.exchange.api.enums.AccountEntrySourceType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.PayType;
 import com.dianping.finance.common.aop.annotation.Log;
-import com.dianping.swallow.producer.Producer;
+import com.dianping.finance.common.swallow.SwallowEventBean;
+import com.dianping.finance.common.swallow.SwallowProducer;
+import com.dianping.finance.common.util.ListUtils;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -36,10 +38,12 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
 
     private static final Set<Integer> ALLOWED_BANK_PAY_STATUS = Sets.newHashSet(PayOrderStatus.SUBMIT_FOR_PAY.value());
 
+    public static final String BANK_ORDER_PAY_REQUEST = "BANK_ORDER_PAY_REQUEST_NOTIFY";
+
     @Autowired
     private PayOrderService payOrderService;
     @Autowired
-    private Producer bankPayProducer;
+    private SwallowProducer bankPayProducer;
     @Autowired
     private AccountService accountService;
 
@@ -50,11 +54,16 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
         try {
             List<PayOrderData> payOrderDataList = payOrderService.findPayOrderByIdList(poIds);
             List<Integer> idList = buildPayOrderListForBankPay(payOrderDataList);
+            if(CollectionUtils.isEmpty(idList)){
+                MONITOR_LOGGER.warn(String.format("No pay order to pay! poIds=[%s]", ListUtils.listToString(poIds, ",")));
+                return 0;
+            }
             payOrderService.batchUpdatePayOrderStatus(idList, Arrays.asList(PayOrderStatus.SUBMIT_FOR_PAY.value()), PayOrderStatus.BANK_PAYING.value(), loginId);
             for(PayOrderData data: payOrderDataList){
                 if(idList.contains(data.getPoId())){
                     BankPayRequestDTO requestDTO = buildBankPayRequest(data);
-                    bankPayProducer.sendMessage(requestDTO);
+                    SwallowEventBean eventBean = new SwallowEventBean(BANK_ORDER_PAY_REQUEST, requestDTO);
+                    bankPayProducer.fireSwallowEvent(eventBean);
                 }
             }
             return idList.size();
@@ -128,8 +137,10 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
         BankPayRequestDTO requestDTO = new BankPayRequestDTO();
         requestDTO.setInsId(String.valueOf(payOrderData.getPoId()));
         BankAccountDTO payeeBankAccountDTO = accountService.loadBankAccount(payOrderData.getPayeeBankAccountId());
-        requestDTO.setAccountNo(payeeBankAccountDTO.getBankAccountNo());
-        requestDTO.setAccountName(payeeBankAccountDTO.getBankAccountName());
+        if(payeeBankAccountDTO != null){
+            requestDTO.setAccountNo(payeeBankAccountDTO.getBankAccountNo());
+            requestDTO.setAccountName(payeeBankAccountDTO.getBankAccountName());
+        }
         requestDTO.setAccountToNo(payOrderData.getBankAccountNo());
         requestDTO.setAccountToName(payOrderData.getBankAccountName());
         requestDTO.setAccountType(1);
@@ -147,7 +158,7 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
         this.payOrderService = payOrderService;
     }
 
-    public void setBankPayProducer(Producer bankPayProducer) {
+    public void setBankPayProducer(SwallowProducer bankPayProducer) {
         this.bankPayProducer = bankPayProducer;
     }
 
