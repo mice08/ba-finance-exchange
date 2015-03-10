@@ -62,6 +62,7 @@ public class ReceiveOrderDaoTest {
 		ReceiveOrderSearchBean searchBean = new ReceiveOrderSearchBean();
 //		searchBean.setCustomerId(8787);
 		searchBean.setBusinessType(5);
+        searchBean.setAmount(new BigDecimal("8787.00"));
 //
 //		Calendar receiveTimeBeginCal = Calendar.getInstance();
 //		receiveTimeBeginCal.set(Calendar.MONTH, 05);
@@ -224,5 +225,13 @@ public class ReceiveOrderDaoTest {
         List<ReceiveOrderData> roDataList = receiveOrderDao.findReceiveOrderBySearchBean(searchBean);
         Assert.assertFalse(roDataList.isEmpty());
 
+    }
+
+    @Test
+    public void testUpdateCustomerId() {
+        int newCustomerId = 123321;
+        int oldCustomerId = 100;
+        int result = receiveOrderDao.updateCustomerId(oldCustomerId, newCustomerId);
+        Assert.assertTrue(result > 0);
     }
 }

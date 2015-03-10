@@ -36,6 +36,10 @@ public class PayOrderExportBean {
 
     private int bankAccountType;
 
+    private String payBankName;
+
+    private String payBankAccountNo;
+
     /**
      * 业务类型
      */
@@ -150,6 +154,22 @@ public class PayOrderExportBean {
         this.businessType = businessType;
     }
 
+    public String getPayBankName() {
+        return payBankName;
+    }
+
+    public void setPayBankName(String payBankName) {
+        this.payBankName = payBankName;
+    }
+
+    public String getPayBankAccountNo() {
+        return payBankAccountNo;
+    }
+
+    public void setPayBankAccountNo(String payBankAccountNo) {
+        this.payBankAccountNo = payBankAccountNo;
+    }
+
     public String getMemo() {
         return memo;
     }
@@ -173,6 +193,8 @@ public class PayOrderExportBean {
                 ", bankFullBranchName='" + bankFullBranchName + '\'' +
                 ", bankCode='" + bankCode + '\'' +
                 ", bankAccountType=" + bankAccountType +
+                ", payBankName='" + payBankName + '\'' +
+                ", payBankAccountNo='" + payBankAccountNo + '\'' +
                 ", businessType=" + businessType +
                 ", memo='" + memo + '\'' +
                 '}';

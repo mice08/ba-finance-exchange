@@ -15,6 +15,7 @@
             <map>
                 <entry key="http://service.dianping.com/baFinanceService/exchangeOrderService_1.0.0" value-ref="exchangeOrderService"/>
                 <entry key="http://service.dianping.com/baFinanceExchangeService/payOrderService_1.0.0" value-ref="payOrderService"/>
+                <entry key="http://service.dianping.com/baFinanceService/PayOrderDomainService_1.0.0" value-ref="payOrderDomainService"/>
                 <entry key="http://service.dianping.com/baFinanceExchangeService/shopFundAccountService_1.0.0" value-ref="shopFundAccountService"/>
                 <entry key="http://service.dianping.com/baFinanceExchangeService/payOrderRequestHandleService_1.0.0" value-ref="payOrderRequestHandleService"/>
                 <entry key="http://service.dianping.com/baFinanceExchangeService/receiveOrderService_1.0.0" value-ref="receiveOrderService"/>
@@ -25,6 +26,9 @@
                 <entry key="http://service.dianping.com/baFinanceExchangeService/receiveBankService_1.0.0" value-ref="receiveBankService"/>
                 <entry key="http://service.dianping.com/baFinanceExchangeService/receiveOrderMonitorService_1.0.0" value-ref="receiveOrderMonitorService"/>
                 <entry key="http://service.dianping.com/baFinanceExchangeService/receiveVoucherService_1.0.0" value-ref="receiveVoucherService"/>
+                <!--<entry key="http://service.dianping.com/baFinanceExchangeService/payRequestHandleService_1.0.0" value-ref="payRequestHandleService"/>-->
+                <entry key="http://service.dianping.com/baFinanceExchangeService/expenseService_1.0.0" value-ref="expenseService"/>
+                <entry key="http://service.dianping.com/baFinanceExchangeService/payOrderDomainService_1.0.0" value-ref="payOrderDomainService"/>
         </map>
         </property>
     </bean>
