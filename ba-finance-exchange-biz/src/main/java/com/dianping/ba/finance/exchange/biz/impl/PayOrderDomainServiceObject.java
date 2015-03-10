@@ -133,8 +133,10 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
         BankPayRequestDTO requestDTO = new BankPayRequestDTO();
         requestDTO.setInsId(String.valueOf(payOrderData.getPoId()));
         BankAccountDTO payeeBankAccountDTO = accountService.loadBankAccount(payOrderData.getPayeeBankAccountId());
-        requestDTO.setAccountNo(payeeBankAccountDTO.getBankAccountNo());
-        requestDTO.setAccountName(payeeBankAccountDTO.getBankAccountName());
+        if(payeeBankAccountDTO != null){
+            requestDTO.setAccountNo(payeeBankAccountDTO.getBankAccountNo());
+            requestDTO.setAccountName(payeeBankAccountDTO.getBankAccountName());
+        }
         requestDTO.setAccountToNo(payOrderData.getBankAccountNo());
         requestDTO.setAccountToName(payOrderData.getBankAccountName());
         requestDTO.setAccountType(1);
