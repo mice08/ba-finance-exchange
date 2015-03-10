@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifyResultBean;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean;
+import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifyUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyResultStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
@@ -120,8 +121,13 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
     @Log(severity = 3, logBefore = true, logAfter = true)
     @ReturnDefault
     @Override
-    public int updateReceiveNotifyStatus(int rnId, ReceiveNotifyStatus preStatus, ReceiveNotifyStatus setStatus) {
-        int u = receiveNotifyDao.updateReceiveNotifyStatus(rnId, preStatus.value(), setStatus.value());
+    public int updateReceiveNotifyStatus(int rnId, ReceiveNotifyStatus preStatus, ReceiveNotifyStatus setStatus, String memo) {
+        ReceiveNotifyUpdateBean receiveNotifyUpdateBean = new ReceiveNotifyUpdateBean();
+        receiveNotifyUpdateBean.setRnId(rnId);
+        receiveNotifyUpdateBean.setPreStatus(preStatus.value());
+        receiveNotifyUpdateBean.setSetStatus(setStatus.value());
+        receiveNotifyUpdateBean.setMemo(memo);
+        int u = receiveNotifyDao.updateReceiveNotifyStatus(receiveNotifyUpdateBean);
         if (u > 0
                 && (setStatus == ReceiveNotifyStatus.CONFIRMED
                 || setStatus == ReceiveNotifyStatus.REJECT)) {
@@ -139,7 +145,7 @@ public class ReceiveNotifyServiceObject implements ReceiveNotifyService {
         ReceiveNotifyResultBean receiveNotifyResultBean = new ReceiveNotifyResultBean();
         receiveNotifyResultBean.setApplicationId(rnData.getApplicationId());
         receiveNotifyResultBean.setBusinessType(rnData.getBusinessType());
-        receiveNotifyResultBean.setMemo(status.toString());
+        receiveNotifyResultBean.setMemo(rnData.getMemo());
         receiveNotifyResultBean.setReceiveNotifyId(rnData.getReceiveNotifyId());
         receiveNotifyResultBean.setStatus(status);
         return receiveNotifyResultBean;

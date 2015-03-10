@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="AuthStatus">
+    <typeAlias alias="AuthStatusInfoData" type="com.dianping.ba.finance.exchange.api.datas.AuthStatusInfoData"/>
+    <resultMap id="authStatusInfoData" class="AuthStatusInfoData">
+        <result property="id" column="ID"/>
+        <result property="times" column="Times"/>
+        <result property="workNo" column="WorkNo"/>
+        <result property="type" column="Type"/>
+        <result property="status" column="Status"/>
+        <result property="addTime" column="AddTime"/>
+    </resultMap>
+
+    <select id="loadStatusByWorkNoAndType" resultClass="authStatusInfoData" parameterClass="map">
+        SELECT ID,
+        Times,
+        WorkNo,
+        Type,
+        AddTime,
+        Status
+        FROM   FC_AuthStatusInfo
+        WHERE  WorkNo = #workNo#
+        AND Type = #type#
+        AND Status = 1
+    </select>
+
+    <insert id="insertAuthStatusInfo" parameterClass="map">
+        <![CDATA[
+        INSERT INTO FC_AuthStatusInfo
+        (Times,
+        WorkNo,
+        Type,
+        Status,
+        AddTime)
+        VALUES
+        (#times#,
+        #workNo#,
+        #type#,
+        1,
+        NOW())
+        ]]>
+        <selectKey resultClass="java.lang.Integer" keyProperty="id">
+            <![CDATA[
+			SELECT @@IDENTITY AS id
+		]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateAuthTimes" parameterClass="map">
+        UPDATE FC_AuthStatusInfo
+        SET Times = #times#
+        WHERE ID = #id#
+        AND Status = 1
+    </update>
+
+    <delete id="updateStatusInvalid" parameterClass="map">
+        UPDATE FC_AuthStatusInfo
+        SET Status = 2
+        WHERE  WorkNo = #workNo#
+        AND Type = #type#
+    </delete>
+
+</sqlMap>

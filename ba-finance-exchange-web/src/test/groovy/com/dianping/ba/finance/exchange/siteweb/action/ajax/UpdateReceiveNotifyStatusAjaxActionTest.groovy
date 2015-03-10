@@ -25,7 +25,7 @@ class UpdateReceiveNotifyStatusAjaxActionTest extends Specification {
     def "ConfirmReceiveNotify"(Integer rnId, String result) {
         given:
         updateReceiveNotifyStatusAjaxActionStub.rnId = rnId;
-        receiveNotifyServiceMock.updateReceiveNotifyStatus(_ as Integer, _ as ReceiveNotifyStatus, _ as ReceiveNotifyStatus) >> { args ->
+        receiveNotifyServiceMock.updateReceiveNotifyStatus(_ as Integer, _ as ReceiveNotifyStatus, _ as ReceiveNotifyStatus, _ as String) >> { args ->
             def id = args[0]
             if (id == 8787) {
                 return 0
@@ -51,7 +51,7 @@ class UpdateReceiveNotifyStatusAjaxActionTest extends Specification {
     def "RejectReceiveNotify"() {
         given:
         updateReceiveNotifyStatusAjaxActionStub.rnId = rnId;
-        receiveNotifyServiceMock.updateReceiveNotifyStatus(_ as Integer, _ as ReceiveNotifyStatus, _ as ReceiveNotifyStatus) >> { args ->
+        receiveNotifyServiceMock.updateReceiveNotifyStatus(_ as Integer, _ as ReceiveNotifyStatus, _ as ReceiveNotifyStatus, _ as String) >> { args ->
             def id = args[0]
             if (id == 8787) {
                 return 0

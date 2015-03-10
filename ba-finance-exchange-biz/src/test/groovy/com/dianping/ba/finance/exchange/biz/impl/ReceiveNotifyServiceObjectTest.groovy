@@ -1,7 +1,7 @@
 package com.dianping.ba.finance.exchange.biz.impl
-
 import com.dianping.ba.finance.exchange.api.ReceiveNotifyService
 import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean
+import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifyUpdateBean
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData
 import com.dianping.ba.finance.exchange.api.enums.BusinessType
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus
@@ -240,8 +240,8 @@ class ReceiveNotifyServiceObjectTest extends Specification {
     @Unroll
     def "updateReceiveNotifyStatus"(Integer rnId, ReceiveNotifyStatus setStatus, Integer result) {
         given:
-        receiveNotifyDaoMock.updateReceiveNotifyStatus(_ as Integer, _ as Integer, _ as Integer) >> { args ->
-            def id = args[0]
+        receiveNotifyDaoMock.updateReceiveNotifyStatus(_ as ReceiveNotifyUpdateBean) >> { args ->
+            def id = args[0].rnId
             if (id == 8787) {
                 return 0
             }
@@ -257,7 +257,7 @@ class ReceiveNotifyServiceObjectTest extends Specification {
 
 
         expect:
-        result == receiveNotifyServiceStub.updateReceiveNotifyStatus(rnId, ReceiveNotifyStatus.INIT, setStatus);
+        result == receiveNotifyServiceStub.updateReceiveNotifyStatus(rnId, ReceiveNotifyStatus.INIT, setStatus, "123");
 
         where:
         rnId    | setStatus                     | result
