@@ -126,7 +126,7 @@
         <h4 id="rejectOrderLabel">驳回支付</h4>
     </div>
     <div class="modal-body">
-        <div><span style="font-size:14px; margin-right:10px;">驳回原因：</span><textarea type="text" id="reject-memo"></textarea></div>
+        <div><span style="font-size:14px; margin-right:10px;">驳回原因：</span><textarea type="text" style="min-width:320px; min-height: 85px;" id="reject-memo"></textarea></div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-default btn-fs-default btn-fs-xs" data-dismiss="modal" aria-hidden="true">取消
