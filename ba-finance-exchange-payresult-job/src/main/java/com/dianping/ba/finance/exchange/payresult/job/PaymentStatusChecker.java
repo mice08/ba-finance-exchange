@@ -41,9 +41,10 @@ public class PaymentStatusChecker {
                             || responseDTO.getCode() == OrderError.PAY_RESULT_UNKNOWN.getCode()) {
                     // ignore
                 } else {
-                    payOrderService.updatePayOrderStatus(payOrderData.getPoId(), PayOrderStatus.BANK_PAYING.value(), PayOrderStatus.PAY_FAILED.value(), null);
+                    payOrderService.updatePayOrderStatus(payOrderData.getPoId(), PayOrderStatus.BANK_PAYING.value(), PayOrderStatus.PAY_FAILED.value(), responseDTO.getMessage());
                 }
             }
+            page++;
         }
     }
 
