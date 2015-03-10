@@ -141,9 +141,24 @@
                             </select>
                         </div>
                     </div>
+                    <div class="control-group span6">
+                        <label class="control-label">状态</label>
+                        <div class="controls">
+                            <select id="status" class="form_value" name="status">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-fluid label-colon">
+                    <div class="control-group span6" id="pay-type-selector">
+                        <label class="control-label">款项类型</label>
+                        <div class="controls">
+                            <select id="payType" name="payType" class="form_value">
+                            </select>
+                        </div>
+                    </div>
                     <div class="control-group span6" id="shop-id-input">
                         <label class="control-label">付款单号</label>
-
                         <div class="controls">
                             <input type="text" id="poIds" name="poIds" class="form_value">
                         </div>
@@ -190,23 +205,6 @@
                             <input type="text" id="startAmount" name="startAmount" class="form_value"/>
                             至
                             <input type="text" id="endAmount" name="endAmount" class="form_value">
-                        </div>
-                    </div>
-                </div>
-                <div class="row-fluid label-colon">
-                    <div class="control-group span6">
-                        <label class="control-label">状态</label>
-
-                        <div class="controls">
-                            <select id="status" class="form_value" name="status">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="control-group span6" id="pay-type-selector">
-                        <label class="control-label">款项类型</label>
-                        <div class="controls">
-                            <select id="payType" name="payType" class="form_value">
-                            </select>
                         </div>
                     </div>
                 </div>
