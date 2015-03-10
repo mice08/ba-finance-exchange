@@ -46,6 +46,12 @@
             <result type="json"></result>
         </action>
 
+        <action name="loadPayTypeOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadPayTypeOption">
+            <result type="json"></result>
+        </action>
+
         <action name="loadProductLionOption"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
                 method="loadProductLionOption">
