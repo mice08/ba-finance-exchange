@@ -44,10 +44,17 @@
                     </div>
                 </div>
                 <div class="control-group span6">
-                    <label class="control-label">合同号<span id="ro-add-bizContent" class="required">*</span></label>
+                    <label class="control-label">
+                        <span id="biz-content-label">合同号</span>
+                        <span id="ro-add-bizContent" class="required">*</span></label>
 
-                    <div class="controls">
+                    <div id="bizContent-parent" class="controls">
                         <input type="text" id="bizContent" name="bizContent" class="form_value" validate="+">
+                        <select id='bizContent-select' class='form_value' validate='ne[0]'
+                                error_msg='ne[0]:请选择保底单号'
+                                style="display: none">
+                            <option value='0'>请选择保底单号</option>
+                        </select>
                     </div>
                 </div>
             </div>
