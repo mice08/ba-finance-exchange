@@ -70,15 +70,6 @@ public interface PayOrderDao extends GenericDao {
 	List<PayOrderData> findPayOrderList(@DAOParam("payOrderSearchBean") PayOrderSearchBean payOrderSearchBean);
 
     /**
-     * 根据PayCode查询PayOrder集合
-     *
-     * @param payCodeList
-     * @return
-     */
-    @DAOAction(action = DAOActionType.QUERY)
-    List<PayOrderData> findPayOrderListByPayCode(@DAOParam("payCodeList") List<String> payCodeList);
-
-    /**
      * 根据查询条件查找付款单Id
      * @param payOrderSearchBean
      * @return
@@ -93,4 +84,36 @@ public interface PayOrderDao extends GenericDao {
      */
     @DAOAction(action = DAOActionType.LOAD)
     PayOrderData loadPayOrderByPaySequence(@DAOParam("paySequence") String paySequence);
+
+    @DAOAction(action = DAOActionType.UPDATE)
+    int updateCustomerId(@DAOParam("oldCustomerId") int oldCustomerId,
+                         @DAOParam("newCustomerId") int newCustomerId);
+
+    /**
+     * 根据付款单号更新付款单状态
+     * @param poId
+     * @param preStatus
+     * @param postStatus
+     * @param memo
+     * @return
+     */
+    @DAOAction(action = DAOActionType.UPDATE)
+    int updatePayOrderStatus(@DAOParam("poId") int poId, @DAOParam("preStatus") int preStatus, @DAOParam("postStatus") int postStatus,@DAOParam("memo") String memo);
+
+    /**
+     * 根据付款单号查找付款单
+     * @param poId
+     * @return
+     */
+    @DAOAction(action = DAOActionType.LOAD)
+    PayOrderData loadPayOrderByPayPOID(@DAOParam("poId") int poId);
+
+    /**
+     *
+     * @param
+     * @return
+     */
+    @DAOAction(action = DAOActionType.UPDATE)
+    int updatePayOrderListStatus(@DAOParam("poIds") List<Integer> poIds, @DAOParam("preStatusList") List<Integer> preStatusList, @DAOParam("postStatus") int postStatus,@DAOParam("loginId") int loginId);
+
 }

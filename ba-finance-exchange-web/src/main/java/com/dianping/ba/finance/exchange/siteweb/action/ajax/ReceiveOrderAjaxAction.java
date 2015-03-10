@@ -2,6 +2,8 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.auditlog.api.enums.OperationType;
+import com.dianping.ba.finance.auditlog.client.OperationLogger;
 import com.dianping.ba.finance.exchange.api.ReceiveBankService;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.beans.ReceiveOrderSearchBean;
@@ -11,14 +13,20 @@ import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderPaginateData;
 import com.dianping.ba.finance.exchange.api.enums.*;
 import com.dianping.ba.finance.exchange.siteweb.beans.ReceiveOrderBean;
+import com.dianping.ba.finance.exchange.siteweb.constants.Constant;
+import com.dianping.ba.finance.exchange.siteweb.services.CSVExportService;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
+import com.dianping.finance.common.util.LionConfigUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
 
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.*;
 
@@ -31,6 +39,8 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
      * 记录需要监控的业务日志
      */
     private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.web.monitor.ReceiveOrderAjaxAction");
+
+    private static final OperationLogger OPERATION_LOGGER = new OperationLogger("Exchange", "ReceiveOrder", LionConfigUtils.getProperty("ba-finance-exchange-web.auditlog.token"));
 
     private int customerId;
 
@@ -74,6 +84,8 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     private int rnId;
 
+    private String amount;
+
 
     //查询结果，付款计划列表
     private PageModel receiveOrderModel = new PageModel();
@@ -88,20 +100,23 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
 	private ReceiveBankService receiveBankService;
 
+    private CSVExportService csvExportService;
+
     @Override
     protected void jsonExecute() {
         if (businessType == BusinessType.DEFAULT.value()) {
             code = ERROR_CODE;
-            totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO);
+            totalAmount = new DecimalFormat(Constant.DECIMAL_FORMAT).format(BigDecimal.ZERO);
             msg.put("totalAmount", totalAmount);
             return;
         }
 
         try {
             ReceiveOrderSearchBean receiveOrderSearchBean = buildROSearchBean();
+            OPERATION_LOGGER.log(OperationType.QUERY, "查询收款单", receiveOrderSearchBean.toString(), String.valueOf(getLoginId()));
             receiveOrderModel = receiveOrderService.paginateReceiveOrderList(receiveOrderSearchBean, page, pageSize);
             receiveOrderModel.setRecords(buildReceiveOrderBeans((List<ReceiveOrderData>) receiveOrderModel.getRecords()));
-            totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(receiveOrderService.loadReceiveOrderTotalAmountByCondition(receiveOrderSearchBean));
+            totalAmount = new DecimalFormat(Constant.DECIMAL_FORMAT).format(receiveOrderService.loadReceiveOrderTotalAmountByCondition(receiveOrderSearchBean));
             msg.put("totalAmount", totalAmount);
             msg.put("receiveOrderModel", receiveOrderModel);
             code = SUCCESS_CODE;
@@ -113,6 +128,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     public String confirmNotify() {
         try {
+            OPERATION_LOGGER.log(OperationType.UPDATE, "确认收款单与收款通知", String.format("收款单ID: %s, 收款通知ID: %s", roId, rnId), String.valueOf(getLoginId()));
             boolean result = receiveOrderService.confirmReceiveOrderAndReceiveNotify(roId, rnId, getLoginId());
             code = result ? SUCCESS_CODE : ERROR_CODE;
         } catch (Exception e) {
@@ -149,6 +165,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
             }
 
             ReceiveOrderData receiveOrderData = buildReceiveOrderData(loginId);
+            OPERATION_LOGGER.log(OperationType.CREATE, "添加收款单", receiveOrderData.toString(), String.valueOf(getLoginId()));
             int i = receiveOrderService.createReceiveOrder(receiveOrderData);
             code = i <= 0 ? ERROR_CODE : SUCCESS_CODE;
             return SUCCESS;
@@ -161,6 +178,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 
     public String loadReceiveOrderById() {
         try {
+            OPERATION_LOGGER.log(OperationType.QUERY, "获取收款单明细", String.format("收款单ID: %s", roId), String.valueOf(getLoginId()));
             receiveOrderData = receiveOrderService.loadReceiveOrderDataByRoId(roId);
             Map<Integer, String> customerIdNameMap = customerNameService.getROCustomerName(Arrays.asList(receiveOrderData), getLoginId());
             receiveOrder = convertRODataToROBean(receiveOrderData, customerIdNameMap);
@@ -178,6 +196,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         boolean result = false;
         try {
             ReceiveOrderUpdateBean receiveOrderUpdateBean = buildUpdateReceiveOrder();
+            OPERATION_LOGGER.log(OperationType.UPDATE, "更新收款单信息", receiveOrderUpdateBean.toString(), String.valueOf(getLoginId()));
             result = receiveOrderService.manuallyUpdateReceiveOrder(receiveOrderUpdateBean);
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.getReveiveOrderById error!", e);
@@ -210,6 +229,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
 	}
     public String cancelReceiveOrder() {
         try {
+            OPERATION_LOGGER.log(OperationType.UPDATE, "作废收单", String.format("收款单ID: %s", roId), String.valueOf(getLoginId()));
             boolean result = receiveOrderService.cancelReceiveOrder(roId);
             code = result ? SUCCESS_CODE : ERROR_CODE;
         } catch (Exception e) {
@@ -268,7 +288,7 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderBean.setApplicationId(String.valueOf(receiveOrderData.getApplicationId()));
         receiveOrderBean.setShopId(receiveOrderData.getShopId());
         receiveOrderBean.setPayerName(receiveOrderData.getPayerAccountName());
-        receiveOrderBean.setReceiveAmount(new DecimalFormat("##,###,###,###,##0.00").format(receiveOrderData.getReceiveAmount()));
+        receiveOrderBean.setReceiveAmount(new DecimalFormat(Constant.DECIMAL_FORMAT).format(receiveOrderData.getReceiveAmount()));
         receiveOrderBean.setReceiveTime(DateUtil.formatDateToString(receiveOrderData.getReceiveTime(), "yyyy-MM-dd"));
 		//根据bankId获取银行账户
 		//根据bankId获取银行名
@@ -314,6 +334,21 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         receiveOrderSearchBean.setReceiveTimeEnd(DateUtil.isValidDate(receiveTimeEnd) ? DateUtil.formatDate(receiveTimeEnd, true) : null);
         receiveOrderSearchBean.setReceiveType(receiveType);
         receiveOrderSearchBean.setBankId(bankId);
+        if (StringUtils.isNotBlank(amount)) {
+            BigDecimal receiveAmount = null;
+            try {
+                DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+                symbols.setGroupingSeparator(',');
+                symbols.setDecimalSeparator('.');
+                String pattern = "#,###,###,##0.0#";
+                DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+                decimalFormat.setParseBigDecimal(true);
+                receiveAmount = (BigDecimal) decimalFormat.parse(amount);
+            } catch (Exception e) {
+                MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.parse amount error!", e);
+            }
+            receiveOrderSearchBean.setAmount(receiveAmount);
+        }
         return receiveOrderSearchBean;
     }
 
@@ -369,6 +404,24 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         roData.setUpdateLoginId(loginId);
         roData.setReverseRoId(0);
         return roData;
+    }
+
+    public String exportReceiveOrders() throws ParseException {
+        ReceiveOrderSearchBean receiveOrderSearchBean = buildROSearchBean();
+        OPERATION_LOGGER.log(OperationType.QUERY, "导出收款单", receiveOrderSearchBean.toString(), String.valueOf(getLoginId()));
+
+        List<ReceiveOrderData> receiveOrderDataList = receiveOrderService.findReceiverOrderList(receiveOrderSearchBean);
+        List<ReceiveOrderBean> exportBeanList = buildReceiveOrderBeans(receiveOrderDataList);
+        HttpServletResponse response = getHttpServletResponse();
+        String fileName = "收款单";
+        try {
+            csvExportService.createCSVAndDownload(response, fileName, exportBeanList);
+            code = SUCCESS_CODE;
+            return SUCCESS;
+        } catch (Exception e) {
+            MONITOR_LOGGER.error("severity=[1] ReceiveOrderAjaxAction.exportReceiveOrders", e);
+            return ERROR;
+        }
     }
 
     public void setBusinessType(int businessType) {
@@ -531,7 +584,19 @@ public class ReceiveOrderAjaxAction extends AjaxBaseAction {
         this.rnId = rnId;
     }
 
-	public void setReceiveBankService(ReceiveBankService receiveBankService) {
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public void setReceiveBankService(ReceiveBankService receiveBankService) {
 		this.receiveBankService = receiveBankService;
 	}
+
+    protected HttpServletResponse getHttpServletResponse() {
+        return ServletActionContext.getResponse();
+    }
+
+    public void setCsvExportService(CSVExportService csvExportService) {
+        this.csvExportService = csvExportService;
+    }
 }
