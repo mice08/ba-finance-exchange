@@ -14,8 +14,9 @@ import com.dianping.ba.finance.exchange.api.enums.AccountEntrySourceType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.PayType;
 import com.dianping.finance.common.aop.annotation.Log;
+import com.dianping.finance.common.swallow.SwallowEventBean;
+import com.dianping.finance.common.swallow.SwallowProducer;
 import com.dianping.finance.common.util.ListUtils;
-import com.dianping.swallow.producer.Producer;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -37,10 +38,12 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
 
     private static final Set<Integer> ALLOWED_BANK_PAY_STATUS = Sets.newHashSet(PayOrderStatus.SUBMIT_FOR_PAY.value());
 
+    public static final String BANK_ORDER_PAY_REQUEST = "BANK_ORDER_PAY_REQUEST_NOTIFY";
+
     @Autowired
     private PayOrderService payOrderService;
     @Autowired
-    private Producer bankPayProducer;
+    private SwallowProducer bankPayProducer;
     @Autowired
     private AccountService accountService;
 
@@ -59,7 +62,8 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
             for(PayOrderData data: payOrderDataList){
                 if(idList.contains(data.getPoId())){
                     BankPayRequestDTO requestDTO = buildBankPayRequest(data);
-                    bankPayProducer.sendMessage(requestDTO);
+                    SwallowEventBean eventBean = new SwallowEventBean(BANK_ORDER_PAY_REQUEST, requestDTO);
+                    bankPayProducer.fireSwallowEvent(eventBean);
                 }
             }
             return idList.size();
@@ -154,7 +158,7 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
         this.payOrderService = payOrderService;
     }
 
-    public void setBankPayProducer(Producer bankPayProducer) {
+    public void setBankPayProducer(SwallowProducer bankPayProducer) {
         this.bankPayProducer = bankPayProducer;
     }
 
