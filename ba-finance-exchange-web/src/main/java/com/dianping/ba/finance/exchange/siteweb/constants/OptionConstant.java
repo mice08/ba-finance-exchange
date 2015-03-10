@@ -1,9 +1,6 @@
 package com.dianping.ba.finance.exchange.siteweb.constants;
 
-import com.dianping.ba.finance.exchange.api.enums.BusinessType;
-import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
-import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
-import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
+import com.dianping.ba.finance.exchange.api.enums.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +58,19 @@ public class OptionConstant {
             put(BusinessType.DEFAULT.value(), "请选择产品线");
             put(BusinessType.GROUP_PURCHASE.value(), "团购");
             put(BusinessType.ADVERTISEMENT.value(), "广告");
+        }
+    };
+
+    public final static Map<Integer, String> PAYTYPE_OPTION = new HashMap<Integer, String>() {
+        {
+            put(PayType.DEFAULT.value(), "请选择业务类型");
+            put(PayType.GROUPON_SETTLE.value(), "团购结算款");
+            put(PayType.GUARANTEE.value(), "保底款");
+            put(PayType.GROUPON_BOND.value(), "团购保证金");
+            put(PayType.EXPENSE_SETTLE.value(),"费用结算款");
+            put(PayType.SHAN_HUI_SETTLE.value(), "闪惠结算款");
+            put(PayType.SHAN_FU_SETTLE.value(),"闪付结算款");
+            put(PayType.MOVIE_SETTLE.value(),"电影结算款");
         }
     };
 }

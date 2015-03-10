@@ -172,6 +172,13 @@
                             </select>
                         </div>
                     </div>
+                    <div class="control-group span6" id="pay-type-selector">
+                        <label class="control-label">业务类型</label>
+                        <div class="controls">
+                            <select id="payType" name="payType" class="form_value">
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row-fluid">
