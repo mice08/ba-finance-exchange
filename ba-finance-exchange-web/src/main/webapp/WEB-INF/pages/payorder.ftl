@@ -302,6 +302,7 @@
                         <th width="10%" class="fs tb-header paid-time">付款日期</th>
                         <th width="10%" class="fs tb-header sendback-time">退票日期</th>
                         <th width="5%" class="fs tb-header status">状态</th>
+                        <th width="5%" class="fs tb-header pay-type">业务类型</th>
                         <th width="15%" class="fs tb-header memo">备注</th>
                         <th id="action-header" width="10%" class="fs tb-header action" style="display:none;">操作</th>
                     </tr>
@@ -321,7 +322,7 @@
 </div>
 <script id="NoRowsTemplate" type="text/x-jquery-tmpl">
 <tr>
-<td colspan="10">没有查询到任何记录</td>
+<td colspan="11">没有查询到任何记录</td>
 </tr>
 </script>
 
@@ -350,6 +351,7 @@
         <td class="fs tb-item amount number-char">{{= record.sendBackTime}}</td>
         {{/if}}
         <td class="fs tb-item plan-date number-char">{{= record.statusDesc}}</td>
+        <td class="fs tb-item pay-type">{{= record.payType}}</td>
         <td class="fs tb-item status">{{= record.memo}}</td>
         {{if record.queryStatus == 9}}
         <td width="10%" class="fs tb-item action"><a poId="{{= record.poId}}" class="reject-link"  href="#reject-order" data-toggle="modal">驳回</a></td>

@@ -10,6 +10,7 @@ import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
+import com.dianping.ba.finance.exchange.api.enums.PayType;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
 import com.dianping.ba.finance.exchange.siteweb.enums.SubmitType;
@@ -345,6 +346,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         payOrderBean.setBankFullBranchName(payOrderData.getBankFullBranchName());
         payOrderBean.setCustomerName(getCustomerNameById(payOrderData.getCustomerId(), customerIdNameMap));
         payOrderBean.setMemo(payOrderData.getMemo());
+        payOrderBean.setPayType(PayType.valueOf(payOrderData.getPayType()).toString());
         payOrderBean.setPaidDate(DateUtil.formatDateToString(payOrderData.getPaidDate(), "yyyy-MM-dd HH:mm:ss"));
         payOrderBean.setPayAmount(new DecimalFormat("##,###,###,###,##0.00").format(payOrderData.getPayAmount()));
         payOrderBean.setPoId(payOrderData.getPoId());
