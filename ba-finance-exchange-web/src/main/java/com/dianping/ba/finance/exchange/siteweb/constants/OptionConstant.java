@@ -72,6 +72,7 @@ public class OptionConstant {
             put(PayType.DEFAULT.value(), "请选择业务类型");
             put(PayType.GROUPON_SETTLE.value(), "团购结算款");
             put(PayType.GUARANTEE.value(), "保底款");
+            put(PayType.OVER_GUARANTEE.value(), "超保底");
             put(PayType.GROUPON_BOND.value(), "团购保证金");
             put(PayType.EXPENSE_SETTLE.value(),"费用结算款");
             put(PayType.SHAN_HUI_SETTLE.value(), "闪惠结算款");
