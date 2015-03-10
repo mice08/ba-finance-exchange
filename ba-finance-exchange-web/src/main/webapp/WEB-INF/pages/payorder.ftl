@@ -304,7 +304,7 @@
 </div>
 <script id="NoRowsTemplate" type="text/x-jquery-tmpl">
 <tr>
-<td colspan="10">没有查询到任何记录</td>
+<td colspan="11">没有查询到任何记录</td>
 </tr>
 </script>
 
