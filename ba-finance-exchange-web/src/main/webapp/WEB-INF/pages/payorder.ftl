@@ -279,9 +279,7 @@
                         <th width="10%" class="fs tb-header sendback-time">退票日期</th>
                         <th width="5%" class="fs tb-header status">状态</th>
                         <th width="15%" class="fs tb-header memo">备注</th>
-                        <#if status == 9>
-                        <th class="fs tb-header action" style="display:none;">操作</th>
-                        </#if>
+                        <th id="action-header" width="10%" class="fs tb-header action" style="display:none;">操作</th>
                     </tr>
                     </thead>
 
@@ -330,7 +328,7 @@
         <td class="fs tb-item plan-date number-char">{{= record.statusDesc}}</td>
         <td class="fs tb-item status">{{= record.memo}}</td>
         {{if record.queryStatus == 9}}
-        <td class="fs tb-item action"><a class="reject-link">驳回</a></td>
+        <td width="10%" class="fs tb-item action"><a class="reject-link">驳回</a></td>
         {{/if}}
     </tr>
     {{/each}}
