@@ -149,4 +149,13 @@
             </bean>
         </property>
     </bean>
+
+    <bean id="authStatusInfoDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.AuthStatusInfoDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="AuthStatus"/>
+            </bean>
+        </property>
+    </bean>
 </beans>
