@@ -279,7 +279,9 @@
                         <th width="10%" class="fs tb-header sendback-time">退票日期</th>
                         <th width="5%" class="fs tb-header status">状态</th>
                         <th width="15%" class="fs tb-header memo">备注</th>
+                        <#if status == 9>
                         <th class="fs tb-header action" style="display:none;">操作</th>
+                        </#if>
                     </tr>
                     </thead>
 
