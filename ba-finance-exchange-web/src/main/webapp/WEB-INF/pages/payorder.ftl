@@ -203,7 +203,7 @@
                         </div>
                     </div>
                     <div class="control-group span6" id="pay-type-selector">
-                        <label class="control-label">业务类型</label>
+                        <label class="control-label">款项类型</label>
                         <div class="controls">
                             <select id="payType" name="payType" class="form_value">
                             </select>
@@ -285,7 +285,7 @@
                         <th width="10%" class="fs tb-header paid-time">付款日期</th>
                         <th width="10%" class="fs tb-header sendback-time">退票日期</th>
                         <th width="5%" class="fs tb-header status">状态</th>
-                        <th width="5%" class="fs tb-header pay-type">业务类型</th>
+                        <th width="5%" class="fs tb-header pay-type">款项类型</th>
                         <th width="15%" class="fs tb-header memo">备注</th>
                     </tr>
                     </thead>
