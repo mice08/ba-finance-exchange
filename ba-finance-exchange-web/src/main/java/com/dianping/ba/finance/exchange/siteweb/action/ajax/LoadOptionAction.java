@@ -11,7 +11,6 @@ import com.dianping.ba.finance.exchange.siteweb.constants.PermissionConstant;
 import com.dianping.finance.common.util.JsonUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.finance.gabriel.impl.GabrielService;
-import com.dianping.search.common.json.JsonUtil;
 
 import java.io.IOException;
 import java.util.*;
@@ -32,6 +31,13 @@ public class LoadOptionAction extends AjaxBaseAction {
 
     public String loadPOStatusOption() {
         option.putAll(OptionConstant.POSTATUS_OPTION);
+        msg.put("option", option);
+        code = SUCCESS_CODE;
+        return SUCCESS;
+    }
+
+    public String loadPayTypeOption() {
+        option.putAll(OptionConstant.PAYTYPE_OPTION);
         msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
