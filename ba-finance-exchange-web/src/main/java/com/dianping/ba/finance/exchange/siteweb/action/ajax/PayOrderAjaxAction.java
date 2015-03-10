@@ -177,6 +177,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
             } else {
                 payOrderDomainService.pay(idList, getLoginId());
             }
+            msg.put("submitCount", idList.size());
             code = SUCCESS_CODE;
             return SUCCESS;
         } catch (Exception e) {
