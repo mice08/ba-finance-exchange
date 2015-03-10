@@ -91,8 +91,8 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
         AccountEntryRequestDTO entry = new AccountEntryRequestDTO();
         entry.setInstId(String.valueOf(poId));
         entry.setSourceType(AccountEntrySourceType.BANK.getSourceType());
-        entry.setAmount(payOrder.getPayAmount());//todo:desc
-        entry.setBankAccountId(payOrder.getCustomerBankId());//todo:memo
+        entry.setAmount(payOrder.getPayAmount());
+        entry.setBankAccountId(payOrder.getCustomerBankId());
         return accountService.updateAccount(entry);
     }
 

@@ -1,7 +1,6 @@
 package com.dianping.ba.finance.exchange.biz.impl
 
 import com.dianping.ba.finance.exchange.api.beans.AccountUpdateInfoBean
-import com.dianping.ba.finance.exchange.api.datas.AccountData
 import com.dianping.ba.finance.exchange.api.datas.AccountEntryData
 import com.dianping.ba.finance.exchange.api.datas.BankAccountData
 import com.dianping.ba.finance.exchange.api.dtos.AccountEntryRequestDTO
@@ -33,7 +32,7 @@ class AccountServiceObjectTest extends Specification {
     def "UpdateAccount"() {
         setup:
         accountDaoMock.loadAccountByBankAccount(_ as Integer) >> {
-            [direction:1, balance:1]
+            [direction:1, balance:1, credit:1, debit:1]
         }
         when:
         accountServiceObjectStub.updateAccount([sourceType:1,amount:1] as AccountEntryRequestDTO)

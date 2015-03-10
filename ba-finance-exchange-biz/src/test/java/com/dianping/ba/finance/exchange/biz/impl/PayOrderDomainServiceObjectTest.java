@@ -3,7 +3,9 @@ package com.dianping.ba.finance.exchange.biz.impl;
 import com.dianping.ba.finance.exchange.api.AccountService;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.dtos.AccountEntryRequestDTO;
 import com.dianping.ba.finance.exchange.api.dtos.BankAccountDTO;
+import com.dianping.ba.finance.exchange.api.dtos.BankPayResultDTO;
 import com.dianping.ba.finance.exchange.api.enums.PayType;
 import com.dianping.swallow.producer.Producer;
 import junit.framework.Assert;
@@ -14,8 +16,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -28,7 +29,6 @@ public class PayOrderDomainServiceObjectTest {
     private PayOrderService payOrderServiceMock;
     private AccountService accountServiceMock;
     private Producer bankPayProducerMock;
-
 
     @Before
     public void setup() {
@@ -77,5 +77,24 @@ public class PayOrderDomainServiceObjectTest {
         int actual = payOrderDomainServiceObjectStub.pay(poIds, -1);
 
         Assert.assertEquals(0, actual);
+    }
+
+    @Test
+    public void testHandleBankPayResult() {
+        when(payOrderServiceMock.updatePayOrderStatus(anyInt(), anyInt(), anyInt(), anyString())).thenReturn(1);
+        when(accountServiceMock.updateAccount(any(AccountEntryRequestDTO.class))).thenReturn(true);
+        when(payOrderServiceMock.loadPayOrderDataByPOID(anyInt())).thenReturn(new PayOrderData());
+        BankPayResultDTO dto = new BankPayResultDTO();
+        dto.setCode(1);
+        boolean result = payOrderDomainServiceObjectStub.handleBankPayResult(dto);
+        Assert.assertFalse(result);
+        dto.setCode(2000);
+        result = payOrderDomainServiceObjectStub.handleBankPayResult(dto);
+        Assert.assertTrue(result);
+
+        dto.setCode(-1);
+        when(payOrderServiceMock.updatePayOrderStatus(anyInt(), anyInt(), anyInt(), anyString())).thenReturn(0);
+        result = payOrderDomainServiceObjectStub.handleBankPayResult(dto);
+        Assert.assertFalse(result);
     }
 }
