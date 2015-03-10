@@ -119,6 +119,23 @@
         </button>
     </div>
 </div>
+<div id="reject-order" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="rejectOrderLabel"
+     aria-hidden="true">
+    <div class="modal-header section-title">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 id="rejectOrderLabel">驳回支付</h4>
+    </div>
+    <div class="modal-body">
+        <div><span style="font-size:14px; margin-right:10px;">驳回原因：</span><textarea type="text" style="min-width:320px; min-height: 85px;" id="reject-memo"></textarea></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default btn-fs-default btn-fs-xs" data-dismiss="modal" aria-hidden="true">取消
+        </button>
+        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-reject" data-dismiss="modal"
+                aria-hidden="true">确定
+        </button>
+    </div>
+</div>
 <form>
 <!-- @ main -->
 <!--内容-->
@@ -286,6 +303,7 @@
                         <th width="10%" class="fs tb-header sendback-time">退票日期</th>
                         <th width="5%" class="fs tb-header status">状态</th>
                         <th width="15%" class="fs tb-header memo">备注</th>
+                        <th id="action-header" width="10%" class="fs tb-header action" style="display:none;">操作</th>
                     </tr>
                     </thead>
 
@@ -333,6 +351,9 @@
         {{/if}}
         <td class="fs tb-item plan-date number-char">{{= record.statusDesc}}</td>
         <td class="fs tb-item status">{{= record.memo}}</td>
+        {{if record.queryStatus == 9}}
+        <td width="10%" class="fs tb-item action"><a poId="{{= record.poId}}" class="reject-link"  href="#reject-order" data-toggle="modal">驳回</a></td>
+        {{/if}}
     </tr>
     {{/each}}
 
