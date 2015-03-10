@@ -17,6 +17,7 @@ public class PayOrderSearchBean implements Serializable {
     private List<Integer> poIdList;
     private BigDecimal startAmount;
     private BigDecimal endAmount;
+    private int payType;
 
     public int getBusinessType() {
         return businessType;
@@ -74,6 +75,14 @@ public class PayOrderSearchBean implements Serializable {
         this.endAmount = endAmount;
     }
 
+    public int getPayType() {
+        return payType;
+    }
+
+    public void setPayType(int payType) {
+        this.payType = payType;
+    }
+
     @Override
     public String toString() {
         return "PayOrderSearchBean{" +
@@ -84,6 +93,7 @@ public class PayOrderSearchBean implements Serializable {
                 ", poIdList=" + poIdList +
                 ", startAmount=" + startAmount +
                 ", endAmount=" + endAmount +
+                ", payType=" + payType +
                 '}';
     }
 }

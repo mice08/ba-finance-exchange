@@ -2,16 +2,12 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 
 import com.dianping.ba.finance.exchange.api.ReceiveBankService;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveBankData;
-import com.dianping.ba.finance.exchange.api.enums.BusinessType;
-import com.dianping.ba.finance.exchange.api.enums.CompanyIDName;
-import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderPayChannel;
-import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
+import com.dianping.ba.finance.exchange.api.enums.*;
 import com.dianping.ba.finance.exchange.siteweb.constants.OptionConstant;
 import com.dianping.ba.finance.exchange.siteweb.constants.PermissionConstant;
 import com.dianping.finance.common.util.JsonUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.finance.gabriel.impl.GabrielService;
-import com.dianping.search.common.json.JsonUtil;
 
 import java.io.IOException;
 import java.util.*;
@@ -32,6 +28,34 @@ public class LoadOptionAction extends AjaxBaseAction {
 
     public String loadPOStatusOption() {
         option.putAll(OptionConstant.POSTATUS_OPTION);
+        msg.put("option", option);
+        code = SUCCESS_CODE;
+        return SUCCESS;
+    }
+
+    public String loadPayTypeOption() {
+        option.put(PayType.DEFAULT.value(), "请选择业务类型");
+        if (businessType==BusinessType.GROUP_PURCHASE.value()){
+            option.put(PayType.GROUPON_SETTLE.value(), "团购结算款");
+            option.put(PayType.GUARANTEE.value(), "保底款");
+            option.put(PayType.OVER_GUARANTEE.value(), "超保底");
+            option.put(PayType.GROUPON_BOND.value(), "团购保证金");
+        }
+        if (businessType==BusinessType.EXPENSE.value()){
+            option.put(PayType.EXPENSE_SETTLE.value(), "费用结算款");
+        }
+        if (businessType==BusinessType.SHAN_HUI.value()){
+            option.put(PayType.SHAN_HUI_SETTLE.value(), "闪惠结算款");
+        }
+        if (businessType==BusinessType.SHAN_FU.value()){
+            option.put(PayType.SHAN_FU_SETTLE.value(), "闪付结算款");
+        }
+        if (businessType==BusinessType.MOVIE.value()){
+            option.put(PayType.MOVIE_SETTLE.value(), "电影结算款");
+        }
+        if(businessType==BusinessType.DEFAULT.value()){
+            option.putAll(OptionConstant.PAYTYPE_OPTION);
+        }
         msg.put("option", option);
         code = SUCCESS_CODE;
         return SUCCESS;
