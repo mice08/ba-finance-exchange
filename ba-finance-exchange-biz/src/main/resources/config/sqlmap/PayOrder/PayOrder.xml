@@ -502,5 +502,45 @@
     </update>
 
 
+    <select id="paginatePayOrderListByStatus" resultMap="payOrderData" parameterClass="map">
+        SELECT
+        POID,
+        PayAmount,
+        PaySequence,
+        PayCode,
+        CustomerID,
+        PayeeName,
+        CustomerBankId,
+        BankAccountNo,
+        BankAccountName,
+        PaidDate,
+        BankBranchName,
+        BankName,
+        BankProvince,
+        BankCity,
+        BankFullBranchName,
+        BankCode,
+        MasterBankCode,
+        BankAccountType,
+        BusinessType,
+        PayType,
+        PayBankName,
+        PayBankAccountNo,
+        PayeeBankAccountID,
+        Status,
+        AddTime,
+        AddType,
+        UpdateTime,
+        Memo,
+        CustomerID
+        FROM FC_PayOrder
+        WHERE Status = #status#
+    </select>
+
+    <select id="paginatePayOrderListByStatus_COUNT" resultClass="int" parameterClass="map">
+        SELECT COUNT(1)
+        FROM FC_PayOrder
+        WHERE Status = #status#
+    </select>
 
 </sqlMap>
