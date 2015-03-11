@@ -532,7 +532,8 @@
         AddType,
         UpdateTime,
         Memo,
-        CustomerID
+        CustomerID,
+        UseMemo
         FROM FC_PayOrder
         WHERE Status = #status#
     </select>
