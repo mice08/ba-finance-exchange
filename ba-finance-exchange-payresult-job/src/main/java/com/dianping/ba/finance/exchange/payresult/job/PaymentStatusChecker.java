@@ -61,9 +61,6 @@ public class PaymentStatusChecker {
                         entryRequestDTO.setSourceType(AccountEntrySourceType.BANK.value());
                         accountService.updateAccount(entryRequestDTO);
                     }
-                } else if (responseDTO.getCode() == com.dianping.ba.finance.bankorder.api.enums.PayOrderStatus.SYSTEM_ERROR.getCode()
-                        || responseDTO.getCode() == com.dianping.ba.finance.bankorder.api.enums.PayOrderStatus.REQUEST_FAILED.getCode()) {
-                    payOrderService.updatePayOrderStatus(payOrderData.getPoId(), PayOrderStatus.BANK_PAYING.value(), PayOrderStatus.BANK_PAYING.value(), com.dianping.ba.finance.bankorder.api.enums.PayOrderStatus.getByCode(responseDTO.getCode()).getMessage());
                 } else if (responseDTO.getCode() == com.dianping.ba.finance.bankorder.api.enums.PayOrderStatus.PAY_FAILED.getCode()) {
                     payOrderService.updatePayOrderStatus(payOrderData.getPoId(), PayOrderStatus.BANK_PAYING.value(), PayOrderStatus.PAY_FAILED.value(), responseDTO.getMessage());
                 }
