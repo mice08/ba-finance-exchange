@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Account">
+
+    <typeAlias alias="AccountData" type="com.dianping.ba.finance.exchange.api.datas.AccountData"/>
+    <resultMap id="accountData" class="AccountData">
+        <result property="id" column="ID"/>
+        <result property="accountSubject" column="AccountSubject"/>
+        <result property="accountName" column="AccountName"/>
+        <result property="description" column="Description"/>
+        <result property="balance" column="Balance"/>
+        <result property="credit" column="Credit"/>
+        <result property="debit" column="Debit"/>
+        <result property="direction" column="Direction"/>
+        <result property="status" column="Status"/>
+        <result property="addTime" column="AddTime"/>
+        <result property="updateTime" column="UpdateTime"/>
+        <result property="memo" column="Memo"/>
+    </resultMap>
+
+    <update id="updateAccount" parameterClass="map">
+        UPDATE FC_Account
+        SET Balance = #accountUpdateInfo.balance#,
+        Credit = #accountUpdateInfo.credit#,
+        Debit = #accountUpdateInfo.debit#,
+        UpdateTime = NOW()
+        WHERE ID = #accountUpdateInfo.id#
+    </update>
+    
+    <select id="loadAccountByBankAccount" parameterClass="map" resultMap="accountData">
+        SELECT a.ID,
+        a.AccountSubject,
+        a.AccountName,
+        a.Description,
+        a.AccountName,
+        a.Balance,
+        a.Credit,
+        a.Debit,
+        a.Direction,
+        a.Status,
+        a.AddTime,
+        a.UpdateTime,
+        a.Memo
+        FROM FC_Account AS a
+        INNER JOIN FC_BankAccount AS b ON a.ID = b.AccountID
+        WHERE b.ID = #bankAccountId#
+    </select>
+
+</sqlMap>
