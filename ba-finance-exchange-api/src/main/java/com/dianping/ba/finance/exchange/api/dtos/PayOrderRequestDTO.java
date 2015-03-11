@@ -45,6 +45,8 @@ public class PayOrderRequestDTO implements Serializable {
 
     private int bankAccountType;
 
+    private String masterBankCode;
+
     private String memo;
 
     public String getPaySequence() {
@@ -191,6 +193,14 @@ public class PayOrderRequestDTO implements Serializable {
         this.customerId = customerId;
     }
 
+    public String getMasterBankCode() {
+        return masterBankCode;
+    }
+
+    public void setMasterBankCode(String masterBankCode) {
+        this.masterBankCode = masterBankCode;
+    }
+
     @Override
     public String toString() {
         return "PayOrderRequestDTO{" +
@@ -200,6 +210,7 @@ public class PayOrderRequestDTO implements Serializable {
                 ", loginId=" + loginId +
                 ", requestDate=" + requestDate +
                 ", businessType=" + businessType +
+                ", payType=" + payType +
                 ", customerBankId=" + customerBankId +
                 ", bankAccountNo='" + bankAccountNo + '\'' +
                 ", bankAccountName='" + bankAccountName + '\'' +
@@ -210,6 +221,7 @@ public class PayOrderRequestDTO implements Serializable {
                 ", bankFullBranchName='" + bankFullBranchName + '\'' +
                 ", bankCode='" + bankCode + '\'' +
                 ", bankAccountType=" + bankAccountType +
+                ", masterBankCode='" + masterBankCode + '\'' +
                 ", memo='" + memo + '\'' +
                 '}';
     }

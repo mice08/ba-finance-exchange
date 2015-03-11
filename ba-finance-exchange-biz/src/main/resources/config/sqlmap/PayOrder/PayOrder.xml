@@ -32,6 +32,7 @@
         <result property="addType" column="AddType"/>
         <result property="updateTime" column="UpdateTime"/>
         <result property="memo" column="Memo"/>
+        <result property="useMemo" column="UseMemo"/>
         <result property="payeeBankAccountId" column="PayeeBankAccountID"/>
     </resultMap>
 
@@ -63,6 +64,7 @@
 			AddType,
 			UpdateTime,
 			Memo,
+			UseMemo,
 			AddLoginID,
 			UpdateLoginID
 			)
@@ -92,6 +94,7 @@
 			#payOrderData.addType#,
 			NOW(),
 			#payOrderData.memo#,
+			#payOrderData.useMemo#,
 			#payOrderData.addLoginId#,
 			#payOrderData.updateLoginId#)
  		]]>
@@ -152,6 +155,7 @@
         AddType,
         UpdateTime,
         Memo,
+        UseMemo,
         CustomerID
         FROM FC_PayOrder
         WHERE POID IN
@@ -190,7 +194,8 @@
         AddTime,
         AddType,
         UpdateTime,
-        Memo
+        Memo,
+        UseMemo
         FROM
         FC_PayOrder
         WHERE Status != 6
@@ -212,6 +217,9 @@
             </isGreaterThan>
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.payType" prepend="and" compareValue="0">
+                PayType = #payOrderSearchBean.payType#
             </isGreaterThan>
             <isNotNull property="payOrderSearchBean.startAmount" prepend="and">
                 PayAmount &gt;= #payOrderSearchBean.startAmount#
@@ -250,6 +258,9 @@
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
             </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.payType" prepend="and" compareValue="0">
+                PayType = #payOrderSearchBean.payType#
+            </isGreaterThan>
             <isNotNull property="payOrderSearchBean.startAmount" prepend="and">
                 PayAmount &gt;= #payOrderSearchBean.startAmount#
             </isNotNull>
@@ -284,6 +295,9 @@
             </isGreaterThan>
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.payType" prepend="and" compareValue="0">
+                PayType = #payOrderSearchBean.payType#
             </isGreaterThan>
             <isNotNull property="payOrderSearchBean.startAmount" prepend="and">
                 PayAmount &gt;= #payOrderSearchBean.startAmount#
@@ -323,7 +337,8 @@
         AddTime,
         AddType,
         UpdateTime,
-        Memo
+        Memo,
+        UseMemo
         FROM FC_PayOrder
         WHERE Status != 6
         <dynamic prepend="AND">
@@ -344,6 +359,9 @@
             </isGreaterThan>
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.payType" prepend="and" compareValue="0">
+                PayType = #payOrderSearchBean.payType#
             </isGreaterThan>
             <isNotNull property="payOrderSearchBean.startAmount" prepend="and">
                 PayAmount &gt;= #payOrderSearchBean.startAmount#
@@ -379,6 +397,9 @@
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
             </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.payType" prepend="and" compareValue="0">
+                PayType = #payOrderSearchBean.payType#
+            </isGreaterThan>
         </dynamic>
     </select>
 
@@ -410,7 +431,8 @@
                AddTime,
                AddType,
                UpdateTime,
-               Memo
+               Memo,
+               UseMemo
         FROM   FC_PayOrder po
         WHERE  po.PaySequence = #paySequence#
         AND Status != 6
@@ -459,7 +481,8 @@
         AddTime,
         AddType,
         UpdateTime,
-        Memo
+        Memo,
+        UseMemo
         FROM   FC_PayOrder po
         WHERE  po.POID = #poId#
     </select>
@@ -467,10 +490,15 @@
     <update id="updatePayOrderListStatus" parameterClass="map">
         UPDATE FC_PayOrder
         SET Status = #postStatus#, UpdateLoginID = #loginId#
-        WHERE POID = #poId# and Status IN
+        WHERE POID IN
+        <iterate open="(" close=")" conjunction="," property="poIds">
+            #poIds[]#
+        </iterate>
+        AND Status IN
         <iterate open="(" close=")" conjunction="," property="preStatusList">
             #preStatusList[]#
         </iterate>
+
     </update>
 
 
