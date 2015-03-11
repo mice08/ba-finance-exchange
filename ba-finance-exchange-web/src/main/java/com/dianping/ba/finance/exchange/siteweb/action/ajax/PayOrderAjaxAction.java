@@ -311,7 +311,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         payOrderBean.setBankAccountNo(payOrderData.getBankAccountNo());
         payOrderBean.setBankFullBranchName(payOrderData.getBankFullBranchName());
         payOrderBean.setCustomerName(getCustomerNameById(payOrderData.getCustomerId(), customerIdNameMap));
-        payOrderBean.setMemo(payOrderData.getMemo());
+        payOrderBean.setMemo(payOrderData.getMemo() == null ? "" : payOrderData.getMemo());
+        payOrderBean.setUseMemo(payOrderData.getUseMemo() == null ? "" : payOrderData.getUseMemo());
         payOrderBean.setPayType(PayType.valueOf(payOrderData.getPayType()).toString());
         payOrderBean.setPaidDate(DateUtil.formatDateToString(payOrderData.getPaidDate(), "yyyy-MM-dd HH:mm:ss"));
         payOrderBean.setPayAmount(new DecimalFormat("##,###,###,###,##0.00").format(payOrderData.getPayAmount()));

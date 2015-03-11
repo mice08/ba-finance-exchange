@@ -284,7 +284,8 @@
                         <th width="10%" class="fs tb-header sendback-time">退票日期</th>
                         <th width="5%" class="fs tb-header status">状态</th>
                         <th width="5%" class="fs tb-header pay-type">款项类型</th>
-                        <th width="15%" class="fs tb-header memo">备注</th>
+                        <th width="10%" class="fs tb-header memo">用途</th>
+                        <th width="10%" class="fs tb-header memo">备注</th>
                     </tr>
                     </thead>
 
@@ -302,7 +303,7 @@
 </div>
 <script id="NoRowsTemplate" type="text/x-jquery-tmpl">
 <tr>
-<td colspan="11">没有查询到任何记录</td>
+<td colspan="12">没有查询到任何记录</td>
 </tr>
 </script>
 
@@ -332,6 +333,7 @@
         {{/if}}
         <td class="fs tb-item plan-date number-char">{{= record.statusDesc}}</td>
         <td class="fs tb-item pay-type">{{= record.payType}}</td>
+        <td class="fs tb-item status">{{= record.useMemo}}</td>
         <td class="fs tb-item status">{{= record.memo}}</td>
     </tr>
     {{/each}}
