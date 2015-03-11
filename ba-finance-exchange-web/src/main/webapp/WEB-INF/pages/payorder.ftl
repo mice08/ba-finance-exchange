@@ -141,9 +141,24 @@
                             </select>
                         </div>
                     </div>
+                    <div class="control-group span6">
+                        <label class="control-label">状态</label>
+                        <div class="controls">
+                            <select id="status" class="form_value" name="status">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-fluid label-colon">
+                    <div class="control-group span6" id="pay-type-selector">
+                        <label class="control-label">款项类型</label>
+                        <div class="controls">
+                            <select id="payType" name="payType" class="form_value">
+                            </select>
+                        </div>
+                    </div>
                     <div class="control-group span6" id="shop-id-input">
                         <label class="control-label">付款单号</label>
-
                         <div class="controls">
                             <input type="text" id="poIds" name="poIds" class="form_value">
                         </div>
@@ -190,16 +205,6 @@
                             <input type="text" id="startAmount" name="startAmount" class="form_value"/>
                             至
                             <input type="text" id="endAmount" name="endAmount" class="form_value">
-                        </div>
-                    </div>
-                </div>
-                <div class="row-fluid label-colon">
-                    <div class="control-group span6">
-                        <label class="control-label">状态</label>
-
-                        <div class="controls">
-                            <select id="status" class="form_value" name="status">
-                            </select>
                         </div>
                     </div>
                 </div>
@@ -278,6 +283,7 @@
                         <th width="10%" class="fs tb-header paid-time">付款日期</th>
                         <th width="10%" class="fs tb-header sendback-time">退票日期</th>
                         <th width="5%" class="fs tb-header status">状态</th>
+                        <th width="5%" class="fs tb-header pay-type">款项类型</th>
                         <th width="15%" class="fs tb-header memo">备注</th>
                     </tr>
                     </thead>
@@ -296,7 +302,7 @@
 </div>
 <script id="NoRowsTemplate" type="text/x-jquery-tmpl">
 <tr>
-<td colspan="10">没有查询到任何记录</td>
+<td colspan="11">没有查询到任何记录</td>
 </tr>
 </script>
 
@@ -325,6 +331,7 @@
         <td class="fs tb-item amount number-char">{{= record.sendBackTime}}</td>
         {{/if}}
         <td class="fs tb-item plan-date number-char">{{= record.statusDesc}}</td>
+        <td class="fs tb-item pay-type">{{= record.payType}}</td>
         <td class="fs tb-item status">{{= record.memo}}</td>
     </tr>
     {{/each}}

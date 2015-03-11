@@ -213,6 +213,9 @@
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
             </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.payType" prepend="and" compareValue="0">
+                PayType = #payOrderSearchBean.payType#
+            </isGreaterThan>
             <isNotNull property="payOrderSearchBean.startAmount" prepend="and">
                 PayAmount &gt;= #payOrderSearchBean.startAmount#
             </isNotNull>
@@ -250,6 +253,9 @@
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
             </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.payType" prepend="and" compareValue="0">
+                PayType = #payOrderSearchBean.payType#
+            </isGreaterThan>
             <isNotNull property="payOrderSearchBean.startAmount" prepend="and">
                 PayAmount &gt;= #payOrderSearchBean.startAmount#
             </isNotNull>
@@ -284,6 +290,9 @@
             </isGreaterThan>
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.payType" prepend="and" compareValue="0">
+                PayType = #payOrderSearchBean.payType#
             </isGreaterThan>
             <isNotNull property="payOrderSearchBean.startAmount" prepend="and">
                 PayAmount &gt;= #payOrderSearchBean.startAmount#
@@ -345,6 +354,9 @@
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
             </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.payType" prepend="and" compareValue="0">
+                PayType = #payOrderSearchBean.payType#
+            </isGreaterThan>
             <isNotNull property="payOrderSearchBean.startAmount" prepend="and">
                 PayAmount &gt;= #payOrderSearchBean.startAmount#
             </isNotNull>
@@ -378,6 +390,9 @@
             </isGreaterThan>
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.payType" prepend="and" compareValue="0">
+                PayType = #payOrderSearchBean.payType#
             </isGreaterThan>
         </dynamic>
     </select>
