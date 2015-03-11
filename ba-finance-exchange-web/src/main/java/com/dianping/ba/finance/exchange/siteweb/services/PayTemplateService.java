@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface PayTemplateService {
 
-    void createExcelAndDownload(HttpServletResponse response, String fileName, List<PayOrderExportBean> exportBeanList) throws Exception;
+    void createExcelAndDownload(HttpServletResponse response, String fileName, List<PayOrderExportBean> exportBeanList, int payBankId) throws Exception;
 }
