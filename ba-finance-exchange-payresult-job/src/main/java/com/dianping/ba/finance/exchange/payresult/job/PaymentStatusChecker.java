@@ -12,6 +12,7 @@ import com.dianping.ba.finance.exchange.api.enums.AccountEntrySourceType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.util.LionConfigUtils;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class PaymentStatusChecker {
         int page = 1;
         for(;;) {
             PageModel pageModel = payOrderService.paginatePayOrderListByStatus(PayOrderStatus.BANK_PAYING.value(), page, batchSize);
-            if (pageModel == null || pageModel.getRecords() == null) {
+            if (pageModel == null || CollectionUtils.isEmpty(pageModel.getRecords())) {
                 break;
             }
             List<PayOrderData> payOrderDataList = (List<PayOrderData>) pageModel.getRecords();
@@ -62,12 +63,9 @@ public class PaymentStatusChecker {
                     }
                 } else if (responseDTO.getCode() == com.dianping.ba.finance.bankorder.api.enums.PayOrderStatus.SYSTEM_ERROR.getCode()
                         || responseDTO.getCode() == com.dianping.ba.finance.bankorder.api.enums.PayOrderStatus.REQUEST_FAILED.getCode()) {
-                    payOrderService.updatePayOrderStatus(payOrderData.getPoId(), PayOrderStatus.BANK_PAYING.value(), PayOrderStatus.SYSTEM_ERROR.value(), com.dianping.ba.finance.bankorder.api.enums.PayOrderStatus.getByCode(responseDTO.getCode()).getMessage());
-                } else if (responseDTO.getCode() == com.dianping.ba.finance.bankorder.api.enums.PayOrderStatus.REQUEST_SUCCESS.getCode()
-                            || responseDTO.getCode() == com.dianping.ba.finance.bankorder.api.enums.PayOrderStatus.PAYING.getCode()) {
-                    // ignore
-                } else if (responseDTO.getCode() == com.dianping.ba.finance.bankorder.api.enums.PayOrderStatus.PAY_FAILED.getCode()){
-                    payOrderService.updatePayOrderStatus(payOrderData.getPoId(), PayOrderStatus.BANK_PAYING.value(), PayOrderStatus.REFUND.value(), responseDTO.getMessage());
+                    payOrderService.updatePayOrderStatus(payOrderData.getPoId(), PayOrderStatus.BANK_PAYING.value(), PayOrderStatus.BANK_PAYING.value(), com.dianping.ba.finance.bankorder.api.enums.PayOrderStatus.getByCode(responseDTO.getCode()).getMessage());
+                } else if (responseDTO.getCode() == com.dianping.ba.finance.bankorder.api.enums.PayOrderStatus.PAY_FAILED.getCode()) {
+                    payOrderService.updatePayOrderStatus(payOrderData.getPoId(), PayOrderStatus.BANK_PAYING.value(), PayOrderStatus.PAY_FAILED.value(), responseDTO.getMessage());
                 }
             }
             page++;
