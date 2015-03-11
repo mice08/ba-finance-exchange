@@ -125,8 +125,7 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
         payOrderData.setBankAccountNo(payOrderRequestDTO.getBankAccountNo());
         payOrderData.setBankName(payOrderRequestDTO.getBankName());
         payOrderData.setBankCode(payOrderRequestDTO.getBankCode());
-        //TODO 先写死
-        payOrderData.setMasterBankCode(String.valueOf(305));
+        payOrderData.setMasterBankCode(payOrderRequestDTO.getMasterBankCode());
         payOrderData.setBankBranchName(payOrderRequestDTO.getBankBranchName());
         payOrderData.setBankAccountType(payOrderRequestDTO.getBankAccountType());
         //1系统
