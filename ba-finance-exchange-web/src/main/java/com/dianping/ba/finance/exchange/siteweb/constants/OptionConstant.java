@@ -47,7 +47,7 @@ public class OptionConstant {
 
     public final static Map<Integer, String> BUSINESSTYPE_OPTION = new HashMap<Integer, String>() {
         {
-            put(BusinessType.DEFAULT.value(), "请选择业务类型");
+            put(BusinessType.DEFAULT.value(), "请选择产品线");
             put(BusinessType.GROUP_PURCHASE.value(), "团购");
             put(BusinessType.ADVERTISEMENT.value(), "广告");
             put(BusinessType.SHAN_HUI.value(), "闪惠");
