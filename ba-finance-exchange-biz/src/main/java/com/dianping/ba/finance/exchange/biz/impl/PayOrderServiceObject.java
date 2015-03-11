@@ -362,7 +362,9 @@ public class PayOrderServiceObject implements PayOrderService {
             if (!StringUtils.isEmpty(message)) {
                 PayOrderData data = payOrderDao.loadPayOrderByPayPOID(poId);
                 if (data != null) {
-                    message += "|" + data.getMemo();
+                    if (!StringUtils.isEmpty(data.getMemo())) {
+                        message += "|" + data.getMemo();
+                    }
                 }
             }
             return payOrderDao.updatePayOrderStatus(poId, preStatus, postStatus, message);
@@ -403,6 +405,11 @@ public class PayOrderServiceObject implements PayOrderService {
         }
     }
 
+
+    @Override
+    public PageModel paginatePayOrderListByStatus(int status, int page, int max) {
+        return payOrderDao.paginatePayOrderListByStatus(status, page, max);
+    }
 
     public void setPayOrderDao(PayOrderDao payOrderDao) {
         this.payOrderDao = payOrderDao;
