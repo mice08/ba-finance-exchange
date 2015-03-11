@@ -1,6 +1,7 @@
 package com.dianping.ba.finance.exchange.biz.producer;
 
 import com.dianping.ba.finance.exchange.api.beans.PayOrderResultBean;
+import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.PayResultStatus;
 import com.dianping.finance.common.swallow.SwallowEventBean;
 import com.dianping.finance.common.swallow.SwallowProducer;
@@ -28,6 +29,17 @@ public class PayOrderResultNotifyTest {
     @Test
     public void testPayResultNotify() throws Exception {
         PayOrderResultBean payOrderResultBean = new PayOrderResultBean();
+        payOrderResultBean.setBusinessType(BusinessType.GROUP_PURCHASE.value());
+        payOrderResultBean.setMemo("memo");
+        payOrderResultBean.setStatus(PayResultStatus.PAY_SUCCESS);
+        payOrderResultNotifyStub.payResultNotify(payOrderResultBean);
+        verify(payOrderProducerMock, times(1)).fireSwallowEvent(any(SwallowEventBean.class));
+    }
+
+    @Test
+    public void testPayResultNotifyExpense() throws Exception {
+        PayOrderResultBean payOrderResultBean = new PayOrderResultBean();
+        payOrderResultBean.setBusinessType(BusinessType.EXPENSE.value());
         payOrderResultBean.setMemo("memo");
         payOrderResultBean.setStatus(PayResultStatus.PAY_SUCCESS);
         payOrderResultNotifyStub.payResultNotify(payOrderResultBean);

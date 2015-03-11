@@ -1,6 +1,7 @@
 package com.dianping.ba.finance.exchange.biz.dao;
 
 import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifySearchBean;
+import com.dianping.ba.finance.exchange.api.beans.ReceiveNotifyUpdateBean;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveNotifyData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveNotifyStatus;
@@ -141,7 +142,12 @@ public class ReceiveNotifyDaoTest {
 
     @Test
     public void testUpdateReceiveNotifyStatus() throws Exception {
-        int u = receiveNotifyDao.updateReceiveNotifyStatus(57, 5, 4);
+        ReceiveNotifyUpdateBean receiveNotifyUpdateBean = new ReceiveNotifyUpdateBean();
+        receiveNotifyUpdateBean.setRnId(57);
+        receiveNotifyUpdateBean.setPreStatus(5);
+        receiveNotifyUpdateBean.setSetStatus(4);
+        receiveNotifyUpdateBean.setMemo("123");
+        int u = receiveNotifyDao.updateReceiveNotifyStatus(receiveNotifyUpdateBean);
         Assert.assertEquals(1, u);
     }
 }

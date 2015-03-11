@@ -11,8 +11,10 @@
         <result property="paySequence" column="PaySequence"/>
         <result property="payCode" column="PayCode"/>
         <result property="customerId" column="CustomerID"/>
+        <result property="payeeName" column="PayeeName"/>
         <result property="customerBankId" column="CustomerBankID"/>
         <result property="businessType" column="BusinessType"/>
+        <result property="payType" column="PayType"/>
         <result property="bankAccountNo" column="BankAccountNo"/>
         <result property="bankAccountName" column="BankAccountName"/>
         <result property="bankName" column="BankName"/>
@@ -21,12 +23,16 @@
         <result property="bankBranchName" column="BankBranchName"/>
         <result property="bankFullBranchName" column="BankFullBranchName"/>
         <result property="bankCode" column="BankCode"/>
+        <result property="masterBankCode" column="MasterBankCode"/>
         <result property="bankAccountType" column="BankAccountType"/>
+        <result property="payBankName" column="PayBankName"/>
+        <result property="payBankAccountNo" column="PayBankAccountNo"/>
         <result property="status" column="Status"/>
         <result property="addTime" column="AddTime"/>
         <result property="addType" column="AddType"/>
         <result property="updateTime" column="UpdateTime"/>
         <result property="memo" column="Memo"/>
+        <result property="payeeBankAccountId" column="PayeeBankAccountID"/>
     </resultMap>
 
     <insert id="insertPayOrder" parameterClass="map">
@@ -34,8 +40,8 @@
         INSERT INTO FC_PayOrder
 			(PayAmount,
 			PaySequence,
-			PayCode,
 			CustomerID,
+			PayeeName,
 			CustomerBankID,
 			BankAccountNo,
 			BankAccountName,
@@ -45,8 +51,13 @@
 			BankCity,
 			BankFullBranchName,
 			BankCode,
+			MasterBankCode,
 			BankAccountType,
 			BusinessType,
+			PayType,
+			PayBankName,
+			PayBankAccountNo,
+			PayeeBankAccountID,
 			Status,
 			AddTime,
 			AddType,
@@ -55,11 +66,11 @@
 			AddLoginID,
 			UpdateLoginID
 			)
-			SELECT
+			values (
 			#payOrderData.payAmount#,
 			#payOrderData.paySequence#,
-			IFNULL(MAX(POID), 9999999) + 1,
 			#payOrderData.customerId#,
+			#payOrderData.payeeName#,
 			#payOrderData.customerBankId#,
 			#payOrderData.bankAccountNo#,
 			#payOrderData.bankAccountName#,
@@ -69,17 +80,20 @@
 			#payOrderData.bankCity#,
 			#payOrderData.bankFullBranchName#,
 			#payOrderData.bankCode#,
+			#payOrderData.masterBankCode#,
 			#payOrderData.bankAccountType#,
 			#payOrderData.businessType#,
+			#payOrderData.payType#,
+			#payOrderData.payBankName#,
+			#payOrderData.payBankAccountNo#,
+			#payOrderData.payeeBankAccountId#,
 			#payOrderData.status#,
 			NOW(),
 			#payOrderData.addType#,
 			NOW(),
 			#payOrderData.memo#,
 			#payOrderData.addLoginId#,
-			#payOrderData.updateLoginId#
-			FROM
-			FC_PayOrder
+			#payOrderData.updateLoginId#)
  		]]>
         <selectKey resultClass="java.lang.Integer" keyProperty="poId">
             <![CDATA[
@@ -95,7 +109,7 @@
             PaidDate = #updateInfoBean.paidDate#,
         </isNotNull>
         <isNotNull property="updateInfoBean.memo">
-            Memo = #updateInfoBean.memo#,
+            Memo = CONCAT(IFNULL(Memo, ""), ";", #updateInfoBean.memo#),
         </isNotNull>
         UpdateTime = now(),
         UpdateLoginID = #updateInfoBean.loginId#
@@ -115,6 +129,7 @@
         PaySequence,
         PayCode,
         CustomerID,
+        PayeeName,
         CustomerBankId,
         BankAccountNo,
         BankAccountName,
@@ -125,8 +140,13 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        MasterBankCode,
         BankAccountType,
         BusinessType,
+        PayType,
+        PayBankName,
+        PayBankAccountNo,
+        PayeeBankAccountID,
         Status,
         AddTime,
         AddType,
@@ -148,6 +168,7 @@
         PaySequence,
         PayCode,
         CustomerID,
+        PayeeName,
         CustomerBankId,
         BankAccountNo,
         BankAccountName,
@@ -158,8 +179,13 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        MasterBankCode,
         BankAccountType,
         BusinessType,
+        PayType,
+        PayBankName,
+        PayBankAccountNo,
+        PayeeBankAccountID,
         Status,
         AddTime,
         AddType,
@@ -169,8 +195,11 @@
         FC_PayOrder
         WHERE Status != 6
         <dynamic prepend="AND">
-            <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
-                PayCode = #payOrderSearchBean.payCode#
+            <isNotEmpty property="payOrderSearchBean.poIdList" prepend="and">
+                POID IN
+                <iterate open="(" close=")" conjunction="," property="payOrderSearchBean.poIdList">
+                    #payOrderSearchBean.poIdList[]#
+                </iterate>
             </isNotEmpty>
             <isNotNull property="payOrderSearchBean.beginTime" prepend="and">
                 AddTime &gt;= #payOrderSearchBean.beginTime#
@@ -184,6 +213,15 @@
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
             </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.payType" prepend="and" compareValue="0">
+                PayType = #payOrderSearchBean.payType#
+            </isGreaterThan>
+            <isNotNull property="payOrderSearchBean.startAmount" prepend="and">
+                PayAmount &gt;= #payOrderSearchBean.startAmount#
+            </isNotNull>
+            <isNotNull property="payOrderSearchBean.endAmount" prepend="and">
+                PayAmount &lt;= #payOrderSearchBean.endAmount#
+            </isNotNull>
         </dynamic>
         ORDER BY
         AddTime DESC,
@@ -197,8 +235,11 @@
         FC_PayOrder
         WHERE Status != 6
         <dynamic prepend="AND">
-            <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
-                PayCode = #payOrderSearchBean.payCode#
+            <isNotEmpty property="payOrderSearchBean.poIdList" prepend="and">
+                POID IN
+                <iterate open="(" close=")" conjunction="," property="payOrderSearchBean.poIdList">
+                    #payOrderSearchBean.poIdList[]#
+                </iterate>
             </isNotEmpty>
             <isNotNull property="payOrderSearchBean.beginTime" prepend="and">
                 AddTime &gt;= #payOrderSearchBean.beginTime#
@@ -212,6 +253,15 @@
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
             </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.payType" prepend="and" compareValue="0">
+                PayType = #payOrderSearchBean.payType#
+            </isGreaterThan>
+            <isNotNull property="payOrderSearchBean.startAmount" prepend="and">
+                PayAmount &gt;= #payOrderSearchBean.startAmount#
+            </isNotNull>
+            <isNotNull property="payOrderSearchBean.endAmount" prepend="and">
+                PayAmount &lt;= #payOrderSearchBean.endAmount#
+            </isNotNull>
         </dynamic>
     </select>
 
@@ -223,8 +273,11 @@
         WHERE
         Status != 6
         <dynamic prepend="AND">
-            <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
-                PayCode = #payOrderSearchBean.payCode#
+            <isNotEmpty property="payOrderSearchBean.poIdList" prepend="and">
+                POID IN
+                <iterate open="(" close=")" conjunction="," property="payOrderSearchBean.poIdList">
+                    #payOrderSearchBean.poIdList[]#
+                </iterate>
             </isNotEmpty>
             <isNotNull property="payOrderSearchBean.beginTime" prepend="and">
                 AddTime &gt;= #payOrderSearchBean.beginTime#
@@ -238,6 +291,15 @@
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
             </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.payType" prepend="and" compareValue="0">
+                PayType = #payOrderSearchBean.payType#
+            </isGreaterThan>
+            <isNotNull property="payOrderSearchBean.startAmount" prepend="and">
+                PayAmount &gt;= #payOrderSearchBean.startAmount#
+            </isNotNull>
+            <isNotNull property="payOrderSearchBean.endAmount" prepend="and">
+                PayAmount &lt;= #payOrderSearchBean.endAmount#
+            </isNotNull>
         </dynamic>
     </select>
 
@@ -248,6 +310,7 @@
         PaySequence,
         PayCode,
         CustomerID,
+        PayeeName,
         CustomerBankId,
         BankAccountNo,
         BankAccountName,
@@ -258,8 +321,13 @@
         BankCity,
         BankFullBranchName,
         BankCode,
+        MasterBankCode,
         BankAccountType,
         BusinessType,
+        PayType,
+        PayBankName,
+        PayBankAccountNo,
+        PayeeBankAccountID,
         Status,
         AddTime,
         AddType,
@@ -268,8 +336,11 @@
         FROM FC_PayOrder
         WHERE Status != 6
         <dynamic prepend="AND">
-            <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
-                PayCode = #payOrderSearchBean.payCode#
+            <isNotEmpty property="payOrderSearchBean.poIdList" prepend="and">
+                POID IN
+                <iterate open="(" close=")" conjunction="," property="payOrderSearchBean.poIdList">
+                    #payOrderSearchBean.poIdList[]#
+                </iterate>
             </isNotEmpty>
             <isNotNull property="payOrderSearchBean.beginTime" prepend="and">
                 AddTime &gt;= #payOrderSearchBean.beginTime#
@@ -283,40 +354,16 @@
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
             </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.payType" prepend="and" compareValue="0">
+                PayType = #payOrderSearchBean.payType#
+            </isGreaterThan>
+            <isNotNull property="payOrderSearchBean.startAmount" prepend="and">
+                PayAmount &gt;= #payOrderSearchBean.startAmount#
+            </isNotNull>
+            <isNotNull property="payOrderSearchBean.endAmount" prepend="and">
+                PayAmount &lt;= #payOrderSearchBean.endAmount#
+            </isNotNull>
         </dynamic>
-    </select>
-
-    <select id="findPayOrderListByPayCode" resultMap="payOrderData" parameterClass="map">
-        SELECT
-        POID,
-        PayAmount,
-        PaySequence,
-        PayCode,
-        CustomerID,
-        CustomerBankId,
-        BankAccountNo,
-        BankAccountName,
-        PaidDate,
-        BankBranchName,
-        BankName,
-        BankProvince,
-        BankCity,
-        BankFullBranchName,
-        BankCode,
-        BankAccountType,
-        BusinessType,
-        Status,
-        AddTime,
-        AddType,
-        UpdateTime,
-        Memo
-        FROM
-        FC_PayOrder
-        WHERE PayCode IN
-        <iterate open="(" close=")" conjunction="," property="payCodeList">
-            #payCodeList[]#
-        </iterate>
-        AND Status != 6
     </select>
 
 
@@ -326,8 +373,11 @@
         FROM FC_PayOrder
         WHERE Status != 6
         <dynamic prepend="AND">
-            <isNotEmpty property="payOrderSearchBean.payCode" prepend="and">
-                PayCode = #payOrderSearchBean.payCode#
+            <isNotEmpty property="payOrderSearchBean.poIdList" prepend="and">
+                POID IN
+                <iterate open="(" close=")" conjunction="," property="payOrderSearchBean.poIdList">
+                    #payOrderSearchBean.poIdList[]#
+                </iterate>
             </isNotEmpty>
             <isNotNull property="payOrderSearchBean.beginTime" prepend="and">
                 AddTime &gt;= #payOrderSearchBean.beginTime#
@@ -340,6 +390,9 @@
             </isGreaterThan>
             <isGreaterThan property="payOrderSearchBean.businessType" prepend="and" compareValue="0">
                 BusinessType = #payOrderSearchBean.businessType#
+            </isGreaterThan>
+            <isGreaterThan property="payOrderSearchBean.payType" prepend="and" compareValue="0">
+                PayType = #payOrderSearchBean.payType#
             </isGreaterThan>
         </dynamic>
     </select>
@@ -350,6 +403,7 @@
                PaySequence,
                PayCode,
                CustomerID,
+               PayeeName,
                CustomerBankId,
                BankAccountNo,
                BankAccountName,
@@ -360,8 +414,13 @@
                BankCity,
                BankFullBranchName,
                BankCode,
+               MasterBankCode,
                BankAccountType,
                BusinessType,
+               PayType,
+               PayBankName,
+               PayBankAccountNo,
+               PayeeBankAccountID,
                Status,
                AddTime,
                AddType,
@@ -371,5 +430,64 @@
         WHERE  po.PaySequence = #paySequence#
         AND Status != 6
     </select>
+
+    <update id="updateCustomerId" parameterClass="map">
+        UPDATE FC_PayOrder
+        SET CustomerId = #newCustomerId#
+        WHERE
+        CustomerId = #oldCustomerId#
+        AND BusinessType in (1, 6)
+        AND Status != 6
+    </update>
+
+    <update id="updatePayOrderStatus" parameterClass="map">
+        UPDATE FC_PayOrder
+        SET Status = #postStatus#, Memo = #memo#
+        WHERE POID = #poId# and Status = #preStatus#
+    </update>
+
+    <select id="loadPayOrderByPayPOID" resultMap="payOrderData" parameterClass="map">
+        SELECT POID,
+        PayAmount,
+        PaySequence,
+        PayCode,
+        CustomerID,
+        PayeeName,
+        CustomerBankId,
+        BankAccountNo,
+        BankAccountName,
+        PaidDate,
+        BankBranchName,
+        BankName,
+        BankProvince,
+        BankCity,
+        BankFullBranchName,
+        BankCode,
+        MasterBankCode,
+        BankAccountType,
+        BusinessType,
+        PayType,
+        PayBankName,
+        PayBankAccountNo,
+        PayeeBankAccountID,
+        Status,
+        AddTime,
+        AddType,
+        UpdateTime,
+        Memo
+        FROM   FC_PayOrder po
+        WHERE  po.POID = #poId#
+    </select>
+
+    <update id="updatePayOrderListStatus" parameterClass="map">
+        UPDATE FC_PayOrder
+        SET Status = #postStatus#, UpdateLoginID = #loginId#
+        WHERE POID = #poId# and Status IN
+        <iterate open="(" close=")" conjunction="," property="preStatusList">
+            #preStatusList[]#
+        </iterate>
+    </update>
+
+
 
 </sqlMap>
