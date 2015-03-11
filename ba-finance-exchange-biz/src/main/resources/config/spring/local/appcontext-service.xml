@@ -11,6 +11,9 @@
         <property name="producerClient" ref="producerClient"/>
     </bean>
 
+    <bean id="accountService" class="com.dianping.ba.finance.exchange.biz.impl.AccountServiceObject">
+    </bean>
+
     <bean id="exchangeOrderService" class="com.dianping.ba.finance.exchange.biz.impl.ExchangeOrderServiceObject">
         <property name="exchangeOrderDao" ref="exchangeOrderDao"/>
         <property name="exchangeOrderStatusChangeNotify" ref="exchangeOrderStatusChangeNotify"/>
@@ -154,4 +157,27 @@
     </bean>
 
 
+    <bean id="payRequestService"
+          class="com.dianping.ba.finance.exchange.biz.impl.PayRequestServiceObject">
+        <property name="payRequestDao" ref="payRequestDao"/>
+    </bean>
+    
+    <!--<bean id="payRequestHandleService"-->
+          <!--class="com.dianping.ba.finance.exchange.biz.impl.PayRequestHandleServiceObject">-->
+        <!--<property name="payOrderService" ref="payOrderService"/>-->
+        <!--<property name="timeout" value="${ba-finance-exchange-service.payrequest.timeout}"/>-->
+        <!--<property name="executorService" ref="executorService"/>-->
+        <!--<property name="payRequestService" ref="payRequestService"/>-->
+        <!--<property name="payRequestProducer" ref="payOrderProducer"/>-->
+    <!--</bean>-->
+
+    <bean id="expenseService" class="com.dianping.ba.finance.exchange.biz.impl.ExpenseServiceObject">
+        <property name="payRequestDao" ref="payRequestDao"/>
+    </bean>
+
+    <bean id="payOrderDomainService" class="com.dianping.ba.finance.exchange.biz.impl.PayOrderDomainServiceObject">
+    </bean>
+
+    <bean id="authStatusInfoServiceObject" class="com.dianping.ba.finance.exchange.biz.impl.AuthStatusInfoServiceObject">
+    </bean>
 </beans>

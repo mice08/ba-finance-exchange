@@ -50,12 +50,73 @@
         </button>
     </div>
 </div>
+<div id="bank-select" class="modal hide fade"
+     style="z-index:50;"
+     tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header section-title">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 id="myModalLabel">选择银行账号</h4>
+    </div>
+    <div class="modal-body">
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <label class="control-label">付款银行账户</label>
+                    <div class="">
+                        <select id="payer-bankId" name="bankId" class="form_value"
+                                validate="ne[0]" style="width:100%"
+                                error_msg="ne[0]:请选择付款银行账户">
+                            <option value="0">请选择付款银行账户</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default btn-fs-default btn-fs-xs" data-dismiss="modal" aria-hidden="true">取消
+        </button>
+        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-select">确定</button>
+    </div>
+</div>
 
 <div id="relation-result" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-header section-title">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     </div>
     <div class="modal-body">
+    </div>
+</div>
+<div id="bankpay-request" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="bankPayRequestLabel"
+     aria-hidden="true">
+    <div class="modal-header section-title">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 id="bankPayRequestLabel">提交付款单</h4>
+    </div>
+    <div class="modal-body">
+        <div><span style="font-size:14px; margin-right:10px;">请输入动态验证码：</span><input type="text" id="request-token"></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-request" data-dismiss="modal"
+                aria-hidden="true">确定
+        </button>
+    </div>
+</div>
+<div id="bankpay-order" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="bankPayOrderLabel"
+     aria-hidden="true">
+    <div class="modal-header section-title">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 id="bankPayOrderLabel">直联支付</h4>
+    </div>
+    <div class="modal-body">
+        <div><span style="font-size:14px; margin-right:10px;">请输入动态验证码：</span><input type="text" id="order-token"></div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-order" data-dismiss="modal"
+                aria-hidden="true">确定
+        </button>
     </div>
 </div>
 <form>
@@ -84,7 +145,7 @@
                         <label class="control-label">付款单号</label>
 
                         <div class="controls">
-                            <input type="text" id="paycode" name="payCode" class="form_value">
+                            <input type="text" id="poIds" name="poIds" class="form_value">
                         </div>
                     </div>
                 </div>
@@ -119,6 +180,16 @@
                                                 </i>
                                             </span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-fluid label-colon">
+                    <div class="control-group span8">
+                        <label class="control-label">金额</label>
+                        <div class="controls">
+                            <input type="text" id="startAmount" name="startAmount" class="form_value"/>
+                            至
+                            <input type="text" id="endAmount" name="endAmount" class="form_value">
                         </div>
                     </div>
                 </div>
@@ -165,7 +236,7 @@
                     <span class="number-char totalAmount">0</span> 元
                     &nbsp;&nbsp;
                     <a id="order-export" class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
-                       href="###" style="display: none">
+                       href="#bank-select" data-toggle="modal" style="display: none">
                         <span class="glyphicon glyphicon-save"></span>导出支付</a>
                     &nbsp;&nbsp;
                     <a id="pay-success" class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton" href="#"
@@ -177,6 +248,20 @@
                        data-toggle="modal">
                         <span class="glyphicon glyphicon-open"></span>
                         导入退票
+                    </a>
+                    <a id="btn-bankpay-request" href="#bankpay-request" role="button"
+                       style="display:none;"
+                       class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
+                       data-toggle="modal">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        提交付款单
+                    </a>
+                    <a id="btn-bankpay-order" href="#bankpay-order" role="button"
+                       style="display:none;"
+                       class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
+                       data-toggle="modal">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        直联支付
                     </a>
                 </div>
             </div>
@@ -211,7 +296,7 @@
 </div>
 <script id="NoRowsTemplate" type="text/x-jquery-tmpl">
 <tr>
-<td colspan="7">没有查询到任何记录</td>
+<td colspan="10">没有查询到任何记录</td>
 </tr>
 </script>
 
