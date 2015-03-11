@@ -125,6 +125,7 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
         payOrderData.setBankAccountNo(payOrderRequestDTO.getBankAccountNo());
         payOrderData.setBankName(payOrderRequestDTO.getBankName());
         payOrderData.setBankCode(payOrderRequestDTO.getBankCode());
+        payOrderData.setMasterBankCode(payOrderRequestDTO.getMasterBankCode());
         payOrderData.setBankBranchName(payOrderRequestDTO.getBankBranchName());
         payOrderData.setBankAccountType(payOrderRequestDTO.getBankAccountType());
         //1系统
@@ -133,7 +134,9 @@ public class PayOrderRequestHandleServiceObject implements PayOrderRequestHandle
         payOrderData.setAddLoginId(payOrderRequestDTO.getLoginId());
         payOrderData.setUpdateTime(DateUtils.getCurrentTime());
         payOrderData.setUpdateLoginId(payOrderRequestDTO.getLoginId());
-        payOrderData.setMemo(payOrderRequestDTO.getMemo());
+        //payOrderData.setMemo(payOrderRequestDTO.getMemo());
+        //用途
+        payOrderData.setUseMemo(payOrderRequestDTO.getMemo());
         return payOrderData;
     }
 

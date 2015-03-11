@@ -17,6 +17,7 @@ public class PayOrderBean {
     private String statusDesc;
     private String sendBackTime;
     private String memo;
+    private String useMemo;
     private String paidDate;
     private int queryStatus;
     private String payType;
@@ -139,5 +140,13 @@ public class PayOrderBean {
 
     public void setPayType(String payType) {
         this.payType = payType;
+    }
+
+    public String getUseMemo() {
+        return useMemo;
+    }
+
+    public void setUseMemo(String useMemo) {
+        this.useMemo = useMemo;
     }
 }
