@@ -45,7 +45,10 @@ public class PayOrderExportBean {
      */
     private int businessType;
 
-    private String memo;
+    /**
+     * 用途
+     */
+    private String useMemo;
 
     public PayOrderExportBean() {
     }
@@ -170,12 +173,12 @@ public class PayOrderExportBean {
         this.payBankAccountNo = payBankAccountNo;
     }
 
-    public String getMemo() {
-        return memo;
+    public String getUseMemo() {
+        return useMemo;
     }
 
-    public void setMemo(String memo) {
-        this.memo = memo;
+    public void setUseMemo(String useMemo) {
+        this.useMemo = useMemo;
     }
 
     @Override
@@ -196,7 +199,7 @@ public class PayOrderExportBean {
                 ", payBankName='" + payBankName + '\'' +
                 ", payBankAccountNo='" + payBankAccountNo + '\'' +
                 ", businessType=" + businessType +
-                ", memo='" + memo + '\'' +
+                ", useMemo='" + useMemo + '\'' +
                 '}';
     }
 }
