@@ -376,7 +376,8 @@ public class PayOrderServiceObject implements PayOrderService {
     @Override
     public int batchUpdatePayOrderStatus(List<Integer> poIds, List<Integer> preStatusList, int postStatus, int loginId) {
         try {
-            return payOrderDao.updatePayOrderListStatus(poIds, preStatusList, postStatus, loginId);
+            int affectedRows =  payOrderDao.updatePayOrderListStatus(poIds, preStatusList, postStatus, loginId);
+            return affectedRows;
         } catch (Exception e) {
             MONITOR_LOGGER.error(String.format("severity=[1] PayOrderService.batchUpdatePayOrderStatus error! poIds=%s", poIds), e);
             return -1;
@@ -402,6 +403,11 @@ public class PayOrderServiceObject implements PayOrderService {
         }
     }
 
+
+    @Override
+    public PageModel paginatePayOrderListByStatus(int status, int page, int max) {
+        return payOrderDao.paginatePayOrderListByStatus(status, page, max);
+    }
 
     public void setPayOrderDao(PayOrderDao payOrderDao) {
         this.payOrderDao = payOrderDao;

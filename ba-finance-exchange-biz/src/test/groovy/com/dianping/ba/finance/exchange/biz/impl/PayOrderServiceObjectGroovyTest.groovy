@@ -147,4 +147,12 @@ class PayOrderServiceObjectGroovyTest extends Specification {
         then:
         1 * payOrderDaoMock.loadPayOrderByPaySequence(_ as String);
     }
+
+    def "paginatePayOrderListByStatus"() {
+        setup:
+        when:
+        exampleServiceStub.paginatePayOrderListByStatus(7, 1, 100)
+        then:
+        1 * payOrderDaoMock.paginatePayOrderListByStatus(_ as Integer, _ as Integer, _ as Integer);
+    }
 }

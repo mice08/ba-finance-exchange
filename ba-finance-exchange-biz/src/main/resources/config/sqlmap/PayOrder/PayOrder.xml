@@ -482,12 +482,57 @@
     <update id="updatePayOrderListStatus" parameterClass="map">
         UPDATE FC_PayOrder
         SET Status = #postStatus#, UpdateLoginID = #loginId#
-        WHERE POID = #poId# and Status IN
+        WHERE POID IN
+        <iterate open="(" close=")" conjunction="," property="poIds">
+            #poIds[]#
+        </iterate>
+        AND Status IN
         <iterate open="(" close=")" conjunction="," property="preStatusList">
             #preStatusList[]#
         </iterate>
+
     </update>
 
 
+    <select id="paginatePayOrderListByStatus" resultMap="payOrderData" parameterClass="map">
+        SELECT
+        POID,
+        PayAmount,
+        PaySequence,
+        PayCode,
+        CustomerID,
+        PayeeName,
+        CustomerBankId,
+        BankAccountNo,
+        BankAccountName,
+        PaidDate,
+        BankBranchName,
+        BankName,
+        BankProvince,
+        BankCity,
+        BankFullBranchName,
+        BankCode,
+        MasterBankCode,
+        BankAccountType,
+        BusinessType,
+        PayType,
+        PayBankName,
+        PayBankAccountNo,
+        PayeeBankAccountID,
+        Status,
+        AddTime,
+        AddType,
+        UpdateTime,
+        Memo,
+        CustomerID
+        FROM FC_PayOrder
+        WHERE Status = #status#
+    </select>
+
+    <select id="paginatePayOrderListByStatus_COUNT" resultClass="int" parameterClass="map">
+        SELECT COUNT(1)
+        FROM FC_PayOrder
+        WHERE Status = #status#
+    </select>
 
 </sqlMap>
