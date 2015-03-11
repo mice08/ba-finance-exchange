@@ -32,6 +32,7 @@
         <result property="addType" column="AddType"/>
         <result property="updateTime" column="UpdateTime"/>
         <result property="memo" column="Memo"/>
+        <result property="useMemo" column="UseMemo"/>
         <result property="payeeBankAccountId" column="PayeeBankAccountID"/>
     </resultMap>
 
@@ -63,6 +64,7 @@
 			AddType,
 			UpdateTime,
 			Memo,
+			UseMemo,
 			AddLoginID,
 			UpdateLoginID
 			)
@@ -92,6 +94,7 @@
 			#payOrderData.addType#,
 			NOW(),
 			#payOrderData.memo#,
+			#payOrderData.useMemo#,
 			#payOrderData.addLoginId#,
 			#payOrderData.updateLoginId#)
  		]]>
@@ -152,6 +155,7 @@
         AddType,
         UpdateTime,
         Memo,
+        UseMemo,
         CustomerID
         FROM FC_PayOrder
         WHERE POID IN
@@ -190,7 +194,8 @@
         AddTime,
         AddType,
         UpdateTime,
-        Memo
+        Memo,
+        UseMemo
         FROM
         FC_PayOrder
         WHERE Status != 6
@@ -332,7 +337,8 @@
         AddTime,
         AddType,
         UpdateTime,
-        Memo
+        Memo,
+        UseMemo
         FROM FC_PayOrder
         WHERE Status != 6
         <dynamic prepend="AND">
@@ -425,7 +431,8 @@
                AddTime,
                AddType,
                UpdateTime,
-               Memo
+               Memo,
+               UseMemo
         FROM   FC_PayOrder po
         WHERE  po.PaySequence = #paySequence#
         AND Status != 6
@@ -474,7 +481,8 @@
         AddTime,
         AddType,
         UpdateTime,
-        Memo
+        Memo,
+        UseMemo
         FROM   FC_PayOrder po
         WHERE  po.POID = #poId#
     </select>
