@@ -23,6 +23,8 @@ public class PayOrderRequestDTO implements Serializable {
 
     private int businessType;
 
+    private int payType;
+
     private int customerBankId;
 
     private String bankAccountNo;
@@ -83,6 +85,14 @@ public class PayOrderRequestDTO implements Serializable {
 
     public void setBusinessType(int businessType) {
         this.businessType = businessType;
+    }
+
+    public int getPayType() {
+        return payType;
+    }
+
+    public void setPayType(int payType) {
+        this.payType = payType;
     }
 
     public String getBankAccountNo() {

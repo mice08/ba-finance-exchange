@@ -1,7 +1,6 @@
 package com.dianping.ba.finance.exchange.siteweb.beans;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  * Created by IntelliJ IDEA.
@@ -15,7 +14,7 @@ public class ReceiveNotifyBean implements Serializable{
 	private int receiveNotifyId;
 	private String applicationId;
 	private String businessType;
-	private BigDecimal receiveAmount;
+	private String receiveAmount;
 	private String payChannel;
 	private String receiveType;
 	private String payTime;
@@ -60,15 +59,15 @@ public class ReceiveNotifyBean implements Serializable{
 		this.businessType = businessType;
 	}
 
-	public BigDecimal getReceiveAmount() {
-		return receiveAmount;
-	}
+    public String getReceiveAmount() {
+        return receiveAmount;
+    }
 
-	public void setReceiveAmount(BigDecimal receiveAmount) {
-		this.receiveAmount = receiveAmount;
-	}
+    public void setReceiveAmount(String receiveAmount) {
+        this.receiveAmount = receiveAmount;
+    }
 
-	public String getPayChannel() {
+    public String getPayChannel() {
 		return payChannel;
 	}
 

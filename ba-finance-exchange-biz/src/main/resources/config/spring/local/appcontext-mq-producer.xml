@@ -94,4 +94,10 @@
         <property name="topic" value="${ba-finance-exchange-biz.ex.fs.receivepay.voucher.notice.topic.name}"/>
         <property name="mode" value="ASYNC_MODE"/>
     </bean>
+
+    <bean id="bankPayProducer" init-method="init"
+          class="com.dianping.finance.common.swallow.SwallowClientWrapper">
+        <property name="topic" value="${ba-finance-exchange-service.bankorder.pay.request.topic.name}"/>
+        <property name="mode" value="ASYNC_MODE"/>
+    </bean>
 </beans>
