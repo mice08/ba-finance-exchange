@@ -19,6 +19,10 @@ public enum PayType implements Serializable {
      * 保底款（不区分团购还是闪惠）
      */
     GUARANTEE(1),
+    /**
+     * 超保底款（不区分团购还是闪惠）
+     */
+    OVER_GUARANTEE(2),
 	/**
 	 * 团购保证金
 	 */
@@ -55,6 +59,8 @@ public enum PayType implements Serializable {
 				return "团购结算款";
 			case 1:
                 return "保底款";
+            case 2:
+                return "超保底";
             case 13:
                 return "团购保证金";
             case 61:
@@ -76,6 +82,8 @@ public enum PayType implements Serializable {
 				return GROUPON_SETTLE;
 			case 1:
 				return GUARANTEE;
+            case 2:
+                return OVER_GUARANTEE;
 			case 13:
 				return GROUPON_BOND;
 			case 61:

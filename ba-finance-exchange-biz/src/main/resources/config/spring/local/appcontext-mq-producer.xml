@@ -95,9 +95,17 @@
         <property name="mode" value="ASYNC_MODE"/>
     </bean>
 
-    <bean id="bankPayProducer" init-method="init"
+    <bean id="bankPayProducerClient" init-method="init"
           class="com.dianping.finance.common.swallow.SwallowClientWrapper">
         <property name="topic" value="${ba-finance-exchange-service.bankorder.pay.request.topic.name}"/>
         <property name="mode" value="ASYNC_MODE"/>
+    </bean>
+
+    <bean id="bankPayProducer" class="com.dianping.finance.common.swallow.SwallowProducer">
+        <property name="swallowClientWrapperMap">
+            <map>
+                <entry key="BANK_ORDER_PAY_REQUEST_NOTIFY" value-ref="bankPayProducerClient"/>
+            </map>
+        </property>
     </bean>
 </beans>
