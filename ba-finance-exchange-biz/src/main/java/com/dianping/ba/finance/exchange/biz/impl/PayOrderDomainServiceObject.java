@@ -13,6 +13,8 @@ import com.dianping.ba.finance.exchange.api.dtos.BankPayResultDTO;
 import com.dianping.ba.finance.exchange.api.enums.AccountEntrySourceType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.PayType;
+import com.dianping.ba.finance.exchange.biz.enums.AccountType;
+import com.dianping.ba.finance.exchange.biz.enums.PayResultStatus;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.swallow.SwallowEventBean;
 import com.dianping.finance.common.swallow.SwallowProducer;
@@ -101,11 +103,9 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
     }
 
     private PayOrderStatus parsePayOrderStatus(int code) {
-        if (code == 1 || code == 2003 || code == 2004) {
-            return PayOrderStatus.BANK_PAYING;
-        } else if (code == 2000) {
+        if (code == PayResultStatus.PAY_SUCCESS.getCode()) {
             return PayOrderStatus.PAY_SUCCESS;
-        } else if (code == 2001 || code == -1) {
+        } else if (code == PayResultStatus.PAY_FAILED.getCode() || code == PayResultStatus.REQUEST_FAILED.getCode()) {
             return PayOrderStatus.PAY_FAILED;
         }
         return PayOrderStatus.BANK_PAYING;
@@ -143,7 +143,7 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
         }
         requestDTO.setAccountToNo(payOrderData.getBankAccountNo());
         requestDTO.setAccountToName(payOrderData.getBankAccountName());
-        requestDTO.setAccountType(1);
+        requestDTO.setAccountType(AccountType.PUBLIC.getCode());
         requestDTO.setAccountToType(payOrderData.getBankAccountType());
         requestDTO.setBankBranchCode(payOrderData.getBankCode());
         requestDTO.setBankCode(payOrderData.getMasterBankCode());
