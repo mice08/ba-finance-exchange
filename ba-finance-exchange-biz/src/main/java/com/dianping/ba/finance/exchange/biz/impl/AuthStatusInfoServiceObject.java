@@ -34,13 +34,13 @@ public class AuthStatusInfoServiceObject implements AuthStatusInfoService {
 
     @Override
     @Log(logBefore = true, logAfter = true)
-    public boolean updateRetryTimes(String workNo, int type) {
+    public synchronized boolean updateRetryTimes(String workNo, int type) {
         try {
-            AuthStatusInfoData data = authStatusInfoDao.loadStatusByWorkNoAndType(workNo, AuthType.RSA.getType());
+            AuthStatusInfoData data = authStatusInfoDao.loadStatusByWorkNoAndType(workNo, type);
             if (data == null) {
                 return authStatusInfoDao.insertAuthStatusInfo(workNo, 1, type) > 0;
             } else {
-                return authStatusInfoDao.updateAuthTimes(data.getId(), data.getTimes() + 1) > 0;
+                return authStatusInfoDao.updateAuthTimes(data.getId()) > 0;
             }
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[2] AuthStatusInfoServiceObject.updateRetryTimes fail", e);
