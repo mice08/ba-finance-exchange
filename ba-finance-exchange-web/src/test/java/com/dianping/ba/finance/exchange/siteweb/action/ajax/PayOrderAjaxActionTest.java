@@ -1,5 +1,6 @@
 package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 
+import com.dianping.ba.finance.exchange.api.PayOrderDomainService;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
@@ -32,10 +33,12 @@ public class PayOrderAjaxActionTest {
     private PayOrderService payOrderServiceMock;
     private PayTemplateService payTemplateServiceMock;
     private PayOrderAjaxAction payOrderAjaxActionStub;
+	private PayOrderDomainService payOrderDomainServiceMock;
 
 	@Before
 	public void setUp() {
 		payOrderServiceMock = mock(PayOrderService.class);
+		payOrderDomainServiceMock = mock(PayOrderDomainService.class);
         payTemplateServiceMock = mock(PayTemplateService.class);
 		payOrderAjaxActionStub = new PayOrderAjaxAction4Test();
 		payOrderAjaxActionStub.setPayOrderService(payOrderServiceMock);
@@ -43,6 +46,7 @@ public class PayOrderAjaxActionTest {
         payTemplateServiceMap.put("Minsheng", payTemplateServiceMock);
         payTemplateServiceMap.put("Merchants", payTemplateServiceMock);
         payOrderAjaxActionStub.setPayTemplateServiceMap(payTemplateServiceMap);
+		payOrderAjaxActionStub.setPayOrderDomainService(payOrderDomainServiceMock);
 	}
 
     @Test
@@ -106,8 +110,8 @@ public class PayOrderAjaxActionTest {
 		verify(payOrderServiceMock, atLeastOnce()).updatePayOrderToPaying(anyList(), anyInt());
 		verify(payTemplateServiceMock, atLeastOnce()).createExcelAndDownload(any(HttpServletResponse.class), anyString(), anyList(), anyInt());
 	}
-	@Test
 
+	@Test
 	public void testExportForPayWhenFindOrderToExportNotExpense() throws Exception {
 		payOrderAjaxActionStub.setBusinessType(BusinessType.GROUP_PURCHASE.value());
 		List orderList = new ArrayList<PayOrderData>();
@@ -125,6 +129,32 @@ public class PayOrderAjaxActionTest {
 		verify(payTemplateServiceMock, atLeastOnce()).createExcelAndDownload(any(HttpServletResponse.class), anyString(), anyList(), anyInt());
 	}
 
+	@Test
+	public void testPayOrderBankPayRequest() throws Exception{
+		payOrderAjaxActionStub.setBusinessType(BusinessType.GROUP_PURCHASE.value());
+		List<Integer> orderList = new ArrayList<Integer>();
+		orderList.add(1);
+		when(payOrderServiceMock.findPayOrderIdList(any(PayOrderSearchBean.class))).thenReturn(orderList);
+
+		String actual = payOrderAjaxActionStub.payOrderBankPayRequest();
+
+		Assert.assertNotNull(actual);
+		verify(payOrderServiceMock, atLeastOnce()).batchUpdatePayOrderStatus(anyList(), anyList(), anyInt(), anyInt());
+	}
+
+	@Test
+	public void testPayOrderBankPay() throws Exception{
+		payOrderAjaxActionStub.setBusinessType(BusinessType.GROUP_PURCHASE.value());
+		List<Integer> orderList = new ArrayList<Integer>();
+		orderList.add(1);
+		when(payOrderServiceMock.findPayOrderIdList(any(PayOrderSearchBean.class))).thenReturn(orderList);
+
+		String actual = payOrderAjaxActionStub.payOrderBankPay();
+
+		Assert.assertNotNull(actual);
+		verify(payOrderDomainServiceMock, atLeastOnce()).pay(anyList(), anyInt());
+	}
+
 	private class PayOrderAjaxAction4Test extends PayOrderAjaxAction {
 		@Override
 		protected HttpServletResponse getHttpServletResponse() {
@@ -136,4 +166,6 @@ public class PayOrderAjaxActionTest {
             return 0;
         }
     }
+
+
 }

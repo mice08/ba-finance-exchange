@@ -153,4 +153,11 @@ public class PayOrderDaoTest {
         PageModel pageModel = payOrderDao.paginatePayOrderList(payOrderSearchBean, 1, 20);
         Assert.assertNotNull(pageModel);
     }
+
+    @Test
+    public void testUpdatePayOrderListStatus() {
+        int actual = payOrderDao.updatePayOrderListStatus(Arrays.asList(10000108), Arrays.asList(9), 7, -1);
+
+        Assert.assertEquals(1, actual);
+    }
 }
