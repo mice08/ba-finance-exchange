@@ -405,8 +405,9 @@
 
     <update id="updateReceiveNotifyStatus" parameterClass="map">
         UPDATE FC_ReceiveNotify
-           SET status = #setStatus#
-         WHERE ReceiveNotifyID = #rnId#
-           AND status = #preStatus#
+           SET status = #receiveNotifyUpdateBean.setStatus#,
+                memo = #receiveNotifyUpdateBean.memo#
+         WHERE ReceiveNotifyID = #receiveNotifyUpdateBean.rnId#
+           AND status = #receiveNotifyUpdateBean.preStatus#
     </update>
 </sqlMap>

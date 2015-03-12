@@ -2,6 +2,9 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.auditlog.api.enums.OperationType;
+import com.dianping.ba.finance.auditlog.client.OperationLogger;
+import com.dianping.ba.finance.exchange.api.PayOrderDomainService;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
@@ -9,6 +12,7 @@ import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
+import com.dianping.ba.finance.exchange.siteweb.enums.SubmitAction;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
@@ -16,13 +20,16 @@ import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.util.ConvertUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
 import com.google.common.collect.Sets;
+import jodd.util.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.*;
 
@@ -35,6 +42,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
      * 记录需要监控的业务日志
      */
     private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.web.monitor.PayOrderAjaxAction");
+
+    private static final OperationLogger OPERATION_LOGGER = new OperationLogger("Exchange", "PayOrder", LionConfigUtils.getProperty("ba-finance-exchange-web.auditlog.token"));
 
     private static final Set<Integer> ALLOWED_EXPORT_STATUS = Sets.newHashSet(PayOrderStatus.INIT.value(), PayOrderStatus.EXPORT_PAYING.value());
 
@@ -58,7 +67,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     //付款计划总金额
     private String totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(BigDecimal.ZERO);
 
-    private String payCode;
+    private String poIds;
 
     private String addDate;
 
@@ -67,6 +76,16 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     private Map<String, PayTemplateService> payTemplateServiceMap;
 
     private CustomerNameService customerNameService;
+
+    private String startAmount;
+
+    private String endAmount;
+
+    private int bankId;
+
+    @Autowired
+    private PayOrderDomainService payOrderDomainService;
+
     @Override
     protected void jsonExecute() throws Exception {
         if (businessType == BusinessType.DEFAULT.value()) {
@@ -76,6 +95,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         }
         try {
             PayOrderSearchBean payOrderSearchBean = buildPayOrderSearchBean();
+            OPERATION_LOGGER.log(OperationType.QUERY, "查询付款单", payOrderSearchBean.toString(), String.valueOf(getLoginId()));
             payOrderModel = payOrderService.paginatePayOrderList(payOrderSearchBean, page, pageSize);
             payOrderModel.setRecords(buildPayOrderBeans((List<PayOrderData>) payOrderModel.getRecords()));
             totalAmount = new DecimalFormat("##,###,###,###,##0.00").format(payOrderService.findPayOrderTotalAmount(payOrderSearchBean));
@@ -91,7 +111,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 	public String payOrderExportForPay() throws Exception {
 		try {
 			PayOrderSearchBean searchBean = buildPayOrderSearchBean();
-			List<PayOrderData> dataList = payOrderService.findPayOrderList(searchBean);
+            OPERATION_LOGGER.log(OperationType.UPDATE, "导出支付", searchBean.toString(), String.valueOf(getLoginId()));
+            List<PayOrderData> dataList = payOrderService.findPayOrderList(searchBean);
             if (CollectionUtils.isEmpty(dataList)) {
                 MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderExportForPay No PayOrder found! searchBean=%s", searchBean));
                 return null;
@@ -110,6 +131,59 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 		}
 	}
 
+    private List<Integer> getSubmitOrderIdList(int submitAction) throws ParseException {
+        List<Integer> orderIdList = StringUtil.isBlank(poIds) ? new ArrayList<Integer>() : com.dianping.finance.common.util.StringUtils.splitStringToList(poIds, ",");
+
+        if (CollectionUtils.isEmpty(orderIdList)) {
+            PayOrderSearchBean searchBean = buildPayOrderSearchBean();
+            if (submitAction == SubmitAction.PAY_ORDER.getCode()) {
+                OPERATION_LOGGER.log(OperationType.UPDATE, "直联支付(全选)", searchBean.toString(), String.valueOf(getLoginId()));
+            } else {
+                OPERATION_LOGGER.log(OperationType.UPDATE, "提交付款单(全选)", searchBean.toString(), String.valueOf(getLoginId()));
+            }
+            orderIdList = payOrderService.findPayOrderIdList(searchBean);
+        } else {
+            if (submitAction == SubmitAction.PAY_ORDER.getCode()) {
+                OPERATION_LOGGER.log(OperationType.UPDATE, "直联支付(勾选)", "付款单ID: " + orderIdList, String.valueOf(getLoginId()));
+            } else {
+                OPERATION_LOGGER.log(OperationType.UPDATE, "提交付款单(勾选)", "付款单ID: " + orderIdList, String.valueOf(getLoginId()));
+            }
+        }
+        return orderIdList;
+    }
+
+    public String payOrderBankPay() throws Exception {
+        try {
+            List<Integer> idList = getSubmitOrderIdList(SubmitAction.PAY_ORDER.getCode());
+            if (CollectionUtils.isEmpty(idList)) {
+                MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No PayOrder found! " +
+                        "businessType=[%d]&addBeginTime=[%s]&addEndTime=[%s]&poIds[%s]&status=[%d]", businessType, addBeginTime, addEndTime, poIds, status));
+                return SUCCESS;
+            }
+            payOrderDomainService.pay(idList, getLoginId());
+            return SUCCESS;
+        } catch (Exception e) {
+            MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPay", e);
+            return ERROR;
+        }
+    }
+
+    public String payOrderBankPayRequest() throws Exception {
+        try {
+            List<Integer> idList = getSubmitOrderIdList(SubmitAction.PAY_REQUEST.getCode());
+            if (CollectionUtils.isEmpty(idList)) {
+                MONITOR_LOGGER.info(String.format("severity=[2] PayOrderAjaxAction.payOrderBankPay No PayOrder found! " +
+                        "businessType=[%d]&addBeginTime=[%s]&addEndTime=[%s]&poIds[%s]&status=[%d]", businessType, addBeginTime, addEndTime, poIds, status));
+                return SUCCESS;
+            }
+            int submitNum = payOrderService.batchUpdatePayOrderStatus(idList, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), getLoginId());
+            return SUCCESS;
+        } catch (Exception e) {
+            MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPayRequest", e);
+            return ERROR;
+        }
+    }
+
 	private void updatePayOrderStatus(List<PayOrderExportBean> beanList, int loginId){
 		if(!CollectionUtils.isEmpty(beanList)){
 			List<Integer> orderIds = new ArrayList<Integer>();
@@ -122,14 +196,24 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
 	private void exportPayOrders(List<PayOrderExportBean> beanList) throws Exception {
 		HttpServletResponse response = getHttpServletResponse();
-        String exportBank = LionConfigUtils.getProperty("ba-finance-exchange-web.exportBank", "Minsheng");
+        String exportBank = selectExportBank(beanList.get(0));
         MONITOR_LOGGER.info(String.format("exportBank=%s", exportBank));
         PayTemplateService payTemplateService = payTemplateServiceMap.get(exportBank);
         if (payTemplateService == null) {
             throw new RuntimeException("不支持该银行的支付模板!exportBank=" + exportBank);
         }
-        payTemplateService.createExcelAndDownload(response, "付款单", beanList);
+        payTemplateService.createExcelAndDownload(response, "付款单", beanList, bankId);
 	}
+
+    private String selectExportBank(PayOrderExportBean payOrderExportBean) {
+        String exportBank;
+        if(payOrderExportBean.getBusinessType() == BusinessType.EXPENSE.value()) {
+            exportBank = LionConfigUtils.getProperty("ba-finance-exchange-web.expense.exportBank", "Merchants");
+        } else {
+            exportBank = LionConfigUtils.getProperty("ba-finance-exchange-web.exportBank", "Minsheng");
+        }
+        return exportBank;
+    }
 
 	protected HttpServletResponse getHttpServletResponse() {
 		return ServletActionContext.getResponse();
@@ -157,24 +241,45 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
 	private PayOrderExportBean buildPayOrderExportBean(PayOrderData order) throws Exception {
 		PayOrderExportBean exportBean = ConvertUtils.copy(order, PayOrderExportBean.class);
+        exportBean.setPayCode(String.valueOf(order.getPoId()));
 		return exportBean;
 	}
 
 	public PayOrderSearchBean buildPayOrderSearchBean() throws ParseException {
 
         PayOrderSearchBean payOrderSearchBean=new PayOrderSearchBean();
-        Date beginTime = DateUtil.isValidDateTime(addBeginTime) ? DateUtil.parseDate(addBeginTime,"yyyy-MM-dd HH:mm") :
+        Date beginTime = DateUtil.isValidDateTime(addBeginTime) ? DateUtil.parseDate(addBeginTime, "yyyy-MM-dd HH:mm") :
                 (DateUtil.isValidDate(addBeginTime) ? DateUtil.formatDate(addBeginTime, false) : null);
-        Date endTime = DateUtil.isValidDateTime(addEndTime) ? DateUtil.parseDate(addEndTime,"yyyy-MM-dd HH:mm") :
+        Date endTime = DateUtil.isValidDateTime(addEndTime) ? DateUtil.parseDate(addEndTime, "yyyy-MM-dd HH:mm") :
                 (DateUtil.isValidDate(addEndTime) ? DateUtil.formatDate(addEndTime, true) : null);
         payOrderSearchBean.setStatus(status);
         payOrderSearchBean.setBusinessType(businessType);
         payOrderSearchBean.setBeginTime(beginTime);
         payOrderSearchBean.setEndTime(endTime);
-        if (StringUtils.isNotBlank(payCode)) {
-            payOrderSearchBean.setPayCode(payCode);
+        payOrderSearchBean.setStartAmount(parseAmount(startAmount));
+        payOrderSearchBean.setEndAmount(parseAmount(endAmount));
+        if (StringUtils.isNotBlank(poIds)) {
+            payOrderSearchBean.setPoIdList(com.dianping.finance.common.util.StringUtils.splitStringToList(poIds, ","));
         }
         return payOrderSearchBean;
+    }
+
+    private BigDecimal parseAmount(String amountStr) {
+        if (StringUtils.isBlank(amountStr)) {
+            return null;
+        }
+        try {
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+            symbols.setGroupingSeparator(',');
+            symbols.setDecimalSeparator('.');
+            String pattern = "#,###,###,##0.0#";
+            DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+            decimalFormat.setParseBigDecimal(true);
+            return (BigDecimal) decimalFormat.parse(amountStr);
+        } catch (Exception e) {
+            MONITOR_LOGGER.error("severity=[1] PayOrderAjaxAction parse amount error!", e);
+        }
+        return null;
     }
 
     private List<PayOrderBean> buildPayOrderBeans(List<PayOrderData> payOrderDataList) {
@@ -193,7 +298,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     private PayOrderBean convertPODataToPOBean(PayOrderData payOrderData, Map<Integer, String> customerIdNameMap) {
         PayOrderBean payOrderBean = new PayOrderBean();
-        payOrderBean.setPayCode(payOrderData.getPayCode());
+        payOrderBean.setPayCode(String.valueOf(payOrderData.getPoId()));
         payOrderBean.setAddTime(DateUtil.formatDateToString(payOrderData.getAddTime(), "yyyy-MM-dd HH:mm:ss"));
         if (payOrderData.getStatus() == PayOrderStatus.REFUND.value()) {
             payOrderBean.setSendBackTime(DateUtil.formatDateToString(payOrderData.getUpdateTime(), "yyyy-MM-dd HH:mm:ss"));
@@ -315,11 +420,19 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         this.addEndTime = addEndTime;
     }
 
-    public String getPayCode() {
-        return payCode;
+    public void setPoIds(String poIds) {
+        this.poIds = poIds;
     }
 
-    public void setPayCode(String payCode) {
-        this.payCode = payCode;
+    public void setStartAmount(String startAmount) {
+        this.startAmount = startAmount;
+    }
+
+    public void setEndAmount(String endAmount) {
+        this.endAmount = endAmount;
+    }
+
+    public void setBankId(int bankId) {
+        this.bankId = bankId;
     }
 }
