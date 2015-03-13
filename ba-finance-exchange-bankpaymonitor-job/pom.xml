@@ -16,7 +16,7 @@
         <groovy.version>2.3.1</groovy.version>
     </properties>
 
-    <dependencies>ame
+    <dependencies>
         <dependency>
             <groupId>com.dianping</groupId>
             <artifactId>ba-finance-exchange-api</artifactId>
