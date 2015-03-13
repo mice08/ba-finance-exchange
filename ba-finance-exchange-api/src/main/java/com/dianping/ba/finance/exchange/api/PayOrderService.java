@@ -154,4 +154,6 @@ public interface PayOrderService {
      */
     List<PayOrderData> findPayOrderByIdList(List<Integer> poIds);
 
+    PageModel paginatePayOrderListByStatus(int status, int page, int max);
+
 }
