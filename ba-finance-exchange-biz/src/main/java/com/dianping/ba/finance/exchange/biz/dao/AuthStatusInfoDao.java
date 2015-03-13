@@ -18,7 +18,7 @@ public interface AuthStatusInfoDao extends GenericDao {
     AuthStatusInfoData loadStatusByWorkNoAndType(@DAOParam("workNo") String workNo, @DAOParam("type") int type);
 
     @DAOAction(action = DAOActionType.UPDATE)
-    int updateAuthTimes(@DAOParam("id") int id, @DAOParam("times") int times);
+    int updateAuthTimes(@DAOParam("id") int id);
 
     @DAOAction(action = DAOActionType.UPDATE)
     int updateStatusInvalid(@DAOParam("workNo") String workNo, @DAOParam("type") int type);

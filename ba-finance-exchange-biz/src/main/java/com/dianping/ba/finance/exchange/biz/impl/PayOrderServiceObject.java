@@ -21,6 +21,7 @@ import com.dianping.finance.common.aop.annotation.ReturnDefault;
 import com.dianping.finance.common.util.ConvertUtils;
 import com.dianping.finance.common.util.DateUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
+import com.dianping.finance.common.util.ListUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.util.CollectionUtils;
@@ -60,6 +61,8 @@ public class PayOrderServiceObject implements PayOrderService {
         } while (times > 0);
         return -1;
     }
+
+
 
     @Log(severity = 1, logBefore = true, logAfter = true)
     @ReturnDefault
@@ -362,7 +365,9 @@ public class PayOrderServiceObject implements PayOrderService {
             if (!StringUtils.isEmpty(message)) {
                 PayOrderData data = payOrderDao.loadPayOrderByPayPOID(poId);
                 if (data != null) {
-                    message += "|" + data.getMemo();
+                    if (!StringUtils.isEmpty(data.getMemo())) {
+                        message += "|" + data.getMemo();
+                    }
                 }
             }
             return payOrderDao.updatePayOrderStatus(poId, preStatus, postStatus, message);
@@ -407,6 +412,31 @@ public class PayOrderServiceObject implements PayOrderService {
     @Override
     public PageModel paginatePayOrderListByStatus(int status, int page, int max) {
         return payOrderDao.paginatePayOrderListByStatus(status, page, max);
+    }
+
+    @Log(logBefore = true, logAfter = true)
+    @Override
+    public int markPayOrderInvalid(List<Integer> poIdList, int loginId) {
+        try {
+            if(CollectionUtils.isEmpty(poIdList)){
+                return 0;
+            }
+            int successCount = 0;
+            List<PayOrderData> payOrderDataList = new ArrayList<PayOrderData>();
+            for (int poId : poIdList) {
+                PayOrderData payOrderData = payOrderDao.loadPayOrderByPayPOID(poId);
+                int affectedRecords = payOrderDao.updatePayOrderStatus(poId, PayOrderStatus.PAY_FAILED.value(), PayOrderStatus.REFUND.value(), payOrderData.getMemo());
+                if (affectedRecords == 1) {
+                    successCount++;
+                    payOrderDataList.add(payOrderData);
+                }
+            }
+            notifyRefund(payOrderDataList, loginId);
+            return successCount;
+        }catch (Exception e){
+            MONITOR_LOGGER.error(String.format("PayOrderServiceObject.markPayOrderInvalid fail!, poIdList=[%s]&loginId=[%d]", ListUtils.listToString(poIdList, ","), loginId), e);
+            return -1;
+        }
     }
 
     public void setPayOrderDao(PayOrderDao payOrderDao) {

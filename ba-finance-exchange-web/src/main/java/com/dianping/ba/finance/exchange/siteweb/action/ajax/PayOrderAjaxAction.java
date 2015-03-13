@@ -20,6 +20,7 @@ import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.util.ConvertUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
+import com.dianping.finance.common.util.ListUtils;
 import com.google.common.collect.Sets;
 import jodd.util.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -168,7 +169,16 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
                 code = SUCCESS_CODE;
                 return SUCCESS;
             }
-            payOrderDomainService.pay(idList, getLoginId());
+            int groupSize = NumberUtils.toInt(LionConfigUtils.getProperty("ba-finance-exchange-web.pay.group.size", "2000"));
+            if (idList.size() > groupSize) {
+                List<List<Integer>> idListGroup = ListUtils.generateListGroup(idList, groupSize);
+                for (List<Integer> list : idListGroup) {
+                    payOrderDomainService.pay(list, getLoginId());
+                }
+            } else {
+                payOrderDomainService.pay(idList, getLoginId());
+            }
+            msg.put("submitCount", idList.size());
             code = SUCCESS_CODE;
             return SUCCESS;
         } catch (Exception e) {
@@ -187,7 +197,16 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
                 code = SUCCESS_CODE;
                 return SUCCESS;
             }
-            int submitNum = payOrderService.batchUpdatePayOrderStatus(idList, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), getLoginId());
+            int groupSize = NumberUtils.toInt(LionConfigUtils.getProperty("ba-finance-exchange-web.pay.group.size", "2000"));
+            int submitNum = 0;
+            if (idList.size() > groupSize) {
+                List<List<Integer>> idListGroup = ListUtils.generateListGroup(idList, groupSize);
+                for (List<Integer> list : idListGroup) {
+                    submitNum += payOrderService.batchUpdatePayOrderStatus(list, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), getLoginId());
+                }
+            } else {
+                submitNum = payOrderService.batchUpdatePayOrderStatus(idList, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), getLoginId());
+            }
             msg.put("successCount", submitNum);
             msg.put("failedCount", idList.size() - submitNum);
             code = SUCCESS_CODE;
@@ -220,6 +239,28 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
             return ERROR;
         }
     }
+
+    public String payOrderBankAccountInvalid() throws Exception {
+        try {
+            if (StringUtils.isBlank(poIds)) {
+                MONITOR_LOGGER.warn("No pay order need to be mark as bank acccount invalid!");
+                code = SUCCESS_CODE;
+                return SUCCESS;
+            }
+            String[] orderIdList = poIds.trim().split(",");
+            List<Integer> poIdList = ListUtils.convertStringArrayToIntegerList(orderIdList);
+            int successCount = payOrderService.markPayOrderInvalid(poIdList, getLoginId());
+            msg.put("successCount", successCount);
+            msg.put("failedCount", poIdList.size() - successCount);
+            code = SUCCESS_CODE;
+            return SUCCESS;
+        } catch (Exception e) {
+            MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankAccountInvalid fail!", e);
+            code = ERROR_CODE;
+            return ERROR;
+        }
+    }
+
 
 	private void updatePayOrderStatus(List<PayOrderExportBean> beanList, int loginId){
 		if(!CollectionUtils.isEmpty(beanList)){
@@ -345,7 +386,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         payOrderBean.setBankAccountNo(payOrderData.getBankAccountNo());
         payOrderBean.setBankFullBranchName(payOrderData.getBankFullBranchName());
         payOrderBean.setCustomerName(getCustomerNameById(payOrderData.getCustomerId(), customerIdNameMap));
-        payOrderBean.setMemo(payOrderData.getMemo());
+        payOrderBean.setMemo(payOrderData.getMemo() == null ? "" : payOrderData.getMemo());
+        payOrderBean.setUseMemo(payOrderData.getUseMemo() == null ? "" : payOrderData.getUseMemo());
         payOrderBean.setPayType(PayType.valueOf(payOrderData.getPayType()).toString());
         payOrderBean.setPaidDate(DateUtil.formatDateToString(payOrderData.getPaidDate(), "yyyy-MM-dd HH:mm:ss"));
         payOrderBean.setPayAmount(new DecimalFormat("##,###,###,###,##0.00").format(payOrderData.getPayAmount()));

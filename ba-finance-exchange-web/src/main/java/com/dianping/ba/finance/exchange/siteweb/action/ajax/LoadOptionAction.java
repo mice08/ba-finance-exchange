@@ -34,8 +34,8 @@ public class LoadOptionAction extends AjaxBaseAction {
     }
 
     public String loadPayTypeOption() {
-        option.put(PayType.DEFAULT.value(), "请选择业务类型");
         if (businessType==BusinessType.GROUP_PURCHASE.value()){
+            option.put(PayType.DEFAULT.value(), "请选择款项类型");
             option.put(PayType.GROUPON_SETTLE.value(), "团购结算款");
             option.put(PayType.GUARANTEE.value(), "保底款");
             option.put(PayType.OVER_GUARANTEE.value(), "超保底");

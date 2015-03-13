@@ -46,6 +46,8 @@ public class PayOrderData implements Serializable {
      */
     private String memo;
 
+    private String useMemo;
+
     private String paySequence;
 
     private String payCode;
@@ -334,6 +336,14 @@ public class PayOrderData implements Serializable {
         this.payBankAccountNo = payBankAccountNo;
     }
 
+    public String getUseMemo() {
+        return useMemo;
+    }
+
+    public void setUseMemo(String useMemo) {
+        this.useMemo = useMemo;
+    }
+
     @Override
     public String toString() {
         return "PayOrderData{" +
@@ -346,6 +356,7 @@ public class PayOrderData implements Serializable {
                 ", paidDate=" + paidDate +
                 ", updateTime=" + updateTime +
                 ", memo='" + memo + '\'' +
+                ", useMemo='" + useMemo + '\'' +
                 ", paySequence='" + paySequence + '\'' +
                 ", payCode='" + payCode + '\'' +
                 ", customerId=" + customerId +
@@ -365,6 +376,8 @@ public class PayOrderData implements Serializable {
                 ", payeeName='" + payeeName + '\'' +
                 ", payBankName='" + payBankName + '\'' +
                 ", payBankAccountNo='" + payBankAccountNo + '\'' +
+                ", masterBankCode='" + masterBankCode + '\'' +
+                ", payeeBankAccountId=" + payeeBankAccountId +
                 '}';
     }
 }
