@@ -362,7 +362,9 @@ public class PayOrderServiceObject implements PayOrderService {
             if (!StringUtils.isEmpty(message)) {
                 PayOrderData data = payOrderDao.loadPayOrderByPayPOID(poId);
                 if (data != null) {
-                    message += "|" + data.getMemo();
+                    if (!StringUtils.isEmpty(data.getMemo())) {
+                        message += "|" + data.getMemo();
+                    }
                 }
             }
             return payOrderDao.updatePayOrderStatus(poId, preStatus, postStatus, message);

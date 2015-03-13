@@ -12,5 +12,6 @@
     <bean id="paymentStatusChecker" class="com.dianping.ba.finance.exchange.payresult.job.PaymentStatusChecker">
         <property name="payOrderService" ref="payOrderService"/>
         <property name="fsBankQueryService" ref="fsBankQueryService"/>
+        <property name="accountService" ref="accountService"/>
     </bean>
 </beans>

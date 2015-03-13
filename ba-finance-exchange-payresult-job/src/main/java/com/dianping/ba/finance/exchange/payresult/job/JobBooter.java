@@ -11,7 +11,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class JobBooter {
 
-    private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.voucher.job");
+    private static final AvatarLogger monitorLogger = AvatarLoggerFactory.getLogger(JobBooter.class);
 
 	public static void main(String [] args) {
         Long startTime = System.currentTimeMillis();
