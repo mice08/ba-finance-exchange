@@ -176,4 +176,5 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
     public void setAccountService(AccountService accountService) {
         this.accountService = accountService;
     }
+
 }
