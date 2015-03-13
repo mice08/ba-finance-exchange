@@ -48,7 +48,7 @@
 
     <update id="updateAuthTimes" parameterClass="map">
         UPDATE FC_AuthStatusInfo
-        SET Times = #times#
+        SET Times = Times + 1
         WHERE ID = #id#
         AND Status = 1
     </update>
