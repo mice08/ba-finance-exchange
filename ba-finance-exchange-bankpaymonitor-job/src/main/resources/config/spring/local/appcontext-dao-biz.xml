@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+    <bean id="payOrderDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.bankpaymonitor.biz.daos.PayOrderDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="BankPay"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="monitorTimeDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.bankpaymonitor.biz.daos.MonitorTimeDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="BankPay"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="bankPayMonitorResultDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.bankpaymonitor.biz.daos.BankPayMonitorResultDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="BankPay"/>
+            </bean>
+        </property>
+    </bean>
+
+</beans>
