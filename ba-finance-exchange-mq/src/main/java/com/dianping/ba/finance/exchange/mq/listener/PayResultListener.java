@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * 付款计划请求消息监听器
  */
-public class BankPayResultListener extends SwallowMessageListener {
+public class PayResultListener extends SwallowMessageListener {
 
     private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.mq.monitor.PayRequestResultListener");
 
