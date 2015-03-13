@@ -19,6 +19,7 @@ import com.dianping.ba.finance.paymentplatform.api.dtos.PaymentRequestDTO;
 import com.dianping.ba.finance.paymentplatform.api.enums.Channel;
 import com.dianping.ba.finance.paymentplatform.api.enums.PayRequestResult;
 import com.dianping.finance.common.aop.annotation.Log;
+import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.finance.common.util.ListUtils;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
@@ -161,7 +162,8 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
             requestDTO.setFromAccountName(payeeBankAccountDTO.getBankAccountName());
         }
         requestDTO.setChannel(Channel.MINSHENG_BANK.getCode());
-        requestDTO.setToken("abc");
+        String token = LionConfigUtils.getProperty("ba-finance-exchange-service.pay.token", "abc1234");
+        requestDTO.setToken(token);
         requestDTO.setToAccountNo(payOrderData.getBankAccountNo());
         requestDTO.setToBankAccountName(payOrderData.getBankAccountName());
         requestDTO.setBankAccountType(payOrderData.getBankAccountType());
