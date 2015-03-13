@@ -20,7 +20,7 @@
     </bean>
 
     <bean id="bankPayMonitorResultDao" parent="parentDao">
-        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.bankpaymonitor.biz.daos.BankPayMonitorResultDao"/>
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.bankpaymonitor.biz.daos.BankPayMonitorExceptionDao"/>
         <property name="target">
             <bean parent="fsMain.daoRealizeTarget">
                 <constructor-arg value="BankPay"/>

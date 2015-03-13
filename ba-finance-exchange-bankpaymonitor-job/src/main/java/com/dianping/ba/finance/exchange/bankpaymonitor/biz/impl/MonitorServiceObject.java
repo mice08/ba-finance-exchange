@@ -3,7 +3,7 @@ package com.dianping.ba.finance.exchange.bankpaymonitor.biz.impl;
 import com.dianping.ba.finance.exchange.bankpaymonitor.api.MonitorService;
 import com.dianping.ba.finance.exchange.bankpaymonitor.api.datas.BankPayMonitorExceptionData;
 import com.dianping.ba.finance.exchange.bankpaymonitor.api.enums.BankPayException;
-import com.dianping.ba.finance.exchange.bankpaymonitor.biz.daos.BankPayMonitorResultDao;
+import com.dianping.ba.finance.exchange.bankpaymonitor.biz.daos.BankPayMonitorExceptionDao;
 import com.dianping.ba.finance.exchange.bankpaymonitor.biz.daos.MonitorTimeDao;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,7 +17,7 @@ public class MonitorServiceObject implements MonitorService {
     @Autowired
     private MonitorTimeDao monitorTimeDao;
     @Autowired
-    private BankPayMonitorResultDao bankPayMonitorResultDao;
+    private BankPayMonitorExceptionDao bankPayMonitorExceptionDao;
 
     @Override
     public Date loadLastMonitorTime() {
@@ -35,6 +35,14 @@ public class MonitorServiceObject implements MonitorService {
         data.setCheckStatus(bankPayException.getCode());
         data.setMemo(bankPayException.getMessage());
         data.setPoId(poId);
-        return bankPayMonitorResultDao.insertBankPayResult(data) > 0;
+        return bankPayMonitorExceptionDao.insertBankPayResult(data) > 0;
+    }
+
+    public void setMonitorTimeDao(MonitorTimeDao monitorTimeDao) {
+        this.monitorTimeDao = monitorTimeDao;
+    }
+
+    public void setBankPayMonitorExceptionDao(BankPayMonitorExceptionDao bankPayMonitorExceptionDao) {
+        this.bankPayMonitorExceptionDao = bankPayMonitorExceptionDao;
     }
 }

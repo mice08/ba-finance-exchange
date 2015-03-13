@@ -9,7 +9,7 @@ import com.dianping.ba.finance.exchange.bankpaymonitor.api.datas.BankPayMonitorE
 /**
  * Created by will on 15-3-13.
  */
-public interface BankPayMonitorResultDao extends GenericDao {
+public interface BankPayMonitorExceptionDao extends GenericDao {
 
     @DAOAction(action = DAOActionType.INSERT)
     int insertBankPayResult(@DAOParam("result") BankPayMonitorExceptionData result);

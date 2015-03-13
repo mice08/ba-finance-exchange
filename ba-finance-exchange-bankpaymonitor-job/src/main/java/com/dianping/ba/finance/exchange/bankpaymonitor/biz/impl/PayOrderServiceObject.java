@@ -23,4 +23,8 @@ public class PayOrderServiceObject implements PayOrderService {
     public List<PayOrderMonitorData> findPayOrders(int start, int size, Date startTime, Date endTime) {
         return payOrderDao.findPayOrders(start, size, startTime, endTime, Arrays.asList(PayOrderStatus.BANK_PAYING.value(), PayOrderStatus.PAY_SUCCESS.value(), PayOrderStatus.PAY_FAILED.value()));
     }
+
+    public void setPayOrderDao(PayOrderDao payOrderDao) {
+        this.payOrderDao = payOrderDao;
+    }
 }

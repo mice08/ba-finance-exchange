@@ -131,4 +131,8 @@ public class BankPayMonitor {
     public void setPaymentQueryService(PaymentQueryService paymentQueryService) {
         this.paymentQueryService = paymentQueryService;
     }
+
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
+    }
 }

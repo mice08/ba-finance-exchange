@@ -14,7 +14,7 @@
     <insert id="insertBankPayResult" parameterClass="map">
         INSERT INTO FC_BankPayResult
         (POID, CheckStatus, Memo, AddTime)
-        VALUES (#result.poId#, #result.checkStatus#, #result.memo#, #result.addTime#)
+        VALUES (#result.poId#, #result.checkStatus#, #result.memo#, NOW())
         <selectKey resultClass="java.lang.Integer" keyProperty="id">
             SELECT @@IDENTITY AS id
         </selectKey>
