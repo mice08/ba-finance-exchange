@@ -2,18 +2,16 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
-import com.dianping.ba.finance.exchange.api.AccountService;
 import com.dianping.ba.finance.exchange.api.PayOrderDomainService;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
-import com.dianping.ba.finance.exchange.api.dtos.AccountEntryRequestDTO;
-import com.dianping.ba.finance.exchange.api.dtos.BankAccountDTO;
 import com.dianping.ba.finance.exchange.api.dtos.BankPayResultDTO;
-import com.dianping.ba.finance.exchange.api.enums.AccountEntrySourceType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.PayType;
 import com.dianping.ba.finance.exchange.biz.enums.PayResultStatus;
+import com.dianping.ba.finance.paymentplatform.api.AccountService;
 import com.dianping.ba.finance.paymentplatform.api.PaymentDomainService;
+import com.dianping.ba.finance.paymentplatform.api.dtos.BankAccountDTO;
 import com.dianping.ba.finance.paymentplatform.api.dtos.PayResponseDTO;
 import com.dianping.ba.finance.paymentplatform.api.dtos.PaymentRequestDTO;
 import com.dianping.ba.finance.paymentplatform.api.enums.Channel;
@@ -111,17 +109,7 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
             MONITOR_LOGGER.error(String.format("severity=1], update pay order status failed!. bankPayResultDTO=[%s]", ToStringBuilder.reflectionToString(bankPayResultDTO)));
             return false;
         }
-        return addAccountEntry(poId);
-    }
-
-    private boolean addAccountEntry(int poId) {
-        PayOrderData payOrder = payOrderService.loadPayOrderDataByPOID(poId);
-        AccountEntryRequestDTO entry = new AccountEntryRequestDTO();
-        entry.setInstId(String.valueOf(poId));
-        entry.setSourceType(AccountEntrySourceType.BANK.getSourceType());
-        entry.setAmount(payOrder.getPayAmount());
-        entry.setBankAccountId(payOrder.getCustomerBankId());
-        return accountService.updateAccount(entry);
+        return true;
     }
 
     private PayOrderStatus parsePayOrderStatus(int code) {
@@ -160,8 +148,10 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
         if(payeeBankAccountDTO != null){
             requestDTO.setFromAccountNo(payeeBankAccountDTO.getBankAccountNo());
             requestDTO.setFromAccountName(payeeBankAccountDTO.getBankAccountName());
+            requestDTO.setFromBankName("中国民生银行");// todo hard code
         }
         requestDTO.setChannel(Channel.MINSHENG_BANK.getCode());
+        requestDTO.setBizType(1);
         String token = LionConfigUtils.getProperty("ba-finance-exchange-service.pay.token", "abc1234");
         requestDTO.setToken(token);
         requestDTO.setOutBizId(String.valueOf(payOrderData.getPoId()));
