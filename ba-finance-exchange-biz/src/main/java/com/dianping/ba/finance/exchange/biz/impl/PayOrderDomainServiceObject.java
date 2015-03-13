@@ -16,6 +16,7 @@ import com.dianping.ba.finance.exchange.biz.enums.PayResultStatus;
 import com.dianping.ba.finance.paymentplatform.api.PaymentDomainService;
 import com.dianping.ba.finance.paymentplatform.api.dtos.PayResponseDTO;
 import com.dianping.ba.finance.paymentplatform.api.dtos.PaymentRequestDTO;
+import com.dianping.ba.finance.paymentplatform.api.enums.Channel;
 import com.dianping.ba.finance.paymentplatform.api.enums.PayRequestResult;
 import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.util.ListUtils;
@@ -159,6 +160,8 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
             requestDTO.setFromAccountNo(payeeBankAccountDTO.getBankAccountNo());
             requestDTO.setFromAccountName(payeeBankAccountDTO.getBankAccountName());
         }
+        requestDTO.setChannel(Channel.MINSHENG_BANK.getCode());
+        requestDTO.setToken("abc");
         requestDTO.setToAccountNo(payOrderData.getBankAccountNo());
         requestDTO.setToBankAccountName(payOrderData.getBankAccountName());
         requestDTO.setBankAccountType(payOrderData.getBankAccountType());
