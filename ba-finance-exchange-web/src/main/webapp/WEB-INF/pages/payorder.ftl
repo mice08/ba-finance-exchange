@@ -310,6 +310,13 @@
                         <span class="glyphicon glyphicon-ok"></span>
                         退票
                     </a>
+                    <a id="btn-resubmit-payment" href="#resubmit-payment" role="button"
+                       style="display:none;"
+                       class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
+                       data-toggle="modal">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        再次支付
+                    </a>
                 </div>
             </div>
             <div class="tb-wrapper">
