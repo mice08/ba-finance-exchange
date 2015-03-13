@@ -20,9 +20,11 @@ import com.dianping.finance.common.aop.annotation.Log;
 import com.dianping.finance.common.aop.annotation.ReturnDefault;
 import com.dianping.finance.common.util.ConvertUtils;
 import com.dianping.finance.common.util.DateUtils;
+import com.dianping.finance.common.util.LionConfigUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -68,11 +70,11 @@ public class PayOrderServiceObject implements PayOrderService {
             return refundResultDTO;
         }
         // 获取PO实体
-        List<String> payCodeList = buildPayCodeList(refundDTOList);
-        List<PayOrderData> payOrderDataList = payOrderDao.findPayOrderListByPayCode(payCodeList);
-        Map<String, PayOrderData> payCodePOMap = buildPayCodePOMap(payOrderDataList);
+        List<Integer> poidList = buildPOIDList(refundDTOList);
+        List<PayOrderData> payOrderDataList = payOrderDao.findPayOrderListByPoIdList(poidList);
+        Map<String, PayOrderData> poMap = buildPOMap(payOrderDataList);
         // 过滤查询不到的及状态不为支付成功的PO
-        List<PayOrderData> filteredPOList = filterInvalidedPayOrder(refundResultDTO, refundDTOList, payCodePOMap);
+        List<PayOrderData> filteredPOList = filterInvalidedPayOrder(refundResultDTO, refundDTOList, poMap);
 
         if (filteredPOList.isEmpty()) {
             return refundResultDTO;
@@ -111,6 +113,7 @@ public class PayOrderServiceObject implements PayOrderService {
             payOrderResultBean.setPaySequence(payOrderData.getPaySequence());
             payOrderResultBean.setStatus(PayResultStatus.PAY_REFUND);
             payOrderResultBean.setMemo(payOrderData.getMemo());
+            payOrderResultBean.setBusinessType(payOrderData.getBusinessType());
             payOrderResultNotify.payResultNotify(payOrderResultBean);
         }
     }
@@ -127,11 +130,11 @@ public class PayOrderServiceObject implements PayOrderService {
         return amount;
     }
 
-    private List<PayOrderData> filterInvalidedPayOrder(RefundResultDTO refundResultDTO, List<RefundDTO> refundDTOList, Map<String, PayOrderData> payCodePOMap) {
+    private List<PayOrderData> filterInvalidedPayOrder(RefundResultDTO refundResultDTO, List<RefundDTO> refundDTOList, Map<String, PayOrderData> poMap) {
         List<PayOrderData> filteredPOList = Lists.newLinkedList();
         for (RefundDTO refundDTO : refundDTOList) {
             String payCode = refundDTO.getRefundId();
-            PayOrderData poData = payCodePOMap.get(payCode);
+            PayOrderData poData = poMap.get(payCode);
             if (poData == null) {
                 refundResultDTO.addFailedRefund(payCode, RefundFailedReason.INFO_EMPTY);
                 continue;
@@ -147,23 +150,23 @@ public class PayOrderServiceObject implements PayOrderService {
         return filteredPOList;
     }
 
-    private Map<String, PayOrderData> buildPayCodePOMap(List<PayOrderData> payOrderDataList) {
+    private Map<String, PayOrderData> buildPOMap(List<PayOrderData> payOrderDataList) {
         if (CollectionUtils.isEmpty(payOrderDataList)) {
             return Collections.emptyMap();
         }
         Map<String, PayOrderData> payCodePOMap = Maps.newHashMap();
         for (PayOrderData poData : payOrderDataList) {
-            payCodePOMap.put(poData.getPayCode(), poData);
+            payCodePOMap.put(String.valueOf(poData.getPoId()), poData);
         }
         return payCodePOMap;
     }
 
-    private List<String> buildPayCodeList(List<RefundDTO> refundDTOList) {
-        List<String> payCodeList = Lists.newLinkedList();
+    private List<Integer> buildPOIDList(List<RefundDTO> refundDTOList) {
+        List<Integer> poIdList = Lists.newLinkedList();
         for (RefundDTO refundDTO : refundDTOList) {
-            payCodeList.add(refundDTO.getRefundId());
+            poIdList.add(Integer.parseInt((refundDTO.getRefundId())));
         }
-        return payCodeList;
+        return poIdList;
     }
 
     @Log(logBefore = true, logAfter = true)
@@ -199,6 +202,7 @@ public class PayOrderServiceObject implements PayOrderService {
                 payOrderResultBean.setPaidAmount(payOrderData.getPayAmount());
                 payOrderResultBean.setPaySequence(payOrderData.getPaySequence());
                 payOrderResultBean.setStatus(PayResultStatus.PAY_SUCCESS);
+                payOrderResultBean.setBusinessType(payOrderData.getBusinessType());
                 payOrderResultNotify.payResultNotify(payOrderResultBean);
             }
         }
@@ -310,7 +314,7 @@ public class PayOrderServiceObject implements PayOrderService {
             return true;
         }
 
-        if(payOrderData.getStatus() == PayOrderStatus.INIT.value() || payOrderData.getStatus() == PayOrderStatus.SUSPEND.value()) {
+        if(allowDropPayOrder(payOrderData)) {
             POUpdateInfoBean poUpdateInfoBean = new POUpdateInfoBean();
             poUpdateInfoBean.setPoIdList(Arrays.asList(payOrderData.getPoId()));
             poUpdateInfoBean.setPreStatus(payOrderData.getStatus());
@@ -321,6 +325,72 @@ public class PayOrderServiceObject implements PayOrderService {
         }
 
         return false;
+    }
+
+    private boolean allowDropPayOrder(PayOrderData payOrderData) {
+        if (payOrderData.getStatus() == PayOrderStatus.INIT.value()
+                || payOrderData.getStatus() == PayOrderStatus.SUSPEND.value()) {
+            return true;
+        }
+        if (payOrderData.getStatus() == PayOrderStatus.EXPORT_PAYING.value()) {
+            String allowStr = LionConfigUtils.getProperty("ba-finance-exchange-biz.allowDropPaying", "false");
+            return Boolean.valueOf(allowStr);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int changeCustomer(int oldCustomerId, int newCustomerId) {
+        return payOrderDao.updateCustomerId(oldCustomerId, newCustomerId);
+    }
+
+    @Override
+    public PayOrderData loadPayOrderDataByPaySequence(String sequence) {
+        return payOrderDao.loadPayOrderByPaySequence(sequence);
+    }
+
+    @Override
+    public PayOrderData loadPayOrderDataByPOID(int poId) {
+        return payOrderDao.loadPayOrderByPayPOID(poId);
+    }
+
+    @Log(logBefore = true, logAfter = true)
+    @Override
+    public int updatePayOrderStatus(int poId, int preStatus, int postStatus, String message) {
+        try {
+            if (!StringUtils.isEmpty(message)) {
+                PayOrderData data = payOrderDao.loadPayOrderByPayPOID(poId);
+                if (data != null) {
+                    message += "|" + data.getMemo();
+                }
+            }
+            return payOrderDao.updatePayOrderStatus(poId, preStatus, postStatus, message);
+        } catch (Exception e) {
+            MONITOR_LOGGER.error(String.format("severity=[1], PayOrderService.updatePayOrderStatus fail!, payCode=[%s]&status=[%d]&message=[%s]", poId, postStatus, message), e);
+            return 0;
+        }
+    }
+
+    @Log(logBefore = true, logAfter = true)
+    @Override
+    public int batchUpdatePayOrderStatus(List<Integer> poIds, List<Integer> preStatusList, int postStatus, int loginId) {
+        try {
+            return payOrderDao.updatePayOrderListStatus(poIds, preStatusList, postStatus, loginId);
+        } catch (Exception e) {
+            MONITOR_LOGGER.error(String.format("severity=[1] PayOrderService.batchUpdatePayOrderStatus error! poIds=%s", poIds), e);
+            return -1;
+        }
+    }
+
+    @Log(logBefore = true, logAfter = true)
+    @Override
+    public List<PayOrderData> findPayOrderByIdList(List<Integer> poIds) {
+        List<PayOrderData> dataList = payOrderDao.findPayOrderListByPoIdList(poIds);
+        if (dataList == null) {
+            return Collections.emptyList();
+        }
+        return dataList;
     }
 
     private PayOrderBankInfoDTO buildPayOrderBankInfoDTO(PayOrderData poData) {

@@ -2,6 +2,8 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.auditlog.api.enums.OperationType;
+import com.dianping.ba.finance.auditlog.client.OperationLogger;
 import com.dianping.ba.finance.exchange.api.ReceiveBankService;
 import com.dianping.ba.finance.exchange.api.ReceiveOrderService;
 import com.dianping.ba.finance.exchange.api.datas.ReceiveBankData;
@@ -13,6 +15,7 @@ import com.dianping.ba.finance.exchange.api.enums.ReceiveOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.ReceiveType;
 import com.dianping.finance.common.util.DateUtils;
 import com.dianping.finance.common.util.DecimalUtils;
+import com.dianping.finance.common.util.LionConfigUtils;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -37,6 +40,7 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
 
     private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.web.monitor.ImportTelTransferAjaxAction");
 
+    private static final OperationLogger OPERATION_LOGGER = new OperationLogger("Exchange", "PayOrder", LionConfigUtils.getProperty("ba-finance-exchange-web.auditlog.token"));
 
     private static final String DATE_FORMAT = "yyyyMMdd";
 
@@ -88,6 +92,8 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
                 code = SUCCESS_CODE;
                 return SUCCESS;
             }
+            OPERATION_LOGGER.log(OperationType.CREATE, "导入电汇", "", String.valueOf(getLoginId()));
+
             handleTelTransferList(telTransferDTOList, invalidMsgMMap);
             if (!invalidMsgMMap.isEmpty()) {
                 msg.putAll(invalidMsgMMap.asMap());
@@ -257,6 +263,9 @@ public class ImportTelTransferAjaxAction extends AjaxBaseAction {
             TelTransferDTO telTransferDTO = new TelTransferDTO();
             for (int c = 0; c < TEMPLATE_COLUMN.length; ++c) {
                 String value = sheet.getCell(c, r).getContents();
+                if (value != null) {
+                    value = value.trim();
+                }
                 BeanUtils.setProperty(telTransferDTO, TEMPLATE_COLUMN[c], value);
             }
             telTransferDTOList.add(telTransferDTO);

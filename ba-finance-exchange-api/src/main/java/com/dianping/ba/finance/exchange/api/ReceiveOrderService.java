@@ -121,4 +121,18 @@ public interface ReceiveOrderService {
      * @return
      */
     boolean fireAutoConfirm(ReceiveOrderSearchBean receiveOrderSearchBean);
+
+    /**
+     * 按条件查询所有收款单
+     * @param receiveOrderSearchBean
+     * @return
+     */
+    List<ReceiveOrderData> findReceiverOrderList(ReceiveOrderSearchBean receiveOrderSearchBean);
+
+    /**
+     * 修改customerId
+     * @param oldCustomerId
+     * @param newCustomerId
+     */
+    int changeCustomer(int oldCustomerId, int newCustomerId);
 }
