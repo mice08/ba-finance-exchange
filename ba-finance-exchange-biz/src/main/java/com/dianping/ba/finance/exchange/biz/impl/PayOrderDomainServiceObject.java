@@ -41,8 +41,6 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
 
     private static final Set<Integer> ALLOWED_BANK_PAY_STATUS = Sets.newHashSet(PayOrderStatus.SUBMIT_FOR_PAY.value());
 
-    public static final String BANK_ORDER_PAY_REQUEST = "BANK_ORDER_PAY_REQUEST_NOTIFY";
-
     @Autowired
     private PayOrderService payOrderService;
     @Autowired
