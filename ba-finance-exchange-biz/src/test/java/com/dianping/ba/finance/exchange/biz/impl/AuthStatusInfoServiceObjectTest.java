@@ -6,7 +6,6 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -34,7 +33,7 @@ public class AuthStatusInfoServiceObjectTest {
     public void testUpdateRetryTimes() throws Exception {
         when(authStatusInfoDaoMock.loadStatusByWorkNoAndType(anyString(), anyInt())).thenReturn(null);
         when(authStatusInfoDaoMock.insertAuthStatusInfo(anyString(), anyInt(), anyInt())).thenReturn(1);
-        when(authStatusInfoDaoMock.updateAuthTimes(anyInt(), anyInt())).thenReturn(1);
+        when(authStatusInfoDaoMock.updateAuthTimes(anyInt())).thenReturn(1);
 
         Assert.assertTrue(authStatusInfoServiceObjectStub.updateRetryTimes("0008655", 1));
 
