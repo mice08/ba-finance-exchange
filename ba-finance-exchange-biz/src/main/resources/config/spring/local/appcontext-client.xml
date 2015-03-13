@@ -42,7 +42,7 @@
                   value="http://service.dianping.com/paymentPlatformService/PaymentDomainService_1.0.0"/>
         <property name="iface" value="com.dianping.ba.finance.paymentplatform.api.PaymentDomainService"/>
         <property name="serialize" value="hessian"/>
-        <property name="callMethod" value="oneway"/>
+        <property name="callMethod" value="sync"/>
         <property name="timeout" value="5000"/>
     </bean>
 
@@ -51,7 +51,7 @@
                   value="http://service.dianping.com/paymentPlatformService/AccountService_1.0.0"/>
         <property name="iface" value="com.dianping.ba.finance.paymentplatform.api.AccountService"/>
         <property name="serialize" value="hessian"/>
-        <property name="callMethod" value="oneway"/>
+        <property name="callMethod" value="sync"/>
         <property name="timeout" value="5000"/>
     </bean>
 	
