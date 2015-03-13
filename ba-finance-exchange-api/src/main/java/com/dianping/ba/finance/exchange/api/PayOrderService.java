@@ -156,4 +156,6 @@ public interface PayOrderService {
 
     PageModel paginatePayOrderListByStatus(int status, int page, int max);
 
+    int markPayOrderInvalid(List<Integer> poIdList, int loginId);
+
 }
