@@ -10,7 +10,6 @@ import com.dianping.finance.common.util.JsonUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.finance.common.util.StringUtils;
 import com.google.common.collect.Lists;
-import jodd.util.StringUtil;
 import jxl.Workbook;
 import jxl.biff.DisplayFormat;
 import jxl.format.Alignment;
@@ -153,7 +152,7 @@ public class MerchantsPayTemplateService implements PayTemplateService {
 
                 String use = exportInfoBean.getUse() == null ? "" : exportInfoBean.getUse();
                 String summary = exportInfoBean.getBusinessSummary() == null ? "" : exportInfoBean.getBusinessSummary();
-                String memo = exportBean.getMemo() == null ? "" : exportBean.getMemo();
+                String memo = exportBean.getUseMemo() == null ? "" : exportBean.getUseMemo();
 
                 templateBean.setUse(subString(use + memo, maxColumnLen));
                 templateBean.setBusinessSummary(subString(summary + memo, maxColumnLen));
