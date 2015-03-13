@@ -17,12 +17,11 @@
         FROM FC_PayOrder
         WHERE UpdateTime >= #startTime#
         AND UpdateTime < #endTime#
-        AND Status IN 
-        <iterate open="(" close=")" property="statusList">
+        AND Status IN
+        ]]>
+        <iterate open="(" close=")" property="statusList" conjunction=",">
             #statusList[]#
         </iterate>
         LIMIT #start#, #size#
-        ORDER BY UpdateTime
-        ]]>
     </select>
 </sqlMap>

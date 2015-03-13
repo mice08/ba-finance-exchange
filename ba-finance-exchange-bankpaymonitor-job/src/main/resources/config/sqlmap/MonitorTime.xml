@@ -8,7 +8,7 @@
     </resultMap>
 
     <insert id="insertMonitorTime" parameterClass="map">
-        INSERT INTO FC_PayMonitorTime
+        INSERT INTO FC_BankPayMonitorTime
         (MonitorTime)
         VALUES (#date#)
         <selectKey resultClass="java.lang.Integer" keyProperty="MonitorID">
@@ -18,7 +18,7 @@
 
     <select id="loadLastMonitorTime" parameterClass="map" resultClass="java.util.Date">
         SELECT MonitorTime
-          FROM FC_PayMonitorTime
+          FROM FC_BankPayMonitorTime
          WHERE MonitorID = (SELECT MAX(MonitorID) FROM FC_PayMonitorTime)
     </select>
 

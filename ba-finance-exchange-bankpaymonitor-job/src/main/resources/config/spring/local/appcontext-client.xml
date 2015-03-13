@@ -9,30 +9,13 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
-    <bean id="fsBankOrderService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+    <bean id="paymentQueryService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
         <property name="serviceName"
-                  value="http://service.dianping.com/bankOrderService/FSBankOrderService_1.0.0"/>
-        <property name="iface" value="com.dianping.ba.finance.bankorder.api.FSBankOrderService"/>
+                  value="http://service.dianping.com/paymentPlatformService/PaymentQueryService_1.0.0"/>
+        <property name="iface" value="com.dianping.ba.finance.paymentplatform.api.PaymentQueryService"/>
         <property name="serialize" value="hessian"/>
         <property name="callMethod" value="sync"/>
         <property name="timeout" value="5000"/>
     </bean>
 
-    <bean id="fsBankQueryService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
-        <property name="serviceName"
-                  value="http://service.dianping.com/bankOrderService/FSBankQueryService_1.0.0"/>
-        <property name="iface" value="com.dianping.ba.finance.bankorder.api.FSBankQueryService"/>
-        <property name="serialize" value="hessian"/>
-        <property name="callMethod" value="sync"/>
-        <property name="timeout" value="5000"/>
-    </bean>
-
-    <!--<bean id="accountService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">-->
-        <!--<property name="serviceName"-->
-                  <!--value="http://service.dianping.com/baFinanceExchangeService/accountService_1.0.0"/>-->
-        <!--<property name="iface" value="com.dianping.ba.finance.exchange.api.AccountService"/>-->
-        <!--<property name="serialize" value="hessian"/>-->
-        <!--<property name="callMethod" value="sync"/>-->
-        <!--<property name="timeout" value="5000"/>-->
-    <!--</bean>-->
 </beans>

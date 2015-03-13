@@ -12,7 +12,7 @@
     </resultMap>
 
     <insert id="insertBankPayResult" parameterClass="map">
-        INSERT INTO FC_BankPayResult
+        INSERT INTO FC_BankPayMonitorException
         (POID, CheckStatus, Memo, AddTime)
         VALUES (#result.poId#, #result.checkStatus#, #result.memo#, NOW())
         <selectKey resultClass="java.lang.Integer" keyProperty="id">
