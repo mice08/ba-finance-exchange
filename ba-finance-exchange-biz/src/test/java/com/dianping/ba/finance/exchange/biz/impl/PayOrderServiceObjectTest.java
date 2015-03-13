@@ -131,24 +131,24 @@ public class PayOrderServiceObjectTest {
     @Test
     public void testRefundPayOrderEmptyRefundList() throws Exception {
         payOrderServiceObjectStub.refundPayOrder(null, 1);
-        verify(payOrderDaoMock, never()).findPayOrderListByPayCode(anyList());
+        verify(payOrderDaoMock, never()).findPayOrderListByPoIdList(anyList());
         verify(payOrderDaoMock, never()).updatePayOrders(any(POUpdateInfoBean.class));
         verify(payOrderResultNotifyMock, never()).payResultNotify(any(PayOrderResultBean.class));
     }
 
     @Test
     public void testRefundPayOrderPayOrderNotFound() throws Exception {
-        when(payOrderDaoMock.findPayOrderListByPayCode(anyList())).thenReturn(null);
+        when(payOrderDaoMock.findPayOrderListByPoIdList(anyList())).thenReturn(null);
 
         RefundDTO refundDTO = new RefundDTO();
-        refundDTO.setRefundId("PayCode");
+        refundDTO.setRefundId("123");
         refundDTO.setRefundReason("退票原因");
         RefundResultDTO resultDTO = payOrderServiceObjectStub.refundPayOrder(Arrays.asList(refundDTO), 1);
 
         Assert.assertTrue(resultDTO.containFailedResult());
-        Assert.assertEquals(RefundFailedReason.INFO_EMPTY, resultDTO.getRefundFailedMap().get("PayCode"));
+        Assert.assertEquals(RefundFailedReason.INFO_EMPTY, resultDTO.getRefundFailedMap().get("123"));
 
-        verify(payOrderDaoMock, times(1)).findPayOrderListByPayCode(anyList());
+        verify(payOrderDaoMock, times(1)).findPayOrderListByPoIdList(anyList());
         verify(payOrderDaoMock, never()).updatePayOrders(any(POUpdateInfoBean.class));
         verify(payOrderResultNotifyMock, never()).payResultNotify(any(PayOrderResultBean.class));
     }
@@ -157,19 +157,19 @@ public class PayOrderServiceObjectTest {
     public void testRefundPayOrderPayOrderStatusInvalid() throws Exception {
         PayOrderData poData = new PayOrderData();
         poData.setPoId(123);
-        poData.setPayCode("PayCode");
+        poData.setPayCode("123");
         poData.setStatus(PayOrderStatus.INIT.value());
-        when(payOrderDaoMock.findPayOrderListByPayCode(anyList())).thenReturn(Arrays.asList(poData));
+        when(payOrderDaoMock.findPayOrderListByPoIdList(anyList())).thenReturn(Arrays.asList(poData));
 
         RefundDTO refundDTO = new RefundDTO();
-        refundDTO.setRefundId("PayCode");
+        refundDTO.setRefundId("123");
         refundDTO.setRefundReason("退票原因");
         RefundResultDTO resultDTO = payOrderServiceObjectStub.refundPayOrder(Arrays.asList(refundDTO), 1);
 
         Assert.assertTrue(resultDTO.containFailedResult());
-        Assert.assertEquals(RefundFailedReason.STATUS_ERROR, resultDTO.getRefundFailedMap().get("PayCode"));
+        Assert.assertEquals(RefundFailedReason.STATUS_ERROR, resultDTO.getRefundFailedMap().get("123"));
 
-        verify(payOrderDaoMock, times(1)).findPayOrderListByPayCode(anyList());
+        verify(payOrderDaoMock, times(1)).findPayOrderListByPoIdList(anyList());
         verify(payOrderDaoMock, never()).updatePayOrders(any(POUpdateInfoBean.class));
         verify(payOrderResultNotifyMock, never()).payResultNotify(any(PayOrderResultBean.class));
     }
@@ -178,20 +178,20 @@ public class PayOrderServiceObjectTest {
     public void testRefundPayOrderSuccess() throws Exception {
         PayOrderData poData = new PayOrderData();
         poData.setPoId(123);
-        poData.setPayCode("PayCode");
+        poData.setPayCode("123");
         poData.setPayAmount(BigDecimal.TEN);
         poData.setStatus(PayOrderStatus.PAY_SUCCESS.value());
-        when(payOrderDaoMock.findPayOrderListByPayCode(anyList())).thenReturn(Arrays.asList(poData));
+        when(payOrderDaoMock.findPayOrderListByPoIdList(anyList())).thenReturn(Arrays.asList(poData));
 
         RefundDTO refundDTO = new RefundDTO();
-        refundDTO.setRefundId("PayCode");
+        refundDTO.setRefundId("123");
         refundDTO.setRefundReason("退票原因");
         RefundResultDTO resultDTO = payOrderServiceObjectStub.refundPayOrder(Arrays.asList(refundDTO), 1);
 
         Assert.assertFalse(resultDTO.containFailedResult());
         Assert.assertEquals(0, resultDTO.getRefundTotalAmount().compareTo(BigDecimal.TEN));
         Assert.assertEquals(1, resultDTO.getSuccessCount());
-        verify(payOrderDaoMock, times(1)).findPayOrderListByPayCode(anyList());
+        verify(payOrderDaoMock, times(1)).findPayOrderListByPoIdList(anyList());
         verify(payOrderDaoMock, times(1)).updatePayOrders(any(POUpdateInfoBean.class));
         verify(payOrderResultNotifyMock, times(1)).payResultNotify(any(PayOrderResultBean.class));
     }

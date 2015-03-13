@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Account">
+
+    <typeAlias alias="BankAccountData" type="com.dianping.ba.finance.exchange.api.datas.BankAccountData"/>
+    <resultMap id="bankAccountData" class="BankAccountData">
+        <result property="id" column="ID"/>
+        <result property="bankAccountNo" column="BankAccountNo"/>
+        <result property="bankAccountName" column="BankAccountName"/>
+        <result property="bankAccountType" column="BankAccountType"/>
+        <result property="bankBranchId" column="BankBranchID"/>
+        <result property="accountId" column="AccountID"/>
+        <result property="paymentStatus" column="PaymentStatus"/>
+        <result property="addLoginId" column="AddLoginID"/>
+        <result property="status" column="Status"/>
+        <result property="addTime" column="AddTime"/>
+        <result property="memo" column="Memo"/>
+    </resultMap>
+
+    <select id="loadBankAccount" parameterClass="map" resultMap="bankAccountData">
+        SELECT ID,
+        BankAccountNo,
+        BankAccountName,
+        BankAccountType,
+        BankBranchID,
+        AccountID,
+        PaymentStatus,
+        AddLoginID,
+        Status,
+        AddTime,
+        Memo
+        FROM FC_BankAccount
+        WHERE ID = #id#
+    </select>
+
+</sqlMap>

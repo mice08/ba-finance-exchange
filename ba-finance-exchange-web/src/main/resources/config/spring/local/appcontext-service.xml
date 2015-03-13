@@ -33,6 +33,11 @@
                  value-type="com.dianping.ba.finance.exchange.siteweb.beans.BusinessExportInfoBean">
                 <entry key="1" value-ref="grouponExportInfoBean"/>
                 <entry key="2" value-ref="bookingExportInfoBean"/>
+                <entry key="7" value-ref="expenseExportInfoBean"/>
+                <entry key="6" value-ref="shanhuiExportInfoBean"/>
+                <entry key="8" value-ref="shanfuExportInfoBean"/>
+                <entry key="5" value-ref="adExportInfoBean"/>
+                <entry key="9" value-ref="mvExportInfoBean"/>
             </map>
         </property>
     </bean>
@@ -49,15 +54,70 @@
         <property name="businessSummary" value="大众点评网团购"/>
     </bean>
 
+    <bean id="shanhuiExportInfoBean"
+          class="com.dianping.ba.finance.exchange.siteweb.beans.BusinessExportInfoBean">
+        <property name="businessType" value="SHAN_HUI"/>
+        <property name="currency" value="人民币"/>
+        <property name="payerBranchBank" value="上海"/>
+        <property name="settleType" value="普通"/>
+        <property name="payerAccountNo" value="121909245310505"/>
+        <property name="use" value="大众点评网闪惠"/>
+        <property name="businessSummary" value="大众点评网闪惠"/>
+    </bean>
+
+    <bean id="shanfuExportInfoBean"
+          class="com.dianping.ba.finance.exchange.siteweb.beans.BusinessExportInfoBean">
+        <property name="businessType" value="SHAN_HUI"/>
+        <property name="currency" value="人民币"/>
+        <property name="payerBranchBank" value="上海"/>
+        <property name="settleType" value="普通"/>
+        <property name="payerAccountNo" value="121909245310505"/>
+        <property name="use" value="大众点评网闪付"/>
+        <property name="businessSummary" value="大众点评网闪付"/>
+    </bean>
+
+    <bean id="expenseExportInfoBean"
+          class="com.dianping.ba.finance.exchange.siteweb.beans.BusinessExportInfoBean">
+        <property name="businessType" value="EXPENSE"/>
+        <property name="currency" value="人民币"/>
+        <property name="payerBranchBank" value="上海"/>
+        <property name="settleType" value="普通"/>
+        <property name="payerAccountNo" value="121909245310903"/>
+        <property name="use" value=""/>
+        <property name="businessSummary" value="大众点评-费用"/>
+    </bean>
+
     <bean id="bookingExportInfoBean"
           class="com.dianping.ba.finance.exchange.siteweb.beans.BusinessExportInfoBean">
         <property name="businessType" value="BOOKING"/>
         <property name="currency" value="人民币"/>
         <property name="payerBranchBank" value="上海"/>
         <property name="settleType" value="普通"/>
-        <property name="payerAccountNo" value="121909245310704"/>
+        <property name="payerAccountNo" value="121912651310702"/>
         <property name="use" value="大众点评网"/>
-        <property name="businessSummary" value="预约预订业务"/>
+        <property name="businessSummary" value="大众点评-预约预订"/>
+    </bean>
+
+    <bean id="adExportInfoBean"
+          class="com.dianping.ba.finance.exchange.siteweb.beans.BusinessExportInfoBean">
+        <property name="businessType" value="ADVERTISEMENT"/>
+        <property name="currency" value="人民币"/>
+        <property name="payerBranchBank" value="上海"/>
+        <property name="settleType" value="普通"/>
+        <property name="payerAccountNo" value="121912651310702"/>
+        <property name="use" value="大众点评网"/>
+        <property name="businessSummary" value="大众点评-推广"/>
+    </bean>
+
+    <bean id="mvExportInfoBean"
+          class="com.dianping.ba.finance.exchange.siteweb.beans.BusinessExportInfoBean">
+        <property name="businessType" value="MOVIE"/>
+        <property name="currency" value="人民币"/>
+        <property name="payerBranchBank" value="上海"/>
+        <property name="settleType" value="普通"/>
+        <property name="payerAccountNo" value="121912651310702"/>
+        <property name="use" value="大众点评网"/>
+        <property name="businessSummary" value="大众点评-电影"/>
     </bean>
 
 
@@ -67,6 +127,7 @@
         <property name="corporationService" ref="corporationService"/>
         <property name="monitorMailService" ref="monitorMailService"/>
         <property name="monitorSmsService" ref="monitorSmsService"/>
+        <property name="expensePayeeService" ref="expensePayeeService"/>
     </bean>
 
     <bean id="monitorMailService" class="com.dianping.ba.finance.exchange.siteweb.services.MonitorMailService">
@@ -75,5 +136,11 @@
 
     <bean id="monitorSmsService" class="com.dianping.ba.finance.exchange.siteweb.services.MonitorSmsService">
         <property name="smsService" ref="smsService"/>
+    </bean>
+
+    <bean id="csvExportService" class="com.dianping.ba.finance.exchange.siteweb.services.CSVExportService"/>
+
+    <bean id="tgGuaranteeService" class="com.dianping.ba.finance.exchange.siteweb.services.TGGuaranteeService">
+        <property name="deductionRuleService" ref="deductionRuleService"/>
     </bean>
 </beans>

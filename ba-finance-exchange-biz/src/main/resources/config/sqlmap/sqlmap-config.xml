@@ -19,4 +19,9 @@
     <sqlMap resource="config/sqlmap/ReceiveNotify/ReceiveNotify.xml"/>
     <sqlMap resource="config/sqlmap/Monitor/ReceiveOrderReco.xml"/>
     <sqlMap resource="config/sqlmap/ReceiveVoucher/ReceiveVoucher.xml"/>
+    <sqlMap resource="config/sqlmap/PayRequest/PayRequest.xml"/>
+    <sqlMap resource="config/sqlmap/Account/AccountEntry.xml"/>
+    <sqlMap resource="config/sqlmap/Account/Account.xml"/>
+    <sqlMap resource="config/sqlmap/Account/BankAccount.xml"/>
+    <sqlMap resource="config/sqlmap/AuthStatus/AuthStatusInfo.xml"/>
 </sqlMapConfig>

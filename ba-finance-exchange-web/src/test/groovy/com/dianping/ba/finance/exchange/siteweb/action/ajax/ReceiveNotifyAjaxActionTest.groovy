@@ -130,7 +130,8 @@ class ReceiveNotifyAjaxActionTest extends Specification {
             PageModel pm = []
             ReceiveNotifyData rnData = [receiveNotifyId: 123,
                                         receiveType: ReceiveType.AD_FEE.value(),
-                                        status: ReceiveNotifyStatus.INIT.value()]
+                                        status: ReceiveNotifyStatus.INIT.value(),
+                                        receiveAmount: BigDecimal.TEN]
             pm.records = [rnData]
             pm
         }

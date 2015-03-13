@@ -13,6 +13,7 @@ import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.finance.common.util.ListUtils;
 import com.dianping.finance.common.util.StringUtils;
 import com.google.common.collect.Lists;
+import jodd.util.StringUtil;
 import jxl.Workbook;
 import jxl.biff.DisplayFormat;
 import jxl.format.Alignment;
@@ -148,7 +149,7 @@ public class MinshengPayTemplateService implements PayTemplateService {
     @Log(severity = 1)
     @ReturnDefault
     @Override
-    public void createExcelAndDownload(HttpServletResponse response, String fileName, List<PayOrderExportBean> exportBeanList) throws Exception {
+    public void createExcelAndDownload(HttpServletResponse response, String fileName, List<PayOrderExportBean> exportBeanList, int payBankId) throws Exception {
         List<CommonTemplateBean> commonTemplateBeanList = Lists.newLinkedList();
         List<SameBankPersonalTemplateBean> sameBankPersonalTemplateBeanList = Lists.newLinkedList();
         // 按照账户类型分组
@@ -319,6 +320,9 @@ public class MinshengPayTemplateService implements PayTemplateService {
         templateBean.setPayAmount(payOrderExportBean.getPayAmount());
         templateBean.setBankAccountNo(payOrderExportBean.getBankAccountNo());
         templateBean.setBankAccountName(payOrderExportBean.getBankAccountName());
+        if(!StringUtil.isBlank(payOrderExportBean.getPayBankAccountNo())) {
+            templateBean.setPayerAccountNo(payOrderExportBean.getPayBankAccountNo());
+        }
         /**
          *
          0--表示表示收款方为对公账户

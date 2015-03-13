@@ -2,6 +2,8 @@ package com.dianping.ba.finance.exchange.siteweb.services
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData
 import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData
 import com.dianping.ba.finance.exchange.api.enums.BusinessType
+import com.dianping.ba.finance.expense.api.ExpensePayeeService
+import com.dianping.ba.finance.expense.api.dtos.PayeeInfoDTO
 import com.dianping.customerinfo.api.CustomerInfoService
 import com.dianping.customerinfo.dto.CustomerLite
 import com.dianping.customerinfo.dto.CustomerShopLite
@@ -20,6 +22,7 @@ class CustomerNameServiceTest extends Specification {
 
     private CorporationService corporationServiceMock;
 
+    private ExpensePayeeService expensePayeeServiceMock;
 
     void setup() {
         customerNameServiceStub = [];
@@ -29,6 +32,10 @@ class CustomerNameServiceTest extends Specification {
 
         corporationServiceMock = Mock();
         customerNameServiceStub.corporationService = corporationServiceMock;
+
+        expensePayeeServiceMock = Mock();
+        customerNameServiceStub.expensePayeeService = expensePayeeServiceMock;
+
 
     }
 
@@ -49,6 +56,14 @@ class CustomerNameServiceTest extends Specification {
             CorporationDTO corporationDTO = [id: id, name: "客户名称-广告-" + id]
             corporationDTO
         }
+        expensePayeeServiceMock.getPayeeInfoList(_ as List<Integer>) >> { args ->
+            def payeeInfoDTOList = [];
+            args[0].each {
+                PayeeInfoDTO payeeInfoDTO = [payeeId: it, payeeName: "客户名称" + it];
+                payeeInfoDTOList << payeeInfoDTO
+            }
+            payeeInfoDTOList
+        }
 
         expect:
         customerName == customerNameServiceStub.getCustomerName([poDate], 8787)[customerId];
@@ -58,7 +73,10 @@ class CustomerNameServiceTest extends Specification {
         BusinessType.GROUP_PURCHASE.value() | 87871      | "客户名称87871"
         BusinessType.ADVERTISEMENT.value()  | 87872      | "客户名称-广告-87872"
         BusinessType.SHAN_HUI.value()       | 87871      | "客户名称87871"
+        BusinessType.EXPENSE.value()        | 87871      | "客户名称87871"
         BusinessType.PREPAID_CARD.value()   | 87872      | null
+        BusinessType.BOOKING.value()        | 87871      | "客户名称87871"
+
     }
 
     @Unroll
@@ -100,6 +118,10 @@ class CustomerNameServiceTest extends Specification {
             CorporationDTO corporationDTO = [id: 125, name: name + "-客户名称-广告"]
             [corporationDTO]
         }
+        expensePayeeServiceMock.searchByPayeeName(_ as String) >> { args ->
+            PayeeInfoDTO payeeInfoDTO = [payeeId: 123, payeeName: args[0] + "-客户名称"];
+            [payeeInfoDTO]
+        }
 
         expect:
         def suggestionBean = customerNameServiceStub.getCustomerNameSuggestion(customerNameParam, 10, businessType, -1)[0];
@@ -111,6 +133,7 @@ class CustomerNameServiceTest extends Specification {
         "商户"              | BusinessType.GROUP_PURCHASE.value() | 123        | "商户-客户名称"
         "商户"              | BusinessType.ADVERTISEMENT.value()  | 125        | "商户-客户名称-广告"
         "商户"              | BusinessType.SHAN_HUI.value()       | 123        | "商户-客户名称"
+        "商户"              | BusinessType.EXPENSE.value()        | 123        | "商户-客户名称"
         "商户"              | BusinessType.PREPAID_CARD.value()   | null       | null
     }
 

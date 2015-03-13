@@ -15,6 +15,33 @@
         </property>
     </bean>
 
+    <bean id="accountDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.AccountDao" />
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="Account" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="bankAccountDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.BankAccountDao" />
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="Account" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="accountEntryDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.AccountEntryDao" />
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="Account" />
+            </bean>
+        </property>
+    </bean>
+
     <bean id="shopFundAccountDao" parent="parentDao">
         <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.ShopFundAccountDao" />
         <property name="target">
@@ -110,6 +137,24 @@
         <property name="target">
             <bean parent="fsMain.daoRealizeTarget">
                 <constructor-arg value="ReceiveVoucher"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="payRequestDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.PayRequestDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="PayRequest"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="authStatusInfoDao" parent="parentDao">
+        <property name="proxyInterfaces" value="com.dianping.ba.finance.exchange.biz.dao.AuthStatusInfoDao"/>
+        <property name="target">
+            <bean parent="fsMain.daoRealizeTarget">
+                <constructor-arg value="AuthStatus"/>
             </bean>
         </property>
     </bean>
