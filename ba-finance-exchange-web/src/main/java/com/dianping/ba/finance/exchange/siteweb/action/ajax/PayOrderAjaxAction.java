@@ -259,6 +259,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
             code = ERROR_CODE;
             return ERROR;
         }
+
     }
 
 

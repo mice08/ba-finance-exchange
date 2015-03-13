@@ -439,6 +439,12 @@ public class PayOrderServiceObject implements PayOrderService {
         }
     }
 
+    @Log(logBefore = true, logAfter = true)
+    @Override
+    public int updatePayCode(int poId, String payCode) {
+        return 0;
+    }
+
     public void setPayOrderDao(PayOrderDao payOrderDao) {
         this.payOrderDao = payOrderDao;
     }

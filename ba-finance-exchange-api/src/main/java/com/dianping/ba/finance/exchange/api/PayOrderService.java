@@ -158,4 +158,6 @@ public interface PayOrderService {
 
     int markPayOrderInvalid(List<Integer> poIdList, int loginId);
 
+    int updatePayCode(int poId, String payCode);
+
 }
