@@ -8,6 +8,8 @@ import com.dianping.ba.finance.exchange.api.datas.ReceiveOrderData;
 import com.dianping.ba.finance.exchange.api.enums.BusinessType;
 import com.dianping.ba.finance.exchange.siteweb.beans.CustomerInfoBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.CustomerNameSuggestionBean;
+import com.dianping.ba.finance.expense.api.ExpensePayeeService;
+import com.dianping.ba.finance.expense.api.dtos.PayeeInfoDTO;
 import com.dianping.customerinfo.api.CustomerInfoService;
 import com.dianping.customerinfo.dto.CustomerLite;
 import com.dianping.customerinfo.dto.CustomerShopLite;
@@ -42,7 +44,12 @@ public class CustomerNameService {
      */
     private CorporationService corporationService;
 
-	/**
+    /**
+     * 费用Service
+     */
+    private ExpensePayeeService expensePayeeService;
+
+    /**
 	 * 记录需要监控的业务日志
 	 */
 	private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService");
@@ -59,10 +66,46 @@ public class CustomerNameService {
         fetchTGCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
         // 获取闪惠的客户名称
         fetchSHCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
+        // 获取闪付的客户名称
+        fetchSFCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
         // 获取广告的客户名称
         fetchADCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
-
+        // 费用客户名
+        fetchEPCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
+        // 获取预订的客户名称
+        fetchBKCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
+        // 获取电影的客户名称
+        fetchMVCustomerName(businessTypeCustomerIdMMap, customerIdNameMap, loginId);
         return customerIdNameMap;
+    }
+
+    private void fetchMVCustomerName(Multimap<Integer, Integer> businessTypeCustomerIdMMap, Map<Integer, String> customerIdNameMap, int loginId) {
+        List<Integer> bkCustomerIdList = Lists.newLinkedList(businessTypeCustomerIdMMap.get(BusinessType.MOVIE.value()));
+        if (CollectionUtils.isEmpty(bkCustomerIdList)) {
+            return;
+        }
+        List<CustomerLite> customerLiteList = customerInfoService.getCustomerLites(bkCustomerIdList, loginId);
+        if (CollectionUtils.isEmpty(customerLiteList)) {
+            return;
+        }
+        for (CustomerLite customerLite : customerLiteList) {
+            customerIdNameMap.put(customerLite.getCustomerID(), customerLite.getCustomerName());
+        }
+    }
+
+
+    private void fetchBKCustomerName(Multimap<Integer, Integer> businessTypeCustomerIdMMap, Map<Integer, String> customerIdNameMap, int loginId) {
+        List<Integer> bkCustomerIdList = Lists.newLinkedList(businessTypeCustomerIdMMap.get(BusinessType.BOOKING.value()));
+        if (CollectionUtils.isEmpty(bkCustomerIdList)) {
+            return;
+        }
+        List<CustomerLite> customerLiteList = customerInfoService.getCustomerLites(bkCustomerIdList, loginId);
+        if (CollectionUtils.isEmpty(customerLiteList)) {
+            return;
+        }
+        for (CustomerLite customerLite : customerLiteList) {
+            customerIdNameMap.put(customerLite.getCustomerID(), customerLite.getCustomerName());
+        }
     }
 
     private void fetchADCustomerName(Multimap<Integer, Integer> businessTypeCustomerIdMMap, Map<Integer, String> customerIdNameMap, int loginId) {
@@ -107,6 +150,26 @@ public class CustomerNameService {
         }
     }
 
+    /**
+     * 获取员工或者供应商的名字
+     *
+     * @param businessTypeCustomerIdMMap
+     * @param customerIdNameMap
+     * @param loginId
+     */
+    private void fetchEPCustomerName(Multimap<Integer, Integer> businessTypeCustomerIdMMap, Map<Integer, String> customerIdNameMap, int loginId) {
+        List<Integer> epCustomerIdList = Lists.newLinkedList(businessTypeCustomerIdMMap.get(BusinessType.EXPENSE.value()));
+        if (CollectionUtils.isEmpty(epCustomerIdList)) {
+            return;
+        }
+        List<PayeeInfoDTO> payeeInfoDTOList = expensePayeeService.getPayeeInfoList(epCustomerIdList);
+        if (CollectionUtils.isEmpty(payeeInfoDTOList)) {
+            return;
+        }
+        for (PayeeInfoDTO payeeInfoDTO : payeeInfoDTOList) {
+            customerIdNameMap.put(payeeInfoDTO.getPayeeId(), payeeInfoDTO.getPayeeName());
+        }
+    }
 
     /**
      * 闪惠的客户名
@@ -117,6 +180,20 @@ public class CustomerNameService {
      */
     private void fetchSHCustomerName(Multimap<Integer, Integer> businessTypeCustomerIdMMap, Map<Integer, String> customerIdNameMap, int loginId) {
         List<Integer> shCustomerIdList = Lists.newLinkedList(businessTypeCustomerIdMMap.get(BusinessType.SHAN_HUI.value()));
+        if (CollectionUtils.isEmpty(shCustomerIdList)) {
+            return;
+        }
+        List<CustomerLite> customerLiteList = customerInfoService.getCustomerLites(shCustomerIdList, loginId);
+        if (CollectionUtils.isEmpty(customerLiteList)) {
+            return;
+        }
+        for (CustomerLite customerLite : customerLiteList) {
+            customerIdNameMap.put(customerLite.getCustomerID(), customerLite.getCustomerName());
+        }
+    }
+
+    private void fetchSFCustomerName(Multimap<Integer, Integer> businessTypeCustomerIdMMap, Map<Integer, String> customerIdNameMap, int loginId) {
+        List<Integer> shCustomerIdList = Lists.newLinkedList(businessTypeCustomerIdMMap.get(BusinessType.SHAN_FU.value()));
         if (CollectionUtils.isEmpty(shCustomerIdList)) {
             return;
         }
@@ -194,11 +271,52 @@ public class CustomerNameService {
         if (businessType == BusinessType.SHAN_HUI.value()) {
             return fetchSHCustomerSuggestion(customerName, maxSize, loginId);
         }
+        if (businessType == BusinessType.SHAN_FU.value()) {
+            return fetchSFCustomerSuggestion(customerName, maxSize, loginId);
+        }
         if (businessType == BusinessType.ADVERTISEMENT.value()) {
             return fetchADCustomerSuggestion(customerName, maxSize, loginId);
         }
+        if (businessType == BusinessType.EXPENSE.value()) {
+            return fetchEPCustomerSuggestion(customerName, maxSize, loginId);
+        }
+        if (businessType == BusinessType.BOOKING.value()) {
+            return fetchBKCustomerSuggestion(customerName, maxSize, loginId);
+        }
         return Collections.emptyList();
     }
+
+    private List<CustomerNameSuggestionBean> fetchBKCustomerSuggestion(String customerName, int maxSize, int loginId) {
+        List<CustomerShopLite> customerList = customerInfoService.searchByCustomerAndShopInfo(customerName, null, true, 0, maxSize).getY();
+        if (CollectionUtils.isEmpty(customerList)) {
+            return Collections.emptyList();
+        }
+        List<CustomerNameSuggestionBean> suggestionBeanList = Lists.newLinkedList();
+        for (CustomerShopLite customer : customerList) {
+            CustomerNameSuggestionBean suggestionBean = new CustomerNameSuggestionBean();
+            suggestionBean.setCustomerId(customer.getCustomerID());
+            suggestionBean.setCustomerName(customer.getCustomreName());
+            suggestionBeanList.add(suggestionBean);
+        }
+        return suggestionBeanList;
+    }
+
+
+    private List<CustomerNameSuggestionBean> fetchEPCustomerSuggestion(String customerName, int maxSize, int loginId) {
+        List<PayeeInfoDTO> payeeInfoDTOList = expensePayeeService.searchByPayeeName(customerName);
+        if (CollectionUtils.isEmpty(payeeInfoDTOList)) {
+            return Collections.emptyList();
+        }
+        List<CustomerNameSuggestionBean> suggestionBeanList = Lists.newLinkedList();
+        for (PayeeInfoDTO payeeInfoDTO : payeeInfoDTOList) {
+            CustomerNameSuggestionBean suggestionBean = new CustomerNameSuggestionBean();
+            suggestionBean.setCustomerId(payeeInfoDTO.getPayeeId());
+            suggestionBean.setCustomerName(payeeInfoDTO.getPayeeName());
+            suggestionBeanList.add(suggestionBean);
+        }
+        return suggestionBeanList;
+    }
+
 
     private List<CustomerNameSuggestionBean> fetchADCustomerSuggestion(String customerName, int maxSize, int loginId) {
 		List<CorporationDTO> corporationDTOList = null;
@@ -247,6 +365,20 @@ public class CustomerNameService {
     }
 
     private List<CustomerNameSuggestionBean> fetchSHCustomerSuggestion(String customerName, int maxSize, int loginId) {
+        List<CustomerShopLite> customerList = customerInfoService.searchByCustomerAndShopInfo(customerName, null, true, 0, maxSize).getY();
+        if (CollectionUtils.isEmpty(customerList)) {
+            return Collections.emptyList();
+        }
+        List<CustomerNameSuggestionBean> suggestionBeanList = Lists.newLinkedList();
+        for (CustomerShopLite customer : customerList) {
+            CustomerNameSuggestionBean suggestionBean = new CustomerNameSuggestionBean();
+            suggestionBean.setCustomerId(customer.getCustomerID());
+            suggestionBean.setCustomerName(customer.getCustomreName());
+            suggestionBeanList.add(suggestionBean);
+        }
+        return suggestionBeanList;
+    }
+    private List<CustomerNameSuggestionBean> fetchSFCustomerSuggestion(String customerName, int maxSize, int loginId) {
         List<CustomerShopLite> customerList = customerInfoService.searchByCustomerAndShopInfo(customerName, null, true, 0, maxSize).getY();
         if (CollectionUtils.isEmpty(customerList)) {
             return Collections.emptyList();
@@ -384,4 +516,8 @@ public class CustomerNameService {
 	public void setMonitorSmsService(MonitorSmsService monitorSmsService) {
 		this.monitorSmsService = monitorSmsService;
 	}
+
+    public void setExpensePayeeService(ExpensePayeeService expensePayeeService) {
+        this.expensePayeeService = expensePayeeService;
+    }
 }
