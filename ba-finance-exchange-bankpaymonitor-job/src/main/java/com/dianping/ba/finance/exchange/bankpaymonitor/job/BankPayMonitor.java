@@ -75,16 +75,20 @@ public class BankPayMonitor {
             bankPayException = BankPayException.RECORD_NOT_FOUND;
         } else {
             int payRetryTimes = 0;
-            boolean isMatch = false;
+            boolean isStatusMatch = false;
+            boolean isAccountMatch = true;
             for (PaymentRecordDTO record : paymentRecords) {
-                if (!isMatch && matchStatus(payOrder, record)) {
-                    isMatch = true;
+                if (!isStatusMatch && matchStatus(payOrder, record)) {
+                    isStatusMatch = true;
+                    isAccountMatch = matchAccount(payOrder, record);
                 } else if (record.getStatus() == PaymentRecordStatus.PAY_FAILED.getCode()) {
                     payRetryTimes++;
                 }
             }
-            if (!isMatch) {
+            if (!isStatusMatch) {
                 bankPayException = BankPayException.DIFF_STATUS;
+            } else if (isAccountMatch) {
+                bankPayException = BankPayException.DIFF_ACCOUNT;
             } else if (payRetryTimes < paymentRecords.size() - 1) {
                 bankPayException = BankPayException.MULTI_RECORDS;
             }
@@ -96,6 +100,10 @@ public class BankPayMonitor {
 
     private void saveException(int poId, BankPayException bankPayException) {
         monitorService.insertMonitorResult(poId, bankPayException);
+    }
+
+    private boolean matchAccount(PayOrderMonitorData payOrder, PaymentRecordDTO record) {
+        return payOrder.getPayBankAccountNo() != null && payOrder.getPayBankAccountNo().equals(record.getFromAccountNo()) && payOrder.getPayBankAccountNo() != null && payOrder.getPayBankAccountNo().equals(record.getToAccountNo());
     }
 
     private boolean matchStatus(PayOrderMonitorData payOrder, PaymentRecordDTO record) {

@@ -14,13 +14,18 @@ public enum  BankPayException {
      */
     DIFF_STATUS(1, "状态不匹配"),
     /**
-     * 1-正向
+     * 请求记录未找到
      */
     RECORD_NOT_FOUND(2, "请求记录未找到"),
     /**
-     * 2-负向
+     * 多条有效请求
      */
-    MULTI_RECORDS(3, "多条有效请求");
+    MULTI_RECORDS(3, "多条有效请求"),
+
+    /**
+     * 账号不匹配
+     */
+    DIFF_ACCOUNT(4, "账号不匹配");
 
     int code;
     String message;
