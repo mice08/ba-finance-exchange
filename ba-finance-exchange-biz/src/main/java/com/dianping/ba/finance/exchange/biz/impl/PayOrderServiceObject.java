@@ -61,6 +61,8 @@ public class PayOrderServiceObject implements PayOrderService {
         return -1;
     }
 
+
+
     @Log(severity = 1, logBefore = true, logAfter = true)
     @ReturnDefault
     @Override
@@ -409,6 +411,23 @@ public class PayOrderServiceObject implements PayOrderService {
     @Override
     public PageModel paginatePayOrderListByStatus(int status, int page, int max) {
         return payOrderDao.paginatePayOrderListByStatus(status, page, max);
+    }
+
+    @Log(logBefore = true, logAfter = true)
+    @Override
+    public int markPayOrderInvalid(List<Integer> poIdList, int loginId) {
+        int successCount = 0;
+        List<PayOrderData> payOrderDataList = new ArrayList<PayOrderData>();
+        for(int poId: poIdList){
+            int affectedRecords = updatePayOrderStatus(poId, PayOrderStatus.PAY_FAILED.value(), PayOrderStatus.REFUND.value(), "");
+            if(affectedRecords == 1){
+                successCount ++;
+                PayOrderData payOrderData = loadPayOrderDataByPOID(poId);
+                payOrderDataList.add(payOrderData);
+            }
+        }
+        notifyRefund(payOrderDataList, loginId);
+        return successCount;
     }
 
     public void setPayOrderDao(PayOrderDao payOrderDao) {
