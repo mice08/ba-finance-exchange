@@ -2,22 +2,22 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
-import com.dianping.ba.finance.exchange.api.AccountService;
 import com.dianping.ba.finance.exchange.api.PayOrderDomainService;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
-import com.dianping.ba.finance.exchange.api.dtos.AccountEntryRequestDTO;
-import com.dianping.ba.finance.exchange.api.dtos.BankAccountDTO;
-import com.dianping.ba.finance.exchange.api.dtos.BankPayRequestDTO;
 import com.dianping.ba.finance.exchange.api.dtos.BankPayResultDTO;
-import com.dianping.ba.finance.exchange.api.enums.AccountEntrySourceType;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.PayType;
-import com.dianping.ba.finance.exchange.biz.enums.AccountType;
 import com.dianping.ba.finance.exchange.biz.enums.PayResultStatus;
+import com.dianping.ba.finance.paymentplatform.api.AccountService;
+import com.dianping.ba.finance.paymentplatform.api.PaymentDomainService;
+import com.dianping.ba.finance.paymentplatform.api.dtos.BankAccountDTO;
+import com.dianping.ba.finance.paymentplatform.api.dtos.PayResponseDTO;
+import com.dianping.ba.finance.paymentplatform.api.dtos.PaymentRequestDTO;
+import com.dianping.ba.finance.paymentplatform.api.enums.Channel;
+import com.dianping.ba.finance.paymentplatform.api.enums.PayRequestResult;
 import com.dianping.finance.common.aop.annotation.Log;
-import com.dianping.finance.common.swallow.SwallowEventBean;
-import com.dianping.finance.common.swallow.SwallowProducer;
+import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.finance.common.util.ListUtils;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Created by 遐 on 2015/3/9.
@@ -45,9 +46,11 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
     @Autowired
     private PayOrderService payOrderService;
     @Autowired
-    private SwallowProducer bankPayProducer;
-    @Autowired
     private AccountService accountService;
+    @Autowired
+    private ExecutorService executorService;
+    @Autowired
+    private PaymentDomainService paymentDomainService;
 
     @Override
     @Log(logBefore = true, logAfter = true)
@@ -61,17 +64,34 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
                 return 0;
             }
             payOrderService.batchUpdatePayOrderStatus(idList, Arrays.asList(PayOrderStatus.SUBMIT_FOR_PAY.value()), PayOrderStatus.BANK_PAYING.value(), loginId);
-            for(PayOrderData data: payOrderDataList){
-                if(idList.contains(data.getPoId())){
-                    BankPayRequestDTO requestDTO = buildBankPayRequest(data);
-                    SwallowEventBean eventBean = new SwallowEventBean(BANK_ORDER_PAY_REQUEST, requestDTO);
-                    bankPayProducer.fireSwallowEvent(eventBean);
-                }
-            }
+            asyncPay(payOrderDataList, idList);
             return idList.size();
         } catch (Exception e) {
             MONITOR_LOGGER.error(String.format("severity=[1],PayOrderDomainServiceObject.pay fail!, poIds=[%s]&loginId=[%d]", poIds, loginId), e);
             return -1;
+        }
+    }
+
+    private void asyncPay(final List<PayOrderData> payOrderDataList, final List<Integer> poIdList) {
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                doPay(payOrderDataList, poIdList);
+            }
+        });
+    }
+
+    private void doPay(final List<PayOrderData> payOrderDataList, final List<Integer> poIdList){
+        for(PayOrderData data: payOrderDataList){
+            if(poIdList.contains(data.getPoId())){
+                PaymentRequestDTO requestDTO = buildBankPayRequest(data);
+                PayResponseDTO payResponseDTO = paymentDomainService.pay(requestDTO);
+                if(payResponseDTO.getCode() != PayRequestResult.SUCCESS.getCode()){
+                    payOrderService.updatePayCode(data.getPoId(), payResponseDTO.getPayCode());
+                } else {
+                    payOrderService.updatePayOrderStatus(data.getPoId(), PayOrderStatus.BANK_PAYING.value(), PayOrderStatus.SUBMIT_FAILED.value(), payResponseDTO.getMessage());
+                }
+            }
         }
     }
 
@@ -89,17 +109,7 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
             MONITOR_LOGGER.error(String.format("severity=1], update pay order status failed!. bankPayResultDTO=[%s]", ToStringBuilder.reflectionToString(bankPayResultDTO)));
             return false;
         }
-        return addAccountEntry(poId);
-    }
-
-    private boolean addAccountEntry(int poId) {
-        PayOrderData payOrder = payOrderService.loadPayOrderDataByPOID(poId);
-        AccountEntryRequestDTO entry = new AccountEntryRequestDTO();
-        entry.setInstId(String.valueOf(poId));
-        entry.setSourceType(AccountEntrySourceType.BANK.getSourceType());
-        entry.setAmount(payOrder.getPayAmount());
-        entry.setBankAccountId(payOrder.getCustomerBankId());
-        return accountService.updateAccount(entry);
+        return true;
     }
 
     private PayOrderStatus parsePayOrderStatus(int code) {
@@ -132,34 +142,34 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
                         order.getPayType() == PayType.SHAN_FU_SETTLE.getPayType());
     }
 
-
-    private BankPayRequestDTO buildBankPayRequest(PayOrderData payOrderData){
-        BankPayRequestDTO requestDTO = new BankPayRequestDTO();
-        requestDTO.setInsId(String.valueOf(payOrderData.getPoId()));
+    private PaymentRequestDTO buildBankPayRequest(PayOrderData payOrderData){
+        PaymentRequestDTO requestDTO = new PaymentRequestDTO();
         BankAccountDTO payeeBankAccountDTO = accountService.loadBankAccount(payOrderData.getPayeeBankAccountId());
         if(payeeBankAccountDTO != null){
-            requestDTO.setAccountNo(payeeBankAccountDTO.getBankAccountNo());
-            requestDTO.setAccountName(payeeBankAccountDTO.getBankAccountName());
+            requestDTO.setFromAccountNo(payeeBankAccountDTO.getBankAccountNo());
+            requestDTO.setFromAccountName(payeeBankAccountDTO.getBankAccountName());
+            requestDTO.setFromBankName("中国民生银行");// todo hard code
         }
-        requestDTO.setAccountToNo(payOrderData.getBankAccountNo());
-        requestDTO.setAccountToName(payOrderData.getBankAccountName());
-        requestDTO.setAccountType(AccountType.PUBLIC.getCode());
-        requestDTO.setAccountToType(payOrderData.getBankAccountType());
-        requestDTO.setBankBranchCode(payOrderData.getBankCode());
-        requestDTO.setBankCode(payOrderData.getMasterBankCode());
-        requestDTO.setBankName(payOrderData.getBankName());
+        requestDTO.setChannel(Channel.MINSHENG_BANK.getCode());
+        requestDTO.setBizType(1);
+        String token = LionConfigUtils.getProperty("ba-finance-exchange-service.pay.token", "abc1234");
+        requestDTO.setToken(token);
+        requestDTO.setOutBizId(String.valueOf(payOrderData.getPoId()));
+        requestDTO.setToAccountNo(payOrderData.getBankAccountNo());
+        requestDTO.setToBankAccountName(payOrderData.getBankAccountName());
+        requestDTO.setBankAccountType(payOrderData.getBankAccountType());
+        requestDTO.setToBranchCode(payOrderData.getBankCode());
+        requestDTO.setToBankCode(payOrderData.getMasterBankCode());
+        requestDTO.setToFullBranchName(payOrderData.getBankName());
         requestDTO.setAmount(payOrderData.getPayAmount());
-        requestDTO.setDescription(payOrderData.getMemo());
+        requestDTO.setExplain(payOrderData.getMemo());
         return requestDTO;
     }
 
 
+
     public void setPayOrderService(PayOrderService payOrderService) {
         this.payOrderService = payOrderService;
-    }
-
-    public void setBankPayProducer(SwallowProducer bankPayProducer) {
-        this.bankPayProducer = bankPayProducer;
     }
 
     public void setAccountService(AccountService accountService) {

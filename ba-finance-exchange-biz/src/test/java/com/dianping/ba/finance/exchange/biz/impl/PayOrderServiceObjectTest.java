@@ -220,4 +220,25 @@ public class PayOrderServiceObjectTest {
         Assert.assertNotNull(bankInfoDTO);
         Assert.assertEquals(bankInfoDTO.getPoId(), poData.getPoId());
     }
+
+    @Test
+    public void testMarkPayOrderInvalidSuccessfully() {
+        PayOrderData payOrderData = new PayOrderData();
+        when(payOrderDaoMock.loadPayOrderByPayPOID(anyInt())).thenReturn(payOrderData);
+        when(payOrderDaoMock.updatePayOrderStatus(anyInt(), anyInt(), anyInt(), anyString())).thenReturn(1);
+        int actual = payOrderServiceObjectStub.markPayOrderInvalid(Arrays.asList(1), -1);
+
+        Assert.assertEquals(1, actual);
+        verify(payOrderResultNotifyMock, times(1)).payResultNotify(any(PayOrderResultBean.class));
+    }
+
+    @Test
+    public void testMarkPayOrderInvalidFailed() {
+        int actual = payOrderServiceObjectStub.markPayOrderInvalid(null, -1);
+
+        Assert.assertEquals(0, actual);
+        verify(payOrderResultNotifyMock, times(0)).payResultNotify(any(PayOrderResultBean.class));
+        verify(payOrderDaoMock, times(0)).loadPayOrderByPayPOID(anyInt());
+        verify(payOrderDaoMock, times(0)).updatePayOrderStatus(anyInt(), anyInt(), anyInt(), anyString());
+    }
 }

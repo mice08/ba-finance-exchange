@@ -7,7 +7,6 @@ import com.dianping.ba.finance.exchange.api.dtos.AccountEntryRequestDTO;
 import com.dianping.ba.finance.exchange.api.dtos.BankAccountDTO;
 import com.dianping.ba.finance.exchange.api.dtos.BankPayResultDTO;
 import com.dianping.ba.finance.exchange.api.enums.PayType;
-import com.dianping.finance.common.swallow.SwallowProducer;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,17 +27,14 @@ public class PayOrderDomainServiceObjectTest {
     private PayOrderDomainServiceObject payOrderDomainServiceObjectStub;
     private PayOrderService payOrderServiceMock;
     private AccountService accountServiceMock;
-    private SwallowProducer bankPayProducerMock;
 
     @Before
     public void setup() {
         payOrderDomainServiceObjectStub = new PayOrderDomainServiceObject();
         payOrderServiceMock = mock(PayOrderService.class);
-        bankPayProducerMock = mock(SwallowProducer.class);
         accountServiceMock = mock(AccountService.class);
         payOrderDomainServiceObjectStub.setAccountService(accountServiceMock);
         payOrderDomainServiceObjectStub.setPayOrderService(payOrderServiceMock);
-        payOrderDomainServiceObjectStub.setBankPayProducer(bankPayProducerMock);
     }
 
     @Test
