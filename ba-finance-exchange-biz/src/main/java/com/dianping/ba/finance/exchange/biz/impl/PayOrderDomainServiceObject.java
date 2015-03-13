@@ -86,8 +86,9 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
             if(poIdList.contains(data.getPoId())){
                 PaymentRequestDTO requestDTO = buildBankPayRequest(data);
                 PayResponseDTO payResponseDTO = paymentDomainService.pay(requestDTO);
-                if(payResponseDTO.getCode() != PayRequestResult.SUCCESS.getCode()){
-                    payOrderService.updatePayCode(data.getPoId(), payResponseDTO.getPayCode());
+                if(payResponseDTO.getCode() == PayRequestResult.SUCCESS.getCode()){
+                    PayOrderData payOrderData = payOrderService.loadPayOrderDataByPOID(data.getPoId());
+                    payOrderService.updatePayCode(data.getPoId(), payResponseDTO.getPayCode() + "|" + payOrderData.getPayCode());
                 } else {
                     payOrderService.updatePayOrderStatus(data.getPoId(), PayOrderStatus.BANK_PAYING.value(), PayOrderStatus.SUBMIT_FAILED.value(), payResponseDTO.getMessage());
                 }
