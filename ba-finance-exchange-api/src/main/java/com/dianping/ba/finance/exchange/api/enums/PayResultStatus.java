@@ -28,7 +28,11 @@ public enum PayResultStatus {
     /**
      * 13-退票
      */
-    PAY_REFUND(13);
+    PAY_REFUND(13),
+    /**
+     * 14-账户异常
+     */
+    ACCOUNT_INVALID(14);
 
     private int payResultStatus;
 
@@ -46,6 +50,8 @@ public enum PayResultStatus {
                 return PAY_SUCCESS;
             case 13:
                 return PAY_REFUND;
+            case 14:
+                return ACCOUNT_INVALID;
             default:
                 return DEFAULT;
         }
@@ -62,6 +68,8 @@ public enum PayResultStatus {
                 return "支付成功";
             case 13:
                 return "退票";
+            case 14:
+                return "账户异常";
             default:
                 return "错误";
         }

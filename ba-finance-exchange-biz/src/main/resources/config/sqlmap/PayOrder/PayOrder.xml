@@ -544,4 +544,10 @@
         WHERE Status = #status#
     </select>
 
+    <update id="updatePayCode" parameterClass="map">
+        UPDATE FC_PayOrder
+        SET PayCode = #payCode#
+        WHERE POID = #poId#
+    </update>
+
 </sqlMap>

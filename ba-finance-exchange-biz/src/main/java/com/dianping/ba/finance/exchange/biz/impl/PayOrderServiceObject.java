@@ -114,7 +114,7 @@ public class PayOrderServiceObject implements PayOrderService {
             payOrderResultBean.setPoId(payOrderData.getPoId());
             payOrderResultBean.setPaidAmount(payOrderData.getPayAmount());
             payOrderResultBean.setPaySequence(payOrderData.getPaySequence());
-            payOrderResultBean.setStatus(PayResultStatus.PAY_REFUND);
+            payOrderResultBean.setStatus(PayResultStatus.ACCOUNT_INVALID);
             payOrderResultBean.setMemo(payOrderData.getMemo());
             payOrderResultBean.setBusinessType(payOrderData.getBusinessType());
             payOrderResultNotify.payResultNotify(payOrderResultBean);
@@ -425,7 +425,7 @@ public class PayOrderServiceObject implements PayOrderService {
             List<PayOrderData> payOrderDataList = new ArrayList<PayOrderData>();
             for (int poId : poIdList) {
                 PayOrderData payOrderData = payOrderDao.loadPayOrderByPayPOID(poId);
-                int affectedRecords = payOrderDao.updatePayOrderStatus(poId, PayOrderStatus.PAY_FAILED.value(), PayOrderStatus.REFUND.value(), payOrderData.getMemo());
+                int affectedRecords = payOrderDao.updatePayOrderStatus(poId, PayOrderStatus.PAY_FAILED.value(), PayOrderStatus.ACCOUNT_INVALID.value(), payOrderData.getMemo());
                 if (affectedRecords == 1) {
                     successCount++;
                     payOrderDataList.add(payOrderData);
@@ -442,7 +442,12 @@ public class PayOrderServiceObject implements PayOrderService {
     @Log(logBefore = true, logAfter = true)
     @Override
     public int updatePayCode(int poId, String payCode) {
-        return 0;
+        try {
+            return payOrderDao.updatePayCode(poId, payCode);
+        } catch (Exception e) {
+            MONITOR_LOGGER.error(String.format("PayOrderServiceObject.updatePayCode fail!, poId=[%d]&payCode=[%s]", poId, payCode), e);
+            return -1;
+        }
     }
 
     public void setPayOrderDao(PayOrderDao payOrderDao) {
