@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="BankPay">
+    <typeAlias alias="BankPayMonitorExceptionData" type="com.dianping.ba.finance.exchange.bankpaymonitor.api.datas.BankPayMonitorExceptionData"/>
+    <resultMap id="bankPayMonitorExceptionData" class="BankPayMonitorExceptionData">
+        <result property="id" column="ID"/>
+        <result property="poId" column="POID"/>
+        <result property="checkStatus" column="CheckStatus"/>
+        <result property="memo" column="Memo"/>
+        <result property="addTime" column="AddTime"/>
+
+    </resultMap>
+
+    <insert id="insertBankPayResult" parameterClass="map">
+        INSERT INTO FC_BankPayMonitorException
+        (POID, CheckStatus, Memo, AddTime)
+        VALUES (#result.poId#, #result.checkStatus#, #result.memo#, NOW())
+        <selectKey resultClass="java.lang.Integer" keyProperty="id">
+            SELECT @@IDENTITY AS id
+        </selectKey>
+    </insert>
+
+</sqlMap>

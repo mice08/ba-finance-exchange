@@ -26,6 +26,7 @@
         <module>ba-finance-exchange-receivemonitor-job</module>
         <module>ba-finance-exchange-midasreco-job</module>
         <module>ba-finance-exchange-confirmro-job</module>
+        <module>ba-finance-exchange-bankpaymonitor-job</module>
     </modules>
     <description>com.dianping.ba.finance</description>
     <organization>

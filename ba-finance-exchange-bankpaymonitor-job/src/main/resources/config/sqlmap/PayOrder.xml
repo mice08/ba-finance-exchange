@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="BankPay">
+    <typeAlias alias="PayOrderMonitorData" type="com.dianping.ba.finance.exchange.bankpaymonitor.api.datas.PayOrderMonitorData"/>
+    <resultMap id="payOrderMonitorData" class="PayOrderMonitorData">
+        <result property="poId" column="POID"/>
+        <result property="status" column="Status"/>
+        <result property="payCode" column="PayCode"/>
+        <result property="payBankAccountNo" column="PayBankAccountNo"/>
+        <result property="bankAccountNo" column="BankAccountNo"/>
+        <result property="payAmount" column="PayAmount"/>
+    </resultMap>
+
+    <select id="findPayOrders" resultMap="payOrderMonitorData" parameterClass="map">
+        <![CDATA[
+        SELECT POID, PayAmount, PayCode, PayBankAccountNo, BankAccountNo, Status
+        FROM FC_PayOrder
+        WHERE UpdateTime >= #startTime#
+        AND UpdateTime < #endTime#
+        AND Status IN
+        ]]>
+        <iterate open="(" close=")" property="statusList" conjunction=",">
+            #statusList[]#
+        </iterate>
+        LIMIT #start#, #size#
+    </select>
+</sqlMap>
