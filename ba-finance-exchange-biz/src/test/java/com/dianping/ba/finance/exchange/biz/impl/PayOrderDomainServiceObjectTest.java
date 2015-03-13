@@ -1,12 +1,11 @@
 package com.dianping.ba.finance.exchange.biz.impl;
 
-import com.dianping.ba.finance.exchange.api.AccountService;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
-import com.dianping.ba.finance.exchange.api.dtos.AccountEntryRequestDTO;
-import com.dianping.ba.finance.exchange.api.dtos.BankAccountDTO;
 import com.dianping.ba.finance.exchange.api.dtos.BankPayResultDTO;
 import com.dianping.ba.finance.exchange.api.enums.PayType;
+import com.dianping.ba.finance.paymentplatform.api.AccountService;
+import com.dianping.ba.finance.paymentplatform.api.dtos.BankAccountDTO;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -78,7 +77,6 @@ public class PayOrderDomainServiceObjectTest {
     @Test
     public void testHandleBankPayResult() {
         when(payOrderServiceMock.updatePayOrderStatus(anyInt(), anyInt(), anyInt(), anyString())).thenReturn(1);
-        when(accountServiceMock.updateAccount(any(AccountEntryRequestDTO.class))).thenReturn(true);
         when(payOrderServiceMock.loadPayOrderDataByPOID(anyInt())).thenReturn(new PayOrderData());
         BankPayResultDTO dto = new BankPayResultDTO();
         dto.setCode(1);
