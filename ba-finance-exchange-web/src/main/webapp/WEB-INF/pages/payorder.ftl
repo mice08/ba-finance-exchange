@@ -358,7 +358,7 @@
     <tr>
     {{/if}}
         <td >
-              <input type="checkbox" po-id="{{= record.poId}}" class="selected-payorder">
+              <input type="checkbox" po-id="{{= record.poId}}" po-amount="{{= record.payAmount}}" class="selected-payorder">
         </td>
         <td class="fs tb-item id number-char">{{= record.payCode}}</td>
         <td class="fs tb-item id number-char">{{= record.customerName}}</td>
