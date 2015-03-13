@@ -240,6 +240,28 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         }
     }
 
+    public String payOrderBankAccountInvalid() throws Exception {
+        try {
+            if (StringUtils.isBlank(poIds)) {
+                MONITOR_LOGGER.warn("No pay order need to be mark as bank acccount invalid!");
+                code = SUCCESS_CODE;
+                return SUCCESS;
+            }
+            String[] orderIdList = poIds.trim().split(",");
+            List<Integer> poIdList = ListUtils.convertStringArrayToIntegerList(orderIdList);
+            int successCount = payOrderService.markPayOrderInvalid(poIdList, getLoginId());
+            msg.put("successCount", successCount);
+            msg.put("failedCount", poIdList.size() - successCount);
+            code = SUCCESS_CODE;
+            return SUCCESS;
+        } catch (Exception e) {
+            MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankAccountInvalid fail!", e);
+            code = ERROR_CODE;
+            return ERROR;
+        }
+    }
+
+
 	private void updatePayOrderStatus(List<PayOrderExportBean> beanList, int loginId){
 		if(!CollectionUtils.isEmpty(beanList)){
 			List<Integer> orderIds = new ArrayList<Integer>();

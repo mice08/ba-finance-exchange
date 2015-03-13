@@ -136,6 +136,24 @@
         </button>
     </div>
 </div>
+<#--<div id="refund-order" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="refundOrderLabel"-->
+     <#--aria-hidden="true">-->
+    <#--<div class="modal-header section-title">-->
+        <#--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
+        <#--<h4 id="refundOrderLabel">退票</h4>-->
+    <#--</div>-->
+    <#--<div class="modal-body">-->
+        <#--<div><span style="font-size:14px;">本次退票条数：</span><span id="refund-count">0</span></div>-->
+        <#--<div><span style="font-size:14px:">共计金额：</span></span id=refund-amount>0</span></div>-->
+    <#--</div>-->
+    <#--<div class="modal-footer">-->
+        <#--<button class="btn btn-default btn-fs-default btn-fs-xs" data-dismiss="modal" aria-hidden="true">取消-->
+        <#--</button>-->
+        <#--<button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-refund" data-dismiss="modal"-->
+                <#--aria-hidden="true">确定-->
+        <#--</button>-->
+    <#--</div>-->
+<#--</div>-->
 <form>
 <!-- @ main -->
 <!--内容-->
@@ -285,6 +303,13 @@
                         <span class="glyphicon glyphicon-ok"></span>
                         直联支付
                     </a>
+                    <a id="btn-mark-refund" href="#refund-order" role="button"
+                       style="display:none;"
+                       class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
+                       data-toggle="modal">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        退票
+                    </a>
                 </div>
             </div>
             <div class="tb-wrapper">
@@ -333,7 +358,7 @@
     <tr>
     {{/if}}
         <td >
-              <input type="checkbox" po-id="{{= record.poId}}" class="selected-payorder">
+              <input type="checkbox" po-id="{{= record.poId}}" po-amount="{{= record.payAmount}}" class="selected-payorder">
         </td>
         <td class="fs tb-item id number-char">{{= record.payCode}}</td>
         <td class="fs tb-item id number-char">{{= record.customerName}}</td>
