@@ -21,8 +21,8 @@ public class OptionConstant {
             put(PayOrderStatus.BANK_PAYING.value(), "银行支付中");
             put(PayOrderStatus.PAY_FAILED.value(), "支付失败");
             put(PayOrderStatus.SUBMIT_FOR_PAY.value(), "提交支付中");
-            put(PayOrderStatus.SYSTEM_ERROR.value(), "系统异常");
-            put(PayOrderStatus.SUBMIT_FAILED.value(), "提交支付失败");
+            put(PayOrderStatus.ACCOUNT_INVALID.value(), "账户异常");
+            put(PayOrderStatus.SUBMIT_FAILED.value(), "提交失败");
 
         }
     };
