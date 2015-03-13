@@ -164,6 +164,7 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
         requestDTO.setChannel(Channel.MINSHENG_BANK.getCode());
         String token = LionConfigUtils.getProperty("ba-finance-exchange-service.pay.token", "abc1234");
         requestDTO.setToken(token);
+        requestDTO.setOutBizId(String.valueOf(payOrderData.getPoId()));
         requestDTO.setToAccountNo(payOrderData.getBankAccountNo());
         requestDTO.setToBankAccountName(payOrderData.getBankAccountName());
         requestDTO.setBankAccountType(payOrderData.getBankAccountType());
