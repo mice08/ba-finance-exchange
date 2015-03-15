@@ -56,7 +56,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     private Comparator<PaymentRecordDTO> REQUEST_TIME_COMPARATOR = new Comparator<PaymentRecordDTO>() {
         @Override
         public int compare(PaymentRecordDTO o1, PaymentRecordDTO o2) {
-            return o1.getAddTime().compareTo(o2.getAddTime());
+            return o2.getAddTime().compareTo(o1.getAddTime());
         }
     };
 
