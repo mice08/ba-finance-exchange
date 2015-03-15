@@ -143,7 +143,20 @@
         <h4 id="queryOrderLabel">查款</h4>
     </div>
     <div class="modal-body">
-
+        <table class="table table-hover" id="record-table">
+            <thead>
+            <tr>
+                <th width="3%" class="fs tb-header index">编号</th>
+                <th width="5%" class="fs tb-header id">交易号</th>
+                <th width="5%" class="fs tb-header amount">金额</th>
+                <th width="10%" class="fs tb-header time">发生时间</th>
+                <th width="5%" class="fs tb-header status">状态</th>
+                <th width="10%" class="fs tb-header memo">备注</th>
+            </tr>
+            </thead>
+            <tbody id="record-body">
+            </tbody>
+        </table>
     </div>
     <div class="modal-footer">
         <#--<button class="btn btn-default btn-fs-default btn-fs-xs" data-dismiss="modal" aria-hidden="true">取消-->
