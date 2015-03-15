@@ -10,6 +10,7 @@ import com.dianping.core.type.PageModel;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  *  处理付款单的Service类
@@ -160,4 +161,5 @@ public interface PayOrderService {
 
     int updatePayCode(int poId, String payCode);
 
+    Map<String,PayOrderData> findPayOrderByPayCodeList(List<String> payCodeList);
 }

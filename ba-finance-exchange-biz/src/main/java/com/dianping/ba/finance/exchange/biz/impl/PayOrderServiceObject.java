@@ -450,6 +450,22 @@ public class PayOrderServiceObject implements PayOrderService {
         }
     }
 
+    @Log(logBefore = true, logAfter = true)
+    @Override
+    public Map<String,PayOrderData> findPayOrderByPayCodeList(List<String> payCodeList){
+        Map<String,PayOrderData> payOrderMap=new HashMap<String, PayOrderData>();
+        List<PayOrderData> dataList = payOrderDao.findPayOrderByPayCodeList(payCodeList);
+        if (CollectionUtils.isEmpty(dataList)) {
+            return payOrderMap;
+        }
+        for (PayOrderData data:dataList){
+            if (!payOrderMap.containsKey(data.getPayCode())){
+                payOrderMap.put(data.getPayCode(),data);
+            }
+        }
+        return payOrderMap;
+    }
+
     public void setPayOrderDao(PayOrderDao payOrderDao) {
         this.payOrderDao = payOrderDao;
     }
