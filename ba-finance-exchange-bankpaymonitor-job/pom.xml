@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ba-finance-exchange-bankpaymonitor-job</artifactId>
+    <name>ba-finance-exchange-bankpaymonitor-job</name>
     <version>0.0.1-SNAPSHOT</version>
     <properties>
         <groovy.version>2.3.1</groovy.version>
