@@ -137,7 +137,7 @@
     </div>
 </div>
 <div id="query-order" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="queryOrderLabel"
-     aria-hidden="true" style="width:800px;">
+     aria-hidden="true" style="width:800px;margin-left:-400px;">
     <div class="modal-header section-title">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h4 id="queryOrderLabel">查款</h4>
