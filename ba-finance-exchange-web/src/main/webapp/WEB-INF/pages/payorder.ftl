@@ -96,11 +96,11 @@
         <h4 id="bankPayRequestLabel">提交付款单</h4>
     </div>
     <div class="modal-body">
-        <div><span style="font-size:14px; margin-right:10px;">请输入动态验证码：</span><input type="text" id="request-token"></div>
+        <div><span style="font-size:14px; margin-right:10px;">请输入动态验证码：</span><input type="text" id="request-token"><#if authChannel == "2"><button  class="btn" style="margin-left: 10px;margin-bottom: 10px" id="sms-send-btn">发送验证码</button></#if></div>
+    <div style="margin-right: 100px; text-align: right; color: #f00; font-size: 14px;" id="req-auth-msg"></div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-request" data-dismiss="modal"
-                aria-hidden="true">确定
+        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-request">确定
         </button>
     </div>
 </div>
@@ -111,11 +111,11 @@
         <h4 id="bankPayOrderLabel">直联支付</h4>
     </div>
     <div class="modal-body">
-        <div><span style="font-size:14px; margin-right:10px;">请输入动态验证码：</span><input type="text" id="order-token"></div>
+        <div><span style="font-size:14px; margin-right:10px;">请输入动态验证码：</span><input type="text" id="order-token"><#if authChannel == "2"><button  class="btn" style="margin-left: 10px;margin-bottom: 10px" id="sms-send-btn">发送验证码</button></#if></div>
+        <div style="margin-right: 100px; text-align: right; color: #f00; font-size: 14px;" id="order-auth-msg"></div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-order" data-dismiss="modal"
-                aria-hidden="true">确定
+        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-order">确定
         </button>
     </div>
 </div>

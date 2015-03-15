@@ -8,9 +8,8 @@ import com.dianping.ba.finance.exchange.api.PayOrderDomainService;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
-import com.dianping.ba.finance.exchange.api.enums.BusinessType;
-import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
-import com.dianping.ba.finance.exchange.api.enums.PayType;
+import com.dianping.ba.finance.exchange.api.dtos.AuthMsgDTO;
+import com.dianping.ba.finance.exchange.api.enums.*;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayRecordInfoBean;
@@ -101,10 +100,11 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     private int bankId;
 
+    private String requestToken;
+
     private String rejectMemo;
 
     private List<PayRecordInfoBean> payRecordInfoBeanList;
-
 
     @Autowired
     private PayOrderDomainService payOrderDomainService;
@@ -187,17 +187,15 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
                 code = SUCCESS_CODE;
                 return SUCCESS;
             }
-            int groupSize = NumberUtils.toInt(LionConfigUtils.getProperty("ba-finance-exchange-web.pay.group.size", "2000"));
-            if (idList.size() > groupSize) {
-                List<List<Integer>> idListGroup = ListUtils.generateListGroup(idList, groupSize);
-                for (List<Integer> list : idListGroup) {
-                    payOrderDomainService.pay(list, getLoginId());
-                }
+            int result = payOrderDomainService.payWithAuth(idList, getLoginId(), new AuthMsgDTO(getWorkNo(), requestToken));
+            if(result == BankPayResult.AUTH_FAIL.getCode()) {
+                code = NO_AUTH_CODE;
+            } else if(result == BankPayResult.SYSTEM_ERROR.getCode()) {
+                code = ERROR_CODE;
             } else {
-                payOrderDomainService.pay(idList, getLoginId());
+                code = SUCCESS_CODE;
             }
             msg.put("submitCount", idList.size());
-            code = SUCCESS_CODE;
             return SUCCESS;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPay fail!", e);
@@ -215,19 +213,15 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
                 code = SUCCESS_CODE;
                 return SUCCESS;
             }
-            int groupSize = NumberUtils.toInt(LionConfigUtils.getProperty("ba-finance-exchange-web.pay.group.size", "2000"));
-            int submitNum = 0;
-            if (idList.size() > groupSize) {
-                List<List<Integer>> idListGroup = ListUtils.generateListGroup(idList, groupSize);
-                for (List<Integer> list : idListGroup) {
-                    submitNum += payOrderService.batchUpdatePayOrderStatus(list, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), getLoginId());
-                }
+            int result = payOrderService.submitBankPayPOs(idList, getLoginId(), new AuthMsgDTO(getWorkNo(), requestToken));
+            if(result == BankPaySubmitResult.AUTH_FAIL.getCode()) {
+                code = NO_AUTH_CODE;
+            } else if(result == BankPaySubmitResult.SYSTEM_ERROR.getCode()) {
+                code = ERROR_CODE;
             } else {
-                submitNum = payOrderService.batchUpdatePayOrderStatus(idList, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), getLoginId());
+                code = SUCCESS_CODE;
             }
-            msg.put("successCount", submitNum);
-            msg.put("failedCount", idList.size() - submitNum);
-            code = SUCCESS_CODE;
+            msg.put("submitNum", idList.size());
             return SUCCESS;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPayRequest fail!", e);
@@ -581,6 +575,14 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     public void setBankId(int bankId) {
         this.bankId = bankId;
+    }
+
+    public String getRequestToken() {
+        return requestToken;
+    }
+
+    public void setRequestToken(String requestToken) {
+        this.requestToken = requestToken;
     }
 
     public void setPayOrderDomainService(PayOrderDomainService payOrderDomainService) {
