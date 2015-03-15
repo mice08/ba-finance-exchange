@@ -311,7 +311,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         PayRecordInfoBean infoBean = new PayRecordInfoBean();
         infoBean.setIndex(index);
         infoBean.setAmount(new DecimalFormat("##,###,###,###,##0.00").format(paymentRecordDTO.getAmount()));
-        infoBean.setMemo(paymentRecordDTO.getMemo());
+        infoBean.setMemo(paymentRecordDTO.getMemo() == null ? "" : paymentRecordDTO.getMemo());
         infoBean.setRequestTime(DateUtil.formatDateToString(paymentRecordDTO.getAddTime(), "yyyy-MM-dd HH:mm:ss"));
         infoBean.setPayCode(paymentRecordDTO.getInsId());
         infoBean.setStatus(PaymentRecordStatus.getByCode(paymentRecordDTO.getStatus()).getMessage());
