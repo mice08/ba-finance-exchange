@@ -27,6 +27,21 @@
             <result type="json"></result>
         </action>
 
+        <action name="orderrequestreject" class="com.dianping.ba.finance.exchange.siteweb.action.ajax.PayOrderAjaxAction"
+                method="payOrderRejectRequest">
+            <result type="json"></result>
+        </action>
+
+        <action name="orderbankaccountinvalid" class="com.dianping.ba.finance.exchange.siteweb.action.ajax.PayOrderAjaxAction"
+                method="payOrderBankAccountInvalid">
+            <result type="json"></result>
+        </action>
+
+        <action name="orderrecordquery" class="com.dianping.ba.finance.exchange.siteweb.action.ajax.PayOrderAjaxAction"
+                method="payOrderQueryPaymentRecord">
+            <result type="json"></result>
+        </action>
+
         <action name="loadPOStatusOption"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
                 method="loadPOStatusOption">
@@ -48,6 +63,12 @@
         <action name="loadBusinessTypeOption"
                 class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
                 method="loadBusinessTypeOption">
+            <result type="json"></result>
+        </action>
+
+        <action name="loadPayTypeOption"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.LoadOptionAction"
+                method="loadPayTypeOption">
             <result type="json"></result>
         </action>
 

@@ -10,6 +10,7 @@ import com.dianping.ba.finance.exchange.api.beans.POUpdateInfoBean;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderResultBean;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.dtos.AuthMsgDTO;
 import com.dianping.ba.finance.exchange.api.dtos.PayOrderBankInfoDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
@@ -25,13 +26,17 @@ import com.dianping.finance.common.aop.annotation.ReturnDefault;
 import com.dianping.finance.common.util.ConvertUtils;
 import com.dianping.finance.common.util.DateUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
+import com.dianping.finance.common.util.ListUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang.math.NumberUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 
 /**
  * 处理付款单的Service类
@@ -47,6 +52,8 @@ public class PayOrderServiceObject implements PayOrderService {
     private PayOrderResultNotify payOrderResultNotify;
 
     private AuthenticationService authenticationService;
+
+    private ExecutorService executorService;
 
     @Log(logBefore = true, logAfter = true)
     @ReturnDefault
@@ -66,6 +73,8 @@ public class PayOrderServiceObject implements PayOrderService {
         } while (times > 0);
         return -1;
     }
+
+
 
     @Log(severity = 1, logBefore = true, logAfter = true)
     @ReturnDefault
@@ -93,7 +102,7 @@ public class PayOrderServiceObject implements PayOrderService {
         refundResultDTO.setSuccessCount(filteredPOList.size());
 
         // 发送退票通知
-        notifyRefund(filteredPOList, loginId);
+        notifyPayResult(filteredPOList, PayResultStatus.PAY_REFUND, loginId);
         return refundResultDTO;
     }
 
@@ -110,14 +119,14 @@ public class PayOrderServiceObject implements PayOrderService {
         }
     }
 
-    private void notifyRefund(List<PayOrderData> payOrderDataList, int loginId) {
+    private void notifyPayResult(List<PayOrderData> payOrderDataList, PayResultStatus payResultStatus, int loginId) {
         for (PayOrderData payOrderData : payOrderDataList) {
             PayOrderResultBean payOrderResultBean = new PayOrderResultBean();
             payOrderResultBean.setLoginId(loginId);
             payOrderResultBean.setPoId(payOrderData.getPoId());
             payOrderResultBean.setPaidAmount(payOrderData.getPayAmount());
             payOrderResultBean.setPaySequence(payOrderData.getPaySequence());
-            payOrderResultBean.setStatus(PayResultStatus.PAY_REFUND);
+            payOrderResultBean.setStatus(payResultStatus);
             payOrderResultBean.setMemo(payOrderData.getMemo());
             payOrderResultBean.setBusinessType(payOrderData.getBusinessType());
             payOrderResultNotify.payResultNotify(payOrderResultBean);
@@ -368,7 +377,9 @@ public class PayOrderServiceObject implements PayOrderService {
             if (!StringUtils.isEmpty(message)) {
                 PayOrderData data = payOrderDao.loadPayOrderByPayPOID(poId);
                 if (data != null) {
-                    message += "|" + data.getMemo();
+                    if (!StringUtils.isEmpty(data.getMemo())) {
+                        message += "|" + data.getMemo();
+                    }
                 }
             }
             return payOrderDao.updatePayOrderStatus(poId, preStatus, postStatus, message);
@@ -382,7 +393,8 @@ public class PayOrderServiceObject implements PayOrderService {
     @Override
     public int batchUpdatePayOrderStatus(List<Integer> poIds, List<Integer> preStatusList, int postStatus, int loginId) {
         try {
-            return payOrderDao.updatePayOrderListStatus(poIds, preStatusList, postStatus, loginId);
+            int affectedRows =  payOrderDao.updatePayOrderListStatus(poIds, preStatusList, postStatus, loginId);
+            return affectedRows;
         } catch (Exception e) {
             MONITOR_LOGGER.error(String.format("severity=[1] PayOrderService.batchUpdatePayOrderStatus error! poIds=%s", poIds), e);
             return -1;
@@ -390,14 +402,19 @@ public class PayOrderServiceObject implements PayOrderService {
     }
 
     @Override
-    public int submitBankPayPOs(List<Integer> poIds, String token, int loginId, String userName) {
+    public int submitBankPayPOs(List<Integer> poIds, int loginId, AuthMsgDTO authMsg) {
         try {
-            if (authenticationService.auth(userName, token, Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-service.auth.type", "3"))).getCode() == ErrorCode.DEFAULT.getCode()) {
-                if (batchUpdatePayOrderStatus(poIds, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), loginId) > 0) {
-                    return BankPaySubmitResult.SUCCESS.getCode();
+            if (authenticationService.auth(authMsg.getUserName(), authMsg.getToken(), Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-service.auth.type", "3"))).getCode() == ErrorCode.DEFAULT.getCode()) {
+                int groupSize = NumberUtils.toInt(LionConfigUtils.getProperty("ba-finance-exchange-service.pay.group.size", "2000"));
+                if (poIds.size() > groupSize) {
+                    List<List<Integer>> idListGroup = ListUtils.generateListGroup(poIds, groupSize);
+                    for (List<Integer> list : idListGroup) {
+                        asyncPaySubmit(list, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), loginId);
+                    }
                 } else {
-                    return BankPaySubmitResult.SYSTEM_ERROR.getCode();
+                    asyncPaySubmit(poIds, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), loginId);
                 }
+                return BankPaySubmitResult.SUCCESS.getCode();
             } else {
                 return BankPaySubmitResult.AUTH_FAIL.getCode();
             }
@@ -405,6 +422,15 @@ public class PayOrderServiceObject implements PayOrderService {
             MONITOR_LOGGER.error(String.format("severity=[1] PayOrderService.submitBankPayPOs error! poIds=%s", poIds), e);
         }
         return BankPaySubmitResult.SYSTEM_ERROR.getCode();
+    }
+
+    private void asyncPaySubmit(final List<Integer> poIds, List<Integer> preStatusList, int postStatus, final int loginId) {
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                batchUpdatePayOrderStatus(poIds, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), loginId);
+            }
+        });
     }
 
     @Log(logBefore = true, logAfter = true)
@@ -427,6 +453,63 @@ public class PayOrderServiceObject implements PayOrderService {
     }
 
 
+    @Override
+    public PageModel paginatePayOrderListByStatus(int status, int page, int max) {
+        return payOrderDao.paginatePayOrderListByStatus(status, page, max);
+    }
+
+    @Log(logBefore = true, logAfter = true)
+    @Override
+    public int markPayOrderInvalid(List<Integer> poIdList, int loginId) {
+        try {
+            if(CollectionUtils.isEmpty(poIdList)){
+                return 0;
+            }
+            int successCount = 0;
+            List<PayOrderData> payOrderDataList = new ArrayList<PayOrderData>();
+            for (int poId : poIdList) {
+                PayOrderData payOrderData = payOrderDao.loadPayOrderByPayPOID(poId);
+                int affectedRecords = payOrderDao.updatePayOrderStatus(poId, PayOrderStatus.PAY_FAILED.value(), PayOrderStatus.ACCOUNT_INVALID.value(), payOrderData.getMemo());
+                if (affectedRecords == 1) {
+                    successCount++;
+                    payOrderDataList.add(payOrderData);
+                }
+            }
+            notifyPayResult(payOrderDataList, PayResultStatus.ACCOUNT_INVALID, loginId);
+            return successCount;
+        }catch (Exception e){
+            MONITOR_LOGGER.error(String.format("PayOrderServiceObject.markPayOrderInvalid fail!, poIdList=[%s]&loginId=[%d]", ListUtils.listToString(poIdList, ","), loginId), e);
+            return -1;
+        }
+    }
+
+    @Log(logBefore = true, logAfter = true)
+    @Override
+    public int updatePayCode(int poId, String payCode) {
+        try {
+            return payOrderDao.updatePayCode(poId, payCode);
+        } catch (Exception e) {
+            MONITOR_LOGGER.error(String.format("PayOrderServiceObject.updatePayCode fail!, poId=[%d]&payCode=[%s]", poId, payCode), e);
+            return -1;
+        }
+    }
+
+    @Log(logBefore = true, logAfter = true)
+    @Override
+    public Map<String,PayOrderData> findPayOrderByPayCodeList(List<String> payCodeList){
+        Map<String,PayOrderData> payOrderMap=new HashMap<String, PayOrderData>();
+        List<PayOrderData> dataList = payOrderDao.findPayOrderByPayCodeList(payCodeList);
+        if (CollectionUtils.isEmpty(dataList)) {
+            return payOrderMap;
+        }
+        for (PayOrderData data:dataList){
+            if (!payOrderMap.containsKey(data.getPayCode())){
+                payOrderMap.put(data.getPayCode(),data);
+            }
+        }
+        return payOrderMap;
+    }
+
     public void setPayOrderDao(PayOrderDao payOrderDao) {
         this.payOrderDao = payOrderDao;
     }
@@ -437,5 +520,9 @@ public class PayOrderServiceObject implements PayOrderService {
 
     public void setAuthenticationService(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
+    }
+
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
     }
 }

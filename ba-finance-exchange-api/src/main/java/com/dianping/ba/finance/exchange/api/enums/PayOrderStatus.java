@@ -38,21 +38,21 @@ public enum PayOrderStatus {
      */
     BANK_PAYING(7),
     /**
-     * 8-支付失败(银行帐号异常)
+     * 8-支付失败
      */
-    PAY_FAILED(9),
+    PAY_FAILED(8),
     /**
-     * 10-提交支付中
+     * 9-提交支付中
      */
-    SUBMIT_FOR_PAY(10),
+    SUBMIT_FOR_PAY(9),
     /**
-     * 11-系统异常
+     * 10-系统异常
      */
-    SYSTEM_ERROR(11),
+    ACCOUNT_INVALID(10),
     /**
-     * 12-提交失败
+     * 11-提交失败
      */
-    SUBMIT_FAILED(12),
+    SUBMIT_FAILED(11),
     ;
 
     private int payOrderStatus;
@@ -79,6 +79,12 @@ public enum PayOrderStatus {
                 return BANK_PAYING;
             case 8:
                 return PAY_FAILED;
+            case 9:
+                return SUBMIT_FOR_PAY;
+            case 10:
+                return ACCOUNT_INVALID;
+            case 11:
+                return SUBMIT_FAILED;
             default:
                 return DEFAULT;
         }
@@ -90,7 +96,7 @@ public enum PayOrderStatus {
             case 1:
                 return "初始";
             case 2:
-                return "支付中";
+                return "导出支付中";
             case 3:
                 return "支付成功";
             case 4:
@@ -103,6 +109,12 @@ public enum PayOrderStatus {
                 return "银行支付中";
             case 8:
                 return "支付失败";
+            case 9:
+                return "提交支付中";
+            case 10:
+                return "账户异常";
+            case 11:
+                return "提交失败";
             default:
                 return "错误";
         }

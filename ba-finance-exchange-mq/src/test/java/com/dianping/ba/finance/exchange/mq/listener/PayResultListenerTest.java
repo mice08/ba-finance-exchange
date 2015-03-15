@@ -1,25 +1,23 @@
 package com.dianping.ba.finance.exchange.mq.listener;
 
 import com.dianping.ba.finance.exchange.api.PayOrderDomainService;
-import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.dtos.BankPayResultDTO;
 import com.dianping.swallow.common.internal.message.SwallowMessage;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class BankPayResultListenerTest {
+public class PayResultListenerTest {
 
     private PayOrderDomainService payOrderDomainServiceMock;
-    private BankPayResultListener bankPayResultListenerStub;
+    private PayResultListener bankPayResultListenerStub;
 
     @Before
     public void setup() {
-        bankPayResultListenerStub = new BankPayResultListener();
+        bankPayResultListenerStub = new PayResultListener();
         payOrderDomainServiceMock = mock(PayOrderDomainService.class);
         bankPayResultListenerStub.setPayOrderDomainService(payOrderDomainServiceMock);
     }

@@ -122,4 +122,12 @@
         <property name="callMethod" value="sync"/>
         <property name="timeout" value="${ba-finance-exchange-web.pigeon.timeout.long}"/>
     </bean>
+
+    <bean id="paymentQueryService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName" value="http://service.dianping.com/paymentPlatformService/PaymentQueryService_1.0.0"/>
+        <property name="iface" value="com.dianping.ba.finance.paymentplatform.api.PaymentQueryService"/>
+        <property name="serialize" value="hessian"/>
+        <property name="callMethod" value="sync"/>
+        <property name="timeout" value="${ba-finance-exchange-web.pigeon.timeout.long}"/>
+    </bean>
 </beans>

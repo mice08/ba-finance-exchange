@@ -116,4 +116,20 @@ public interface PayOrderDao extends GenericDao {
     @DAOAction(action = DAOActionType.UPDATE)
     int updatePayOrderListStatus(@DAOParam("poIds") List<Integer> poIds, @DAOParam("preStatusList") List<Integer> preStatusList, @DAOParam("postStatus") int postStatus,@DAOParam("loginId") int loginId);
 
+    /**
+     * 根据状态查询PO
+     *
+     * @param status
+     * @return
+     */
+    @DAOAction(action = DAOActionType.PAGE)
+    PageModel paginatePayOrderListByStatus(@DAOParam("status") int status,
+                                           @DAOParam("page") int page,
+                                           @DAOParam("max") int max);
+
+    @DAOAction(action = DAOActionType.UPDATE)
+    int updatePayCode(@DAOParam("poId") int poId, @DAOParam("payCode") String payCode);
+
+    @DAOAction(action = DAOActionType.QUERY)
+    List<PayOrderData> findPayOrderByPayCodeList(@DAOParam("payCodeList") List<String> payCodeList);
 }

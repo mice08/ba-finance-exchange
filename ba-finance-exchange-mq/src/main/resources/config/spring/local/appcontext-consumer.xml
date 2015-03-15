@@ -33,14 +33,10 @@
         <property name="consumerCount" value="3"/>
     </bean>
 
-
-    <!--付款请求处理-->
-    <!--<bean id="payRequestListener" init-method="init"-->
-          <!--class="com.dianping.ba.finance.exchange.mq.listener.PayRequestListener">-->
-        <!--<property name="payRequestHandleService" ref="payRequestHandleService"/>-->
-        <!--<property name="topic" value="${ba-finance-exchange-mq.ep.ex.pay.request.notice.topic.name}"/>-->
-        <!--<property name="consumerId" value="${ba-finance-exchange-mq.consumerid}"/>-->
-        <!--<property name="consumerCount" value="3"/>-->
-    <!--</bean>-->
+    <bean id="payResultListener" init-method="init" class="com.dianping.ba.finance.exchange.mq.listener.PayResultListener">
+        <property name="topic" value="${ba-finance-exchange-mq.pp.pay.result.topic.name}"/>
+        <property name="consumerId" value="${ba-finance-exchange-mq.consumerid}"/>
+        <property name="consumerCount" value="3"/>
+    </bean>
 
 </beans>

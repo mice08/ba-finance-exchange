@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.api;
 
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.dtos.AuthMsgDTO;
 import com.dianping.ba.finance.exchange.api.dtos.PayOrderBankInfoDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
@@ -10,6 +11,7 @@ import com.dianping.core.type.PageModel;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  *  处理付款单的Service类
@@ -147,7 +149,7 @@ public interface PayOrderService {
      */
     int batchUpdatePayOrderStatus(List<Integer> poIds, List<Integer> preStatusList,int postStatus, int loginId);
 
-    int submitBankPayPOs(List<Integer> poIds, String token, int loginId, String userName);
+    int submitBankPayPOs(List<Integer> poIds, int loginId, AuthMsgDTO authMsg);
 
     /**
      * 根据付款单号获取付款单信息
@@ -156,4 +158,11 @@ public interface PayOrderService {
      */
     List<PayOrderData> findPayOrderByIdList(List<Integer> poIds);
 
+    PageModel paginatePayOrderListByStatus(int status, int page, int max);
+
+    int markPayOrderInvalid(List<Integer> poIdList, int loginId);
+
+    int updatePayCode(int poId, String payCode);
+
+    Map<String,PayOrderData> findPayOrderByPayCodeList(List<String> payCodeList);
 }
