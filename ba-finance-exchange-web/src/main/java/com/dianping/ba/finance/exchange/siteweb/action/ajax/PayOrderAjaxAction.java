@@ -54,6 +54,13 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     private static final Set<Integer> ALLOWED_EXPORT_STATUS = Sets.newHashSet(PayOrderStatus.INIT.value(), PayOrderStatus.EXPORT_PAYING.value());
 
+    private Comparator<PaymentRecordDTO> REQUEST_TIME_COMPARATOR = new Comparator<PaymentRecordDTO>() {
+        @Override
+        public int compare(PaymentRecordDTO o1, PaymentRecordDTO o2) {
+            return o1.getAddTime().compareTo(o2.getAddTime());
+        }
+    };
+
     //查询结果，付款计划列表
     private PageModel payOrderModel = new PageModel();
     //第几页
@@ -295,6 +302,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
                 code = SUCCESS_CODE;
                 return SUCCESS;
             }
+            Collections.sort(paymentRecordDTOList, REQUEST_TIME_COMPARATOR);
             for(int i= 0; i< paymentRecordDTOList.size(); i++){
                 payRecordInfoBeanList.add(buildPayRecordInfoBean(paymentRecordDTOList.get(i), i+1));
             }
