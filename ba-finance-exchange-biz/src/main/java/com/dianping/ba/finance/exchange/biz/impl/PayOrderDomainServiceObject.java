@@ -44,7 +44,7 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
 
     private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.biz.monitor.PayOrderDomainServiceObject");
 
-    private static final Set<Integer> ALLOWED_BANK_PAY_STATUS = Sets.newHashSet(PayOrderStatus.SUBMIT_FOR_PAY.value());
+    private static final Set<Integer> ALLOWED_BANK_PAY_STATUS = Sets.newHashSet(PayOrderStatus.SUBMIT_FOR_PAY.value(), PayOrderStatus.PAY_FAILED.value());
 
     @Autowired
     private PayOrderService payOrderService;
