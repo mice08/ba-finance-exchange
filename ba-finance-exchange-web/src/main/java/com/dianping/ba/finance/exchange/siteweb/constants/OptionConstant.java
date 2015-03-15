@@ -17,10 +17,16 @@ public class OptionConstant {
         {
             put(PayOrderStatus.DEFAULT.value(), "全部");
             put(PayOrderStatus.INIT.value(), "初始");
-            put(PayOrderStatus.EXPORT_PAYING.value(), "支付中");
+            put(PayOrderStatus.EXPORT_PAYING.value(), "导出支付中");
             put(PayOrderStatus.PAY_SUCCESS.value(), "支付成功");
             put(PayOrderStatus.REFUND.value(), "退票");
             put(PayOrderStatus.SUSPEND.value(), "暂停");
+            put(PayOrderStatus.BANK_PAYING.value(), "银行支付中");
+            put(PayOrderStatus.PAY_FAILED.value(), "支付失败");
+            put(PayOrderStatus.SUBMIT_FOR_PAY.value(), "提交支付中");
+            put(PayOrderStatus.SYSTEM_ERROR.value(), "系统异常");
+            put(PayOrderStatus.SUBMIT_FAILED.value(), "提交支付失败");
+
         }
     };
 
@@ -46,9 +52,13 @@ public class OptionConstant {
         {
             put(BusinessType.DEFAULT.value(), "请选择业务类型");
             put(BusinessType.GROUP_PURCHASE.value(), "团购");
+            put(BusinessType.ADVERTISEMENT.value(), "广告");
             put(BusinessType.SHAN_HUI.value(), "闪惠");
             put(BusinessType.BOOKING.value(), "预约预订");
             put(BusinessType.PREPAID_CARD.value(), "储值卡");
+            put(BusinessType.EXPENSE.value(), "费用");
+            put(BusinessType.SHAN_FU.value(), "闪付");
+            put(BusinessType.MOVIE.value(), "电影");
         }
     };
 

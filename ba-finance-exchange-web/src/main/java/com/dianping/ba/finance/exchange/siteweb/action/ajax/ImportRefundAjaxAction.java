@@ -2,6 +2,8 @@ package com.dianping.ba.finance.exchange.siteweb.action.ajax;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.auditlog.api.enums.OperationType;
+import com.dianping.ba.finance.auditlog.client.OperationLogger;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
@@ -33,6 +35,8 @@ public class ImportRefundAjaxAction extends AjaxBaseAction {
 
     private static final AvatarLogger MONITOR_LOGGER = AvatarLoggerFactory.getLogger("com.dianping.ba.finance.exchange.web.monitor.ImportRefundAjaxAction");
 
+    private static final OperationLogger OPERATION_LOGGER = new OperationLogger("Exchange", "PayOrder", LionConfigUtils.getProperty("ba-finance-exchange-web.auditlog.token"));
+
     private static final String INVALID_REFUND_FILE_MSG = "导入退票文件格式错误！正确格式为两列，第一列为退票付款单号，第二列为退票原因。";
 
     private File refundFile;
@@ -62,6 +66,7 @@ public class ImportRefundAjaxAction extends AjaxBaseAction {
                 code = SUCCESS_CODE;
                 return SUCCESS;
             }
+            OPERATION_LOGGER.log(OperationType.UPDATE, "导入退票", "", String.valueOf(getLoginId()));
             handleRefundList(refundDTOList, loginId);
             code = SUCCESS_CODE;
             return SUCCESS;
