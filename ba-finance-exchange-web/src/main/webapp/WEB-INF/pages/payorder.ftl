@@ -139,7 +139,7 @@
     </div>
 </div>
 <div id="query-order" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="queryOrderLabel"
-     aria-hidden="true">
+     aria-hidden="true" style="width:800px;">
     <div class="modal-header section-title">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h4 id="queryOrderLabel">查款</h4>
@@ -159,13 +159,6 @@
             <tbody id="record-body">
             </tbody>
         </table>
-    </div>
-    <div class="modal-footer">
-        <#--<button class="btn btn-default btn-fs-default btn-fs-xs" data-dismiss="modal" aria-hidden="true">取消-->
-        <#--</button>-->
-        <#--<button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-reject" data-dismiss="modal"-->
-                <#--aria-hidden="true">确定-->
-        <#--</button>-->
     </div>
 </div>
 <form>
