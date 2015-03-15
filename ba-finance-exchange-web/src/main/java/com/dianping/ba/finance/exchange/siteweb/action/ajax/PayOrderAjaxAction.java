@@ -289,7 +289,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
                 return SUCCESS;
             }
             String payCode = payOrderData.getPayCode();
-            String[] payCodeArr = payCode.split("|");
+            String[] payCodeArr = payCode.split("\\|");
             List<PaymentRecordDTO> paymentRecordDTOList = paymentQueryService.queryPaymentRecordByInsIds(Arrays.asList(payCodeArr));
             if(CollectionUtils.isEmpty(paymentRecordDTOList)){
                 MONITOR_LOGGER.warn(String.format("No payment record found! poId=[%s]&payCode=[%s]", poId, payCode));
