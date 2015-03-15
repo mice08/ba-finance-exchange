@@ -160,4 +160,10 @@ public class PayOrderDaoTest {
 
         Assert.assertEquals(1, actual);
     }
+
+    @Test
+    public void testPaginatePayOrderListByStatus() {
+        PageModel pm = payOrderDao.paginatePayOrderListByStatus(7, 1, 100);
+        Assert.assertNotNull(pm);
+    }
 }
