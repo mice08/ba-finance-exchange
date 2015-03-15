@@ -165,6 +165,46 @@
         AND Status != 6
     </select>
 
+    <select id="findPayOrderByPayCodeList" resultMap="payOrderData" parameterClass="map">
+        SELECT
+        POID,
+        PayAmount,
+        PaySequence,
+        PayCode,
+        CustomerID,
+        PayeeName,
+        CustomerBankId,
+        BankAccountNo,
+        BankAccountName,
+        PaidDate,
+        BankBranchName,
+        BankName,
+        BankProvince,
+        BankCity,
+        BankFullBranchName,
+        BankCode,
+        MasterBankCode,
+        BankAccountType,
+        BusinessType,
+        PayType,
+        PayBankName,
+        PayBankAccountNo,
+        PayeeBankAccountID,
+        Status,
+        AddTime,
+        AddType,
+        UpdateTime,
+        Memo,
+        UseMemo,
+        CustomerID
+        FROM FC_PayOrder
+        WHERE PayCode IN
+        <iterate open="(" close=")" conjunction="," property="payCodeList">
+            #payCodeList[]#
+        </iterate>
+        AND Status != 6
+    </select>
+
     <select id="paginatePayOrderList" resultMap="payOrderData" parameterClass="map">
         SELECT
         POID,
