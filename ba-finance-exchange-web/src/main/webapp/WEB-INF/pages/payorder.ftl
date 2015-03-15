@@ -390,11 +390,13 @@
         <td class="fs tb-item pay-type">{{= record.payType}}</td>
         <td class="fs tb-item status">{{= record.useMemo}}</td>
         <td class="fs tb-item status">{{= record.memo}}</td>
-        {{if (record.status == 3 || record.status == 4 || record.status == 7 || record.status == 8 || record.status == 10) &&
+        {{if (record.status == 3 || record.status == 4 || record.status == 7 || record.status == 8 || record.status == 10 || record.status == 9) &&
         (record.payTypeValue == 11 || record.payTypeValue == 61 || record.payTypeValue == 71)}}
-        <td width="10%" class="fs tb-item action"><a poId="{{= record.poId}}" class="query-link"  href="#query-order" data-toggle="modal">查款</a>
+        <td width="10%" class="fs tb-item action">
         {{if record.queryStatus == 9}}
         <a poId="{{= record.poId}}" class="reject-link"  href="#reject-order" data-toggle="modal">驳回</a>
+        {{else}}
+        <a poId="{{= record.poId}}" class="query-link"  href="#query-order" data-toggle="modal">查款</a>
         {{/if}}
         </td>
         {{/if}}

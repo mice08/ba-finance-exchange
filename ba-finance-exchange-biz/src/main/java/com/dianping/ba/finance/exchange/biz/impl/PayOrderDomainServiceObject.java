@@ -27,6 +27,7 @@ import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -84,7 +85,13 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
                 PayResponseDTO payResponseDTO = paymentDomainService.pay(requestDTO);
                 if (payResponseDTO.getCode() == PayRequestResult.SUCCESS.getCode()) {
                     PayOrderData payOrderData = payOrderService.loadPayOrderDataByPOID(data.getPoId());
-                    payOrderService.updatePayCode(data.getPoId(), payResponseDTO.getPayCode() + "|" + payOrderData.getPayCode());
+                    String payCode = payOrderData.getPayCode();
+                    if (StringUtils.isBlank(payCode)) {
+                        payCode = payResponseDTO.getPayCode();
+                    } else {
+                        payCode += "|" + payResponseDTO.getPayCode();
+                    }
+                    payOrderService.updatePayCode(data.getPoId(), payCode);
                 } else {
                     payOrderService.updatePayOrderStatus(data.getPoId(), PayOrderStatus.BANK_PAYING.value(), PayOrderStatus.SUBMIT_FAILED.value(), payResponseDTO.getMessage());
                 }
