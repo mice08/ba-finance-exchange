@@ -100,8 +100,7 @@
     <div style="margin-right: 100px; text-align: right; color: #f00; font-size: 14px;" id="req-auth-msg"></div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-request" data-dismiss="modal"
-                aria-hidden="true">确定
+        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-request">确定
         </button>
     </div>
 </div>
@@ -116,8 +115,7 @@
         <div style="margin-right: 100px; text-align: right; color: #f00; font-size: 14px;" id="order-auth-msg"></div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-order" data-dismiss="modal"
-                aria-hidden="true">确定
+        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-order">确定
         </button>
     </div>
 </div>
