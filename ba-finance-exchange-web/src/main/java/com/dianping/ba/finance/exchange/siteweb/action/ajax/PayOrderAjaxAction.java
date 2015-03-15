@@ -13,6 +13,7 @@ import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.PayType;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderBean;
 import com.dianping.ba.finance.exchange.siteweb.beans.PayOrderExportBean;
+import com.dianping.ba.finance.exchange.siteweb.beans.PayRecordInfoBean;
 import com.dianping.ba.finance.exchange.siteweb.enums.SubmitType;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService;
@@ -72,6 +73,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     private String poIds;
 
+    private int poId;
+
     private String addDate;
 
     private PayOrderService payOrderService;
@@ -89,6 +92,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
     private int bankId;
 
     private String rejectMemo;
+
+    private List<PayRecordInfoBean> payRecordInfoBeanList;
 
 
     @Autowired
@@ -262,6 +267,34 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     }
 
+    public String payOrderQueryPaymentRecord() throws Exception {
+        try {
+            payRecordInfoBeanList = new ArrayList<PayRecordInfoBean>();
+            if(poId < 0){
+                MONITOR_LOGGER.warn("No pay order request!");
+                code = SUCCESS_CODE;
+                return SUCCESS;
+            }
+            PayOrderData payOrderData = payOrderService.loadPayOrderDataByPOID(poId);
+            if(payOrderData == null || StringUtils.isBlank(payOrderData.getPayCode())){
+                MONITOR_LOGGER.warn(String.format("Pay order not found! poId=[%s]", poId));
+                code = SUCCESS_CODE;
+                return SUCCESS;
+            }
+            String payCode = payOrderData.getPayCode();
+            String[] payCodeArr = payCode.split(",");
+            //todo call interface
+
+
+            code = SUCCESS_CODE;
+            return SUCCESS;
+        } catch (Exception e) {
+            MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderQueryPaymentRecord fail!", e);
+            code = ERROR_CODE;
+            return ERROR;
+        }
+    }
+
 
 	private void updatePayOrderStatus(List<PayOrderExportBean> beanList, int loginId){
 		if(!CollectionUtils.isEmpty(beanList)){
@@ -390,6 +423,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
         payOrderBean.setMemo(payOrderData.getMemo() == null ? "" : payOrderData.getMemo());
         payOrderBean.setUseMemo(payOrderData.getUseMemo() == null ? "" : payOrderData.getUseMemo());
         payOrderBean.setPayType(PayType.valueOf(payOrderData.getPayType()).toString());
+        payOrderBean.setPayTypeValue(payOrderData.getPayType());
         payOrderBean.setPaidDate(DateUtil.formatDateToString(payOrderData.getPaidDate(), "yyyy-MM-dd HH:mm:ss"));
         payOrderBean.setPayAmount(new DecimalFormat("##,###,###,###,##0.00").format(payOrderData.getPayAmount()));
         payOrderBean.setPoId(payOrderData.getPoId());
@@ -536,6 +570,22 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     public void setRejectMemo(String rejectMemo) {
         this.rejectMemo = rejectMemo;
+    }
+
+    public int getPoId() {
+        return poId;
+    }
+
+    public void setPoId(int poId) {
+        this.poId = poId;
+    }
+
+    public List<PayRecordInfoBean> getPayRecordInfoBeanList() {
+        return payRecordInfoBeanList;
+    }
+
+    public void setPayRecordInfoBeanList(List<PayRecordInfoBean> payRecordInfoBeanList) {
+        this.payRecordInfoBeanList = payRecordInfoBeanList;
     }
 
 }
