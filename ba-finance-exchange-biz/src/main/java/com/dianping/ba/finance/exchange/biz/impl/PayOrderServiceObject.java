@@ -2,6 +2,9 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.base.organizationalstructure.api.user.UserService;
+import com.dianping.ba.finance.authentication.api.AuthenticationService;
+import com.dianping.ba.finance.authentication.api.enums.ErrorCode;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.beans.POUpdateInfoBean;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderResultBean;
@@ -10,6 +13,7 @@ import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
 import com.dianping.ba.finance.exchange.api.dtos.PayOrderBankInfoDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
+import com.dianping.ba.finance.exchange.api.enums.BankPaySubmitResult;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.PayResultStatus;
 import com.dianping.ba.finance.exchange.api.enums.RefundFailedReason;
@@ -41,6 +45,8 @@ public class PayOrderServiceObject implements PayOrderService {
     private PayOrderDao payOrderDao;
 
     private PayOrderResultNotify payOrderResultNotify;
+
+    private AuthenticationService authenticationService;
 
     @Log(logBefore = true, logAfter = true)
     @ReturnDefault
@@ -383,6 +389,24 @@ public class PayOrderServiceObject implements PayOrderService {
         }
     }
 
+    @Override
+    public int submitBankPayPOs(List<Integer> poIds, String token, int loginId, String userName) {
+        try {
+            if (authenticationService.auth(userName, token, Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-service.auth.type", "3"))).getCode() == ErrorCode.DEFAULT.getCode()) {
+                if (batchUpdatePayOrderStatus(poIds, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), loginId) > 0) {
+                    return BankPaySubmitResult.SUCCESS.getCode();
+                } else {
+                    return BankPaySubmitResult.SYSTEM_ERROR.getCode();
+                }
+            } else {
+                return BankPaySubmitResult.AUTH_FAIL.getCode();
+            }
+        } catch (Exception e) {
+            MONITOR_LOGGER.error(String.format("severity=[1] PayOrderService.submitBankPayPOs error! poIds=%s", poIds), e);
+        }
+        return BankPaySubmitResult.SYSTEM_ERROR.getCode();
+    }
+
     @Log(logBefore = true, logAfter = true)
     @Override
     public List<PayOrderData> findPayOrderByIdList(List<Integer> poIds) {
@@ -409,5 +433,9 @@ public class PayOrderServiceObject implements PayOrderService {
 
     public void setPayOrderResultNotify(PayOrderResultNotify payOrderResultNotify) {
         this.payOrderResultNotify = payOrderResultNotify;
+    }
+
+    public void setAuthenticationService(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
     }
 }

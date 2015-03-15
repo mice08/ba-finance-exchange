@@ -83,6 +83,22 @@ public abstract class WebBaseAction extends AvatarAction implements Preparable {
         return 0;
     }
 
+    public String getWorkNo(){
+        try {
+            HttpServletRequest request = ServletActionContext.getRequest();
+            if (request == null) {
+                return null;
+            }
+            String assertion = AuthenticationUtil.getRemoteUser(request);
+            if (assertion != null) {
+                return assertion.split("\\|")[0];
+            }
+        } catch (Exception e) {
+            monitorLogger.error(String.format("severity=[1] getWorkNo error!"), e);
+        }
+        return null;
+    }
+
     abstract protected String webExecute() throws Exception;
 
 }

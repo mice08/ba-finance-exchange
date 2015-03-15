@@ -38,6 +38,7 @@
 
     <bean id="payOrderService" class="com.dianping.ba.finance.exchange.biz.impl.PayOrderServiceObject">
         <property name="payOrderDao" ref="payOrderDao"/>
+        <property name="authenticationService" ref="authenticationService"/>
         <property name="payOrderResultNotify" ref="payOrderResultNotify"/>
     </bean>
 

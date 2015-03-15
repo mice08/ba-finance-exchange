@@ -147,6 +147,8 @@ public interface PayOrderService {
      */
     int batchUpdatePayOrderStatus(List<Integer> poIds, List<Integer> preStatusList,int postStatus, int loginId);
 
+    int submitBankPayPOs(List<Integer> poIds, String token, int loginId, String userName);
+
     /**
      * 根据付款单号获取付款单信息
      * @param poIds

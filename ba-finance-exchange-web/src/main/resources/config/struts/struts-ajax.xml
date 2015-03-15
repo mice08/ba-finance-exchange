@@ -12,6 +12,11 @@
             <result type="json"></result>
         </action>
 
+        <action name="sendSMSAuthCode"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.SendSMSAuthCodeAjaxAction">
+            <result type="json"></result>
+        </action>
+
         <action name="orderbankpay" class="com.dianping.ba.finance.exchange.siteweb.action.ajax.PayOrderAjaxAction"
                 method="payOrderBankPay">
             <result type="json"></result>

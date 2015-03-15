@@ -83,6 +83,8 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     private int bankId;
 
+    private String requestToken;
+
     @Autowired
     private PayOrderDomainService payOrderDomainService;
 
@@ -160,7 +162,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
                         "businessType=[%d]&addBeginTime=[%s]&addEndTime=[%s]&poIds[%s]&status=[%d]", businessType, addBeginTime, addEndTime, poIds, status));
                 return SUCCESS;
             }
-            payOrderDomainService.pay(idList, getLoginId());
+            payOrderDomainService.payWithAuth(idList, getLoginId(), getWorkNo(), requestToken);
             return SUCCESS;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPay", e);
@@ -176,7 +178,7 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
                         "businessType=[%d]&addBeginTime=[%s]&addEndTime=[%s]&poIds[%s]&status=[%d]", businessType, addBeginTime, addEndTime, poIds, status));
                 return SUCCESS;
             }
-            int submitNum = payOrderService.batchUpdatePayOrderStatus(idList, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), getLoginId());
+            payOrderService.submitBankPayPOs(idList, requestToken, getLoginId(), getWorkNo());
             return SUCCESS;
         } catch (Exception e) {
             MONITOR_LOGGER.error("severity=[1], PayOrderAjaxAction.payOrderBankPayRequest", e);
@@ -434,5 +436,13 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     public void setBankId(int bankId) {
         this.bankId = bankId;
+    }
+
+    public String getRequestToken() {
+        return requestToken;
+    }
+
+    public void setRequestToken(String requestToken) {
+        this.requestToken = requestToken;
     }
 }

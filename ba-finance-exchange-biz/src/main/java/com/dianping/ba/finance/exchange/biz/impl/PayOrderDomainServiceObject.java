@@ -2,6 +2,8 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.authentication.api.AuthenticationService;
+import com.dianping.ba.finance.authentication.api.enums.ErrorCode;
 import com.dianping.ba.finance.exchange.api.AccountService;
 import com.dianping.ba.finance.exchange.api.PayOrderDomainService;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
@@ -10,10 +12,9 @@ import com.dianping.ba.finance.exchange.api.dtos.AccountEntryRequestDTO;
 import com.dianping.ba.finance.exchange.api.dtos.BankAccountDTO;
 import com.dianping.ba.finance.exchange.api.dtos.BankPayRequestDTO;
 import com.dianping.ba.finance.exchange.api.dtos.BankPayResultDTO;
-import com.dianping.ba.finance.exchange.api.enums.AccountEntrySourceType;
-import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
-import com.dianping.ba.finance.exchange.api.enums.PayType;
+import com.dianping.ba.finance.exchange.api.enums.*;
 import com.dianping.finance.common.aop.annotation.Log;
+import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.swallow.producer.Producer;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
@@ -42,6 +43,8 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
     private Producer bankPayProducer;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Override
     @Log(logBefore = true, logAfter = true)
@@ -62,6 +65,25 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
             MONITOR_LOGGER.error(String.format("severity=[1],PayOrderDomainServiceObject.pay fail!, poIds=[%s]&loginId=[%d]", poIds, loginId), e);
             return -1;
         }
+    }
+
+    @Override
+    @Log(logBefore = true, logAfter = true)
+    public int payWithAuth(List<Integer> poIds, int loginId, String userName, String token) {
+        try {
+            if (authenticationService.auth(userName, token, Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-service.auth.type", "3"))).getCode() == ErrorCode.DEFAULT.getCode()) {
+                if (pay(poIds, loginId) > 0) {
+                    return BankPayResult.SUCCESS.getCode();
+                } else {
+                    return BankPayResult.SYSTEM_ERROR.getCode();
+                }
+            } else {
+                return BankPayResult.AUTH_FAIL.getCode();
+            }
+        } catch (Exception e) {
+            MONITOR_LOGGER.error(String.format("severity=[1] PayOrderDomainServiceObject.payWithAuth error! poIds=%s", poIds), e);
+        }
+        return BankPayResult.SYSTEM_ERROR.getCode();
     }
 
     @Override

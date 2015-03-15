@@ -11,6 +11,16 @@
         <property name="timeout" value="${ba-finance-exchange-web.pigeon.timeout.long}"/>
     </bean>
 
+    <bean id="authenticationService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
+        <property name="serviceName" value="http://service.dianping.com/fsAuthenticationService/AuthenticationService_1.0.0" />
+        <property name="iface" value="com.dianping.ba.finance.authentication.api.AuthenticationService" />
+        <property name="serialize" value="hessian" />
+        <property name="callMethod" value="sync" />
+        <property name="timeout" value="${ba-finance-exchange-biz.pigeon.timeout.medium}" />
+        <property name="timeoutRetry" value="true"/>
+        <property name="retries" value="${ba-finance-exchange-biz.pigeon.retryTimes}"/>
+    </bean>
+
     <bean id="receiveBankService" class="com.dianping.dpsf.spring.ProxyBeanFactory" init-method="init">
         <property name="serviceName" value="http://service.dianping.com/baFinanceExchangeService/receiveBankService_1.0.0"/>
         <property name="iface" value="com.dianping.ba.finance.exchange.api.ReceiveBankService"/>

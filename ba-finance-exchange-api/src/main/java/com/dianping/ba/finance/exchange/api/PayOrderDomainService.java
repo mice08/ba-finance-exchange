@@ -16,5 +16,7 @@ public interface PayOrderDomainService {
      */
     int pay(List<Integer> poIds, int loginId);
 
+    int payWithAuth(List<Integer> poIds, int loginId, String userName, String token);
+
     boolean handleBankPayResult(BankPayResultDTO bankPayResultDTO);
 }
