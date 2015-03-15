@@ -136,6 +136,23 @@
         </button>
     </div>
 </div>
+<div id="query-order" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="queryOrderLabel"
+     aria-hidden="true">
+    <div class="modal-header section-title">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 id="queryOrderLabel">查款</h4>
+    </div>
+    <div class="modal-body">
+
+    </div>
+    <div class="modal-footer">
+        <#--<button class="btn btn-default btn-fs-default btn-fs-xs" data-dismiss="modal" aria-hidden="true">取消-->
+        <#--</button>-->
+        <#--<button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-reject" data-dismiss="modal"-->
+                <#--aria-hidden="true">确定-->
+        <#--</button>-->
+    </div>
+</div>
 <form>
 <!-- @ main -->
 <!--内容-->
@@ -369,6 +386,10 @@
         <td class="fs tb-item status">{{= record.memo}}</td>
         {{if record.queryStatus == 9}}
         <td width="10%" class="fs tb-item action"><a poId="{{= record.poId}}" class="reject-link"  href="#reject-order" data-toggle="modal">驳回</a></td>
+        {{/if}}
+        {{if (record.queryStatus == 3 || record.queryStatus == 4 || record.queryStatus == 7 || record.queryStatus == 8 || record.queryStatus == 9 ||
+        record.queryStatus == 10 || record.queryStatus == 11) && (record.payType == 11 || record.payType == 61 || record.payType == 71)}}
+        <td width="10%" class="fs tb-item action"><a poId="{{= record.poId}}" class="query-link"  href="#query-order" data-toggle="modal">查款</a></td>
         {{/if}}
     </tr>
     {{/each}}
