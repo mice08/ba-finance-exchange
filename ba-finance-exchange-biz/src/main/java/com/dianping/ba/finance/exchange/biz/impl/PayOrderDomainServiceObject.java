@@ -69,7 +69,7 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
                 MONITOR_LOGGER.warn(String.format("No pay order to pay! poIds=[%s]", ListUtils.listToString(poIds, ",")));
                 return 0;
             }
-            payOrderService.batchUpdatePayOrderStatus(idList, Arrays.asList(PayOrderStatus.SUBMIT_FOR_PAY.value()), PayOrderStatus.BANK_PAYING.value(), loginId);
+            payOrderService.batchUpdatePayOrderStatus(idList, new ArrayList<Integer>(ALLOWED_BANK_PAY_STATUS), PayOrderStatus.BANK_PAYING.value(), loginId);
             doPay(payOrderDataList, idList);
             return idList.size();
         } catch (Exception e) {
