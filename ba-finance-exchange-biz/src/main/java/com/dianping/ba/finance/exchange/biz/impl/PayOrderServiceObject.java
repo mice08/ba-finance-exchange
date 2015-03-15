@@ -90,7 +90,7 @@ public class PayOrderServiceObject implements PayOrderService {
         refundResultDTO.setSuccessCount(filteredPOList.size());
 
         // 发送退票通知
-        notifyRefund(filteredPOList, loginId);
+        notifyPayResult(filteredPOList, PayResultStatus.PAY_REFUND, loginId);
         return refundResultDTO;
     }
 
@@ -107,14 +107,14 @@ public class PayOrderServiceObject implements PayOrderService {
         }
     }
 
-    private void notifyRefund(List<PayOrderData> payOrderDataList, int loginId) {
+    private void notifyPayResult(List<PayOrderData> payOrderDataList, PayResultStatus payResultStatus, int loginId) {
         for (PayOrderData payOrderData : payOrderDataList) {
             PayOrderResultBean payOrderResultBean = new PayOrderResultBean();
             payOrderResultBean.setLoginId(loginId);
             payOrderResultBean.setPoId(payOrderData.getPoId());
             payOrderResultBean.setPaidAmount(payOrderData.getPayAmount());
             payOrderResultBean.setPaySequence(payOrderData.getPaySequence());
-            payOrderResultBean.setStatus(PayResultStatus.ACCOUNT_INVALID);
+            payOrderResultBean.setStatus(payResultStatus);
             payOrderResultBean.setMemo(payOrderData.getMemo());
             payOrderResultBean.setBusinessType(payOrderData.getBusinessType());
             payOrderResultNotify.payResultNotify(payOrderResultBean);
@@ -431,7 +431,7 @@ public class PayOrderServiceObject implements PayOrderService {
                     payOrderDataList.add(payOrderData);
                 }
             }
-            notifyRefund(payOrderDataList, loginId);
+            notifyPayResult(payOrderDataList, PayResultStatus.ACCOUNT_INVALID, loginId);
             return successCount;
         }catch (Exception e){
             MONITOR_LOGGER.error(String.format("PayOrderServiceObject.markPayOrderInvalid fail!, poIdList=[%s]&loginId=[%d]", ListUtils.listToString(poIdList, ","), loginId), e);
