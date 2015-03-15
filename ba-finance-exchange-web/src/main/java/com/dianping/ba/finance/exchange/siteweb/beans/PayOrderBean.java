@@ -21,7 +21,16 @@ public class PayOrderBean {
     private String paidDate;
     private int queryStatus;
     private String payType;
+    private int payTypeValue;
 
+
+    public int getPayTypeValue() {
+        return payTypeValue;
+    }
+
+    public void setPayTypeValue(int payTypeValue) {
+        this.payTypeValue = payTypeValue;
+    }
     public String getPayCode() {
         return payCode;
     }

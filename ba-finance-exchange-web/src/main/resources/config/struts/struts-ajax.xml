@@ -12,6 +12,11 @@
             <result type="json"></result>
         </action>
 
+        <action name="sendSMSAuthCode"
+                class="com.dianping.ba.finance.exchange.siteweb.action.ajax.SendSMSAuthCodeAjaxAction">
+            <result type="json"></result>
+        </action>
+
         <action name="orderbankpay" class="com.dianping.ba.finance.exchange.siteweb.action.ajax.PayOrderAjaxAction"
                 method="payOrderBankPay">
             <result type="json"></result>
@@ -24,6 +29,16 @@
 
         <action name="orderrequestreject" class="com.dianping.ba.finance.exchange.siteweb.action.ajax.PayOrderAjaxAction"
                 method="payOrderRejectRequest">
+            <result type="json"></result>
+        </action>
+
+        <action name="orderbankaccountinvalid" class="com.dianping.ba.finance.exchange.siteweb.action.ajax.PayOrderAjaxAction"
+                method="payOrderBankAccountInvalid">
+            <result type="json"></result>
+        </action>
+
+        <action name="orderrecordquery" class="com.dianping.ba.finance.exchange.siteweb.action.ajax.PayOrderAjaxAction"
+                method="payOrderQueryPaymentRecord">
             <result type="json"></result>
         </action>
 

@@ -33,7 +33,7 @@ public class AuthStatusInfoDaoTest {
 
     @Test
     public void testUpdateAuthTimes() throws Exception {
-        int result = authStatusInfoDao.updateAuthTimes(1, 2);
+        int result = authStatusInfoDao.updateAuthTimes(1);
         Assert.assertTrue(result > 0);
     }
 

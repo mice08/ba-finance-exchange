@@ -96,11 +96,11 @@
         <h4 id="bankPayRequestLabel">提交付款单</h4>
     </div>
     <div class="modal-body">
-        <div><span style="font-size:14px; margin-right:10px;">请输入动态验证码：</span><input type="text" id="request-token"></div>
+        <div><span style="font-size:14px; margin-right:10px;">请输入动态验证码：</span><input type="text" id="request-token"><#if authChannel == "2"><button  class="btn" style="margin-left: 10px;margin-bottom: 10px" id="sms-send-btn">发送验证码</button></#if></div>
+    <div style="margin-right: 100px; text-align: right; color: #f00; font-size: 14px;" id="req-auth-msg"></div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-request" data-dismiss="modal"
-                aria-hidden="true">确定
+        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-request">确定
         </button>
     </div>
 </div>
@@ -111,11 +111,11 @@
         <h4 id="bankPayOrderLabel">直联支付</h4>
     </div>
     <div class="modal-body">
-        <div><span style="font-size:14px; margin-right:10px;">请输入动态验证码：</span><input type="text" id="order-token"></div>
+        <div><span style="font-size:14px; margin-right:10px;">请输入动态验证码：</span><input type="text" id="order-token"><#if authChannel == "2"><button  class="btn" style="margin-left: 10px;margin-bottom: 10px" id="sms-send-btn">发送验证码</button></#if></div>
+        <div style="margin-right: 100px; text-align: right; color: #f00; font-size: 14px;" id="order-auth-msg"></div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-order" data-dismiss="modal"
-                aria-hidden="true">确定
+        <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-order">确定
         </button>
     </div>
 </div>
@@ -134,6 +134,29 @@
         <button class="btn btn-primary btn-fs-normal btn-fs-xs" id="confirm-reject" data-dismiss="modal"
                 aria-hidden="true">确定
         </button>
+    </div>
+</div>
+<div id="query-order" class="modal hide fade modal-lg" tabindex="-1" role="dialog" aria-labelledby="queryOrderLabel"
+     aria-hidden="true" style="width:800px;margin-left:-400px;">
+    <div class="modal-header section-title">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 id="queryOrderLabel">查款</h4>
+    </div>
+    <div class="modal-body">
+        <table class="table table-hover" id="record-table">
+            <thead>
+            <tr>
+                <th width="3%" class="fs tb-header index">编号</th>
+                <th width="5%" class="fs tb-header id">交易号</th>
+                <th width="5%" class="fs tb-header amount">金额</th>
+                <th width="10%" class="fs tb-header time">发生时间</th>
+                <th width="5%" class="fs tb-header status">状态</th>
+                <th width="10%" class="fs tb-header memo">备注</th>
+            </tr>
+            </thead>
+            <tbody id="record-body">
+            </tbody>
+        </table>
     </div>
 </div>
 <form>
@@ -285,6 +308,20 @@
                         <span class="glyphicon glyphicon-ok"></span>
                         直联支付
                     </a>
+                    <a id="btn-mark-refund" href="#refund-order" role="button"
+                       style="display:none;"
+                       class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
+                       data-toggle="modal">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        账户异常
+                    </a>
+                    <a id="btn-resubmit-payment" href="#resubmit-payment" role="button"
+                       style="display:none;"
+                       class="btn btn-primary btn-fs-normal btn-fs-sm ajaxdisabledbutton"
+                       data-toggle="modal">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        再次支付
+                    </a>
                 </div>
             </div>
             <div class="tb-wrapper">
@@ -333,7 +370,7 @@
     <tr>
     {{/if}}
         <td >
-              <input type="checkbox" po-id="{{= record.poId}}" class="selected-payorder">
+              <input type="checkbox" po-id="{{= record.poId}}" po-amount="{{= record.payAmount}}" class="selected-payorder">
         </td>
         <td class="fs tb-item id number-char">{{= record.payCode}}</td>
         <td class="fs tb-item id number-char">{{= record.customerName}}</td>
@@ -353,8 +390,15 @@
         <td class="fs tb-item pay-type">{{= record.payType}}</td>
         <td class="fs tb-item status">{{= record.useMemo}}</td>
         <td class="fs tb-item status">{{= record.memo}}</td>
+        {{if (record.status == 3 || record.status == 4 || record.status == 7 || record.status == 8 || record.status == 10 || record.status == 9) &&
+        (record.payTypeValue == 11 || record.payTypeValue == 61 || record.payTypeValue == 71)}}
+        <td width="10%" class="fs tb-item action">
         {{if record.queryStatus == 9}}
-        <td width="10%" class="fs tb-item action"><a poId="{{= record.poId}}" class="reject-link"  href="#reject-order" data-toggle="modal">驳回</a></td>
+        <a poId="{{= record.poId}}" class="reject-link"  href="#reject-order" data-toggle="modal">驳回</a>
+        {{else}}
+        <a poId="{{= record.poId}}" class="query-link"  href="#query-order" data-toggle="modal">查款</a>
+        {{/if}}
+        </td>
         {{/if}}
     </tr>
     {{/each}}

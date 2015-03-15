@@ -127,4 +127,9 @@ public interface PayOrderDao extends GenericDao {
                                            @DAOParam("page") int page,
                                            @DAOParam("max") int max);
 
+    @DAOAction(action = DAOActionType.UPDATE)
+    int updatePayCode(@DAOParam("poId") int poId, @DAOParam("payCode") String payCode);
+
+    @DAOAction(action = DAOActionType.QUERY)
+    List<PayOrderData> findPayOrderByPayCodeList(@DAOParam("payCodeList") List<String> payCodeList);
 }

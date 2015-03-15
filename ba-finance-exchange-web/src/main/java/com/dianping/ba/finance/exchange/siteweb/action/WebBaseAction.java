@@ -4,6 +4,8 @@ import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
 import com.dianping.ba.finance.portal.header.client.util.AuthenticationUtil;
 import com.dianping.combiz.web.action.AvatarAction;
+import com.dianping.finance.common.util.LionConfigUtils;
+import com.dianping.midas.common.LionUtil;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.Preparable;
 import org.apache.struts2.ServletActionContext;
@@ -56,6 +58,10 @@ public abstract class WebBaseAction extends AvatarAction implements Preparable {
             String nameSpace = ServletActionContext.getActionMapping().getNamespace();
             String currentChannel = actionMap.get(nameSpace);
             context.put("currentChannel", currentChannel);
+            if(ServletActionContext.getRequest().getRequestURL().indexOf("payorder/orderlist") > 0) {
+                context.put("authChannel", LionConfigUtils.getProperty("ba-finance-exchange-service.auth.type"));
+            }
+            context.put("currentChannel", currentChannel);
 //            context.put("domain", "http://" + WebUtil.getWebUrlFromLion());
 //            context.put("loginName", getLoginName());
             result = webExecute();
@@ -81,6 +87,22 @@ public abstract class WebBaseAction extends AvatarAction implements Preparable {
             monitorLogger.error(String.format("severity=[1] getLoginId error!"), e);
         }
         return 0;
+    }
+
+    public String getWorkNo(){
+        try {
+            HttpServletRequest request = ServletActionContext.getRequest();
+            if (request == null) {
+                return null;
+            }
+            String assertion = AuthenticationUtil.getRemoteUser(request);
+            if (assertion != null) {
+                return assertion.split("\\|")[2];
+            }
+        } catch (Exception e) {
+            monitorLogger.error(String.format("severity=[1] getWorkNo error!"), e);
+        }
+        return null;
     }
 
     abstract protected String webExecute() throws Exception;
