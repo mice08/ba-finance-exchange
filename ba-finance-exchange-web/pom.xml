@@ -19,6 +19,11 @@
     <dependencies>
         <dependency>
             <groupId>com.dianping</groupId>
+            <artifactId>ba-finance-payment-platform-api</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dianping</groupId>
             <artifactId>ba-finance-authentication-api</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>

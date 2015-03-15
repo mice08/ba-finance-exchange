@@ -18,6 +18,9 @@ import com.dianping.ba.finance.exchange.siteweb.enums.SubmitType;
 import com.dianping.ba.finance.exchange.siteweb.services.CustomerNameService;
 import com.dianping.ba.finance.exchange.siteweb.services.PayTemplateService;
 import com.dianping.ba.finance.exchange.siteweb.util.DateUtil;
+import com.dianping.ba.finance.paymentplatform.api.PaymentQueryService;
+import com.dianping.ba.finance.paymentplatform.api.dtos.PaymentRecordDTO;
+import com.dianping.ba.finance.paymentplatform.api.enums.PaymentRecordStatus;
 import com.dianping.core.type.PageModel;
 import com.dianping.finance.common.util.ConvertUtils;
 import com.dianping.finance.common.util.LionConfigUtils;
@@ -98,6 +101,9 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
 
     @Autowired
     private PayOrderDomainService payOrderDomainService;
+
+    @Autowired
+    private PaymentQueryService paymentQueryService;
 
     @Override
     protected void jsonExecute() throws Exception {
@@ -283,9 +289,15 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
             }
             String payCode = payOrderData.getPayCode();
             String[] payCodeArr = payCode.split(",");
-            //todo call interface
-
-
+            List<PaymentRecordDTO> paymentRecordDTOList = paymentQueryService.queryPaymentRecordByInsIds(Arrays.asList(payCodeArr));
+            if(CollectionUtils.isEmpty(paymentRecordDTOList)){
+                MONITOR_LOGGER.warn(String.format("No payment record found! poId=[%s]&payCode=[%s]", poId, payCode));
+                code = SUCCESS_CODE;
+                return SUCCESS;
+            }
+            for(int i= 0; i< paymentRecordDTOList.size(); i++){
+                payRecordInfoBeanList.add(buildPayRecordInfoBean(paymentRecordDTOList.get(i), i+1));
+            }
             code = SUCCESS_CODE;
             return SUCCESS;
         } catch (Exception e) {
@@ -293,6 +305,17 @@ public class PayOrderAjaxAction extends AjaxBaseAction {
             code = ERROR_CODE;
             return ERROR;
         }
+    }
+
+    private PayRecordInfoBean buildPayRecordInfoBean(PaymentRecordDTO paymentRecordDTO, int index){
+        PayRecordInfoBean infoBean = new PayRecordInfoBean();
+        infoBean.setIndex(index);
+        infoBean.setAmount(new DecimalFormat("##,###,###,###,##0.00").format(paymentRecordDTO.getAmount()));
+        infoBean.setMemo(paymentRecordDTO.getMemo());
+        infoBean.setRequestTime(DateUtil.formatDateToString(paymentRecordDTO.getAddTime(), "yyyy-MM-dd HH:mm:ss"));
+        infoBean.setPayCode(paymentRecordDTO.getInsId());
+        infoBean.setStatus(PaymentRecordStatus.getByCode(paymentRecordDTO.getStatus()).getMessage());
+        return infoBean;
     }
 
 
