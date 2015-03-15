@@ -2,10 +2,16 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.finance.authentication.api.AuthenticationService;
+import com.dianping.ba.finance.authentication.api.enums.ErrorCode;
 import com.dianping.ba.finance.exchange.api.PayOrderDomainService;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.dtos.AuthMsgDTO;
 import com.dianping.ba.finance.exchange.api.dtos.BankPayResultDTO;
+import com.dianping.ba.finance.exchange.api.enums.*;
+import com.dianping.finance.common.aop.annotation.Log;
+import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.PayType;
 import com.dianping.ba.finance.exchange.biz.enums.PayResultStatus;
@@ -16,8 +22,6 @@ import com.dianping.ba.finance.paymentplatform.api.dtos.PayResponseDTO;
 import com.dianping.ba.finance.paymentplatform.api.dtos.PaymentRequestDTO;
 import com.dianping.ba.finance.paymentplatform.api.enums.Channel;
 import com.dianping.ba.finance.paymentplatform.api.enums.PayRequestResult;
-import com.dianping.finance.common.aop.annotation.Log;
-import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.finance.common.util.ListUtils;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
@@ -46,6 +50,9 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
     @Autowired
     private AccountService accountService;
     @Autowired
+    private AuthenticationService authenticationService;
+
+    @Autowired
     private ExecutorService executorService;
     @Autowired
     private PaymentDomainService paymentDomainService;
@@ -57,12 +64,12 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
         try {
             List<PayOrderData> payOrderDataList = payOrderService.findPayOrderByIdList(poIds);
             List<Integer> idList = buildPayOrderListForBankPay(payOrderDataList);
-            if(CollectionUtils.isEmpty(idList)){
+            if (CollectionUtils.isEmpty(idList)) {
                 MONITOR_LOGGER.warn(String.format("No pay order to pay! poIds=[%s]", ListUtils.listToString(poIds, ",")));
                 return 0;
             }
             payOrderService.batchUpdatePayOrderStatus(idList, Arrays.asList(PayOrderStatus.SUBMIT_FOR_PAY.value()), PayOrderStatus.BANK_PAYING.value(), loginId);
-            asyncPay(payOrderDataList, idList);
+            doPay(payOrderDataList, idList);
             return idList.size();
         } catch (Exception e) {
             MONITOR_LOGGER.error(String.format("severity=[1],PayOrderDomainServiceObject.pay fail!, poIds=[%s]&loginId=[%d]", poIds, loginId), e);
@@ -70,21 +77,12 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
         }
     }
 
-    private void asyncPay(final List<PayOrderData> payOrderDataList, final List<Integer> poIdList) {
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                doPay(payOrderDataList, poIdList);
-            }
-        });
-    }
-
-    private void doPay(final List<PayOrderData> payOrderDataList, final List<Integer> poIdList){
-        for(PayOrderData data: payOrderDataList){
-            if(poIdList.contains(data.getPoId())){
+    private void doPay(final List<PayOrderData> payOrderDataList, final List<Integer> poIdList) {
+        for (PayOrderData data : payOrderDataList) {
+            if (poIdList.contains(data.getPoId())) {
                 PaymentRequestDTO requestDTO = buildBankPayRequest(data);
                 PayResponseDTO payResponseDTO = paymentDomainService.pay(requestDTO);
-                if(payResponseDTO.getCode() == PayRequestResult.SUCCESS.getCode()){
+                if (payResponseDTO.getCode() == PayRequestResult.SUCCESS.getCode()) {
                     PayOrderData payOrderData = payOrderService.loadPayOrderDataByPOID(data.getPoId());
                     payOrderService.updatePayCode(data.getPoId(), payResponseDTO.getPayCode() + "|" + payOrderData.getPayCode());
                 } else {
@@ -92,6 +90,39 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
                 }
             }
         }
+    }
+
+    @Override
+    @Log(logBefore = true, logAfter = true)
+    public int payWithAuth(List<Integer> poIds, int loginId, AuthMsgDTO authMsg) {
+        try {
+            if (authenticationService.auth(authMsg.getUserName(), authMsg.getToken(), Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-service.auth.type", "3"))).getCode() == ErrorCode.DEFAULT.getCode()) {
+                int groupSize = NumberUtils.toInt(LionConfigUtils.getProperty("ba-finance-exchange-service.pay.group.size", "2000"));
+                if (poIds.size() > groupSize) {
+                    List<List<Integer>> idListGroup = ListUtils.generateListGroup(poIds, groupSize);
+                    for (List<Integer> list : idListGroup) {
+                        asyncPay(list, loginId);
+                    }
+                } else {
+                    asyncPay(poIds, loginId);
+                }
+                return BankPayResult.SUCCESS.getCode();
+            } else {
+                return BankPayResult.AUTH_FAIL.getCode();
+            }
+        } catch (Exception e) {
+            MONITOR_LOGGER.error(String.format("severity=[1] PayOrderDomainServiceObject.payWithAuth error! poIds=%s", poIds), e);
+        }
+        return BankPayResult.SYSTEM_ERROR.getCode();
+    }
+
+    private void asyncPay(final List<Integer> list, final int loginId) {
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                pay(list, loginId);
+            }
+        });
     }
 
     @Override
@@ -141,10 +172,10 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
                         order.getPayType() == PayType.SHAN_FU_SETTLE.getPayType());
     }
 
-    private PaymentRequestDTO buildBankPayRequest(PayOrderData payOrderData){
+    private PaymentRequestDTO buildBankPayRequest(PayOrderData payOrderData) {
         PaymentRequestDTO requestDTO = new PaymentRequestDTO();
         BankAccountDTO payeeBankAccountDTO = accountService.loadBankAccount(payOrderData.getPayeeBankAccountId());
-        if(payeeBankAccountDTO != null){
+        if (payeeBankAccountDTO != null) {
             requestDTO.setFromAccountNo(payeeBankAccountDTO.getBankAccountNo());
             requestDTO.setFromAccountName(payeeBankAccountDTO.getBankAccountName());
             requestDTO.setFromBankName("中国民生银行");// todo hard code
@@ -164,7 +195,6 @@ public class PayOrderDomainServiceObject implements PayOrderDomainService {
         requestDTO.setExplain(payOrderData.getMemo());
         return requestDTO;
     }
-
 
 
     public void setPayOrderService(PayOrderService payOrderService) {

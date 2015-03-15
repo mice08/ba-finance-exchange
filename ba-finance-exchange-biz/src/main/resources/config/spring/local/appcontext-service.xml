@@ -35,7 +35,9 @@
 
     <bean id="payOrderService" class="com.dianping.ba.finance.exchange.biz.impl.PayOrderServiceObject">
         <property name="payOrderDao" ref="payOrderDao"/>
+        <property name="authenticationService" ref="authenticationService"/>
         <property name="payOrderResultNotify" ref="payOrderResultNotify"/>
+        <property name="executorService" ref="executorService"/>
     </bean>
 
     <bean id="receiveOrderService" class="com.dianping.ba.finance.exchange.biz.impl.ReceiveOrderServiceObject">

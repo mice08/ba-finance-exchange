@@ -3,6 +3,7 @@ package com.dianping.ba.finance.exchange.api;
 
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.dtos.AuthMsgDTO;
 import com.dianping.ba.finance.exchange.api.dtos.PayOrderBankInfoDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
@@ -147,6 +148,8 @@ public interface PayOrderService {
      * @return
      */
     int batchUpdatePayOrderStatus(List<Integer> poIds, List<Integer> preStatusList,int postStatus, int loginId);
+
+    int submitBankPayPOs(List<Integer> poIds, int loginId, AuthMsgDTO authMsg);
 
     /**
      * 根据付款单号获取付款单信息

@@ -2,14 +2,19 @@ package com.dianping.ba.finance.exchange.biz.impl;
 
 import com.dianping.avatar.log.AvatarLogger;
 import com.dianping.avatar.log.AvatarLoggerFactory;
+import com.dianping.ba.base.organizationalstructure.api.user.UserService;
+import com.dianping.ba.finance.authentication.api.AuthenticationService;
+import com.dianping.ba.finance.authentication.api.enums.ErrorCode;
 import com.dianping.ba.finance.exchange.api.PayOrderService;
 import com.dianping.ba.finance.exchange.api.beans.POUpdateInfoBean;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderResultBean;
 import com.dianping.ba.finance.exchange.api.beans.PayOrderSearchBean;
 import com.dianping.ba.finance.exchange.api.datas.PayOrderData;
+import com.dianping.ba.finance.exchange.api.dtos.AuthMsgDTO;
 import com.dianping.ba.finance.exchange.api.dtos.PayOrderBankInfoDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundDTO;
 import com.dianping.ba.finance.exchange.api.dtos.RefundResultDTO;
+import com.dianping.ba.finance.exchange.api.enums.BankPaySubmitResult;
 import com.dianping.ba.finance.exchange.api.enums.PayOrderStatus;
 import com.dianping.ba.finance.exchange.api.enums.PayResultStatus;
 import com.dianping.ba.finance.exchange.api.enums.RefundFailedReason;
@@ -24,11 +29,14 @@ import com.dianping.finance.common.util.LionConfigUtils;
 import com.dianping.finance.common.util.ListUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang.math.NumberUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 
 /**
  * 处理付款单的Service类
@@ -42,6 +50,10 @@ public class PayOrderServiceObject implements PayOrderService {
     private PayOrderDao payOrderDao;
 
     private PayOrderResultNotify payOrderResultNotify;
+
+    private AuthenticationService authenticationService;
+
+    private ExecutorService executorService;
 
     @Log(logBefore = true, logAfter = true)
     @ReturnDefault
@@ -389,6 +401,38 @@ public class PayOrderServiceObject implements PayOrderService {
         }
     }
 
+    @Override
+    public int submitBankPayPOs(List<Integer> poIds, int loginId, AuthMsgDTO authMsg) {
+        try {
+            if (authenticationService.auth(authMsg.getUserName(), authMsg.getToken(), Integer.parseInt(LionConfigUtils.getProperty("ba-finance-exchange-service.auth.type", "3"))).getCode() == ErrorCode.DEFAULT.getCode()) {
+                int groupSize = NumberUtils.toInt(LionConfigUtils.getProperty("ba-finance-exchange-service.pay.group.size", "2000"));
+                if (poIds.size() > groupSize) {
+                    List<List<Integer>> idListGroup = ListUtils.generateListGroup(poIds, groupSize);
+                    for (List<Integer> list : idListGroup) {
+                        asyncPaySubmit(list, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), loginId);
+                    }
+                } else {
+                    asyncPaySubmit(poIds, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), loginId);
+                }
+                return BankPaySubmitResult.SUCCESS.getCode();
+            } else {
+                return BankPaySubmitResult.AUTH_FAIL.getCode();
+            }
+        } catch (Exception e) {
+            MONITOR_LOGGER.error(String.format("severity=[1] PayOrderService.submitBankPayPOs error! poIds=%s", poIds), e);
+        }
+        return BankPaySubmitResult.SYSTEM_ERROR.getCode();
+    }
+
+    private void asyncPaySubmit(final List<Integer> poIds, List<Integer> preStatusList, int postStatus, final int loginId) {
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                batchUpdatePayOrderStatus(poIds, Arrays.asList(PayOrderStatus.INIT.value(), PayOrderStatus.SUBMIT_FAILED.value()), PayOrderStatus.SUBMIT_FOR_PAY.value(), loginId);
+            }
+        });
+    }
+
     @Log(logBefore = true, logAfter = true)
     @Override
     public List<PayOrderData> findPayOrderByIdList(List<Integer> poIds) {
@@ -472,5 +516,13 @@ public class PayOrderServiceObject implements PayOrderService {
 
     public void setPayOrderResultNotify(PayOrderResultNotify payOrderResultNotify) {
         this.payOrderResultNotify = payOrderResultNotify;
+    }
+
+    public void setAuthenticationService(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
+
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
     }
 }
